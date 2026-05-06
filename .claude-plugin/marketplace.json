@@ -10,7 +10,13 @@
       "source": "./",
       "description": "Picsart generative-AI skills: image generation, video generation, and related creative workflows.",
       "version": "0.1.0",
-      "skills": []
+      "skills": [
+        {
+          "name": "gen-ai-use",
+          "path": "gen-ai-use",
+          "invoke": "/picsart:gen-ai-use"
+        }
+      ]
     }
   ]
 }
