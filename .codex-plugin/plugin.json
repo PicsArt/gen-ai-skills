@@ -1,0 +1,31 @@
+{
+  "name": "picsart",
+  "version": "0.1.0",
+  "description": "Picsart generative-AI skills for Codex.",
+  "author": {
+    "name": "Picsart",
+    "url": "https://picsart.com"
+  },
+  "homepage": "https://picsart.com",
+  "repository": "https://github.com/PicsArt/gen-ai-skills",
+  "license": "MIT",
+  "keywords": [
+    "picsart",
+    "gen-ai",
+    "image-generation",
+    "video-generation"
+  ],
+  "skills": "./",
+  "interface": {
+    "displayName": "Picsart Gen-AI",
+    "shortDescription": "Picsart generative-AI skills",
+    "longDescription": "A collection of Picsart generative-AI skills callable from Codex. Each skill is a self-contained directory with a SKILL.md manifest.",
+    "developerName": "Picsart",
+    "category": "Design",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://picsart.com"
+  }
+}

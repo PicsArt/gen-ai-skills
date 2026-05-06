@@ -1,0 +1,21 @@
+{
+  "$schema": "https://cursor.com/schemas/cursor-plugin/plugin.json",
+  "name": "picsart",
+  "displayName": "Picsart Gen-AI",
+  "version": "0.1.0",
+  "description": "Picsart generative-AI skills for Cursor.",
+  "author": {
+    "name": "Picsart"
+  },
+  "publisher": "Picsart",
+  "homepage": "https://picsart.com",
+  "repository": "https://github.com/PicsArt/gen-ai-skills",
+  "license": "MIT",
+  "category": "ai-content",
+  "keywords": [
+    "picsart",
+    "gen-ai",
+    "image-generation",
+    "video-generation"
+  ]
+}

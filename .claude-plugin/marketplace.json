@@ -1,0 +1,16 @@
+{
+  "name": "picsart",
+  "owner": {
+    "name": "Picsart",
+    "url": "https://picsart.com"
+  },
+  "plugins": [
+    {
+      "name": "picsart",
+      "source": "./",
+      "description": "Picsart generative-AI skills: image generation, video generation, and related creative workflows.",
+      "version": "0.1.0",
+      "skills": []
+    }
+  ]
+}

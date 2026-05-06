@@ -1,0 +1,19 @@
+{
+  "name": "picsart",
+  "version": "0.1.0",
+  "description": "Picsart generative-AI skills for Claude Code, Cursor, Codex, and other agents that consume SKILL.md files.",
+  "author": {
+    "name": "Picsart",
+    "url": "https://picsart.com"
+  },
+  "homepage": "https://picsart.com",
+  "repository": "https://github.com/PicsArt/gen-ai-skills",
+  "license": "MIT",
+  "keywords": [
+    "picsart",
+    "gen-ai",
+    "image-generation",
+    "video-generation",
+    "creative-tools"
+  ]
+}
