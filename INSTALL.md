@@ -47,6 +47,22 @@ cd gen-ai-skills
 
 The script auto-detects Claude Code / Cursor / Codex (override with `--host <agent>`) and symlinks each skill subdirectory into place. Idempotent.
 
+## Option 5 — Hermes Agent
+
+For [Hermes Agent](https://hermes-agent.nousresearch.com/) by Nous Research. Install a single skill directly, or subscribe to the whole repo as a tap to browse and search all skills.
+
+```bash
+# Install one skill
+hermes skills install PicsArt/gen-ai-skills/gen-ai-use
+
+# Or add the repo as a tap (recommended — surfaces every skill in `hermes skills browse`)
+hermes skills tap add PicsArt/gen-ai-skills
+hermes skills search picsart
+hermes skills install gen-ai-use
+```
+
+Skills install through Hermes' security scanner. Trust level defaults to `community`.
+
 ## Updating
 
 | Method | Update command |
@@ -55,3 +71,4 @@ The script auto-detects Claude Code / Cursor / Codex (override with `--host <age
 | `gh skill install` | `gh skill update PicsArt/gen-ai-skills` |
 | Claude Code marketplace | `/plugin update picsart@picsart` |
 | Setup script | `cd gen-ai-skills && git pull && ./setup` |
+| Hermes Agent | `hermes skills update gen-ai-use` |

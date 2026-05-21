@@ -32,9 +32,13 @@ gen-ai-skills/
 
 Each skill lives in its own top-level directory. The directory name is the install name. The directory must contain a `SKILL.md` with YAML frontmatter (`name`, `description`, optional `argument-hint`, optional `allowed-tools`) followed by the skill body.
 
-## Status
+## Skills
 
-Early scaffold. Skills will be added by contributors — see [CONTRIBUTING.md](./CONTRIBUTING.md).
+| Skill | Version | Description |
+|---|---|---|
+| [`gen-ai-use`](./gen-ai-use) | 1.3.0 | Generate AI images, videos, and audio via the Picsart `gen-ai` CLI — generation, background removal, enhance/upscale, vectorize, batch runs, and Picsart Drive operations. |
+
+More skills are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 

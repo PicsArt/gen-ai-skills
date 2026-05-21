@@ -8,6 +8,12 @@ description: |
   invokes /gen-ai-use.
 allowed-tools: Read, Bash, Grep, Glob
 version: 1.3.0
+license: MIT
+metadata:
+  author: Picsart
+  hermes:
+    tags: [image-generation, video-generation, audio-generation, picsart, creative, cli]
+    category: creative
 ---
 
 # gen-ai CLI — Usage Guide
