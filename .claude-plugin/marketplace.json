@@ -11,11 +11,31 @@
       "description": "Picsart generative-AI skills: image generation, video generation, and related creative workflows.",
       "version": "0.1.0",
       "skills": [
-        {
-          "name": "gen-ai-use",
-          "path": "gen-ai-use",
-          "invoke": "/picsart:gen-ai-use"
-        }
+        { "name": "gen-ai-use", "path": "skills/gen-ai-use", "invoke": "/picsart:gen-ai-use" },
+        { "name": "gen-ai-persona-creation", "path": "skills/gen-ai-persona-creation", "invoke": "/picsart:gen-ai-persona-creation" },
+        { "name": "motion-studio", "path": "skills/motion-studio", "invoke": "/picsart:motion-studio" },
+
+        { "name": "product-photo-studio", "path": "skills/product-photo-studio", "invoke": "/picsart:product-photo-studio" },
+        { "name": "text-to-visual", "path": "skills/text-to-visual", "invoke": "/picsart:text-to-visual" },
+        { "name": "multi-channel-bundle", "path": "skills/multi-channel-bundle", "invoke": "/picsart:multi-channel-bundle" },
+
+        { "name": "agency-brand-scoping", "path": "skills/agency-brand-scoping", "invoke": "/picsart:agency-brand-scoping" },
+        { "name": "agency-client-handoff", "path": "skills/agency-client-handoff", "invoke": "/picsart:agency-client-handoff" },
+        { "name": "agency-multi-brand-pack", "path": "skills/agency-multi-brand-pack", "invoke": "/picsart:agency-multi-brand-pack" },
+        { "name": "agency-pitch-mockups", "path": "skills/agency-pitch-mockups", "invoke": "/picsart:agency-pitch-mockups" },
+
+        { "name": "dev-app-assets", "path": "skills/dev-app-assets", "invoke": "/picsart:dev-app-assets" },
+        { "name": "dev-avatar-service", "path": "skills/dev-avatar-service", "invoke": "/picsart:dev-avatar-service" },
+        { "name": "dev-screenshot-beautifier", "path": "skills/dev-screenshot-beautifier", "invoke": "/picsart:dev-screenshot-beautifier" },
+
+        { "name": "enterprise-brand-governor", "path": "skills/enterprise-brand-governor", "invoke": "/picsart:enterprise-brand-governor" },
+        { "name": "enterprise-pinned-registry", "path": "skills/enterprise-pinned-registry", "invoke": "/picsart:enterprise-pinned-registry" },
+        { "name": "enterprise-press-batch", "path": "skills/enterprise-press-batch", "invoke": "/picsart:enterprise-press-batch" },
+
+        { "name": "marketer-ad-variant-factory", "path": "skills/marketer-ad-variant-factory", "invoke": "/picsart:marketer-ad-variant-factory" },
+        { "name": "marketer-localize-campaign", "path": "skills/marketer-localize-campaign", "invoke": "/picsart:marketer-localize-campaign" },
+
+        { "name": "prosumer-headshot-studio", "path": "skills/prosumer-headshot-studio", "invoke": "/picsart:prosumer-headshot-studio" }
       ]
     }
   ]

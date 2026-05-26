@@ -52,8 +52,8 @@ The script auto-detects Claude Code / Cursor / Codex (override with `--host <age
 For [Hermes Agent](https://hermes-agent.nousresearch.com/) by Nous Research. Install a single skill directly, or subscribe to the whole repo as a tap to browse and search all skills.
 
 ```bash
-# Install one skill
-hermes skills install PicsArt/gen-ai-skills/gen-ai-use
+# Install one skill (note the skills/ path)
+hermes skills install PicsArt/gen-ai-skills/skills/gen-ai-use
 
 # Or add the repo as a tap (recommended — surfaces every skill in `hermes skills browse`)
 hermes skills tap add PicsArt/gen-ai-skills
@@ -61,7 +61,7 @@ hermes skills search picsart
 hermes skills install gen-ai-use
 ```
 
-Skills install through Hermes' security scanner. Trust level defaults to `community`.
+The tap layout uses `skills/` as the root path (Hermes' default), so adding the tap discovers every skill automatically. Skills install through Hermes' security scanner; trust level defaults to `community`.
 
 ## Updating
 

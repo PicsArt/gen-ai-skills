@@ -15,7 +15,7 @@
     "image-generation",
     "video-generation"
   ],
-  "skills": "./",
+  "skills": "./skills/",
   "interface": {
     "displayName": "Picsart Gen-AI",
     "shortDescription": "Picsart generative-AI skills",

@@ -89,13 +89,19 @@ case "$HOST" in
     ;;
 esac
 
-# ─── Discover skills (any top-level dir with SKILL.md) ──────
+# ─── Discover skills (any subdir of skills/ with SKILL.md) ──
+SKILLS_ROOT="$SKILL_DIR/skills"
+if [ ! -d "$SKILLS_ROOT" ]; then
+  err "Cannot find skills/ directory at $SKILLS_ROOT"
+  exit 1
+fi
+
 SKILLS=()
-for dir in "$SKILL_DIR"/*/; do
+for dir in "$SKILLS_ROOT"/*/; do
   [ -d "$dir" ] || continue
   name="$(basename "$dir")"
   case "$name" in
-    .*|node_modules|dist|build|scripts|assets|evals|tests) continue ;;
+    .*) continue ;;
   esac
   if [ -f "$dir/SKILL.md" ]; then
     SKILLS+=("$name")
@@ -103,7 +109,7 @@ for dir in "$SKILL_DIR"/*/; do
 done
 
 if [ ${#SKILLS[@]} -eq 0 ]; then
-  warn "No skills found (no top-level directory contains a SKILL.md)."
+  warn "No skills found (no directory under skills/ contains a SKILL.md)."
   exit 0
 fi
 
@@ -115,7 +121,7 @@ echo
 # ─── Install skills ─────────────────────────────────────────
 mkdir -p "$TARGET_DIR"
 for skill in "${SKILLS[@]}"; do
-  src="$SKILL_DIR/$skill"
+  src="$SKILLS_ROOT/$skill"
   dst="$TARGET_DIR/$skill"
   if [ -L "$dst" ]; then
     if [ "$(readlink "$dst")" = "$src" ]; then

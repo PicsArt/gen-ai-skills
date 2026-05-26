@@ -1,0 +1,122 @@
+name: Skill Compliance Check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  compliance:
+    name: HARDLINE Compliance
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Detect changed SKILL.md files
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE=${{ github.event.pull_request.base.sha }}
+            HEAD=${{ github.event.pull_request.head.sha }}
+            CHANGED=$(git diff --name-only "$BASE" "$HEAD" -- 'skills/**/SKILL.md' || true)
+          else
+            CHANGED=$(git diff --name-only HEAD~1 HEAD -- 'skills/**/SKILL.md' 2>/dev/null || true)
+          fi
+
+          if [ -z "$CHANGED" ]; then
+            echo "No SKILL.md files changed in this event — checking all."
+            echo "scope=all" >> "$GITHUB_OUTPUT"
+          else
+            echo "Changed SKILL.md files:"
+            echo "$CHANGED"
+            echo "$CHANGED" > /tmp/changed_skills.txt
+            echo "scope=changed" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run compliance check (changed)
+        if: steps.changed.outputs.scope == 'changed'
+        run: python3 scripts/check-skill-compliance.py --files-from /tmp/changed_skills.txt
+
+      - name: Run compliance check (all)
+        if: steps.changed.outputs.scope == 'all'
+        run: python3 scripts/check-skill-compliance.py
+
+      - name: Comment on PR (failure only)
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let output = '';
+            try {
+              // Re-run to capture clean output for the comment
+              const { execSync } = require('child_process');
+              try {
+                output = execSync('python3 scripts/check-skill-compliance.py', { encoding: 'utf8' });
+              } catch (e) {
+                output = e.stdout + e.stderr;
+              }
+            } catch (e) {
+              output = `(could not capture output: ${e.message})`;
+            }
+
+            const body = [
+              '## ❌ Skill Compliance Check Failed',
+              '',
+              'One or more skills do not meet the catalog standards (description ≤60 chars,',
+              'full Hermes frontmatter, canonical section order, no broken links).',
+              '',
+              'Fix locally with:',
+              '',
+              '```bash',
+              'python3 scripts/check-skill-compliance.py',
+              '# auto-fix structure/frontmatter (you may still need to edit prose):',
+              'python3 scripts/normalize-skills.py',
+              '```',
+              '',
+              '<details><summary>Full check output</summary>',
+              '',
+              '```',
+              output.trim(),
+              '```',
+              '</details>',
+              '',
+              'See [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md) for the full rules.',
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c =>
+              c.body && c.body.includes('Skill Compliance Check Failed')
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
