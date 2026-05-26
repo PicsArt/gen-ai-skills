@@ -1,0 +1,78 @@
+# _cli/skills/gen-ai-explainer/pipeline.yaml
+name: animated-explainer
+version: "1.0"
+description: 30-second-to-5-minute animated explainer with narration, motion, music.
+orchestration:
+  mode: light-producer
+  approval_gates: [research, proposal, script, scene_plan]
+  # User-facing modes (set per conversation, not per pipeline):
+  #   interactive (default) — agent STOPs at each approval gate, waits for user
+  #   auto                  — agent runs end-to-end, announces but doesn't wait
+  user_modes: [interactive, auto]
+  default_user_mode: interactive
+  # Phrases that flip the user mode to auto:
+  auto_mode_triggers:
+    - auto
+    - auto mode
+    - auto-approve
+    - auto approve
+    - no approvals
+    - skip approvals
+    - don't ask
+    - no questions
+    - just do it
+    - yolo
+    - full auto
+    - end to end
+    - run it through
+    - run all stages
+    - no checks
+defaults:
+  image_model: gemini-3.1-flash-image
+  video_model: seedance-2.0
+  voice: eleven-v3
+  music_model: minimax-music
+  aspect_ratio: "16:9"
+  hero_anchor: true
+  playbook: isometric-medical
+
+playbooks:
+  - id: isometric-medical
+    best_for: Science, biology, anatomy, chemistry, how-it-works explainers about the body, brain, or natural systems.
+  - id: flat-corporate
+    best_for: B2B SaaS, fintech, dev-tools, enterprise topics, conference-style explainers.
+  - id: hand-drawn-warm
+    best_for: Lifestyle, education for general audiences, history, food, culture, "fun explainer" topics.
+  - id: noir-tech
+    best_for: Cybersecurity, AI/ML, cryptography, deep-tech, infrastructure-internals explainers.
+stages:
+  - name: research
+    role: claude
+    produces: research_summary  # ephemeral, lives in chat
+    director: research-director.md
+    approval_required: true
+  - name: proposal
+    role: claude
+    produces: proposal_choice
+    director: proposal-director.md
+    approval_required: true
+  - name: script
+    role: claude
+    produces: script.json
+    director: script-director.md
+    approval_required: true
+  - name: scene_plan
+    role: claude
+    produces: scene-plan.json
+    director: scene-plan-director.md
+    approval_required: true
+  - name: assets
+    role: cli
+    command: gen-ai explainer:assets <slug>
+    produces: asset-manifest.json + media/
+    director: asset-director.md
+  - name: render
+    role: cli
+    command: gen-ai explainer:render <slug>
+    produces: render-report.json + explainer.mp4
+    director: render-director.md

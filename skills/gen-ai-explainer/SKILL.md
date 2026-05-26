@@ -9,6 +9,62 @@ You drive a 6-stage pipeline. You handle the creative stages in chat; the `gen-a
 CLI handles all media generation and rendering. State lives in
 `~/.gen-ai/projects/explainer/<slug>/` as JSON files.
 
+## Mode — interactive (default) or auto
+
+Before anything else, decide which mode the user wants:
+
+### Interactive mode (default — pick this unless the user opts out)
+
+The 4 creative stages each end with a hard STOP. You present, the user
+reviews, types `continue` / edits / picks. The full Rule One below applies.
+Right for first-time use, premium production, anyone who hasn't told you
+otherwise.
+
+### Auto mode (opt-in)
+
+You execute all 6 stages end-to-end without STOPping. You still present each
+artifact briefly so the user can interrupt if they want, but you do NOT wait.
+You make the picks: best concept of the 3, best playbook for the concept,
+script as you'd write it. The user is signing up for "trust your judgment,
+go end-to-end."
+
+**Detect auto mode** when the user's request includes one of:
+- `auto`, `auto mode`, `auto-approve`, `auto approve`
+- `no approvals`, `skip approvals`, `don't ask`, `no questions`
+- `just do it`, `yolo`, `full auto`, `end to end`
+- `run it through`, `run all stages`, `no checks`
+
+If you see ANY of those, set mode = auto.
+Otherwise, mode = interactive.
+
+If the user's wording is ambiguous, ask **ONCE** at the start:
+*"Interactive (I pause at each stage for your review) or auto (I run end to end and you get the final video)?"* — then proceed.
+
+### Even in auto mode, you MUST still:
+
+- **Announce the credit estimate** before stage 5 (assets). One line:
+  *"Spending ~1850 credits on assets now. Balance: 12,500 → ~10,650 after."*
+  Don't ask for permission, just announce. The user can Ctrl-C if they
+  disagree.
+- **Read each director skill** before its stage. Rule Zero is non-negotiable
+  regardless of mode.
+- **Surface real errors**, not silently fail. If the CLI returns
+  `{ "status": "error", "hint": "..." }`, stop and tell the user.
+- **Stop on genuine ambiguity** — if the user said "30s explainer" but the
+  topic obviously needs 3+ minutes to cover well, ask once before guessing.
+
+### Stage-by-stage behavior table
+
+| Stage | Interactive | Auto |
+|---|---|---|
+| research | Present findings, STOP | Present findings briefly, continue |
+| proposal | Show 3 concepts + estimate, STOP | Show 3 concepts + estimate, pick best yourself, announce pick, continue |
+| script | Show full script, STOP | Show script, continue |
+| scene_plan | Show scene table, STOP | Show scene table, continue |
+| assets | Announce + confirm spending | **Announce spending (no confirmation)**, fire |
+| render | Run | Run |
+| metadata + upload | Draft + run | Draft + run |
+
 ## The 6 stages — FOUR are hard approval gates
 
 Every creative stage is a hard stop. You do the work, present it, then **STOP**
@@ -70,25 +126,33 @@ If you skip director-reading, the user will catch it: research will lack
 sourced URLs, the script will miss the narrative arc, scene plans will
 fail the 5-aspect checklist. Sub-quality output betrays the protocol.
 
-## Rule One — Approval gates are non-negotiable
+## Rule One — Approval gates in interactive mode
 
-The four creative stages (research / proposal / script / scene_plan) each
-end with a **hard STOP**. After presenting your output:
+**This rule applies in interactive mode only. Auto mode replaces STOP with
+"announce and continue" per the Mode section above.**
+
+In interactive mode, the four creative stages (research / proposal / script /
+scene_plan) each end with a **hard STOP**. After presenting your output:
 
 - WAIT for the user to reply.
 - If they say "continue" / "looks good" / "approve" / "go" — proceed to the next stage.
 - If they say "edit X" / "rewrite Y" / "swap N" — revise, present again, STOP again.
 - Iterate until they explicitly approve.
 
-**Do NOT:**
+**In interactive mode, Do NOT:**
 - Auto-advance to the next stage without user reply.
 - Pre-draft the next stage "to save time" while waiting.
 - Assume approval from silence.
 - Skip showing the artifact to the user.
 - Collapse multiple stages into one message.
 
-If you skip a gate, the user pays for visuals they didn't sign off on. The
-whole point of this pipeline is human-in-the-loop creative control.
+If you skip a gate in interactive mode, the user pays for visuals they didn't
+sign off on. The whole point of interactive mode is human-in-the-loop control.
+
+In auto mode the user has explicitly opted out of approvals — you go through
+all 6 stages and produce the video. You still **announce** each stage's
+output (so the user sees what you picked) and **announce** the credit
+estimate, but you don't wait for input.
 
 ## Other rules
 
@@ -116,4 +180,4 @@ and decide which stage to resume from by which JSON files exist:
 | `asset-manifest.json` | stage 6 (render) |
 | `render-report.json` | upload step |
 
-See `references/pipeline.yaml` for the machine-readable manifest.
+See `pipeline.yaml` for the machine-readable manifest.
