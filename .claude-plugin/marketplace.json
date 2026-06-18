@@ -35,7 +35,9 @@
         { "name": "marketer-ad-variant-factory", "path": "skills/marketer-ad-variant-factory", "invoke": "/picsart:marketer-ad-variant-factory" },
         { "name": "marketer-localize-campaign", "path": "skills/marketer-localize-campaign", "invoke": "/picsart:marketer-localize-campaign" },
 
-        { "name": "prosumer-headshot-studio", "path": "skills/prosumer-headshot-studio", "invoke": "/picsart:prosumer-headshot-studio" }
+        { "name": "prosumer-headshot-studio", "path": "skills/prosumer-headshot-studio", "invoke": "/picsart:prosumer-headshot-studio" },
+
+        { "name": "picsart-api", "path": "skills/picsart-api", "invoke": "/picsart:picsart-api" }
       ]
     }
   ]

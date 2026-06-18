@@ -74,6 +74,13 @@ REVIEWED_DOMAINS: dict[str, dict] = {
         "privacy_url": "https://picsart.com/privacy-policy/",
         "note": "Official Picsart domain. Hosts the gen-ai CLI installer (picsart.com/gen-ai-cli/install.sh) referenced by skills in this repo.",
     },
+    "picsart.io": {
+        "name": "Picsart Developer APIs",
+        "category": "first-party MCP + REST API host",
+        "reviewed": "2026-06-02",
+        "privacy_url": "https://picsart.com/privacy-policy/",
+        "note": "Official Picsart developer API host. Serves the picsart MCP server (mcp.picsart.io) and the image/video/genai/variable-data REST APIs referenced by the picsart-api skill.",
+    },
 }
 
 

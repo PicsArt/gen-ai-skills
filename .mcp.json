@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "picsart": {
+      "type": "http",
+      "url": "https://mcp.picsart.io/v1",
+      "headers": {
+        "X-Picsart-API-Key": "${PICSART_API_KEY}",
+        "Accept": "application/json"
+      }
+    }
+  }
+}
