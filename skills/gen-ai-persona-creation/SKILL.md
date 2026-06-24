@@ -1,14 +1,8 @@
 ---
 name: gen-ai-persona-creation
 description: Create AI influencer or branded character personas.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: creative
-    tags: [picsart, personas, character-design, creative]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "personas", "character-design", "creative"]}}
 ---
 
 # AI Influencer Persona

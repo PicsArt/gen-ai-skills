@@ -1,14 +1,8 @@
 ---
 name: dev-screenshot-beautifier
 description: Polish raw screenshots into LP-ready heroes.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: dev
-    tags: [picsart, dev, developer-tools, automation]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "dev", "tags": ["picsart", "dev", "developer-tools", "automation"]}}
 ---
 
 # Screenshot beautifier

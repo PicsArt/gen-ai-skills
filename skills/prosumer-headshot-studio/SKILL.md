@@ -1,14 +1,8 @@
 ---
 name: prosumer-headshot-studio
 description: Selfie to four polished headshots for any use.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: prosumer
-    tags: [picsart, prosumer, creator, social]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "prosumer", "tags": ["picsart", "prosumer", "creator", "social"]}}
 ---
 
 # Headshot studio
@@ -22,7 +16,7 @@ Input: one casual phone selfie. Output: a set of professional-grade headshots at
 - They say "headshot", "LinkedIn photo", "professional profile pic", "polish this selfie", "make this a pro photo", "editorial portrait"
 - They need the same face across multiple styles (not just one image)
 
-**Don't use for:** group photos, full-body fashion shoots (different model family), or character consistency across video clips (use `motion-studio` with a generated reference).
+**Don't use for:** group photos, full-body fashion shoots (different model family), or character consistency across video clips (use `gen-ai-use` with a generated reference).
 
 ## Prerequisites
 

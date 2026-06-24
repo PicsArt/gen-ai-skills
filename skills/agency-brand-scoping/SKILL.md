@@ -1,14 +1,8 @@
 ---
 name: agency-brand-scoping
 description: Five brand direction variations for pitch discovery.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: agency
-    tags: [picsart, agency, creative, client-work]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "agency", "tags": ["picsart", "agency", "creative", "client-work"]}}
 ---
 
 # Agency brand scoping

@@ -1,14 +1,8 @@
 ---
 name: text-to-visual
 description: Generate matching visuals from text via Picsart gen-ai.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: creative
-    tags: [picsart, text-to-image, blog-visuals, og-images, content]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "text-to-image", "blog-visuals", "og-images", "content"]}}
 ---
 
 # Text to Visual
@@ -25,7 +19,7 @@ A single skill that covers every "given text, produce a matching image" workflow
 | **article-set** | "illustrate this blog post", "hero + inline visuals for an article", "full visual set for a draft" | [`references/modes/article-set.md`](references/modes/article-set.md) |
 | **og** | "OG image for this URL", "open graph preview", "Twitter card image", "dynamic meta image" | [`references/modes/og.md`](references/modes/og.md) |
 
-If the user wants product photos transformed, that's `product-photo-studio`. If they want video, that's `motion-studio`.
+If the user wants product photos transformed, that's `product-photo-studio`. If they want video, that's `gen-ai-use`.
 
 ## Prerequisites
 
@@ -90,5 +84,4 @@ gen-ai inspect outputs/<run>/<image>.png
 ## See also
 
 - [`product-photo-studio`](../product-photo-studio/) — transform existing product photos
-- [`motion-studio`](../motion-studio/) — video from text
 - [`gen-ai-use`](../gen-ai-use/) — foundational gen-ai CLI reference

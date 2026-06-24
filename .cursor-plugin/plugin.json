@@ -17,5 +17,7 @@
     "gen-ai",
     "image-generation",
     "video-generation"
-  ]
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
 }

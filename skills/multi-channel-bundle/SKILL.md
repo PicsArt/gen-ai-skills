@@ -1,14 +1,8 @@
 ---
 name: multi-channel-bundle
 description: Ship a coordinated multi-format asset bundle for any push.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: marketing
-    tags: [picsart, campaigns, launches, social, multi-format]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "marketing", "tags": ["picsart", "campaigns", "launches", "social", "multi-format"]}}
 ---
 
 # Multi-Channel Bundle
@@ -65,7 +59,7 @@ Shared outer loop:
 2. **Manifest** — assemble a JSON manifest covering every required channel and format.
 3. **Estimate** — `gen-ai pricing --manifest manifest.json`. Surface the total.
 4. **Generate** — `gen-ai batch`. Stream progress.
-5. **Compose** — if a reel is in scope, hand the clips to `motion-studio` for assembly.
+5. **Compose** — if a reel is in scope, hand the clips to `gen-ai-use` for assembly.
 6. **Package** — drop into `bundle/<run>/<channel>/`. Optionally zip via `agency-client-handoff`.
 
 ## Pitfalls
@@ -87,5 +81,4 @@ ls -1 bundle/<run>/<channel>/ | wc -l
 
 - [`agency-pitch-mockups`](../agency-pitch-mockups/) — pitch-deck slide variant (different output type)
 - [`marketer-ad-variant-factory`](../marketer-ad-variant-factory/) — ad-only fan-out
-- [`motion-studio`](../motion-studio/) — reel assembly
 - [`product-photo-studio`](../product-photo-studio/) — product-photo transforms feeding into a bundle

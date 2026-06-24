@@ -1,14 +1,8 @@
 ---
 name: dev-app-assets
 description: Generate icons, empty states, onboarding for apps.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: dev
-    tags: [picsart, dev, developer-tools, automation]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "dev", "tags": ["picsart", "dev", "developer-tools", "automation"]}}
 ---
 
 # App assets
@@ -23,7 +17,7 @@ A one-shot pipeline that turns a single app idea into the full store-ready asset
 - Watch + phone + tablet variants that must feel like one product.
 - Regenerating localized App Store screenshots for new markets.
 
-Not for: motion assets (use `motion-studio`), marketing LP heroes (`dev-screenshot-beautifier`), or final pixel-perfect logo work (hand off to a designer).
+Not for: motion assets (use `gen-ai-use`), marketing LP heroes (`dev-screenshot-beautifier`), or final pixel-perfect logo work (hand off to a designer).
 
 ## Prerequisites
 

@@ -1,14 +1,8 @@
 ---
 name: enterprise-brand-governor
 description: Gate every generation through a brand policy file.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: enterprise
-    tags: [picsart, enterprise, governance, scale]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "enterprise", "tags": ["picsart", "enterprise", "governance", "scale"]}}
 ---
 
 # Enterprise Brand Governor

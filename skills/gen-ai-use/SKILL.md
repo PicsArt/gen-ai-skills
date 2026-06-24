@@ -1,15 +1,9 @@
 ---
 name: gen-ai-use
 description: Generate AI images, videos, audio via Picsart gen-ai CLI.
-version: 1.3.0
-author: Picsart
 license: MIT
 allowed-tools: Read, Bash, Grep, Glob
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: creative
-    tags: [picsart, cli, image-generation, video-generation, audio-generation]
+metadata: {"author": "Picsart", "version": "1.3.0", "hermes": {"category": "creative", "tags": ["picsart", "cli", "image-generation", "video-generation", "audio-generation"]}}
 ---
 
 # gen-ai CLI — Usage Guide

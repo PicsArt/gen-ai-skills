@@ -1,14 +1,8 @@
 ---
 name: product-photo-studio
 description: Transform product photos via Picsart gen-ai — six modes.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: creative
-    tags: [picsart, product-photos, ecommerce, catalog, mockups, variants]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "product-photos", "ecommerce", "catalog", "mockups", "variants"]}}
 ---
 
 # Product Photo Studio
@@ -30,7 +24,7 @@ Pick the mode that matches the task. If the user's request maps to any of these,
 | **reshoot** | "batch reshoot", "regenerate catalog", "enterprise catalog re-render with brand rules" | [`references/modes/reshoot.md`](references/modes/reshoot.md) |
 | **mockups** | "product mockup", "POD mockup", "Etsy / Shopify listing mockup", "in-hand render" | [`references/modes/mockups.md`](references/modes/mockups.md) |
 
-If the user's task involves video, characters, or persona generation, this is the wrong skill — see `motion-studio`, `gen-ai-persona-creation`, `gen-ai-use`.
+If the user's task involves video, characters, or persona generation, this is the wrong skill — see `gen-ai-use`, `gen-ai-persona-creation`, `gen-ai-use`.
 
 ## Prerequisites
 
@@ -112,7 +106,6 @@ If anything looks off, re-run with `--debug` and consult the mode reference's "C
 
 ## See also
 
-- [`motion-studio`](../motion-studio/) — video pipeline (out of scope here)
 - [`gen-ai-use`](../gen-ai-use/) — foundational gen-ai CLI reference
 - [`enterprise-brand-governor`](../enterprise-brand-governor/) — policy gating
 - [`enterprise-pinned-registry`](../enterprise-pinned-registry/) — version pinning

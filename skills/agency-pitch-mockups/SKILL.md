@@ -1,14 +1,8 @@
 ---
 name: agency-pitch-mockups
 description: Client-branded pitch mockups: hero, tiles, slides.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: agency
-    tags: [picsart, agency, creative, client-work]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "agency", "tags": ["picsart", "agency", "creative", "client-work"]}}
 ---
 
 # Agency pitch mockups
@@ -85,7 +79,7 @@ If the user hasn't locked a direction yet, stop and route them to `agency-brand-
 | Hero / key visual | `recraftv4` | `flux-2-pro` | Flux lifts it to photoreal polish when a concept sticks |
 | Product / audience tiles | `recraftv4` | `recraftv4_pro` if available, else hold at `recraftv4` | Usually fine at draft quality |
 | Quote slides (readable headlines) | `ideogram-v3` | `ideogram-v3` | Only model that renders type reliably |
-| Animated key visual for video pitch | `kling-v3-standard` | `kling-v3-pro` | See `motion-studio` skill for assembly |
+| Animated key visual for video pitch | `kling-v3-standard` | `kling-v3-pro` | See `gen-ai-use` skill for assembly |
 | Throwaway concept tests (10+ options) | `gemini-3.1-flash-image` / `gemini-3.1-flash-image` | n/a | ~1 credit each |
 
 ## Procedure
@@ -170,6 +164,6 @@ Compare to production-phase cost after win: single campaign set with final photo
 - `workflows/agency-brand-scoping/` — lock direction + brand.md before pitching
 - `workflows/agency-multi-brand-pack/` — retainer production across clients
 - `workflows/agency-client-handoff/` — package final deliverables post-win
-- `motion-studio` — if the pitch needs a sizzle reel
+- `gen-ai-use` — if the pitch needs a sizzle reel
 - `gen-ai-workflows.md` §9 (Pitch mockups) — source recipe
 - `gen-ai-batch.md` — manifest + concurrency tuning

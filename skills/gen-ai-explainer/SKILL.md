@@ -1,6 +1,8 @@
 ---
 name: gen-ai-explainer
 description: Use when the user wants a short animated explainer video. Trigger phrases include "animated explainer", "make an explainer", "explainer video about X", "30-second video about Y", "90-second video explaining Z", "how X works as a video", "explain X in a short video".
+license: MIT
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "video", "explainer", "animation"]}}
 ---
 
 # Animated Explainer Workflow (Light Producer)

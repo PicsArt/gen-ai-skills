@@ -21,7 +21,7 @@
     "shortDescription": "Picsart generative-AI skills",
     "longDescription": "A collection of Picsart generative-AI skills callable from Codex. Each skill is a self-contained directory with a SKILL.md manifest.",
     "developerName": "Picsart",
-    "category": "Design",
+    "category": "Creativity",
     "capabilities": [
       "Read",
       "Write"

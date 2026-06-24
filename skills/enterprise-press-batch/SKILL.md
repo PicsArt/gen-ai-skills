@@ -1,14 +1,8 @@
 ---
 name: enterprise-press-batch
 description: Press photos into wire, web, print, social packs.
-version: 1.0.0
-author: Picsart
 license: MIT
-platforms: [macos, linux]
-metadata:
-  hermes:
-    category: enterprise
-    tags: [picsart, enterprise, governance, scale]
+metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "enterprise", "tags": ["picsart", "enterprise", "governance", "scale"]}}
 ---
 
 # Enterprise Press Batch

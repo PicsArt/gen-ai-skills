@@ -13,7 +13,7 @@
       "skills": [
         { "name": "gen-ai-use", "path": "skills/gen-ai-use", "invoke": "/picsart:gen-ai-use" },
         { "name": "gen-ai-persona-creation", "path": "skills/gen-ai-persona-creation", "invoke": "/picsart:gen-ai-persona-creation" },
-        { "name": "motion-studio", "path": "skills/motion-studio", "invoke": "/picsart:motion-studio" },
+        { "name": "gen-ai-explainer", "path": "skills/gen-ai-explainer", "invoke": "/picsart:gen-ai-explainer" },
 
         { "name": "product-photo-studio", "path": "skills/product-photo-studio", "invoke": "/picsart:product-photo-studio" },
         { "name": "text-to-visual", "path": "skills/text-to-visual", "invoke": "/picsart:text-to-visual" },
