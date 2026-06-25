@@ -63,6 +63,38 @@ hermes skills install gen-ai-use
 
 The tap layout uses `skills/` as the root path (Hermes' default), so adding the tap discovers every skill automatically. Skills install through Hermes' security scanner; trust level defaults to `community`.
 
+## Option 6 — OpenClaw
+
+For [OpenClaw](https://openclaw.ai/). Two ways to consume this repo.
+
+Install the skills directly from GitHub:
+
+```bash
+# Active workspace only
+openclaw skills install git:PicsArt/gen-ai-skills@main
+
+# All agents (writes to ~/.openclaw/skills)
+openclaw skills install git:PicsArt/gen-ai-skills@main --global
+```
+
+Or install the whole thing as a bundle (skills + the Picsart MCP server), reading
+this repo's Claude-style `marketplace.json`:
+
+```bash
+openclaw plugins marketplace list https://github.com/PicsArt/gen-ai-skills   # inspect first
+openclaw plugins install picsart --marketplace https://github.com/PicsArt/gen-ai-skills
+```
+
+There is no `openclaw plugins marketplace add` step — point `install` directly at
+the source. The MCP server's tools surface as `picsart__<tool>` under OpenClaw's
+built-in `bundle-mcp` plugin.
+
+Once published to ClawHub (see below), skills install by slug instead:
+
+```bash
+openclaw skills install @PicsArt/<slug>
+```
+
 ## Updating
 
 | Method | Update command |
@@ -72,3 +104,4 @@ The tap layout uses `skills/` as the root path (Hermes' default), so adding the 
 | Claude Code marketplace | `/plugin update picsart@picsart` |
 | Setup script | `cd gen-ai-skills && git pull && ./setup` |
 | Hermes Agent | `hermes skills update gen-ai-use` |
+| OpenClaw | `openclaw skills update --all` (or `openclaw plugins update picsart`) |
