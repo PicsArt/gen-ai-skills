@@ -18,14 +18,28 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Picsart Gen-AI",
-    "shortDescription": "Picsart generative-AI skills",
-    "longDescription": "A collection of Picsart generative-AI skills callable from Codex. Each skill is a self-contained directory with a SKILL.md manifest.",
+    "shortDescription": "Generate and edit image, video, and audio.",
+    "longDescription": "Generate high-quality video, images, and audio from 140+ AI models - all with one Picsart account.",
     "developerName": "Picsart",
     "category": "Creativity",
     "capabilities": [
-      "Read",
+      "Interactive",
       "Write"
     ],
-    "websiteURL": "https://picsart.com"
+    "websiteURL": "https://picsart.com/",
+    "privacyPolicyURL": "https://picsart.com/privacy-policy/",
+    "termsOfServiceURL": "https://picsart.com/terms-of-use/",
+    "defaultPrompt": [
+      "Generate three photoreal hero images for a product launch",
+      "Turn this product photo into a 6-second vertical video",
+      "Remove the background from this image and place it on marble"
+    ],
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png",
+    "screenshots": [
+      "./assets/screenshot1.png",
+      "./assets/screenshot2.png",
+      "./assets/screenshot3.png"
+    ]
   }
 }
