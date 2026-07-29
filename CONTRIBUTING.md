@@ -1,6 +1,31 @@
 # Contributing
 
-Thanks for your interest in contributing to `gen-ai-skills`.
+Thanks for your interest in contributing to `gen-ai-skills`. Contributions that add new skills, improve existing skill documentation, fix compliance issues, or strengthen tooling are all welcome. Please read this guide before opening a pull request.
+
+## Repository structure
+
+| Path | Description |
+|---|---|
+| `skills/` | One directory per skill, named in kebab-case |
+| `scripts/` | Compliance checker, normalizer, and other dev utilities |
+| `.claude-plugin/` | Plugin manifest (`marketplace.json`) consumed by the Claude agent harness |
+| `.github/workflows/` | CI workflows; `skill-compliance.yml` blocks merge on any compliance failure |
+| `VERSION` | Single source of truth for the current release version |
+
+## Local setup
+
+**Prerequisites:** Python 3.9+. No additional package installation is required for the compliance checker.
+
+```bash
+# Clone your fork
+git clone https://github.com/<your-username>/gen-ai-skills.git
+cd gen-ai-skills
+
+# Run the setup script (installs the plugin into your local Claude agent)
+./setup
+```
+
+After `./setup` completes, open your Claude agent and confirm the skill registry loads without errors before proceeding.
 
 ## Adding a skill
 
@@ -84,13 +109,45 @@ The CI workflow (`.github/workflows/skill-compliance.yml`) runs the same check o
 - Don't shell out to anything that requires interactive input.
 - Reference Hermes tool names in prose (`terminal`, `web_extract`, `read_file`, `search_files`, ...) instead of shell utilities (`grep`, `cat`, `curl`, `sed`).
 
+## Reporting bugs and asking questions
+
+Before opening an issue, check the [existing issue tracker](../../issues) to avoid duplicates.
+
+**To report a bug:**
+- Use the `bug` label.
+- Include the skill name and version.
+- State what you expected to happen and what actually happened.
+- Provide a minimal, self-contained reproduction: the exact command you ran, the agent output, and any relevant file contents.
+
+**To ask a question:**
+- Use the `question` label.
+- Be specific about which skill or part of the system you are asking about.
+
+Keep issues focused on a single topic. One issue, one problem.
+
 ## Pull request flow
 
-1. Fork the repository and create a feature branch from `main` (e.g. `feat/add-upscale-skill`).
-2. Run `./setup` locally and verify the new skill loads in your agent.
+1. Fork the repository and create a feature branch from `main`. Use the prefixes below:
+   - `feat/` for new skills (e.g. `feat/add-upscale-skill`)
+   - `fix/` for bug fixes or corrections to existing skills (e.g. `fix/upscale-broken-link`)
+   - `chore/` for maintenance tasks (e.g. `chore/update-marketplace-json`)
+
+2. Run `./setup` locally and verify the new or changed skill loads in your agent.
+
 3. Run `python3 scripts/check-skill-compliance.py` and ensure all checks pass.
-4. Open a pull request describing the skill and its motivation.
-5. Be kind in code review.
+
+4. Write clear, scoped commits. One logical change per commit. Commit messages should complete the sentence "This commit will...".
+
+5. Open a pull request with a title that names the skill and the action (e.g. `feat: add picsart-upscale skill`). In the PR description include:
+   - What the skill does and why it is useful
+   - Any limitations or known gaps
+   - How you tested it locally
+
+6. Every pull request requires at least **2 approvals** before merge. At least one approval must come from a repository code owner.
+
+7. Merging is handled by the Picsart maintainer team to protect release stability. Do not merge your own PR.
+
+8. Be kind and constructive in code review. Assume good intent.
 
 ## License
 
