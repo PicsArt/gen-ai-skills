@@ -108,6 +108,8 @@ The CI workflow (`.github/workflows/skill-compliance.yml`) runs the same check o
 - Keep `SKILL.md` self-contained. Long references go in `references/` and link from `SKILL.md`.
 - Don't shell out to anything that requires interactive input.
 - Reference Hermes tool names in prose (`terminal`, `web_extract`, `read_file`, `search_files`, ...) instead of shell utilities (`grep`, `cat`, `curl`, `sed`).
+- If your skill requires a third-party CLI tool, API, or Python package, list it in the `## Prerequisites` section of `SKILL.md` with the minimum required version and where to obtain it. Do not assume the tool is installed.
+- Do not introduce Python package dependencies in `scripts/` without updating the top-level `README.md` and noting the package name, version, and license.
 
 ## Reporting bugs and asking questions
 
@@ -149,6 +151,17 @@ Keep issues focused on a single topic. One issue, one problem.
 
 8. Be kind and constructive in code review. Assume good intent.
 
+## Release cycle
+
+There is no fixed release cadence. Releases are published on demand after meaningful sets of changes accumulate.
+
+Each release:
+- Follows [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`).
+- Is tagged in GitHub Releases, newest first.
+- Has release notes listing all skills added or changed since the prior tag.
+
+Bump the `VERSION` file in your PR only when your change is release-worthy (a new skill or a breaking change to an existing one). Typo fixes and doc-only updates do not require a version bump.
+
 ## License
 
-By contributing, you agree that your contributions will be licensed under the [MIT License](./LICENSE).   
+`gen-ai-skills` is provided under the [MIT License](./LICENSE). By using, distributing, or contributing to this project, you agree to the terms and conditions of that license.   
