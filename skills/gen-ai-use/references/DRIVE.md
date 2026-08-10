@@ -21,19 +21,52 @@ gen-ai upload ./renders/                                 # All media in a dir
 gen-ai upload ./renders/ -r --type image                 # Recursive, images only
 gen-ai upload ./renders/ --dry-run                       # Preview, don't upload
 gen-ai upload *.jpg --max-files 100                      # Override 200-file limit
+gen-ai upload photo.jpg --json                           # Machine-readable result, with a URL
 ```
-
-`upload` files correctly to Drive but prints no URL on any output stream, in any mode —
-if the goal is a URL, use `upload-to-drive` below instead.
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--folder, -f` | AI Playground | Drive folder (interactive mode shows all root folders) |
+| `--folder, -f` | Gen AI | Drive folder (interactive mode shows all root folders) |
 | `--type, -t` | all | Filter: image, video, audio |
 | `--recursive, -r` | false | Recurse into subdirectories |
 | `--dry-run` | false | List files without uploading |
 | `--max-files` | 200 | Safety limit on number of files |
 | `--concurrency, -c` | 3 | Parallel uploads |
+
+### Getting a URL back (`--json`)
+
+`--json` puts a machine-readable payload on **stdout**; progress goes to stderr, so stdout
+is safe to parse directly. Capture it to a variable before piping to `jq` — piping the raw
+command straight into `jq` reports `jq`'s exit code instead of `gen-ai`'s, and a lookup
+miss silently prints the string `null` instead of failing loudly:
+
+```bash
+OUT=$(gen-ai upload photo.jpg --json) || { echo "upload failed"; exit 1; }
+echo "$OUT" | jq -r '.files[] | select(.path == "/abs/path/photo.jpg") | .url'
+```
+
+```json
+{
+  "ok": true,
+  "files": [
+    { "path": "/abs/path/photo.jpg", "url": "https://cdn.../photo.jpg", "driveUid": "abc123", "error": null }
+  ]
+}
+```
+
+- `files` has one entry per file actually attempted **plus** one per input that was skipped
+  (bad path, wrong extension, empty folder) — skipped entries are listed first, and a folder
+  argument expands into one entry per file it contained. Match your file by its `path` field;
+  never assume position, even for a single-file call.
+- `url` is set the moment that file's own upload succeeds, and it stays set even if the later
+  Drive save for that file fails — check `url` for "do I have a link to use," not `error` or `ok`.
+- `driveUid` is the durable Drive copy's id; `null` if that save failed or Drive was unavailable.
+- `error` is `null` only if that file's entire pipeline (upload *and* Drive save) succeeded.
+- `ok` is `true` only if every file's entire pipeline succeeded; the process exit code reflects
+  the same thing.
+
+Turning a user's local file into a URL for an MCP tool (rather than the CLI's own use) is its
+own procedure — see [`gen-ai-local-files`](../../gen-ai-local-files/SKILL.md).
 
 ## Upload a single file and get its URL (`upload-to-drive`)
 
@@ -47,9 +80,9 @@ gen-ai upload-to-drive ./explainer.mp4 --name "How DNS Works"
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--name` | filename | Drive display name |
-| `--folder` | *(accepted, ignored — always saves to root)* | Drive folder name |
+| `--folder` | *(accepted, ignored — always saves to the CLI's "Gen AI" folder)* | Drive folder name |
 
-Output — the only thing this command writes to stdout, so `| jq -r .drive_url` is safe:
+Output — the only thing this command writes to stdout:
 
 ```json
 { "status": "ok", "drive_url": "https://cdn…", "drive_uid": "…", "file_name": "How DNS Works.mp4", "elapsed_ms": 1234 }
@@ -57,14 +90,19 @@ Output — the only thing this command writes to stdout, so `| jq -r .drive_url`
 
 Caveats:
 
-- **Video-shaped.** It hardcodes `resourceType: VIDEO` and appends `.mp4` to the display name
-  regardless of the source file. Drive classifies the entry as video by name pattern before it
-  even checks `resourceType`, so it won't show up under `gen-ai list --type image`. The
-  `drive_url` itself is still fine to hand to a tool — only the Drive filing is mistyped. For a
-  correctly-typed Drive copy of an image or audio file, use `gen-ai upload` (no URL, correct
-  filing) or the MCP-native route in [`gen-ai-local-files`](../../gen-ai-local-files/SKILL.md).
+- **Video-shaped**, and unaffected by `upload`'s URL support above. It hardcodes
+  `resourceType: VIDEO` and appends `.mp4` to the display name regardless of the source file.
+  Drive classifies the entry as video by name pattern before it even checks `resourceType`, so it
+  won't show up under `gen-ai list --type image`. The `drive_url` itself is still fine to hand to
+  a tool — only the Drive filing is mistyped. For a correctly-typed Drive copy of a non-video
+  file, use `gen-ai upload` instead.
+- `--folder` is accepted but ignored — the file always lands in the CLI's fixed "Gen AI" folder,
+  never the one you asked for.
 - `drive_url` is the same temporary `editing-temp` CDN URL every upload path returns — not
   durable; point the user at the Drive entry (or `gen-ai list`) for anything they need to keep.
+- If the Drive-save step itself fails, this command throws before writing anything to stdout —
+  unlike `upload --json`, where a Drive-save failure still returns `url` with `driveUid: null`.
+  Re-run rather than assuming nothing happened; the file did reach the CDN.
 
 ## Download
 
