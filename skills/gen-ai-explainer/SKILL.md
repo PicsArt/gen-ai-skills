@@ -80,7 +80,9 @@ and wait for the user. Do NOT chain stages without explicit user approval.
 6. **render** — CLI (~1-3 min). Read `references/render-director.md`. Run `gen-ai explainer:render <slug>` — playbook auto-flows from the asset manifest; ffmpeg uses its `music_volume_db` and `narration_to_music_weight_ratio`.
 
 After stage 6: draft title / description / chapters / hashtags in chat. Then run
-`gen-ai upload-to-drive <slug>/explainer.mp4 --name "<title>"`. Share the URL.
+`gen-ai upload-to-drive <slug>/explainer.mp4 --name "<title>"`. Share the returned `drive_url`,
+noting it's a temporary CDN link — point the user at the Drive entry (`drive_uid`) if they need
+a copy that outlives it.
 
 ## Rule Zero — Read the director skill before EVERY stage
 

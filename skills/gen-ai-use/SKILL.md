@@ -3,7 +3,7 @@ name: gen-ai-use
 description: Generate AI images, videos, audio via Picsart gen-ai CLI.
 license: MIT
 allowed-tools: Read, Bash, Grep, Glob
-metadata: {"author": "Picsart", "version": "1.3.0", "hermes": {"category": "creative", "tags": ["picsart", "cli", "image-generation", "video-generation", "audio-generation"]}}
+metadata: {"author": "Picsart", "version": "1.4.0", "hermes": {"category": "creative", "tags": ["picsart", "cli", "image-generation", "video-generation", "audio-generation"]}}
 ---
 
 # gen-ai CLI — Usage Guide
@@ -28,7 +28,7 @@ _Use the agent's `terminal` tool to invoke `gen-ai` commands as described in the
 - **Generation:** `generate`, `remove-bg`, `change-bg`, `enhance`, `vectorize`, `redo`, `extend`
 - **Models / pricing:** `models`, `models info`, `models compare`, `pricing`, `credits`, `validate`
 - **Batch:** `batch run`, `batch status`, `batch resume`
-- **Drive:** `upload`, `download`, `list`
+- **Drive:** `upload`, `upload-to-drive`, `download`, `list`
 - **Config:** `config get | set | list | keys | unset`
 - **History:** `history`, `history last`, `history files`, `history clear`
 - **Utilities:** `completion`, `update`
@@ -55,6 +55,7 @@ Run `gen-ai whoami` to confirm authentication, then re-run the failed command wi
 - **Flags & full command list** → [references/FLAGS.md](references/FLAGS.md)
 - **Batch generation** (manifests, concurrency, stress tests) → [references/BATCH.md](references/BATCH.md)
 - **Picsart Drive** (upload, download, list) → [references/DRIVE.md](references/DRIVE.md)
+- **A local file that an MCP tool needs as a URL** → [`gen-ai-local-files`](../gen-ai-local-files/SKILL.md)
 - **Advanced** (validate, extend VEO, interactive mode, piping) → [references/ADVANCED.md](references/ADVANCED.md)
 - **Troubleshooting** (dry-run, debug, common errors) → [references/TROUBLESHOOTING.md](references/TROUBLESHOOTING.md)
 - **Example workflows** (image → video, cross-model comparison) → [references/EXAMPLES.md](references/EXAMPLES.md)
