@@ -40,7 +40,7 @@ Each skill lives in its own directory under `skills/`. The directory name is the
 
 ## Skills
 
-This bundle ships **20 skills**. Several skills are mode-routers — one entry point with `references/modes/` for variants — to keep the catalog small and trigger-friendly.
+This bundle ships **21 skills**. Several skills are mode-routers — one entry point with `references/modes/` for variants — to keep the catalog small and trigger-friendly.
 
 ### Core CLI
 
@@ -48,7 +48,8 @@ This bundle ships **20 skills**. Several skills are mode-routers — one entry p
 |---|---|
 | [`gen-ai-use`](./skills/gen-ai-use) | Generate AI images, videos, audio via the Picsart `gen-ai` CLI. |
 | [`gen-ai-persona-creation`](./skills/gen-ai-persona-creation) | Create AI influencers, branded characters, or pet personas from a brief or reference. |
-| [`motion-studio`](./skills/motion-studio) | End-to-end AI video production: references, clips, scene assembly, audio. |
+| [`gen-ai-explainer`](./skills/gen-ai-explainer) | Produce a short animated explainer video: research → script → assets → render. |
+| [`gen-ai-local-files`](./skills/gen-ai-local-files) | Turn a user's local file into a hosted URL that Picsart MCP tools can consume. |
 
 ### API
 

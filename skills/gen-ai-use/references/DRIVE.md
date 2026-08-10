@@ -5,6 +5,7 @@ The `gen-ai` CLI can read from and write to Picsart Drive. Drive commands browse
 ## Contents
 
 - Upload
+- Upload a single file and get its URL (`upload-to-drive`)
 - Download
 - List (folders and files as JSON)
 - Common flags reference
@@ -22,6 +23,9 @@ gen-ai upload ./renders/ --dry-run                       # Preview, don't upload
 gen-ai upload *.jpg --max-files 100                      # Override 200-file limit
 ```
 
+`upload` files correctly to Drive but prints no URL on any output stream, in any mode —
+if the goal is a URL, use `upload-to-drive` below instead.
+
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--folder, -f` | AI Playground | Drive folder (interactive mode shows all root folders) |
@@ -30,6 +34,37 @@ gen-ai upload *.jpg --max-files 100                      # Override 200-file lim
 | `--dry-run` | false | List files without uploading |
 | `--max-files` | 200 | Safety limit on number of files |
 | `--concurrency, -c` | 3 | Parallel uploads |
+
+## Upload a single file and get its URL (`upload-to-drive`)
+
+A separate, narrower command from `upload`: one file, one named Drive entry, always JSON on stdout.
+Built for pipeline hand-offs (e.g. publishing a rendered video), not bulk transfer.
+
+```bash
+gen-ai upload-to-drive ./explainer.mp4 --name "How DNS Works"
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--name` | filename | Drive display name |
+| `--folder` | *(accepted, ignored — always saves to root)* | Drive folder name |
+
+Output — the only thing this command writes to stdout, so `| jq -r .drive_url` is safe:
+
+```json
+{ "status": "ok", "drive_url": "https://cdn…", "drive_uid": "…", "file_name": "How DNS Works.mp4", "elapsed_ms": 1234 }
+```
+
+Caveats:
+
+- **Video-shaped.** It hardcodes `resourceType: VIDEO` and appends `.mp4` to the display name
+  regardless of the source file. Drive classifies the entry as video by name pattern before it
+  even checks `resourceType`, so it won't show up under `gen-ai list --type image`. The
+  `drive_url` itself is still fine to hand to a tool — only the Drive filing is mistyped. For a
+  correctly-typed Drive copy of an image or audio file, use `gen-ai upload` (no URL, correct
+  filing) or the MCP-native route in [`gen-ai-local-files`](../../gen-ai-local-files/SKILL.md).
+- `drive_url` is the same temporary `editing-temp` CDN URL every upload path returns — not
+  durable; point the user at the Drive entry (or `gen-ai list`) for anything they need to keep.
 
 ## Download
 

@@ -36,4 +36,9 @@ then run:
 gen-ai upload-to-drive <slug>/explainer.mp4 --name "<the title>"
 ```
 
-Share the returned `drive_url` with the user.
+It prints `{ "status": "ok", "drive_url": …, "drive_uid": …, "file_name": …, "elapsed_ms": … }`.
+
+Share the returned `drive_url` with the user — and say plainly that it's a **temporary** CDN link
+(`type=editing-temp`). If they need a copy that outlives it, point them at the Drive entry
+(`drive_uid`), reachable from Picsart Drive. See
+[`gen-ai-use`'s Drive reference](../../gen-ai-use/references/DRIVE.md) for the full command surface.
