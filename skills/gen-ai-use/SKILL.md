@@ -16,7 +16,7 @@ _See the description above._
 
 ## Prerequisites
 
-Picsart `gen-ai` CLI installed and authenticated (`gen-ai login`).
+Picsart `gen-ai` CLI installed and authenticated (`gen-ai login`). Note that `gen-ai whoami` only reads cached credentials from disk and reports "✓ Authenticated" if a token file exists with the right shape — it doesn't check expiry and makes no network call, so it succeeding is not proof that a subsequent network-dependent command will succeed.
 
 ## How to Run
 
@@ -48,7 +48,7 @@ _See sections below for the detailed walkthrough._
 
 ## Verification
 
-Run `gen-ai whoami` to confirm authentication, then re-run the failed command with `--debug`.
+Run `gen-ai whoami` to confirm authentication, then re-run the failed command with `--debug`. If the command still fails, check the error type before assuming it's a login problem: `AuthError` ("Not authenticated...") means credentials are genuinely bad and `gen-ai login` is the fix; `NetworkError` (message names a transport failure like "fetch failed", or a proxy/connectivity hint) means the CLI's process can't reach the network — re-running `login` won't help, restoring/escalating network access will.
 
 ## Where to look
 
