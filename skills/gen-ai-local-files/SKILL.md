@@ -16,8 +16,6 @@ metadata:
 
 Picsart's MCP tools take **URLs**, not local paths. This skill is the bridge: it turns a file the user named on their own machine into a hosted URL you can hand to any Picsart MCP tool. It is not a Drive browser and not a directory scanner — it moves exactly the file the user pointed at.
 
-**Non-goal, for context:** the Picsart MCP surface (`mp_*` / `picsart_media_*` tools) still cannot accept local files directly. This whole CLI-upload detour — and everything below that can go wrong in it — exists only to bridge that gap.
-
 ## When to Use
 
 _See the description above._
