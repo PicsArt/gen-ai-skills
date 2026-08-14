@@ -1,7 +1,7 @@
 ---
 name: picsart-add-media
 description: Turn a local file into a URL via the Picsart upload widget.
-version: 2.0.0
+version: 1.0.0
 author: Picsart
 license: MIT
 platforms: [macos, linux, windows]

@@ -31,9 +31,9 @@ jobs:
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             BASE=${{ github.event.pull_request.base.sha }}
             HEAD=${{ github.event.pull_request.head.sha }}
-            CHANGED=$(git diff --name-only "$BASE" "$HEAD" -- 'skills/**/SKILL.md' || true)
+            CHANGED=$(git diff --name-only --diff-filter=d "$BASE" "$HEAD" -- 'skills/**/SKILL.md' || true)
           else
-            CHANGED=$(git diff --name-only HEAD~1 HEAD -- 'skills/**/SKILL.md' 2>/dev/null || true)
+            CHANGED=$(git diff --name-only --diff-filter=d HEAD~1 HEAD -- 'skills/**/SKILL.md' 2>/dev/null || true)
           fi
 
           if [ -z "$CHANGED" ]; then
