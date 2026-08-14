@@ -1,8 +1,14 @@
 ---
 name: dev-avatar-service
 description: Deterministic default-avatar generator per user.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "dev", "tags": ["picsart", "dev", "developer-tools", "automation"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: dev
+    tags: [picsart, dev, developer-tools, automation]
 ---
 
 # Avatar service

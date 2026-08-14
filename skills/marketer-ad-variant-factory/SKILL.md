@@ -1,8 +1,14 @@
 ---
 name: marketer-ad-variant-factory
 description: Fan out 50+ ad variants from one hero image.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "marketing", "tags": ["picsart", "marketing", "campaigns", "creative"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: marketing
+    tags: [picsart, marketing, campaigns, creative]
 ---
 
 # Ad variant factory

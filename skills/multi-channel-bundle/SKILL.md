@@ -1,8 +1,14 @@
 ---
 name: multi-channel-bundle
 description: Ship a coordinated multi-format asset bundle for any push.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "marketing", "tags": ["picsart", "campaigns", "launches", "social", "multi-format"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: creative
+    tags: [picsart, creative]
 ---
 
 # Multi-Channel Bundle
