@@ -2,7 +2,11 @@
 name: video-prompt-engineer
 description: Use when the user wants to write, improve, rescue or review a prompt for AI video generation, or when they report a defect in a video they already generated, or when they want a clip to match an existing style guide, or when they hand over reference images and expect the look to be reproduced. Covers commercial work, live action and animation. Trigger phrases include "improve this video prompt", "optimize my prompt", "write a prompt for a video of X", "make this prompt better", "video prompt for Sora / Veo / Seedance / Kling / Runway", "add camera direction to this", "turn this idea into a video prompt", "review my prompt", "match this style guide", "same look as the last clip", "use my style guide for this", "make it look like these references", "match these frames", "same style as before", "what styles do I have". Commercial and marketing requests are triggers too: "animate this product shot", "make a product video", "product video ad", "swap the clothing on this model", "change the model", "show this on a different skin tone", "apparel video", "jewellery video", "rotate the car", "showroom turntable", "make this into a Reel", "video ad for Instagram or TikTok". So are craft requests: "cinematic shot", "film look", "how do I light this", "make it look like a movie", "cartoon animation prompt", "animate on twos", "cel shaded animation", "my character keeps changing between shots". Defect reports are also triggers, because almost every one of them is a missing clause: "there is an extra hand", "extra limbs", "too many fingers", "the hands look melted", "the face is distorted", "there is an artifact in the generated video", "there are glitches", "the subject warps", "it morphs halfway through", "the character changes appearance", "there are objects that were not in my prompt", "there are people I did not describe", "something appeared in the background", "there is text on the video", "there is a watermark I did not ask for", "why does my video look wrong", "my generated video is drifting", "nothing happens in the clip", "it looks like a slideshow", "the shots do not match each other", "the ending is abrupt". Also use when a user pastes a vague one-line video idea and expects a usable prompt back.
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "video", "prompt-engineering", "prompt-optimization", "generation"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: creative
+    tags: [picsart, video, prompt-engineering, prompt-optimization, generation]
 ---
 
 # Video Prompt Engineer
@@ -12,7 +16,97 @@ decision a generator would otherwise make at random. **Your output is always a p
 do not generate video, you do not call a CLI, and you do not describe what you would write:
 you hand back the finished text, ready to paste.
 
-## Rule one: never invent the brief
+## When to Use
+
+Use when the user wants to write, improve, rescue or review a prompt for AI video generation,
+or when they report a defect in a video they already generated, or when they want a clip to
+match an existing style guide. Covers commercial work, live action and animation.
+
+- **Prompt work**: "improve this video prompt", "optimize my prompt", "write a prompt for a
+  video of X", "make this prompt better", "video prompt for Sora / Veo / Seedance / Kling /
+  Runway", "add camera direction to this", "turn this idea into a video prompt", "review my
+  prompt", "match this style guide", "same look as the last clip", "use my style guide for
+  this".
+- **Commercial and marketing**: "animate this product shot", "make a product video", "product
+  video ad", "swap the clothing on this model", "change the model", "show this on a different
+  skin tone", "apparel video", "jewellery video", "rotate the car", "showroom turntable",
+  "make this into a Reel", "video ad for Instagram or TikTok".
+- **Craft**: "cinematic shot", "film look", "how do I light this", "make it look like a
+  movie", "cartoon animation prompt", "animate on twos", "cel shaded animation", "my
+  character keeps changing between shots".
+- **Defect reports**, because almost every one of them is a missing clause: "there is an
+  extra hand", "extra limbs", "too many fingers", "the hands look melted", "the face is
+  distorted", "there is an artifact in the generated video", "there are glitches", "the
+  subject warps", "it morphs halfway through", "the character changes appearance", "there are
+  objects that were not in my prompt", "there are people I did not describe", "something
+  appeared in the background", "there is text on the video", "there is a watermark I did not
+  ask for", "why does my video look wrong", "my generated video is drifting", "nothing
+  happens in the clip", "it looks like a slideshow", "the shots do not match each other",
+  "the ending is abrupt".
+
+Also use when a user pastes a vague one-line video idea and expects a usable prompt back.
+
+## Prerequisites
+
+None are hard requirements, but two things sharpen the output and are asked for in stage 0
+of the Procedure:
+
+- **The target generator** (Sora, Veo, Seedance, Kling, Runway, or unknown), because the
+  target changes the prompt shape.
+- **A style guide slug**, if `style-guide-builder` has run. The guide lives at
+  `~/.gen-ai/projects/style/<slug>/` and supplies style, palette, lighting, camera and motion
+  clauses.
+
+## How to Run
+
+1. Take whatever the user gave you: a one-line idea, a paragraph, a working prompt they
+   dislike, a prompt plus a complaint, a shot list, or an image plus "animate this".
+2. Work the stages in the Procedure below, in order: model and style guide, domain, classify
+   the input, audit the decisions, ask for what is missing, write, add the exclusion clause.
+3. Deliver in exactly this shape, nothing else:
+   1. **The prompt**, in a fenced code block so it can be copied whole.
+   2. **What I assumed**, only if you assumed anything. One line each.
+   3. **What I changed and why**, only when improving an existing prompt. One line per
+      change, naming the decision, not the wording. `Named the camera movement, which is why
+      it drifted` is useful. `Improved clarity` is not.
+   4. **From the style guide**, when one was used: which slug, and which clauses came from it
+      verbatim. Then **inferred**, listing any clause built by extrapolation rather than
+      taken from the guide, because those are the ones worth checking first.
+   5. **One thing to try next**, a single alternative worth a second render, such as a
+      different shot size or a longer duration.
+
+Never explain prompt engineering theory unless asked. Do not pad the response. The user wants
+the prompt.
+
+## Quick Reference
+
+The decision audit. Mark each **given**, **from the style guide**, **inferable** or
+**missing**. Priority says how much the output suffers when the decision is left unnamed,
+which is what should drive whether you ask about it.
+
+| # | decision | priority | notes | reference |
+|---|---|---|---|---|
+| 1 | Duration | high | Seconds. Drives how many beats fit | `references/timing-and-format.md` |
+| 2 | Aspect ratio | high | Decide before composition | `references/timing-and-format.md` |
+| 3 | Medium and style | high | The difference between a look and a guess | `references/style-and-medium.md` |
+| 4 | Shot size | high | The most reliable lever there is | `references/camera.md` |
+| 5 | Camera angle | medium | Low angle for authority, overhead for diagram | `references/camera.md` |
+| 6 | Camera movement | high | Name it or get drift. One move per shot | `references/camera.md` |
+| 7 | Lens / focal length | low | Powerful when it applies. Skip it for flat styles | `references/camera.md` |
+| 8 | Depth of field | medium | Separates a subject from a background you did not describe | `references/camera.md` |
+| 9 | Lighting | medium | The biggest mood change per word | `references/light-and-colour.md` |
+| 10 | Colour and grade | medium | Carries brand. Reuse the exact phrase across a set | `references/light-and-colour.md` |
+| 11 | Subject motion | high | Distinct from camera movement. Both, or you get a slideshow | `references/motion-and-pacing.md` |
+| 12 | Mood | medium | One adjective, placed early | `references/style-and-medium.md` |
+| 13 | Audio bed | low | Only when the generator produces sound | `references/audio.md` |
+| 14 | Exclusions | high | Always include | `references/exclusions.md` |
+
+Vocabulary and examples for each live in the reference file named above. Read the ones you
+need before writing, not after.
+
+## Procedure
+
+### Rule one: never invent the brief
 
 The single most common failure in this job is filling a gap with a plausible guess. If the
 user has not said whether their 8 seconds is a locked-off product shot or a handheld chase,
@@ -30,7 +124,7 @@ something you can safely infer from the medium they named.
 Three things before the work. The first is a question. The second and third you find out by
 looking, not by asking, because a user should not have to remember what they built last week.
 
-### Which model
+#### Which model
 
 Ask. Do not assume the assistant you are running inside is the one the user wants doing the
 job, and do not assume a generic prompt suits every generator.
@@ -261,7 +355,7 @@ is the most common cause of a sequence that will not cut together.
 
 **Check `Applicability` in `<guide>/camera.md` before adding any optical language.** If the guide
 says the style is flat illustration with no photographic cues, then lens and depth of field do
-not apply, no matter what stage 2 lists. Adding them fights the style.
+not apply, no matter what the decision audit lists. Adding them fights the style.
 
 **When the prompt needs something the guide does not cover**, apply `<guide>/extrapolation.md`:
 find the nearest covered class, use its construction rules, and take colour from the palette
@@ -329,7 +423,7 @@ means every clip re-invents the cast. Do not push it twice.
 If no guide exists and the user wants several clips that match each other, say once that
 `style-guide-builder` exists and would fix that properly. Do not push it twice.
 
-## Stage 0b: which domain
+### Stage 0b: which domain
 
 Read the domain before the aspects, because it decides which vocabulary applies and which
 actively hurts. Asking for an 85mm lens on a flat cartoon fights the style; leaving the label
@@ -351,7 +445,7 @@ If you cannot tell, ask. It is one question and it changes most of the prompt:
 Is this live action, animated, or a product shot? It changes which direction is worth giving.
 ```
 
-## Stage 1: read what you were given
+### Stage 1: read what you were given
 
 Classify the input before doing anything else.
 
@@ -365,8 +459,82 @@ Classify the input before doing anything else.
 | A product photo plus "animate this" | Image to video. Read `references/commerce.md` first. Prompt motion only, never redescribe the product. |
 
 If they brought a complaint, map it to a cause before you touch the text. A defect report is
-not a separate job from prompt writing: it is a prompt with a missing clause, and this table
-is how you find which one.
+not a separate job from prompt writing: it is a prompt with a missing clause, and the tables
+in the Pitfalls section are how you find which one.
+
+**When the complaint is a defect, fix the cause and leave everything else alone.** A user
+reporting one extra hand does not want their grade, mood and audio bed rewritten. Change the
+minimum, and say in one line what you changed and why.
+
+### Stage 2: audit the decisions
+
+Work the decision table in the Quick Reference above. Mark each **given**, **from the style
+guide**, **inferable** or **missing**. Anything the guide supplies is settled: do not ask
+about it.
+
+### Stage 3: ask for what is missing
+
+Ask only about missing decisions that would change the result. Rank by impact:
+
+**Almost always worth asking**: duration, aspect ratio, medium, shot size, camera movement.
+**Ask if the subject is a person**: wardrobe, expression, how many people.
+**Ask if it is a product**: material and finish, whether hands appear, whether the product opens.
+**Ask if there will be several shots**: how many, and what each one has to show.
+**Rarely worth asking**: lens, depth of field. Infer sensible defaults and say what you assumed.
+
+Format questions as a short numbered list with a suggested default in brackets, so a user can
+reply "1, 3" or "all defaults" and move on. Example:
+
+```
+Four things and I can write this:
+1. How long? (suggest 8 seconds)
+2. Landscape or vertical? (suggest 16:9)
+3. Does the camera move, or is it locked off? (suggest slow push-in)
+4. Photoreal, or stylised? (suggest photoreal cinematic)
+```
+
+If the user answers some and ignores others, take your default for the rest and **say so in
+one line** under the prompt. Never silently assume.
+
+#### Auto mode
+
+If the request contains `auto`, `just do it`, `no questions`, `don't ask`, `yolo`,
+`full auto`, or `end to end`, skip stage 3. Choose every missing decision yourself, write
+the prompt, and list your assumptions underneath so they can be corrected in one pass.
+
+### Stage 4: write the prompt
+
+Two forms. Pick by shot count.
+
+**Single shot**: one paragraph, one clause per decision, commas between them. The clause
+order and the reason for it are in `references/structure.md`. Read it once; it does not
+change.
+
+**More than one shot**: use the labelled block form in `references/structure.md`, and repeat
+the shared style and exclusion lines byte identically across every block.
+
+### Stage 5: the exclusion clause
+
+Never ship a video prompt without one. Write it as a single sentence beginning with `No`, and
+include only what is plausible for this shot. A long list of irrelevant prohibitions wastes
+the model's attention.
+
+Groups to pick from, whole lines that work, and the table of positive rephrasings are in
+`references/exclusions.md`.
+
+Two rules that always apply: include only what is plausible for this shot, and where a model
+has no negative field, state the positive instead of the ban.
+
+### Stage 6: deliver
+
+Deliver in the exact shape given in How to Run: the prompt in a fenced code block, then
+assumptions, changes, style guide attribution and one thing to try next, each only when it
+applies.
+
+## Pitfalls
+
+The defect tables. Every complaint maps to a missing or broken clause; find the cause before
+touching the text.
 
 ### Motion and camera
 
@@ -617,3 +785,22 @@ Worked examples, including the questions to ask and the shape of the answer, are
 - Keep a single shot prompt under roughly 120 words. Past that, generators start dropping
   clauses, and the clauses they drop are the ones at the end, which is where the exclusions
   live.
+
+## Verification
+
+Before delivering, check the prompt against this list:
+
+- Every high-priority decision in the Quick Reference table is either named in the prompt or
+  listed under **What I assumed**.
+- The exclusion clause is present, a single sentence beginning with `No`, and contains only
+  what is plausible for this shot.
+- Style guide clauses, when a guide was used, are byte identical to the guide, and every
+  extrapolated clause is listed under **inferred**.
+- Multi-shot prompts repeat the shared style and exclusion lines byte identically across
+  every block.
+- The single shot prompt is under roughly 120 words.
+
+## Examples
+
+Worked examples, including the questions to ask and the shape of the answer, are in
+`references/examples.md`.
