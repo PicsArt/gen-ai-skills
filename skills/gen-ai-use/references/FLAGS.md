@@ -142,7 +142,8 @@ gen-ai batch:resume <dir>           # Retry only failed jobs
 
 ### Drive
 ```bash
-gen-ai upload <files>            # Upload to Picsart Drive
+gen-ai upload <files>            # Upload to Picsart Drive (add --json for a URL, see DRIVE.md)
+gen-ai upload-to-drive <file>    # Single file → Drive, named; prints {drive_url, drive_uid}
 gen-ai download                  # Download from Picsart Drive
 gen-ai list                      # List Drive files/folders
 ```

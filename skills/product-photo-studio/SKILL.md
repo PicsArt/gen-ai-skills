@@ -1,8 +1,14 @@
 ---
 name: product-photo-studio
 description: Transform product photos via Picsart gen-ai — six modes.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "product-photos", "ecommerce", "catalog", "mockups", "variants"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: creative
+    tags: [picsart, creative]
 ---
 
 # Product Photo Studio

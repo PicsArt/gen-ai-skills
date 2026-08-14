@@ -1,9 +1,15 @@
 ---
 name: gen-ai-use
 description: Generate AI images, videos, audio via Picsart gen-ai CLI.
+version: 1.4.0
+author: Picsart
 license: MIT
 allowed-tools: Read, Bash, Grep, Glob
-metadata: {"author": "Picsart", "version": "1.3.0", "hermes": {"category": "creative", "tags": ["picsart", "cli", "image-generation", "video-generation", "audio-generation"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: creative
+    tags: [picsart, cli, image-generation, video-generation, audio-generation]
 ---
 
 # gen-ai CLI — Usage Guide
@@ -16,7 +22,7 @@ _See the description above._
 
 ## Prerequisites
 
-Picsart `gen-ai` CLI installed and authenticated (`gen-ai login`).
+Picsart `gen-ai` CLI installed and authenticated (`gen-ai login`). Note that `gen-ai whoami` only reads cached credentials from disk and reports "✓ Authenticated" if a token file exists with the right shape — it doesn't check expiry and makes no network call, so it succeeding is not proof that a subsequent network-dependent command will succeed.
 
 ## How to Run
 
@@ -28,7 +34,7 @@ _Use the agent's `terminal` tool to invoke `gen-ai` commands as described in the
 - **Generation:** `generate`, `remove-bg`, `change-bg`, `enhance`, `vectorize`, `redo`, `extend`
 - **Models / pricing:** `models`, `models info`, `models compare`, `pricing`, `credits`, `validate`
 - **Batch:** `batch run`, `batch status`, `batch resume`
-- **Drive:** `upload`, `download`, `list`
+- **Drive:** `upload`, `upload-to-drive`, `download`, `list`
 - **Config:** `config get | set | list | keys | unset`
 - **History:** `history`, `history last`, `history files`, `history clear`
 - **Utilities:** `completion`, `update`
@@ -48,13 +54,14 @@ _See sections below for the detailed walkthrough._
 
 ## Verification
 
-Run `gen-ai whoami` to confirm authentication, then re-run the failed command with `--debug`.
+Run `gen-ai whoami` to confirm authentication, then re-run the failed command with `--debug`. If the command still fails, check the error type before assuming it's a login problem: `AuthError` ("Not authenticated...") means credentials are genuinely bad and `gen-ai login` is the fix; `NetworkError` (message names a transport failure like "fetch failed", or a proxy/connectivity hint) means the CLI's process can't reach the network — re-running `login` won't help, restoring/escalating network access will.
 
 ## Where to look
 
 - **Flags & full command list** → [references/FLAGS.md](references/FLAGS.md)
 - **Batch generation** (manifests, concurrency, stress tests) → [references/BATCH.md](references/BATCH.md)
 - **Picsart Drive** (upload, download, list) → [references/DRIVE.md](references/DRIVE.md)
+- **A local file that an MCP tool needs as a URL** → [`gen-ai-local-files`](../gen-ai-local-files/SKILL.md)
 - **Advanced** (validate, extend VEO, interactive mode, piping) → [references/ADVANCED.md](references/ADVANCED.md)
 - **Troubleshooting** (dry-run, debug, common errors) → [references/TROUBLESHOOTING.md](references/TROUBLESHOOTING.md)
 - **Example workflows** (image → video, cross-model comparison) → [references/EXAMPLES.md](references/EXAMPLES.md)

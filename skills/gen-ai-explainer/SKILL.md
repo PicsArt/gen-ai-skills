@@ -1,8 +1,14 @@
 ---
 name: gen-ai-explainer
-description: Use when the user wants a short animated explainer video. Trigger phrases include "animated explainer", "make an explainer", "explainer video about X", "30-second video about Y", "90-second video explaining Z", "how X works as a video", "explain X in a short video".
+description: Create short animated explainer videos from a topic.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "video", "explainer", "animation"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: creative
+    tags: [picsart, creative]
 ---
 
 # Animated Explainer Workflow (Light Producer)
@@ -10,6 +16,34 @@ metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "crea
 You drive a 6-stage pipeline. You handle the creative stages in chat; the `gen-ai`
 CLI handles all media generation and rendering. State lives in
 `~/.gen-ai/projects/explainer/<slug>/` as JSON files.
+
+## When to Use
+
+_See the description above._
+
+## Prerequisites
+
+Picsart `gen-ai` CLI installed and authenticated (`gen-ai login`).
+
+## How to Run
+
+_Use the agent's `terminal` tool to invoke `gen-ai` commands as described in the Procedure below._
+
+## Quick Reference
+
+_See the Procedure for canonical commands._
+
+## Procedure
+
+_See sections below for the detailed walkthrough._
+
+## Pitfalls
+
+_See Common Pitfalls below._
+
+## Verification
+
+Run `gen-ai whoami` to confirm authentication, then re-run the failed command with `--debug`.
 
 ## Mode — interactive (default) or auto
 
@@ -80,7 +114,9 @@ and wait for the user. Do NOT chain stages without explicit user approval.
 6. **render** — CLI (~1-3 min). Read `references/render-director.md`. Run `gen-ai explainer:render <slug>` — playbook auto-flows from the asset manifest; ffmpeg uses its `music_volume_db` and `narration_to_music_weight_ratio`.
 
 After stage 6: draft title / description / chapters / hashtags in chat. Then run
-`gen-ai upload-to-drive <slug>/explainer.mp4 --name "<title>"`. Share the URL.
+`gen-ai upload-to-drive <slug>/explainer.mp4 --name "<title>"`. Share the returned `drive_url`,
+noting it's a temporary CDN link — point the user at the Drive entry (`drive_uid`) if they need
+a copy that outlives it.
 
 ## Rule Zero — Read the director skill before EVERY stage
 
