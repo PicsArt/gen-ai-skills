@@ -1,6 +1,6 @@
 {
   "name": "picsart",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Picsart generative-AI skills for Codex.",
   "author": {
     "name": "Picsart",
@@ -16,6 +16,7 @@
     "video-generation"
   ],
   "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Picsart Gen-AI",
     "shortDescription": "Generate and edit image, video, and audio.",

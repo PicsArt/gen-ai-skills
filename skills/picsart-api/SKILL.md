@@ -1,8 +1,14 @@
 ---
 name: picsart-api
 description: Generate and edit media via Picsart MCP API tools.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "api", "tags": ["picsart", "mcp", "image-api", "video-api", "genai-api", "variable-data"]}}
+platforms: [macos, linux, windows]
+metadata:
+  hermes:
+    category: api
+    tags: [picsart, mcp, image-api, video-api, genai-api, variable-data]
 ---
 
 # Picsart API (MCP)
@@ -100,7 +106,7 @@ Known submit → poller pairs (read the per-API doc for the authoritative list):
 
 1. **Tool name = operationId.** Look up the exact name in the doc's tool index, then call it verbatim via the MCP server. Dashes stay dashes.
 2. **Async jobs must be polled.** Many tools return a job id and complete later. Never tell the user "done" on the submit call alone — always chain through the paired poller until the job's status is `FINISHED` / `succeeded`.
-3. **Inputs: file OR url.** Most endpoints accept either an uploaded file or an `*_url` string (e.g. `image_url`, `video_url`). Prefer URLs when the asset is already hosted publicly — avoids upload overhead. **For a file on the user's own machine**, an MCP server cannot read it — you need a URL first. Either use the relevant `*-upload` tool / file field where the API offers one, or call `picsart_drive` with `action: 'upload'` (a `data:` URI in, `result.url` out) to get one. Full procedure, including the large-file CLI fallback, in [`gen-ai-local-files`](../gen-ai-local-files/SKILL.md).
+3. **Inputs: file OR url.** Most endpoints accept either an uploaded file or an `*_url` string (e.g. `image_url`, `video_url`). Prefer URLs when the asset is already hosted publicly — avoids upload overhead. **For a file on the user's own machine**, an MCP server cannot read it — you need a URL first. Open the upload widget (`picsart_upload_widget` or `mp_upload`, whichever connector is present) and wait for the URL it reports back. Full procedure, including the two-turn handshake, in [`picsart-add-media`](../picsart-add-media/SKILL.md).
 4. **Credits before expensive calls.** Each API exposes a balance tool (`image-credits-balance`, `video-credits-balance`, `genai-credits-balance`, `vd-credits-balance`). For a first call in a session that may be heavy (video generation, bulk exports, long upscales), call the matching balance tool so the user isn't surprised by a 402.
 5. **Enum values are exact.** Effect names, aspect ratios, styles, voices, and output formats are closed enums in the docs. Copy values verbatim — do not paraphrase. Invalid enums fail the call and waste a round trip.
 6. **Prefer specialised tools over generic ones.** For a 4× or larger upscale use `image-ultra-upscale` over `image-upscale`; for face shots use `image-face-enhance`; for video cuts use `video-trim` over `video-edit`.

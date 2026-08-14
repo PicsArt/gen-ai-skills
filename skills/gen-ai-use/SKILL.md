@@ -61,7 +61,7 @@ Run `gen-ai whoami` to confirm authentication, then re-run the failed command wi
 - **Flags & full command list** → [references/FLAGS.md](references/FLAGS.md)
 - **Batch generation** (manifests, concurrency, stress tests) → [references/BATCH.md](references/BATCH.md)
 - **Picsart Drive** (upload, download, list) → [references/DRIVE.md](references/DRIVE.md)
-- **A local file that an MCP tool needs as a URL** → [`gen-ai-local-files`](../gen-ai-local-files/SKILL.md)
+- **A local file that an MCP tool needs as a URL** → [`picsart-add-media`](../picsart-add-media/SKILL.md)
 - **Advanced** (validate, extend VEO, interactive mode, piping) → [references/ADVANCED.md](references/ADVANCED.md)
 - **Troubleshooting** (dry-run, debug, common errors) → [references/TROUBLESHOOTING.md](references/TROUBLESHOOTING.md)
 - **Example workflows** (image → video, cross-model comparison) → [references/EXAMPLES.md](references/EXAMPLES.md)
