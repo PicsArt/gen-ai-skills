@@ -1,8 +1,14 @@
 ---
 name: style-guide-builder
-description: Use when the user has reference images and wants a reusable visual style captured from them, so new images or video can be generated to match. Trigger phrases include "make a style guide from these", "I want a cartoon that looks like this", "match this style", "analyze these references", "extract the style from these screenshots", "build a theme from these images", "create a look book", "define our visual identity from these", "keep everything consistent with these references", "I took screenshots from a show I like", "generate more images in this style", "what style is this", "describe these images for prompting", "turn these frames into a style". Also use when a user drops a folder of images and asks what to do with them. The output is a set of markdown files that other skills read, not a single description.
+description: Build a reusable visual style guide from reference images.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "style", "theme", "reference", "art-direction", "consistency", "prompt-engineering"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: creative
+    tags: [picsart, style, theme, reference, art-direction, consistency, prompt-engineering]
 ---
 
 # Style Guide Builder
@@ -14,7 +20,18 @@ belongs in the same world.
 You are not writing a caption per image. Captions are worthless for this. The value is in
 what is **consistent across the set**, separated from what happens to be true of one frame.
 
-## What this is for
+## When to Use
+
+Use when the user has reference images and wants a reusable visual style captured from them,
+so new images or video can be generated to match. Trigger phrases include "make a style guide
+from these", "I want a cartoon that looks like this", "match this style", "analyze these
+references", "extract the style from these screenshots", "build a theme from these images",
+"create a look book", "define our visual identity from these", "keep everything consistent
+with these references", "I took screenshots from a show I like", "generate more images in
+this style", "what style is this", "describe these images for prompting", "turn these frames
+into a style". Also use when a user drops a folder of images and asks what to do with them.
+
+The output is a set of markdown files that other skills read, not a single description.
 
 The usual case: a user has screenshots from a cartoon, a game, a brand campaign or a film,
 and wants new material that looks like it came from the same production. They will later
@@ -27,7 +44,65 @@ guide has to answer two different questions:
 The second question is the one that makes a style guide useful rather than decorative, and
 most of the work goes into it. See `references/extrapolation.md`.
 
-## Stage 0: settle the ground rules
+If the user asks for a brand system rather than a look derived from references, that is
+`agency-brand-scoping` and the brandkit tooling, not this.
+
+## Prerequisites
+
+- **Reference images.** Any number is accepted; 8 to 50 is the useful range. Under 8, say
+  honestly that the guide will be thin — consistency cannot be distinguished from coincidence
+  in a handful of frames.
+- **A vision-capable model** to do the analysis. Sensible default is your own vision; the
+  alternatives (Picsart gen-ai MCP, `gen-ai` CLI, a named model via MCP) are chosen in
+  stage 0 of the Procedure.
+- **The stage 0 answers** — purpose, audience, exclusions, model — before a single image is
+  examined.
+
+## How to Run
+
+1. Collect the reference images from the user.
+2. Ask the four stage 0 questions (purpose, audience, exclusions, model) in one message,
+   with defaults.
+3. Work the stages in the Procedure below, in order.
+4. Write the guide files to `~/.gen-ai/projects/style/<slug>/`, where `<slug>` is a short
+   name for the style. Also offer to copy the set anywhere the user asks, such as into their
+   repository.
+5. Report the ten rules that matter most, what is thin, and offer a test render.
+
+## Quick Reference
+
+| stage | what happens |
+|---|---|
+| 0 | Settle the ground rules: purpose, audience, exclusions, which model |
+| 1 | Intake: authoritative vs incidental references, exclude non-references |
+| 2 | Describe each image: only what is observable |
+| 3 | Separate style from incident: rule vs example vs range |
+| 4 | Write the files to `~/.gen-ai/projects/style/<slug>/` |
+| 5 | Palette rules: observed colours plus the rule for choosing a new one |
+| 6 | Characters and extrapolation: construction rules for unseen subjects |
+| 7 | Hand off: top ten rules, thin spots, test render |
+
+| file | contents |
+|---|---|
+| `STYLE.md` | The index. A one-paragraph summary, then the ten rules that matter most, then links to the rest. Someone reading only this file should be able to write a decent prompt |
+| `palette.md` | Colours with hex and role, plus **rules for choosing a colour that is not in the references** |
+| `rendering.md` | Medium, line treatment, fill, texture, shading model, level of detail, edge quality |
+| `lighting.md` | Default light, its direction and hardness, how shadows behave, named variants |
+| `camera.md` | Shot sizes used, angles, lens character, depth of field, framing habits |
+| `characters.md` | One section per recurring character or creature, plus the construction rules that generate a new one |
+| `environments.md` | Settings, recurring props, how the style handles foliage, water, sky, architecture, crowds |
+| `motion.md` | Only when references are frames from moving footage: pacing, held poses, motion blur, camera movement |
+| `typography.md` | Only when text appears in the references |
+| `negatives.md` | What is off-style, phrased as exclusions, plus positive phrasings where a ban would backfire |
+| `audience.md` | The stage 0 answers, verbatim, with what they forbid |
+| `product.md` | Commercial references only. Product facts that must be preserved, kept apart from the style rules |
+| `extrapolation.md` | How to render something absent from the references. The most important file after `STYLE.md` |
+| `fragments.md` | Ready-to-paste prompt clauses assembled from the above |
+| `manifest.json` | Machine readable: slug, reference count, model used, file list, confidence per aspect |
+
+## Procedure
+
+### Stage 0: settle the ground rules
 
 Before looking at a single image, get four things. Ask in one message, with defaults.
 
@@ -52,7 +127,7 @@ client also bans, say, insects or darkness.
 
 Record the answers verbatim in `audience.md`. Every other file is written with them in force.
 
-### Question 4: which model
+#### Question 4: which model
 
 Ask, do not assume the host model. The user may be running you in one assistant and want the
 work done by another. Offer the routes that exist:
@@ -72,7 +147,7 @@ needs to know which produced it.
 If a requested route is unavailable, say so plainly and offer the next best. Do not silently
 fall back.
 
-## Stage 1: intake
+### Stage 1: intake
 
 Accept any number of images. There is no hard limit. Practical guidance:
 
@@ -89,7 +164,7 @@ one show plus three of their own attempts wants the show described, not their at
 Note anything that is not a reference: duplicates, near-duplicates, frames that are mostly
 text, screenshots with UI chrome. Exclude them and say which you excluded.
 
-## Stage 2: describe each image
+### Stage 2: describe each image
 
 For each image, record only what is observable. Never infer a production fact you cannot see:
 you do not know the studio, the software or the year.
@@ -108,7 +183,7 @@ Keep these notes. They are the evidence, and stage 3 must be traceable to them.
 `references/observation-checklist.md` has the full list of what to look at per aspect, and
 what each observation lets you conclude.
 
-## Stage 3: separate the style from the incident
+### Stage 3: separate the style from the incident
 
 This is the stage that makes or breaks the guide.
 
@@ -129,35 +204,18 @@ either very saturated or nearly grey describes nothing.
 Say how many references support each rule. `Consistent across 11 of 12 frames` is a rule.
 `Seen once` is a note.
 
-## Stage 4: write the files
+### Stage 4: write the files
 
 Write to `~/.gen-ai/projects/style/<slug>/`, where `<slug>` is a short name for the style.
-Also offer to copy the set anywhere the user asks, such as into their repository.
-
-| file | contents |
-|---|---|
-| `STYLE.md` | The index. A one-paragraph summary, then the ten rules that matter most, then links to the rest. Someone reading only this file should be able to write a decent prompt |
-| `palette.md` | Colours with hex and role, plus **rules for choosing a colour that is not in the references** |
-| `rendering.md` | Medium, line treatment, fill, texture, shading model, level of detail, edge quality |
-| `lighting.md` | Default light, its direction and hardness, how shadows behave, named variants |
-| `camera.md` | Shot sizes used, angles, lens character, depth of field, framing habits |
-| `characters.md` | One section per recurring character or creature, plus the construction rules that generate a new one |
-| `environments.md` | Settings, recurring props, how the style handles foliage, water, sky, architecture, crowds |
-| `motion.md` | Only when references are frames from moving footage: pacing, held poses, motion blur, camera movement |
-| `typography.md` | Only when text appears in the references |
-| `negatives.md` | What is off-style, phrased as exclusions, plus positive phrasings where a ban would backfire |
-| `audience.md` | The stage 0 answers, verbatim, with what they forbid |
-| `product.md` | Commercial references only. Product facts that must be preserved, kept apart from the style rules |
-| `extrapolation.md` | How to render something absent from the references. The most important file after `STYLE.md` |
-| `fragments.md` | Ready-to-paste prompt clauses assembled from the above |
-| `manifest.json` | Machine readable: slug, reference count, model used, file list, confidence per aspect |
+Also offer to copy the set anywhere the user asks, such as into their repository. The file
+list and what goes in each file are in the Quick Reference above.
 
 Every file states its evidence. A rule with no reference behind it is a guess, and a guess in
 a style guide propagates into everything generated from it.
 
 Templates and required headings for each file are in `references/output-files.md`.
 
-## Stage 5: the palette rules
+### Stage 5: the palette rules
 
 A list of hex values is not a palette. It cannot answer "what colour is the pig", and that is
 the question that will be asked.
@@ -179,7 +237,7 @@ covers what already exists.
 
 Do the same for anything else with a range: line weights, detail density, contrast.
 
-## Stage 6: characters and extrapolation
+### Stage 6: characters and extrapolation
 
 `characters.md` describes each recurring subject: proportion, features, how the face is
 constructed, palette, how the style handles their surface, whether outlines are used.
@@ -208,7 +266,7 @@ examples:
 **Be explicit about confidence.** `One tree, so treat the foliage rule as provisional` is
 honest and useful. A confident rule from one example is how a style guide starts lying.
 
-## Stage 7: hand off
+### Stage 7: hand off
 
 Report:
 
@@ -218,9 +276,32 @@ Report:
 4. What to do next: generate a test image, or feed the guide to `video-prompt-engineer` for
    motion work.
 
-Offer a **test render** in the same turn. One generated image against the guide catches a
-misread rule faster than any amount of re-reading, and the user finds out now rather than
-after forty renders.
+## Pitfalls
+
+- **Guessing the audience.** Stage 0 question 2 must be answered, never assumed. A wrong
+  audience quietly poisons every file.
+- **Averaging a range.** "Medium saturation" when the references are either very saturated or
+  nearly grey describes nothing. State the bounds and when each applies.
+- **Confident rules from one example.** Mark them provisional and say what evidence is missing.
+- **Describing intent instead of observation.** `Outlines are dark brown, not black` is an
+  observation. `The artist wanted warmth` is not.
+- **Stating a colour, ratio or count you have not actually judged from the image.** If you are
+  unsure of a hex, give a named colour and say it is approximate.
+- **Treating copyrighted characters as reusable assets.** Describe the **style**, not the
+  intellectual property. If the references are from a known production, say plainly that the
+  guide captures a visual approach and that the characters themselves are not yours to reuse.
+- **Style of the prose**: plain English. No em dashes, no double hyphens, no emoji.
+
+## Verification
+
+- Every rule in every file cites its evidence (`Consistent across 11 of 12 frames`), and
+  provisional rules are marked as such.
+- `manifest.json` records the slug, reference count, model used, file list and per-aspect
+  confidence.
+- `audience.md` contains the stage 0 answers verbatim.
+- Offer a **test render** in the same turn as the hand off. One generated image against the
+  guide catches a misread rule faster than any amount of re-reading, and the user finds out
+  now rather than after forty renders.
 
 ## Commercial references
 
@@ -255,14 +336,3 @@ duplicating it.
 - **`text-to-visual`** and **`product-photo-studio`** can take `fragments.md` directly.
 - If the user asks for a brand system rather than a look derived from references, that is
   `agency-brand-scoping` and the brandkit tooling, not this.
-
-## House rules
-
-- Plain English. No em dashes, no double hyphens, no emoji.
-- Describe what you observe, never what you assume was intended. `Outlines are dark brown, not
-  black` is an observation. `The artist wanted warmth` is not.
-- Never state a colour, ratio or count you have not actually judged from the image. If you are
-  unsure of a hex, give a named colour and say it is approximate.
-- Do not describe copyrighted characters as reusable assets. Describe the **style**, not the
-  intellectual property. If the references are from a known production, say plainly that the
-  guide captures a visual approach and that the characters themselves are not yours to reuse.
