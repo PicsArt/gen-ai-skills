@@ -189,15 +189,10 @@ wheel wobble, no motion of the car itself, no people, no text.`
 
 ## Before you finish a commercial prompt
 
-- **Which platform is it for.** Ask, because it changes the framing. Every feed platform draws
-  its own interface over the video: a caption and a row of action buttons, usually along the
-  bottom and the right side. Anything important placed there is covered by the app, and you
-  cannot see that in the file you generated. Until the per-platform measurements are added
-  here, use the safe habit: keep the subject and any text well inside the centre of the frame,
-  leave the bottom third and the right edge clear of anything that has to be read, and check
-  the result in the app itself before signing it off.
-- **Does it survive a second crop.** A vertical clip is often shown as a square or a 4:5
-  thumbnail elsewhere in the same app, so a composition that only works at 9:16 will be cut.
+- **Which platform is it for**, and does the composition survive that platform's crop and
+  interface overlay. See `references/platforms.md`. This matters more for commercial work than
+  for anything else: a product placed in the lower right is covered by the caption and the
+  action rail, and the client will notice.
 - Is there a first frame worth stopping on, since that frame is the thumbnail.
 - Does it read with the sound off, which is how most feed video is watched.
 - Is there empty space where a price, a claim or a call to action has to sit.
