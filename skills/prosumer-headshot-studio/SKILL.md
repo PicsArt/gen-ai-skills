@@ -1,8 +1,14 @@
 ---
 name: prosumer-headshot-studio
 description: Selfie to four polished headshots for any use.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "prosumer", "tags": ["picsart", "prosumer", "creator", "social"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: prosumer
+    tags: [picsart, prosumer, creator, social]
 ---
 
 # Headshot studio

@@ -1,8 +1,14 @@
 ---
 name: picsart-api
 description: Generate and edit media via Picsart MCP API tools.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "api", "tags": ["picsart", "mcp", "image-api", "video-api", "genai-api", "variable-data"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: creative
+    tags: [picsart, creative]
 ---
 
 # Picsart API (MCP)

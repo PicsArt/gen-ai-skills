@@ -4,12 +4,12 @@ description: Turn a local file into a URL for Picsart MCP tools.
 version: 1.2.0
 author: Picsart
 license: MIT
-platforms: [macos, linux]
 allowed-tools: Read, Bash
+platforms: [macos, linux]
 metadata:
   hermes:
     category: creative
-    tags: [picsart, cli, upload, local-files, mcp]
+    tags: [picsart, creative]
 ---
 
 # Local Files → Hosted URL
@@ -52,6 +52,25 @@ _Small files: call `picsart_drive` directly. Large files: use the agent's `termi
 `gen-ai upload --json` prints `{ok, files:[{path,url,driveUid,error}]}` straight to stdout (progress goes to stderr). Full field semantics — matching your file by `path`, what `null` means where, safe `jq` usage — are in [`gen-ai-use`'s Drive reference](../gen-ai-use/references/DRIVE.md); don't re-derive them here, that's the canonical copy.
 
 ## Procedure
+
+
+
+## Pitfalls
+
+- **Scanning for files the user didn't name.** The user's explicit path is the trust boundary — stay inside it.
+- **`upload-to-drive` mistypes non-video files.** It hardcodes `resourceType: VIDEO` and appends `.mp4` to the display name regardless of the source file. Drive classifies the entry by name pattern before it even checks `resourceType`, so `gen-ai list --type image` will never surface it — not just cosmetic. The returned URL itself is still fine to use; only the Drive filing is wrong.
+- **`--folder` on `upload-to-drive` is accepted but ignored** — the file always lands in the CLI's fixed "Gen AI" folder, never the one you asked for.
+- **CDN MIME type is only correct for a fixed extension list**: `.jpg .jpeg .png .gif .webp .heic .avif .mp4 .webm .mov .mp3 .wav .m4a`. Everything else — including `.heif` (`.heic`'s sibling), `.svg`, `.bmp`, `.tiff` — uploads as generic binary.
+- **Treating every route's link as equally durable.** `gen-ai upload`/`upload-to-drive` CDN URLs are explicitly `editing-temp` — not durable. `picsart_drive upload` creates a genuine Drive entry, so that's a different, more durable case; see step 2's note on it.
+- **If `gen-ai upload-to-drive` fails at the Drive-save step, you get no output** even though the file already reached the CDN — re-run rather than assuming nothing happened. (`gen-ai upload --json` doesn't have this failure mode — a Drive-save failure there still returns `url` with `driveUid: null`.)
+- **Driving `gen-ai login` yourself.** It's an interactive browser flow. Asking the user to run it is the procedure, not a fallback.
+- **Guessing the MCP tool name.** Read what's connected — `picsart_*` (this server) and `genai-*`/`image-*`/`video-*` (the REST-API server) are different servers with different tool shapes.
+
+## Verification
+
+1. The route you used returned a non-empty URL (`result.url` from `picsart_drive`, `url` from `gen-ai upload --json` matched by `path` — not by array index — or `drive_url` from `upload-to-drive`).
+2. The URL resolves — the downstream MCP tool accepting it without a fetch error is sufficient proof; don't separately download it.
+3. If durability was requested, don't point the user at an `editing-temp` link — use `picsart_drive`, or confirm the file from Picsart Drive via `gen-ai list`.
 
 ### 1. Confirm the file and pick the route
 
@@ -104,23 +123,6 @@ but `upload --json` above is the general-purpose route and doesn't mistype non-v
 Read the connected tool list, find the tool that does what the user asked, and pass the URL in its URL-shaped parameter. Don't invent a tool name — if nothing connected matches the request, say so.
 
 If the operation is asynchronous, poll its paired result tool before reporting success, and do it promptly: a CDN URL from `gen-ai upload`/`upload-to-drive` is `editing-temp` and a long stall between upload and submit can invalidate it.
-
-## Pitfalls
-
-- **Scanning for files the user didn't name.** The user's explicit path is the trust boundary — stay inside it.
-- **`upload-to-drive` mistypes non-video files.** It hardcodes `resourceType: VIDEO` and appends `.mp4` to the display name regardless of the source file. Drive classifies the entry by name pattern before it even checks `resourceType`, so `gen-ai list --type image` will never surface it — not just cosmetic. The returned URL itself is still fine to use; only the Drive filing is wrong.
-- **`--folder` on `upload-to-drive` is accepted but ignored** — the file always lands in the CLI's fixed "Gen AI" folder, never the one you asked for.
-- **CDN MIME type is only correct for a fixed extension list**: `.jpg .jpeg .png .gif .webp .heic .avif .mp4 .webm .mov .mp3 .wav .m4a`. Everything else — including `.heif` (`.heic`'s sibling), `.svg`, `.bmp`, `.tiff` — uploads as generic binary.
-- **Treating every route's link as equally durable.** `gen-ai upload`/`upload-to-drive` CDN URLs are explicitly `editing-temp` — not durable. `picsart_drive upload` creates a genuine Drive entry, so that's a different, more durable case; see step 2's note on it.
-- **If `gen-ai upload-to-drive` fails at the Drive-save step, you get no output** even though the file already reached the CDN — re-run rather than assuming nothing happened. (`gen-ai upload --json` doesn't have this failure mode — a Drive-save failure there still returns `url` with `driveUid: null`.)
-- **Driving `gen-ai login` yourself.** It's an interactive browser flow. Asking the user to run it is the procedure, not a fallback.
-- **Guessing the MCP tool name.** Read what's connected — `picsart_*` (this server) and `genai-*`/`image-*`/`video-*` (the REST-API server) are different servers with different tool shapes.
-
-## Verification
-
-1. The route you used returned a non-empty URL (`result.url` from `picsart_drive`, `url` from `gen-ai upload --json` matched by `path` — not by array index — or `drive_url` from `upload-to-drive`).
-2. The URL resolves — the downstream MCP tool accepting it without a fetch error is sufficient proof; don't separately download it.
-3. If durability was requested, don't point the user at an `editing-temp` link — use `picsart_drive`, or confirm the file from Picsart Drive via `gen-ai list`.
 
 ## Related
 

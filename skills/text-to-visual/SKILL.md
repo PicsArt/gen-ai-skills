@@ -1,8 +1,14 @@
 ---
 name: text-to-visual
 description: Generate matching visuals from text via Picsart gen-ai.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "text-to-image", "blog-visuals", "og-images", "content"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: creative
+    tags: [picsart, creative]
 ---
 
 # Text to Visual

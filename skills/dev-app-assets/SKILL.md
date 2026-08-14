@@ -1,8 +1,14 @@
 ---
 name: dev-app-assets
 description: Generate icons, empty states, onboarding for apps.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "dev", "tags": ["picsart", "dev", "developer-tools", "automation"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: dev
+    tags: [picsart, dev, developer-tools, automation]
 ---
 
 # App assets
