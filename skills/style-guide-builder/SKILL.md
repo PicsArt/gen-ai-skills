@@ -44,7 +44,75 @@ guide has to answer two different questions:
 The second question is the one that makes a style guide useful rather than decorative, and
 most of the work goes into it. See `references/extrapolation.md`.
 
-## Where the files go
+If the user asks for a brand system rather than a look derived from references, that is
+`agency-brand-scoping` and the brandkit tooling, not this.
+
+## Prerequisites
+
+Styles are written into the project at `<root>/gen-ai/style/<slug>/`. A style shared across
+productions can also be read from `~/.gen-ai/projects/style/<slug>/`, which is read only. See
+`Where the files go` in the Procedure.
+
+- **Reference images.** Any number is accepted; 8 to 50 is the useful range. Under 8, say
+  honestly that the guide will be thin — consistency cannot be distinguished from coincidence
+  in a handful of frames.
+- **A vision-capable model** to do the analysis. Sensible default is your own vision; the
+  alternatives (Picsart gen-ai MCP, `gen-ai` CLI, a named model via MCP) are chosen in
+  stage 0 of the Procedure.
+- **The stage 0 answers** — purpose, audience, exclusions, model — before a single image is
+  examined.
+
+## How to Run
+
+1. Collect the reference images from the user.
+2. Ask the four stage 0 questions (purpose, audience, exclusions, model) in one message,
+   with defaults.
+3. Work the stages in the Procedure below, in order.
+4. Write the guide files into the project, at `<root>/gen-ai/style/<slug>/`, where `<root>` is
+   the git root if there is one and the working directory otherwise, and `<slug>` is a short name
+   for the style. Add one line for it to `<root>/gen-ai/README.md`. Never write to the shared
+   `~/.gen-ai/projects/style/`, which is read only.
+5. Report the ten rules that matter most, what is thin, and offer a test render.
+
+## Quick Reference
+
+| stage | what happens |
+|---|---|
+| 0 | Settle the ground rules: purpose, audience, exclusions, which model |
+| 1 | Intake: authoritative vs incidental references, exclude non-references |
+| 2 | Describe each image: only what is observable |
+| 3 | Separate style from incident: rule vs example vs range |
+| 4 | Write the files to `<root>/gen-ai/style/<slug>/` in the project |
+| 5 | Palette rules: observed colours plus the rule for choosing a new one |
+| 6 | Characters and extrapolation: construction rules for unseen subjects |
+| 7 | Hand off: top ten rules, thin spots, test render |
+
+| file | contents |
+|---|---|
+| `STYLE.md` | The index. A one-paragraph summary, then the ten rules that matter most, then links to the rest. Someone reading only this file should be able to write a decent prompt |
+| `palette.md` | Colours with hex and role, plus **rules for choosing a colour that is not in the references** |
+| `rendering.md` | Medium, line treatment, fill, texture, shading model, level of detail, edge quality |
+| `lighting.md` | Default light, its direction and hardness, how shadows behave, named variants |
+| `camera.md` | Shot sizes used, angles, lens character, depth of field, framing habits |
+| `characters.md` | One section per recurring character or creature, plus the construction rules that generate a new one |
+| `environments.md` | Settings, recurring props, how the style handles foliage, water, sky, architecture, crowds |
+| `motion.md` | Only when references are frames from moving footage: pacing, held poses, motion blur, camera movement |
+| `typography.md` | Only when text appears in the references |
+| `negatives.md` | What is off-style, phrased as exclusions, plus positive phrasings where a ban would backfire |
+| `audience.md` | The stage 0 answers, verbatim, with what they forbid |
+| `product.md` | Commercial references only. Product facts that must be preserved, kept apart from the style rules |
+| `extrapolation.md` | How to render something absent from the references. The most important file after `STYLE.md` |
+| `fragments.md` | Ready-to-paste prompt clauses assembled from the above |
+| `manifest.json` | Machine readable: slug, project, origin, reference count, model used, file list, confidence per aspect |
+
+One file is written outside the style directory: `<root>/gen-ai/README.md`, the index of what this
+project contains. Add or update the one line for this style under `## Styles` and leave every other
+section alone. `character-bible-builder` owns `## Characters` and `script-to-shots` owns
+`## Shot sets`.
+
+## Procedure
+
+### Where the files go
 
 **A style belongs to a project, so it is written inside the project.** Not into a shared home
 directory. One folder holding every style you have ever built stops being readable within a few
@@ -79,7 +147,7 @@ changes work that was already approved somewhere else.
 | The user wants to build on a shared style | Copy it into `<root>/gen-ai/style/<slug>/` first, then edit the copy. Record `"origin": "shared"` in the manifest |
 | The user wants this style available to other projects | Write it into the project as normal, then offer to copy it to the shared location afterwards |
 
-## Stage 0: settle the ground rules
+### Stage 0: settle the ground rules
 
 Before looking at a single image, get four things. Ask in one message, with defaults.
 
@@ -184,29 +252,8 @@ Say how many references support each rule. `Consistent across 11 of 12 frames` i
 ### Stage 4: write the files
 
 Write to `<root>/gen-ai/style/<slug>/` in the project, where `<slug>` is a short name for the
-style. See `Where the files go` above, and never write to the shared location.
-
-| file | contents |
-|---|---|
-| `STYLE.md` | The index. A one-paragraph summary, then the ten rules that matter most, then links to the rest. Someone reading only this file should be able to write a decent prompt |
-| `palette.md` | Colours with hex and role, plus **rules for choosing a colour that is not in the references** |
-| `rendering.md` | Medium, line treatment, fill, texture, shading model, level of detail, edge quality |
-| `lighting.md` | Default light, its direction and hardness, how shadows behave, named variants |
-| `camera.md` | Shot sizes used, angles, lens character, depth of field, framing habits |
-| `characters.md` | One section per recurring character or creature, plus the construction rules that generate a new one |
-| `environments.md` | Settings, recurring props, how the style handles foliage, water, sky, architecture, crowds |
-| `motion.md` | Only when references are frames from moving footage: pacing, held poses, motion blur, camera movement |
-| `typography.md` | Only when text appears in the references |
-| `negatives.md` | What is off-style, phrased as exclusions, plus positive phrasings where a ban would backfire |
-| `audience.md` | The stage 0 answers, verbatim, with what they forbid |
-| `product.md` | Commercial references only. Product facts that must be preserved, kept apart from the style rules |
-| `extrapolation.md` | How to render something absent from the references. The most important file after `STYLE.md` |
-| `fragments.md` | Ready-to-paste prompt clauses assembled from the above |
-| `manifest.json` | Machine readable: slug, reference count, model used, file list, confidence per aspect |
-
-One file is written outside the style directory: `<root>/gen-ai/README.md`, the index of what
-this project contains. Add or update the one line for this style under `## Styles`, and leave
-every other section of that file alone. Other skills own their own sections of it.
+style. See `Where the files go` above, and never write to the shared location. The file
+list and what goes in each file are in the Quick Reference above.
 
 Every file states its evidence. A rule with no reference behind it is a guess, and a guess in
 a style guide propagates into everything generated from it.
@@ -237,13 +284,7 @@ Do the same for anything else with a range: line weights, detail density, contra
 
 ### Stage 6: characters and extrapolation
 
-`characters.md` describes **classes of subject and how this style builds them**, not the named
-cast. A production's characters belong in a character bible, which `character-bible-builder`
-writes and which owns identity. This file owns rendering: how any animal, any person, any tree
-gets drawn here. Where a named character appears in the references, describe them as evidence
-for the class rule rather than as a cast entry, and say that the bible is where the cast lives.
-
-With that division: `characters.md` describes each recurring subject: proportion, features, how the face is
+`characters.md` describes each recurring subject: proportion, features, how the face is
 constructed, palette, how the style handles their surface, whether outlines are used.
 
 Then, and this is the point, it describes **the construction rules behind them**, so a subject

@@ -1,8 +1,14 @@
 ---
 name: character-bible-builder
-description: Use when the user has a script, screenplay, story outline or episode treatment and needs their characters to look like the same characters in every separately generated scene. Trigger phrases include "make a character bible", "build a cast bible", "series bible for my characters", "character sheet for my script", "character reference sheet", "character turnaround", "character lookbook", "extract the characters from my script", "who are the characters in this screenplay", "turn this script into character references", "character design from my story", "reference images for my characters", "keep my characters consistent", "consistent character across episodes", "the same character in every scene", "my character changes between shots", "my main character looks different in every clip", "the face keeps changing", "character continuity", "character prompts for image generation", "5 second reference clip for my character", "reference video of my character", "describe my characters for prompting", "I have an episode treatment and need character art". Also use when a user pastes a script and asks how to stop the cast drifting. The output is a set of markdown files that other skills read, not a single description.
+description: Build a reusable character bible from a script.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "character", "script", "screenplay", "consistency", "reference-sheet", "prompt-engineering"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: creative
+    tags: [picsart, character, script, consistency, reference-sheet, prompt-engineering]
 ---
 
 # Character bible builder
@@ -15,7 +21,61 @@ You are not writing character biography. Backstory does not survive into an imag
 records what is **visible and repeatable**, in words that will be pasted into hundreds of
 prompts without being edited.
 
-## What this is for
+## When to Use
+
+Use when the user has a script, screenplay, story outline or treatment and needs the cast pinned
+down before anything is generated, so the same character looks like the same character in every
+scene.
+
+- **Cast extraction**: "who are the characters in this script", "break this script into
+  characters", "extract the characters", "build a character bible", "make character sheets",
+  "character reference sheets from this script", "I need my cast defined before I generate".
+- **Consistency failures**: "my character keeps changing between shots", "the face is different
+  in every scene", "the cast drifts across the episode", "two of my characters look the same",
+  "how do I keep a character consistent".
+- **Reference generation**: "generate reference images for my characters", "turnaround for this
+  character", "front, three quarter and profile views", "5 second reference clip".
+
+The output is a set of markdown files that other skills read, not a single description.
+
+## Prerequisites
+
+- **A script, screenplay, outline or treatment.** The cast comes out of the page and is confirmed
+  by the user. Nobody is invented quietly: see `Rule one` below.
+- **The stage 0 answers** before a single description is written: what is being made, the
+  audience, what must never appear, whether any character is based on a real person, and which
+  model.
+- **Optionally a style guide** at `<root>/gen-ai/style/<slug>/` in the project, with a read only
+  shared fallback at `~/.gen-ai/projects/style/<slug>/`. Where one exists, the rendering, palette
+  and lighting come from it verbatim rather than being invented here.
+
+## How to Run
+
+1. Take the script or outline.
+2. Ask the 5 stage 0 questions in 1 message, with defaults.
+3. Look for a style guide in the project before asking about one.
+4. Extract the cast and **confirm it with the user** before writing any description.
+5. Work the remaining stages in the Procedure below, in order.
+6. Write the bible to `<root>/gen-ai/characters/<slug>/` in the project, and add 1 line to
+   `<root>/gen-ai/README.md` under `## Characters`.
+7. Report the cast, the confidence per character, what was inferred and what is still open.
+
+## Quick Reference
+
+| stage | what happens |
+|---|---|
+| Mode | Interactive or auto |
+| Stage 0 | Settle the ground rules |
+| Stage 1 | Extract the cast and confirm it |
+| Stage 2 | Read each character out of the script |
+| Stage 3 | The distinction check |
+| Stage 4 | Reference prompts |
+| Stage 5 | Write the files |
+| Stage 6 | Hand off |
+
+## Procedure
+
+### What this is for
 
 The usual case: a user has 6 scenes or 8 episodes, and each shot gets generated on its own
 call. Nothing carries between calls except the text. So the text has to carry the character,
@@ -36,7 +96,7 @@ written as `<guide>/name.md`, and a file belonging to this skill is written as
 role, a style guide has a `<guide>/characters.md`, and the bible has `<bible>/CHARACTERS.md`.
 They are 3 different things.
 
-## Where the files go
+### Where the files go
 
 **A cast belongs to a production, so the bible is written inside the project.** Not into a
 shared home directory. One folder holding every character from every production stops being
@@ -60,7 +120,7 @@ copy, recording `"origin": "shared"` in the manifest.
 
 Same slug in both places: the project copy wins, and say which one you used.
 
-## Rule one: the cast is not yours to guess
+### Rule one: the cast is not yours to guess
 
 A script names some characters, capitalises some, describes some only in an action line, and
 leaves some as a function such as a guard or a barista. Which of those the user wants a bible
@@ -72,7 +132,7 @@ list. Getting this wrong means every file you write afterwards is about the wron
 
 This stop holds in auto mode too. See the mode section.
 
-## Mode: interactive or auto
+### Mode: interactive or auto
 
 **Interactive is the default.** Pick it unless the user opts out.
 
@@ -96,7 +156,7 @@ descriptions plus the distinction check at the end of stage 3. You present, the 
 Even in auto mode you must state the number of characters and the total prompt count before
 generation, because the cost scales with the cast and a 14 character cast is not a small run.
 
-## Stage 0: settle the ground rules
+### Stage 0: settle the ground rules
 
 Ask in 1 message, with defaults. Do not start reading the script for detail until these are
 answered, because 2 of them change what you are allowed to write down.
@@ -124,7 +184,7 @@ client also bans, say, cigarettes or bare feet.
 Record the answers **verbatim** in `<bible>/audience.md`. Every other file is written with them
 in force, and that file outranks the rest of the bible.
 
-### Question 4: real people
+#### Question 4: real people
 
 Handle this plainly and early. If a character is based on an identifiable real person, then
 producing a reference sheet of that person is a **permissions question, not a prompting
@@ -146,7 +206,7 @@ Then take 1 of 2 routes and record which in `<bible>/audience.md`:
 Never use ethnic or national shorthand as a stand in for an appearance. Write skin tone, hair
 texture, facial structure and build in plain physical terms.
 
-### Question 5: which model
+#### Question 5: which model
 
 Ask, do not assume the assistant you are running inside.
 
@@ -162,7 +222,7 @@ another drifts, and the next person needs to know which produced the sheets.
 
 If a requested route is unavailable, say so and offer the next best. Do not fall back silently.
 
-### Is there a style guide
+#### Is there a style guide
 
 **Look before you ask.** The user may not know a guide exists, or may not remember the slug.
 Check the project first, then the shared location:
@@ -220,7 +280,7 @@ report, because those are the ones worth checking first.
 If no guide exists and the user wants several scenes that match, say **once** that
 `style-guide-builder` exists and would settle the rendering properly. Do not push it twice.
 
-## A character is not a style
+### A character is not a style
 
 Keep these apart, because they change on different schedules and for different reasons.
 
@@ -251,7 +311,7 @@ Named characters belong here. A style guide's `<guide>/characters.md` covers con
 for classes of subject, meaning how this style draws any animal or any person, not who the cast
 are. If the two disagree about a named character, this file wins.
 
-## Stage 1: extract the cast and confirm it
+### Stage 1: extract the cast and confirm it
 
 Read the whole script before listing anything. Then list everyone you can find, including the
 minor and background ones. A background character who appears in 4 episodes still needs to be
@@ -282,7 +342,7 @@ Then ask 4 things, and wait:
 **Do not proceed on your own guess.** If the user replies to some of these and ignores others,
 ask the remainder once more rather than filling them in.
 
-## Stage 2: read each character out of the script
+### Stage 2: read each character out of the script
 
 For each confirmed character, write a high level reading. Every line is either **in the
 script**, **implied by the script**, or **a proposal you are making**, and you label which.
@@ -333,7 +393,7 @@ same way:
 Unknown is a legitimate answer. A bible that answers everything confidently is wrong in places
 nobody can find.
 
-## Stage 3: the distinction check
+### Stage 3: the distinction check
 
 Then check the cast against itself, and present the result with the descriptions.
 
@@ -355,11 +415,11 @@ principal keeps their look. The smaller part changes.
 Present stages 2 and 3 together and **stop**. The user reviews the descriptions, accepts or
 rejects the collision fixes, and only then do you write prompts.
 
-## Stage 4: reference prompts
+### Stage 4: reference prompts
 
 Only after approval. 2 kinds, images first.
 
-### Reference images
+#### Reference images
 
 Ask for these views, per character, and say in the file what each is for rather than listing
 them bare. The full explanation, plus the optional views and when they are worth the credits,
@@ -382,7 +442,7 @@ Reference sheets want a plain background, even light and a neutral expression, a
 expression sheet and the in-setting view. Follow `<guide>/lighting.md` for the in-setting one,
 and `<guide>/camera.md` `Applicability` before adding any optical language anywhere.
 
-### Reference videos: 5 seconds, always
+#### Reference videos: 5 seconds, always
 
 **Reference clips are short form only. 5 seconds. There is no long form option here** and you
 should not offer one. 3 reasons, and say them if asked:
@@ -407,7 +467,7 @@ Write these as prompts a video generator takes, not as descriptions of clips. Na
 as locked unless the clip needs otherwise, name the subject motion, and carry the exclusion
 clause. An unnamed camera drifts and an undescribed background fills itself in.
 
-## Stage 5: write the files
+### Stage 5: write the files
 
 Write to `<root>/gen-ai/characters/<slug>/` in the project, where `<slug>` is a short name for
 the production. See `Where the files go` above, and never write to the shared location.
@@ -433,7 +493,7 @@ character. Renaming it later breaks every reference to it.
 `video-prompt-engineer` reads these files by heading, so a renamed heading is a broken file,
 not a stylistic choice.
 
-## The verbatim rule
+### The verbatim rule
 
 The single reason a character holds together across 40 separately generated shots is that the
 **same words** describe them every time. Byte identical reuse. Not a paraphrase, not a tidier
@@ -462,7 +522,7 @@ Design the output for that:
 State this rule inside every character file, next to the block. The person pasting it 6 weeks
 from now will not have read this skill.
 
-## Stage 6: hand off
+### Stage 6: hand off
 
 Report:
 
@@ -477,6 +537,37 @@ Report:
 Offer 1 test render in the same turn: the front view of the character with the weakest
 evidence. That is where a misread lands, and 1 image finds it faster than re-reading the
 script.
+
+## Pitfalls
+
+The failures this skill exists to prevent, and where each is handled:
+
+- **Inventing what the page does not say.** See `Rule one` in the Procedure. It propagates
+  into every file and then into every generation.
+- **Paraphrasing a shared clause.** Byte identical reuse is the whole mechanism. A rewritten
+  clause is a different instruction.
+- **Presenting an inference as something the source said.** Mark it inferred, every time.
+- **Renaming a required heading.** Other skills read these files by heading.
+
+## Verification
+
+Before reporting the bible as finished:
+
+- Every file has all its required headings, from `references/output-files.md`. `## Identity`,
+  `## Verbatim description` and its 2 form subheadings are the contract other skills read, so a
+  renamed heading is a broken file rather than a stylistic choice.
+- Every claim carries a confidence bracket. A line with no bracket is not finished.
+- The `Short form` is a subset of the `Long form`, not a rewrite of it, and neither block contains
+  the character's name, a scene, an emotion or an action.
+- Each rendering under `## Verbatim description` is headed `### Rendered against <style-slug>`, and
+  `## Identity` contains nothing about how anything is drawn.
+- The distinction check covers every pair that reads close, and at least 1 separator per character
+  survives being reduced to a flat black shape.
+- Every `<character-id>` is stable, lowercase and hyphenated, and matches its filename and its key
+  in `<bible>/manifest.json`.
+- Every video prompt is 5 seconds.
+- Nobody in the bible is absent from the script, and nobody was added without the user confirming
+  them.
 
 ## Working with the other skills
 

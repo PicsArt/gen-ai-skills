@@ -1,6 +1,8 @@
 ---
 name: video-prompt-engineer
-description: Use when the user wants to write, improve, rescue or review a prompt for AI video generation, or when they report a defect in a video they already generated, or when they want a clip to match an existing style guide, or when they hand over reference images and expect the look to be reproduced. Covers commercial work, live action and animation. Trigger phrases include "improve this video prompt", "optimize my prompt", "write a prompt for a video of X", "make this prompt better", "video prompt for Sora / Veo / Seedance / Kling / Runway", "add camera direction to this", "turn this idea into a video prompt", "review my prompt", "match this style guide", "same look as the last clip", "use my style guide for this", "make it look like these references", "match these frames", "same style as before", "what styles do I have". Commercial and marketing requests are triggers too: "animate this product shot", "make a product video", "product video ad", "swap the clothing on this model", "change the model", "show this on a different skin tone", "apparel video", "jewellery video", "rotate the car", "showroom turntable", "make this into a Reel", "video ad for Instagram or TikTok". So are craft requests: "cinematic shot", "film look", "how do I light this", "make it look like a movie", "cartoon animation prompt", "animate on twos", "cel shaded animation", "my character keeps changing between shots". Defect reports are also triggers, because almost every one of them is a missing clause: "there is an extra hand", "extra limbs", "too many fingers", "the hands look melted", "the face is distorted", "there is an artifact in the generated video", "there are glitches", "the subject warps", "it morphs halfway through", "the character changes appearance", "there are objects that were not in my prompt", "there are people I did not describe", "something appeared in the background", "there is text on the video", "there is a watermark I did not ask for", "why does my video look wrong", "my generated video is drifting", "nothing happens in the clip", "it looks like a slideshow", "the shots do not match each other", "the ending is abrupt". Also use when a user pastes a vague one-line video idea and expects a usable prompt back.
+description: Write and fix prompts for AI video generation.
+version: 1.0.0
+author: Picsart
 license: MIT
 platforms: [macos, linux]
 metadata:
@@ -48,14 +50,21 @@ Also use when a user pastes a vague one-line video idea and expects a usable pro
 
 ## Prerequisites
 
-None are hard requirements, but two things sharpen the output and are asked for in stage 0
-of the Procedure:
+None are hard requirements, but each of these sharpens the output, and all four are settled in
+stage 0 of the Procedure:
 
 - **The target generator** (Sora, Veo, Seedance, Kling, Runway, or unknown), because the
   target changes the prompt shape.
-- **A style guide slug**, if `style-guide-builder` has run. The guide lives at
-  `~/.gen-ai/projects/style/<slug>/` and supplies style, palette, lighting, camera and motion
-  clauses.
+- **Whether the target model generates audio**, because on one that does the prompt must carry an
+  audio line, and on one that does not it must carry none.
+- **A style guide slug**, if `style-guide-builder` has run. Guides live in the project at
+  `<root>/gen-ai/style/<slug>/`, where `<root>` is the git root if there is one and the working
+  directory otherwise. A style shared across productions can also live at
+  `~/.gen-ai/projects/style/<slug>/`, which is read only. **Read the project first**, and where a
+  slug is in both, the project copy wins.
+- **A character bible slug**, if `character-bible-builder` has run, at
+  `<root>/gen-ai/characters/<slug>/` with the same shared fallback. Anything with a recurring cast
+  needs one: a character described from memory each time is a different character each time.
 
 ## How to Run
 
@@ -72,7 +81,11 @@ of the Procedure:
    4. **From the style guide**, when one was used: which slug, and which clauses came from it
       verbatim. Then **inferred**, listing any clause built by extrapolation rather than
       taken from the guide, because those are the ones worth checking first.
-   5. **One thing to try next**, a single alternative worth a second render, such as a
+   5. **The audio**, on a model that generates it: whether anyone speaks, and for anything
+      longer than one clip whether the theme is in the prompt or is a post track. When it is a
+      post track, give the theme spec, because it is the one part of the job the prompt does not
+      deliver and saying nothing reads as the music being handled.
+   6. **One thing to try next**, a single alternative worth a second render, such as a
       different shot size or a longer duration.
 
 Never explain prompt engineering theory unless asked. Do not pad the response. The user wants
@@ -86,7 +99,7 @@ which is what should drive whether you ask about it.
 
 | # | decision | priority | notes | reference |
 |---|---|---|---|---|
-| 1 | Duration | high | Seconds. Drives how many beats fit | `references/timing-and-format.md` |
+| 1 | Duration | high | Aim for 5 seconds, 10 if a line will not fit, split rather than exceed it | `references/timing-and-format.md` |
 | 2 | Aspect ratio | high | Decide before composition | `references/timing-and-format.md` |
 | 3 | Medium and style | high | The difference between a look and a guess | `references/style-and-medium.md` |
 | 4 | Shot size | high | The most reliable lever there is | `references/camera.md` |
@@ -98,8 +111,9 @@ which is what should drive whether you ask about it.
 | 10 | Colour and grade | medium | Carries brand. Reuse the exact phrase across a set | `references/light-and-colour.md` |
 | 11 | Subject motion | high | Distinct from camera movement. Both, or you get a slideshow | `references/motion-and-pacing.md` |
 | 12 | Mood | medium | One adjective, placed early | `references/style-and-medium.md` |
-| 13 | Audio bed | low | Only when the generator produces sound | `references/audio.md` |
-| 14 | Exclusions | high | Always include | `references/exclusions.md` |
+| 13 | Audio | **high on a model that generates sound**, absent on one that does not | Goes inside the prompt, last before the exclusions. Always says whether anyone speaks | `references/audio.md` |
+| 14 | Theme music | high across a sequence, absent for a one-off | One theme for the whole piece, byte identical in every scene, or a post track and no music in the prompts | `references/audio.md` |
+| 15 | Exclusions | high | Always include | `references/exclusions.md` |
 
 Vocabulary and examples for each live in the reference file named above. Read the ones you
 need before writing, not after.
@@ -119,10 +133,10 @@ Ask about **missing decisions that change the output**. Do not interrogate. Neve
 than five questions in one turn, and never ask about something the user already told you or
 something you can safely infer from the medium they named.
 
-## Stage 0: the model, the style, the cast
+### Stage 0: the model, the audio, the style, the cast
 
-Three things before the work. The first is a question. The second and third you find out by
-looking, not by asking, because a user should not have to remember what they built last week.
+Four things before the work. The first two are questions. The last two you find out by looking,
+not by asking, because a user should not have to remember what they built last week.
 
 #### Which model
 
@@ -153,7 +167,7 @@ are writing it yourself:
 If the user does not know or does not mind, write for text to video with no negative field,
 which is the most constrained case, and say that is what you assumed.
 
-### Does the model generate audio
+#### Does the model generate audio
 
 Settle this as soon as the model is known. It changes what the prompt has to carry and it is the
 clause most often left out entirely.
@@ -204,7 +218,7 @@ this decision as `generated` or `separate`. Follow it rather than asking again.
 
 Clause vocabulary and worked examples are in `references/audio.md`.
 
-### Theme music, for the whole piece
+#### Theme music, for the whole piece
 
 Per-scene audio is one thing. A storyline also has **one piece of music that runs under all of
 it**, and that is a decision about the whole composition rather than about any single scene. Settle
@@ -251,7 +265,7 @@ Two things a theme does that are worth asking for:
 
 Vocabulary, the clause forms and the failure table are in `references/audio.md`.
 
-### Which style, and is there one already
+#### Which style, and is there one already
 
 **Look before you ask.** Do not ask the user whether they have a style guide: they may not know
 one exists, or may not remember the slug. Check.
@@ -294,7 +308,7 @@ When the user picks a shared style, say once that it is not in this project and 
 into `./gen-ai/style/<slug>/`. Prompts quote a guide verbatim, so a shared guide edited for
 another production silently stops matching the clips already generated from it here.
 
-### If the user provides references, hand off
+#### If the user provides references, hand off
 
 If the request comes with reference images, a folder of frames, a mood board, or the words "make
 it look like this", **do not describe the style inline and carry on.** Invoke
@@ -310,7 +324,7 @@ are doing and why, in one sentence, and get on with it. If the user explicitly w
 with no intention of a second clip, describing the style inline is fine and you should say that
 you are doing it that way deliberately.
 
-### If nothing exists and there are no references
+#### If nothing exists and there are no references
 
 Proceed, and write the style clauses yourself. Say once, in one line, that the clauses you are
 about to write are not saved anywhere and a second clip will need the same words pasted
@@ -318,7 +332,7 @@ verbatim to match. Then offer to capture them as a guide if they want more than 
 
 Do not nag. One sentence, once.
 
-### Reading the guide
+#### Reading the guide
 
 The guide lives at `./gen-ai/style/<slug>/` in the project, or at
 `~/.gen-ai/projects/style/<slug>/` when it is a shared one. Either way its files are written
@@ -355,14 +369,14 @@ is the most common cause of a sequence that will not cut together.
 
 **Check `Applicability` in `<guide>/camera.md` before adding any optical language.** If the guide
 says the style is flat illustration with no photographic cues, then lens and depth of field do
-not apply, no matter what the decision audit lists. Adding them fights the style.
+not apply, no matter what stage 2 lists. Adding them fights the style.
 
 **When the prompt needs something the guide does not cover**, apply `<guide>/extrapolation.md`:
 find the nearest covered class, use its construction rules, and take colour from the palette
 rule rather than copying a neighbour's colour. Say in your report which clauses were built that
 way, because those are the ones worth checking first.
 
-### Is there a character bible
+#### Is there a character bible
 
 Check for one the same way, rather than asking blind:
 
@@ -436,14 +450,14 @@ fidelity unmentioned on a product shot ruins the take.
 | A cartoon, animated explainer, any drawn style | `references/animation.md` | Drop the optics, name the drawing and the animation timing |
 | A mix, such as an animated ad | Both relevant files | Commerce rules outrank style preferences |
 
-Anything destined for a social feed also needs `references/platforms.md`, whatever the domain.
-The interface overlay applies to a cartoon exactly as much as to a product shot.
-
 If you cannot tell, ask. It is one question and it changes most of the prompt:
 
 ```
 Is this live action, animated, or a product shot? It changes which direction is worth giving.
 ```
+
+Anything destined for a social feed also needs `references/platforms.md`, whatever the domain. The
+interface overlay applies to a cartoon exactly as much as to a product shot.
 
 ### Stage 1: read what you were given
 
@@ -477,9 +491,18 @@ about it.
 Ask only about missing decisions that would change the result. Rank by impact:
 
 **Almost always worth asking**: duration, aspect ratio, medium, shot size, camera movement.
+On duration, do not ask an open question. Propose 5 seconds, or 10 if you have counted a spoken
+line that will not fit, and say why. An open question about length invites 20 seconds, which is
+a worse bet than four separate 5 second clips.
+**Ask if it is going to a feed**: which platform, because the app draws its interface over the
+frame and the subject has to be composed clear of it. See `references/platforms.md`.
 **Ask if the subject is a person**: wardrobe, expression, how many people.
 **Ask if it is a product**: material and finish, whether hands appear, whether the product opens.
 **Ask if there will be several shots**: how many, and what each one has to show.
+**Ask on an audio-capable model**: whether anyone speaks, and, for anything longer than one clip,
+whether there is a theme running under the whole piece. Propose a theme rather than asking an open
+question: `suggest solo piano and low strings, 92 BPM, minor, laid over afterwards so it does not
+restart at the cuts`. An open question about music gets a genre back, and a genre is not a clause.
 **Rarely worth asking**: lens, depth of field. Infer sensible defaults and say what you assumed.
 
 Format questions as a short numbered list with a suggested default in brackets, so a user can
@@ -496,22 +519,96 @@ Four things and I can write this:
 If the user answers some and ignores others, take your default for the rest and **say so in
 one line** under the prompt. Never silently assume.
 
+#### One more thing on length
+
+If what the user has described cannot happen in 10 seconds, say so and offer to split it rather
+than writing a prompt for a duration that will probably fail. Two prompts of 5 seconds is a
+better answer than one of 20, and for anything longer than a couple of chunks the right answer
+is `script-to-shots`.
+
+**Unless nothing in it forces a cut.** Before you split anything, check: is there spoken
+dialogue, on-screen text, music sync, or a beat that has to land on a particular frame? If the
+answer to all of those is no, and the piece stays in one location with one small cast, then a
+single longer generation is usually the better bet, because every boundary between separately
+generated clips is somewhere the style and the cast can fail to match. A children's cartoon of
+animals playing with no dialogue is the clearest case: generate the lot in one pass and put the
+beat structure inside the prompt.
+
+Non-verbal sound does not force a cut. A sigh, a gasp, a laugh, humming, an animal noise: none
+of these needs frame-accurate lip sync. Describe the sound and roughly when it happens.
+
+`references/timing-and-format.md` has the decision table and `references/structure.md` has the
+beat form for a single long prompt. Ask what a failed long render costs them before committing
+to one.
+
 #### Auto mode
 
 If the request contains `auto`, `just do it`, `no questions`, `don't ask`, `yolo`,
 `full auto`, or `end to end`, skip stage 3. Choose every missing decision yourself, write
 the prompt, and list your assumptions underneath so they can be corrected in one pass.
 
+### Scene by scene, across a sequence
+
+When the user is generating scenes separately, which is the normal case for anything longer
+than one clip, consistency is not a property of any single prompt. It is a property of what all
+the prompts have in common, and a generator supplies none of it: scene four has no memory of
+scene one.
+
+So for every scene in the same sequence, these must be **identical strings**, not
+paraphrases:
+
+| carried across every scene | from |
+|---|---|
+| The style and medium clause | `<guide>/rendering.md`, or your own first scene |
+| The palette and grade clause | `<guide>/palette.md` |
+| The lighting clause, unless the scene changes location | `<guide>/lighting.md` |
+| The description of every character on screen | `<bible>/<character-id>.md`, `Verbatim description` |
+| The theme music clause, on a model that generates audio | Settled once in stage 0. See below |
+| The exclusion line | `<guide>/negatives.md` plus the usual artefacts |
+
+Paste them. Do not retype them, and do not improve them between scenes. **A paraphrase is a
+different prompt**, and the model has no way to know you meant the same thing.
+
+**The theme is the one carried string that cannot fully work.** Style, palette and character
+descriptions do reproduce from identical words. Music does not: each scene composes its own take,
+so identical clauses give you the same instruments restarting at every cut rather than one
+continuous piece. Across a sequence, prefer a single post track and `no music` in every scene
+prompt, keeping ambience and effects generated per scene where they belong. Where the user wants
+the music generated anyway, keep the instruments, tempo and key byte identical and say once that
+the joins will be audible. See stage 0.
+
+Three failures worth naming, because they look like model problems and are not:
+
+- **The cast drifts across an episode.** Almost always a character described in slightly
+  different words each time. Check the descriptions against each other before blaming the model.
+- **Scene three does not cut against scene two.** Almost always the style or grade line
+  rewritten, or a lighting clause carried into a scene that changed location without being
+  re-stated.
+- **The music restarts at every cut.** Not a defect and not fixable in the prompt. Per-clip
+  generated music cannot be continuous, so this is the case for a post track.
+
+If the user is working from a script rather than a single idea, `script-to-shots` does this
+properly: it writes one file per chunk with the shared lines already cloned into each, so there
+is nothing to remember.
+
 ### Stage 4: write the prompt
 
 Two forms. Pick by shot count.
 
-**Single shot**: one paragraph, one clause per decision, commas between them. The clause
-order and the reason for it are in `references/structure.md`. Read it once; it does not
-change.
+#### Single shot
 
-**More than one shot**: use the labelled block form in `references/structure.md`, and repeat
-the shared style and exclusion lines byte identically across every block.
+One paragraph, one clause per decision, commas between them. The clause order and the reason
+for it are in `references/structure.md`. Read it once; it does not change.
+
+#### More than one shot
+
+Use the labelled block form in `references/structure.md`, and repeat the shared style and
+exclusion lines byte identically across every block.
+
+On an audio-capable model the theme goes in the shared `AUDIO:` line at the top, stated once, with
+any per-shot sound as a `SOUND:` line inside that shot. Where the piece is being cut together from
+separate generations, the shared line says `ambience and effects only, no music` and the theme is a
+post track: state that in one line under the prompt so the user knows the score is still owed.
 
 ### Stage 5: the exclusion clause
 
@@ -574,208 +671,7 @@ touching the text.
 | "it changes between shots" | Style string not repeated verbatim across shots |
 | "it ignores half my prompt" | Prompt is prose, not clauses. Restructure |
 
-**When the complaint is a defect, fix the cause and leave everything else alone.** A user
-reporting one extra hand does not want their grade, mood and audio bed rewritten. Change the
-minimum, and say in one line what you changed and why.
-
-## Stage 2: audit the decisions
-
-Work this list. Mark each **given**, **from the style guide**, **inferable** or **missing**.
-Anything the guide supplies is settled: do not ask about it.
-
-Priority says how much the output suffers when the decision is left unnamed, which is what
-should drive whether you ask about it.
-
-| # | decision | priority | notes | reference |
-|---|---|---|---|---|
-| 1 | Duration | high | Aim for 5 seconds, 10 if a line will not fit, split rather than exceed it | `references/timing-and-format.md` |
-| 2 | Aspect ratio | high | Decide before composition | `references/timing-and-format.md` |
-| 3 | Medium and style | high | The difference between a look and a guess | `references/style-and-medium.md` |
-| 4 | Shot size | high | The most reliable lever there is | `references/camera.md` |
-| 5 | Camera angle | medium | Low angle for authority, overhead for diagram | `references/camera.md` |
-| 6 | Camera movement | high | Name it or get drift. One move per shot | `references/camera.md` |
-| 7 | Lens / focal length | low | Powerful when it applies. Skip it for flat styles | `references/camera.md` |
-| 8 | Depth of field | medium | Separates a subject from a background you did not describe | `references/camera.md` |
-| 9 | Lighting | medium | The biggest mood change per word | `references/light-and-colour.md` |
-| 10 | Colour and grade | medium | Carries brand. Reuse the exact phrase across a set | `references/light-and-colour.md` |
-| 11 | Subject motion | high | Distinct from camera movement. Both, or you get a slideshow | `references/motion-and-pacing.md` |
-| 12 | Mood | medium | One adjective, placed early | `references/style-and-medium.md` |
-| 13 | Audio | **high on a model that generates sound**, absent on one that does not | Goes inside the prompt, last before the exclusions. Never left unstated on an audio-capable model, and always says whether anyone speaks. See stage 0 | `references/audio.md` |
-| 14 | Theme music | high across a sequence, absent for a one-off | One theme for the whole piece, byte identical in every scene, or a post track and no music in the prompts | `references/audio.md` |
-| 15 | Exclusions | high | Always include | `references/exclusions.md` |
-
-Vocabulary and examples for each live in the reference file named above. Read the ones you
-need before writing, not after.
-
-## Stage 3: ask for what is missing
-
-Ask only about missing decisions that would change the result. Rank by impact:
-
-**Almost always worth asking**: duration, aspect ratio, medium, shot size, camera movement.
-On duration, do not ask an open question. Propose 5 seconds, or 10 if you have counted a spoken
-line that will not fit, and say why. An open question about length invites 20 seconds, which is
-a worse bet than four separate 5 second clips.
-**Ask if it is going to a feed**: which platform, because the app draws its interface over the
-frame and the subject has to be composed clear of it. See `references/platforms.md`.
-**Ask if the subject is a person**: wardrobe, expression, how many people.
-**Ask if it is a product**: material and finish, whether hands appear, whether the product opens.
-**Ask if there will be several shots**: how many, and what each one has to show.
-**Ask on an audio-capable model**: whether anyone speaks, and, for anything longer than one clip,
-whether there is a theme running under the whole piece. Propose a theme rather than asking an open
-question: `suggest solo piano and low strings, 92 BPM, minor, laid over afterwards so it does not
-restart at the cuts`. An open question about music gets a genre back, and a genre is not a clause.
-**Rarely worth asking**: lens, depth of field. Infer sensible defaults and say what you assumed.
-
-Format questions as a short numbered list with a suggested default in brackets, so a user can
-reply "1, 3" or "all defaults" and move on. Example:
-
-```
-Four things and I can write this:
-1. How long? (suggest 8 seconds)
-2. Landscape or vertical? (suggest 16:9)
-3. Does the camera move, or is it locked off? (suggest slow push-in)
-4. Photoreal, or stylised? (suggest photoreal cinematic)
-```
-
-If the user answers some and ignores others, take your default for the rest and **say so in
-one line** under the prompt. Never silently assume.
-
-### One more thing on length
-
-If what the user has described cannot happen in 10 seconds, say so and offer to split it rather
-than writing a prompt for a duration that will probably fail. Two prompts of 5 seconds is a
-better answer than one of 20, and for anything longer than a couple of chunks the right answer
-is `script-to-shots`.
-
-**Unless nothing in it forces a cut.** Before you split anything, check: is there spoken
-dialogue, on-screen text, music sync, or a beat that has to land on a particular frame? If the
-answer to all of those is no, and the piece stays in one location with one small cast, then a
-single longer generation is usually the better bet, because every boundary between separately
-generated clips is somewhere the style and the cast can fail to match. A children's cartoon of
-animals playing with no dialogue is the clearest case: generate the lot in one pass and put the
-beat structure inside the prompt.
-
-Non-verbal sound does not force a cut. A sigh, a gasp, a laugh, humming, an animal noise: none
-of these needs frame-accurate lip sync. Describe the sound and roughly when it happens.
-
-`references/timing-and-format.md` has the decision table and `references/structure.md` has the
-beat form for a single long prompt. Ask what a failed long render costs them before committing
-to one.
-
-### Auto mode
-
-If the request contains `auto`, `just do it`, `no questions`, `don't ask`, `yolo`,
-`full auto`, or `end to end`, skip stage 3. Choose every missing decision yourself, write
-the prompt, and list your assumptions underneath so they can be corrected in one pass.
-
-## Scene by scene, across a sequence
-
-When the user is generating scenes separately, which is the normal case for anything longer
-than one clip, consistency is not a property of any single prompt. It is a property of what all
-the prompts have in common, and a generator supplies none of it: scene four has no memory of
-scene one.
-
-So for every scene in the same sequence, these must be **identical strings**, not
-paraphrases:
-
-| carried across every scene | from |
-|---|---|
-| The style and medium clause | `<guide>/rendering.md`, or your own first scene |
-| The palette and grade clause | `<guide>/palette.md` |
-| The lighting clause, unless the scene changes location | `<guide>/lighting.md` |
-| The description of every character on screen | `<bible>/<character-id>.md`, `Verbatim description` |
-| The theme music clause, on a model that generates audio | Settled once in stage 0. See below |
-| The exclusion line | `<guide>/negatives.md` plus the usual artefacts |
-
-Paste them. Do not retype them, and do not improve them between scenes. **A paraphrase is a
-different prompt**, and the model has no way to know you meant the same thing.
-
-**The theme is the one carried string that cannot fully work.** Style, palette and character
-descriptions do reproduce from identical words. Music does not: each scene composes its own take,
-so identical clauses give you the same instruments restarting at every cut rather than one
-continuous piece. Across a sequence, prefer a single post track and `no music` in every scene
-prompt, keeping ambience and effects generated per scene where they belong. Where the user wants
-the music generated anyway, keep the instruments, tempo and key byte identical and say once that
-the joins will be audible. See stage 0.
-
-Three failures worth naming, because they look like model problems and are not:
-
-- **The cast drifts across an episode.** Almost always a character described in slightly
-  different words each time. Check the descriptions against each other before blaming the model.
-- **Scene three does not cut against scene two.** Almost always the style or grade line
-  rewritten, or a lighting clause carried into a scene that changed location without being
-  re-stated.
-- **The music restarts at every cut.** Not a defect and not fixable in the prompt. Per-clip
-  generated music cannot be continuous, so this is the case for a post track.
-
-If the user is working from a script rather than a single idea, `script-to-shots` does this
-properly: it writes one file per chunk with the shared lines already cloned into each, so there
-is nothing to remember.
-
-## Stage 4: write the prompt
-
-Two forms. Pick by shot count.
-
-### Single shot
-
-One paragraph, one clause per decision, commas between them. The clause order and the reason
-for it are in `references/structure.md`. Read it once; it does not change.
-
-### More than one shot
-
-Use the labelled block form in `references/structure.md`, and repeat the shared style and
-exclusion lines byte identically across every block.
-
-On an audio-capable model the theme goes in the shared `AUDIO:` line at the top, stated once, with
-any per-shot sound as a `SOUND:` line inside that shot. Where the piece is being cut together from
-separate generations, the shared line says `ambience and effects only, no music` and the theme is a
-post track: state that in one line under the prompt so the user knows the score is still owed.
-
-## Stage 5: the exclusion clause
-
-Never ship a video prompt without one. Write it as a single sentence beginning with `No`, and
-include only what is plausible for this shot. A long list of irrelevant prohibitions wastes
-the model's attention.
-
-Groups to pick from, whole lines that work, and the table of positive rephrasings are in
-`references/exclusions.md`.
-
-Two rules that always apply: include only what is plausible for this shot, and where a model
-has no negative field, state the positive instead of the ban.
-
-## Stage 6: deliver
-
-Output in exactly this shape, nothing else:
-
-1. **The prompt**, in a fenced code block so it can be copied whole.
-2. **What I assumed**, only if you assumed anything. One line each.
-3. **What I changed and why**, only when improving an existing prompt. One line per change,
-   naming the decision, not the wording. `Named the camera movement, which is why it drifted`
-   is useful. `Improved clarity` is not.
-3b. **From the style guide**, when one was used: which slug, whether it was this project's copy
-   or a shared one, and which clauses came from it verbatim. Then **inferred**, listing any
-   clause built by extrapolation rather than taken from the guide, because those are the ones
-   worth checking first.
-3c. **From the character bible**, when one was used: the slug, the `descriptionVersion` from
-   `<bible>/manifest.json`, and which characters appear. The version matters because a bible
-   edited halfway through a sequence leaves the earlier scenes describing a slightly different
-   person, and that is invisible unless it is written down.
-3d. **The audio**, on a model that generates it: one line saying whether anyone speaks, and, for
-   anything longer than a single clip, whether the theme is in the prompt or is a post track.
-   When it is a post track, give the theme spec so the user has something to hand a composer or a
-   music generator. It is the one part of the job the prompt does not deliver, so saying nothing
-   reads as the music being handled.
-4. **One thing to try next**, a single alternative worth a second render, such as a different
-   shot size or a longer duration.
-
-Never explain prompt engineering theory unless asked. Do not pad the response. The user wants
-the prompt.
-
-## Examples
-
-Worked examples, including the questions to ask and the shape of the answer, are in `references/examples.md`.
-
-## House rules for the prompt text itself
+### House rules for the prompt text itself
 
 - Plain English. No em dashes, no double hyphens, no emoji.
 - No marketing adjectives that describe nothing: `stunning`, `breathtaking`, `epic`.

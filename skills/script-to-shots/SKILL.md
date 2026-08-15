@@ -1,8 +1,14 @@
 ---
 name: script-to-shots
-description: Use when a user has a script, storyline, treatment or scene list and needs it cut into generation ready video chunks before anything is generated, so a failure costs 5 seconds instead of 20. Trigger phrases include "split this script into shots", "splitting a script", "chunk my scenes", "chunking scenes", "break this script into clips", "turn this script into a shot list", "cut this scene up", "how do I split this scene", "shot list from a script", "break my storyline into scenes", "turn this treatment into clips", "scene breakdown for video generation", "how many clips is this script", "how long is this scene", "how many seconds is this line", "time this dialogue", "5 second clips", "10 second clips", "fit this into 5 seconds", "this scene is too long to generate", "split this into shorter clips". Cost and failure phrases are triggers too: "cheaper retries", "make retries cheaper", "my generation keeps failing", "my 20 second clip failed", "I am burning credits on failed clips", "regenerate just the broken part", "stop wasting credits on long clips", "cheapest way to generate this scene", "which parts do I have to regenerate". So are continuity phrases: "my chunks do not cut together", "the clips do not match at the join", "the character changes between chunks", "how do I carry the last frame into the next clip", "the split is mid-word". Also use when a user pastes several pages of script and asks what to generate first. The output is a directory of standalone prompts, 1 per chunk, not a single prompt.
+description: Cut a script into generation ready video chunks.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "creative", "tags": ["picsart", "video", "script", "shot-list", "chunking", "duration", "continuity", "prompt-engineering", "cost"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: creative
+    tags: [picsart, video, script, shot-list, chunking, continuity, prompt-engineering]
 ---
 
 # Script to shots
@@ -15,7 +21,71 @@ its own.
 call a generator, and you do not hand back a plan to be turned into prompts later. Someone opens
 1 file, pastes what is in it, and gets that chunk.
 
-## Why the chunks are small
+## When to Use
+
+Use when a user has a script, storyline, treatment or scene list and needs it cut into generation
+ready video chunks before anything is generated, so a failure costs 5 seconds instead of 20.
+
+- **Splitting**: "split this script into shots", "chunk my scenes", "break this script into
+  clips", "turn this script into a shot list", "cut this scene up", "shot list from a script",
+  "break my storyline into scenes", "scene breakdown for video generation", "how many clips is
+  this script", "5 second clips", "this scene is too long to generate".
+- **Duration arithmetic**: "how long is this scene", "how many seconds is this line", "time this
+  dialogue", "fit this into 5 seconds".
+- **Cost and failure**: "cheaper retries", "my generation keeps failing", "my 20 second clip
+  failed", "I am burning credits on failed clips", "regenerate just the broken part", "cheapest
+  way to generate this scene", "which parts do I have to regenerate".
+- **Continuity**: "my chunks do not cut together", "the clips do not match at the join", "the
+  character changes between chunks", "how do I carry the last frame into the next clip", "the
+  split is mid-word".
+
+Also use when a user pastes several pages of script and asks what to generate first. The output is
+a directory of standalone prompts, 1 per chunk, not a single prompt.
+
+## Prerequisites
+
+- **A script, storyline, treatment or scene list.** Anything from a logline to a screenplay.
+  Nothing is invented that is not on the page: see `Rule one` below.
+- **The target model and the durations it offers**, because a plan built around 5 second units is
+  wrong for a model that only offers 6 and 10. Settled in stage 0.
+- **Whether the model generates audio**, and whether the dialogue is generated with the picture or
+  recorded and laid over afterwards. Both change the arithmetic, not just the prompt.
+- **Optionally a style guide and a character bible**, at `<root>/gen-ai/style/<slug>/` and
+  `<root>/gen-ai/characters/<slug>/` in the project, with a read only shared fallback at
+  `~/.gen-ai/projects/`. Their clauses are copied verbatim into every chunk.
+
+## How to Run
+
+1. Take the script, storyline, treatment or scene list.
+2. Ask the stage 0 questions in 1 message: model, durations, aspect ratio, audience, whether the
+   dialogue is generated, and the theme music.
+3. Look for a style guide and a character bible in the project before asking about them.
+4. Work the stages in the Procedure below, in order. In interactive mode stop at the scene list
+   and again at the running order.
+5. Write the set to `<root>/gen-ai/shots/<slug>/` in the project, 1 file per chunk, and add 1 line
+   to `<root>/gen-ai/README.md` under `## Shot sets`.
+6. Report the chunk count, the total runtime, what was inferred and what is still open.
+
+## Quick Reference
+
+| stage | what happens |
+|---|---|
+| Mode | Interactive or auto |
+| Stage 0 | Which model, and what durations does it offer |
+| Stage 0b | Is there a style guide or a character bible |
+| Stage 0c | Does this need splitting at all |
+| Stage 1 | Read what you were given |
+| Stage 2 | Find the scene boundaries |
+| Stage 3 | Estimate the duration of each scene |
+| Stage 4 | Choose the unit, or split |
+| Stage 5 | Clone the attributes into every chunk |
+| Stage 6 | Continuity across the boundaries |
+| Stage 7 | Write the files |
+| Stage 8 | Hand off |
+
+## Procedure
+
+### Why the chunks are small
 
 Generation is billed per clip and it fails often. A failed 20 second clip costs 4 times a failed
 5 second one, and the odds of failure rise with duration, because a longer clip gives a subject
@@ -32,7 +102,7 @@ still makes sense".
 Generators work in fixed units. 5, 10 and 20 seconds are the common ones, and which of them
 exist depends on the model, which is why the model is the first thing you ask about.
 
-## Rule one: never invent the script
+### Rule one: never invent the script
 
 Splitting is arithmetic on what is written. Adding a beat, a line, a location or a character
 that is not on the page is a different job, and doing it quietly is the worst failure available
@@ -45,9 +115,9 @@ up for it.
 Never ask more than 5 questions in 1 turn, and never ask about something already on the page or
 already settled by a style guide.
 
-## Mode: interactive or auto
+### Mode: interactive or auto
 
-### Interactive mode, the default
+#### Interactive mode, the default
 
 2 hard STOP gates: the scene boundaries in stage 2, and the running order in stage 4. You
 present, the user replies `continue` or edits, and only then do you carry on. Pick this unless
@@ -56,7 +126,7 @@ the user has opted out.
 The running order gate matters more than it looks. It fixes how many clips get generated and
 therefore what the whole job costs, so it is the last cheap moment to change your mind.
 
-### Auto mode, opt in
+#### Auto mode, opt in
 
 Detect auto mode when the request contains `auto`, `auto mode`, `no approvals`,
 `skip approvals`, `don't ask`, `no questions`, `just do it`, `yolo`, `full auto`, `end to end`
@@ -75,7 +145,7 @@ Even in auto mode you still:
 - **Stop on genuine ambiguity.** If a scene could be 1 chunk or 4 depending on something the
   script does not settle, ask once.
 
-### Stage behaviour
+#### Stage behaviour
 
 | stage | interactive | auto |
 |---|---|---|
@@ -88,7 +158,7 @@ Even in auto mode you still:
 | 6 continuity | Do it | Do it |
 | 7 write files | Write, report | Write, report |
 
-## Stage 0: which model, and what durations does it offer
+### Stage 0: which model, and what durations does it offer
 
 Ask first, because the answer decides which chunk lengths exist. A plan built around 5 second
 units is wrong for a model that only offers 6 and 10.
@@ -143,7 +213,7 @@ every chunk file.
 If the user does not know the durations, plan in 5 and 10, say that is what you assumed, and
 note it in `<shots>/manifest.json` as an open question.
 
-## Stage 0b: is there a style guide or a character bible
+### Stage 0b: is there a style guide or a character bible
 
 **Look before you ask.** Both live in the project, and the user may not remember the slugs:
 
@@ -192,7 +262,7 @@ that will not cut together, and it is invisible until you watch the joins.
 If neither exists and the script has a recurring character or a look that has to hold, say once
 that `style-guide-builder` would fix that properly. Do not push it twice.
 
-## Stage 0c: does this need splitting at all
+### Stage 0c: does this need splitting at all
 
 Ask this before you split anything, because for some pieces the answer is no and the whole
 chunking exercise makes the result worse.
@@ -203,7 +273,7 @@ light can fail to match**, and nothing carries across a boundary except the line
 each file. When a piece has nothing that must land at a precise moment, one generation removes
 that entire class of problem.
 
-### What forces splitting
+#### What forces splitting
 
 Any one of these, and you split as normal:
 
@@ -215,7 +285,7 @@ Any one of these, and you split as normal:
 - The model's maximum duration, which is a limit rather than a judgment
 - Photoreal human faces held in close-up, where drift is most visible
 
-### What does not force splitting
+#### What does not force splitting
 
 - **Non-verbal sound.** A sigh, a gasp, a laugh, humming, an animal noise, "uhh", "ohh". None
   of it needs frame-accurate lip sync, so none of it forces a cut. Note the sound and roughly
@@ -223,7 +293,7 @@ Any one of these, and you split as normal:
 - Several beats of action, as long as no single one has to land on a specific frame
 - Camera changes, which are described inside one prompt and are not a reason to split
 
-### If nothing forces it
+#### If nothing forces it
 
 Say so, and offer the single-pass version instead of a pile of chunk files. A children's
 cartoon of animals playing with no dialogue is the clearest case: one setting, a forgiving
@@ -243,7 +313,7 @@ it is one generation and the shared description is stated once. The form is in
 Ask what a failed long render costs before committing to it. One 60 second attempt that fails
 costs what twelve 5 second clips would have, and the user may or may not mind.
 
-## Stage 1: read what you were given
+### Stage 1: read what you were given
 
 Classify the input before touching it.
 
@@ -258,7 +328,7 @@ Classify the input before touching it.
 
 Say in 1 line which of these you got, because it tells the user which stages will need them.
 
-## Stage 2: find the scene boundaries
+### Stage 2: find the scene boundaries
 
 Skip this when the input already has scene headings. Otherwise, a boundary is a change in 1 of
 these, and the more of them change at once, the more certain the boundary is:
@@ -282,7 +352,7 @@ I read this as 6 scenes. Say continue, or tell me which to merge or split:
 ...
 ```
 
-## Stage 3: estimate the duration of each scene
+### Stage 3: estimate the duration of each scene
 
 Estimate from what is on the page, and **never write a bare number**. Every estimate carries
 its method in brackets, the way a style guide rule carries its evidence:
@@ -313,7 +383,7 @@ method you used. The methods, with the numbers to use, are in
 Present the estimates as a table with the basis in every row. In interactive mode this does not
 need a STOP, because the running order gate in stage 4 covers it.
 
-## Stage 4: choose the unit, or split
+### Stage 4: choose the unit, or split
 
 Per scene, in this order:
 
@@ -338,7 +408,7 @@ Then present the running order and in interactive mode **STOP**:
 Scene 3 splits into 3 chunks, scene 5 into 2. Say continue, or name a chunk to change.
 ```
 
-## Stage 5: clone the attributes into every chunk
+### Stage 5: clone the attributes into every chunk
 
 When a scene is split, **every chunk inherits the original scene's attributes**. This is the
 whole point of the exercise. A chunk generated without them will not cut against its neighbours,
@@ -357,7 +427,7 @@ that text into each chunk file without touching it. Not a rewrite, not a tidy up
 word for the same thing. If a shared line needs to change, change it in `<shots>/shared.md` and
 recopy it into every chunk file, including the ones that already read well.
 
-## Stage 6: continuity across the boundaries
+### Stage 6: continuity across the boundaries
 
 Every chunk file states where the chunk starts and where it ends, in the same words that its
 neighbours use.
@@ -375,7 +445,7 @@ it belongs in the file rather than in your report.
 Details, including what to do when a camera move has to continue across a boundary, are in
 `references/splitting.md`.
 
-## Stage 7: write the files
+### Stage 7: write the files
 
 Write to `<root>/gen-ai/shots/<slug>/` inside the project, where `<root>` is the git root if
 there is one and the working directory otherwise, and `<slug>` is a short name for the script.
@@ -414,7 +484,7 @@ clause vocabulary is in the other files in that directory.
 
 Number the files from `001`, in running order, so they sort the way they play.
 
-## Stage 8: hand off
+### Stage 8: hand off
 
 Report, and keep it short:
 
@@ -432,6 +502,33 @@ Report, and keep it short:
 
 Offer that test render in the same turn. 1 generated chunk catches a wrong shared line faster
 than reading all 14 files, and the user finds out now rather than after paying for the set.
+
+## Pitfalls
+
+The failures this skill exists to prevent, and where each is handled:
+
+- **Inventing what the page does not say.** See `Rule one` in the Procedure. It propagates
+  into every file and then into every generation.
+- **Paraphrasing a shared clause.** Byte identical reuse is the whole mechanism. A rewritten
+  clause is a different instruction.
+- **Presenting an inference as something the source said.** Mark it inferred, every time.
+- **Renaming a required heading.** Other skills read these files by heading.
+
+## Verification
+
+Before reporting the set as finished:
+
+- Every chunk file has all its required headings, from `references/output-files.md`. A missing
+  heading is a defect even when the information is elsewhere in the file.
+- Every duration carries its estimate basis in brackets, with the numbers.
+- `Continuity out` of each chunk and `Continuity in` of the next are the same sentences, word for
+  word. Read them side by side rather than assuming.
+- Every shared clause in a chunk is byte identical to `<shots>/shared.md`. A paraphrase between
+  chunks is the failure this whole skill exists to prevent.
+- The chunk numbering runs from `001` with no gaps and sorts in playing order.
+- `<shots>/manifest.json` totals match the files actually on disk: chunk count, runtime, unit mix.
+- Either the `NNN-` chunk files exist or `000-single-pass.md` does, never both.
+- Nothing in any chunk is absent from the source script.
 
 ## Working with the other skills
 
