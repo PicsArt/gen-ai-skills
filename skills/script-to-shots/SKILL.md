@@ -185,6 +185,17 @@ Then ask the rest in 1 message, with defaults:
 5. Is the dialogue generated with the picture, or recorded and laid over afterwards?
 ```
 
+**Establish the model's prompt character limit too.** Every chunk file is a separate generation,
+so each one carries the full shared set and each one has to fit the cap on its own. That is what
+decides how much of `<shots>/shared.md` a chunk can afford. Kling 3.0 allows 2500 characters and
+others are tighter, so take the figure from the API documentation, and write to 1000 characters
+where it is unknown. A chunk over the cap is truncated from the end, where the exclusion line sits,
+so the failure arrives as text and watermarks rather than as an error.
+
+Where the shared set does not fit alongside the shot, use the character `Short form` rather than
+the `Long form`, and put the exclusions in the negative field if the API has one. Both are covered
+in `video-prompt-engineer`, under `How long is the prompt allowed to be`.
+
 **Also establish whether the model generates an audio track at all**, from its documentation
 rather than its name. It decides whether `<shots>/shared.md` carries an `Audio` block or says the
 sound is a post step, and it is not something to leave until the chunks are written. On a model
@@ -526,6 +537,9 @@ Before reporting the set as finished:
 - Every shared clause in a chunk is byte identical to `<shots>/shared.md`. A paraphrase between
   chunks is the failure this whole skill exists to prevent.
 - The chunk numbering runs from `001` with no gaps and sorts in playing order.
+- **Every chunk prompt fits `promptCharLimit`, counted rather than estimated**, with its exclusion
+  line fully inside. The longest chunk is the one to check: a set where 8 fit and 1 is 200 over
+  fails only on that 1, and it fails silently.
 - `<shots>/manifest.json` totals match the files actually on disk: chunk count, runtime, unit mix.
 - Either the `NNN-` chunk files exist or `000-single-pass.md` does, never both.
 - Nothing in any chunk is absent from the source script.

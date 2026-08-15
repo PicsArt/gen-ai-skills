@@ -55,6 +55,9 @@ stage 0 of the Procedure:
 
 - **The target generator** (Sora, Veo, Seedance, Kling, Runway, or unknown), because the
   target changes the prompt shape.
+- **Its prompt length limit**, because most generators have one and a prompt that exceeds it is
+  truncated from the end, which is where the exclusions live. Kling 3.0 allows 2500 characters.
+  Others are tighter. Where it is unknown, write to 1000 characters.
 - **Whether the target model generates audio**, because on one that does the prompt must carry an
   audio line, and on one that does not it must carry none.
 - **A style guide slug**, if `style-guide-builder` has run. Guides live in the project at
@@ -161,11 +164,69 @@ are writing it yourself:
 | A model with a negative field | Exclusions go in that field, not in the prompt body |
 | A model with no negative field | Exclusions go last in the prompt, and prefer positive phrasing |
 | Short maximum duration | Cut the beat count to fit before writing, not after |
+| A tight prompt character limit | Budget before writing. Shared lines once, exclusions in the negative field |
 | Generates audio | An audio line is required, and it must say whether anyone speaks |
 | Produces no audio track | No audio clauses. Sound is a post step, and say so once |
 
 If the user does not know or does not mind, write for text to video with no negative field,
 which is the most constrained case, and say that is what you assumed.
+
+#### How long is the prompt allowed to be
+
+Most generators cap the prompt, and the cap is enforced by **truncation from the end**, silently.
+The end of the prompt is where the exclusion clause lives, so the clause that stops text,
+watermarks and extra limbs is the first thing lost. The output comes back subtly wrong and nothing
+reports why.
+
+Establish the cap with the model, not from its name. Vendors change it between versions, and the
+figure is in the API documentation rather than the marketing page.
+
+| what you know | what to write to |
+|---|---|
+| The exact cap | That number, less 10 percent of headroom |
+| The model but not the cap | Check its API documentation. Kling 3.0 allows 2500 characters, which is generous. Assume nothing tighter is impossible |
+| Nothing | **1000 characters.** A prompt that fits 1000 fits every generator worth using, and stays portable when the user switches model |
+
+There are really two limits, and **the smaller one binds**:
+
+- **The hard cap**, from the API. Exceeding it truncates or rejects.
+- **The craft limit**, about 120 words or 800 characters for a single shot. Past that, generators
+  start dropping clauses on their own, and again it is the trailing ones they drop.
+
+For a single shot the craft limit binds first, so the cap rarely matters. It bites on **multi-shot
+and beat-form prompts**, where a shared header plus 6 shots passes 2500 characters easily. That is
+the case to count.
+
+**Count, do not estimate.** `wc -c` on the prompt, or count it. "It looks about right" is how a
+prompt arrives 300 characters over and comes back missing its exclusions.
+
+#### Spending the budget
+
+When the draft is over, cut in this order. It is the Quick Reference priority column read from the
+bottom up, so the cheapest decisions go first.
+
+| order | cut | why it is cheap |
+|---|---|---|
+| 1 | Lens and focal length | Low priority, and it does not apply at all to flat styles |
+| 2 | Depth of field | Often implied by the shot size you already named |
+| 3 | Adjectives that repeat a decision already made | `cinematic, filmic, movie-like` is one decision written 3 times |
+| 4 | Mood | One word, and often carried by the lighting clause |
+| 5 | The character `Long form`, swapped for the `Short form` | Under 25 words instead of 60 to 90. See below |
+| 6 | Environment detail beyond what is in frame | Describe the room the shot sees, not the building |
+
+Never cut the exclusion clause to save room. If the prompt only fits without it, the prompt is
+describing more than one shot and should be two prompts.
+
+**The character description is usually the largest single item.** A `Long form` from a bible runs
+60 to 90 words, around 500 characters, which is half of a 1000 character budget before the shot is
+described at all. Use the `Short form` when the budget is tight and the character is not the
+subject, and the `Long form` when they are. That is a second criterion on top of the sequence rule
+in `Is there a character bible` below, and where the two disagree, the budget wins: a truncated
+`Long form` is worse than a complete `Short form`.
+
+**Where the API has a separate negative field, the exclusions cost nothing.** Move them there and
+delete them from the prompt body. Do not put them in both: it wastes the budget twice and some
+models read a repeated ban as emphasis on the banned thing.
 
 #### Does the model generate audio
 
@@ -602,8 +663,31 @@ for it are in `references/structure.md`. Read it once; it does not change.
 
 #### More than one shot
 
-Use the labelled block form in `references/structure.md`, and repeat the shared style and
-exclusion lines byte identically across every block.
+Use the labelled block form in `references/structure.md`.
+
+**State the shared lines once, at the top. Never once per shot.** `STYLE`, `CHARACTERS`, `AUDIO`
+and `NEGATIVE` are decisions about the whole prompt, so a per-shot copy buys nothing and costs the
+budget several times over. Six shots repeating a 300 character header spend 1800 characters saying
+the same thing 6 times, which on a 2500 character cap is most of the prompt gone before a single
+shot is described. It also makes the output worse, not just longer: restating a decision invites
+the model to reinterpret it mid-prompt, which is the drift the shared header exists to prevent.
+
+**The exception, and it is the one that matters.** Repetition is only waste **inside one prompt**.
+Where each shot is a **separate generation**, every prompt must carry its own full copy of the
+shared lines, byte identical, because the second call has no memory of the first. That is not
+duplication, it is the only thing carrying the style and the cast across the cut.
+
+| how the shots are generated | shared lines |
+|---|---|
+| One prompt, several shots | **Once**, in the header. Repeating them is the waste to cut first |
+| One prompt per shot, generated separately | **In full, in every prompt**, byte identical. See `Scene by scene, across a sequence` |
+
+So the two rules are not in conflict, and the question that separates them is one call or several.
+
+On an audio-capable model the theme goes in the shared `AUDIO:` line at the top, stated once, with
+any per-shot sound as a `SOUND:` line inside that shot. Where the piece is being cut together from
+separate generations, the shared line says `ambience and effects only, no music` and the theme is a
+post track: state that in one line under the prompt so the user knows the score is still owed.
 
 On an audio-capable model the theme goes in the shared `AUDIO:` line at the top, stated once, with
 any per-shot sound as a `SOUND:` line inside that shot. Where the piece is being cut together from
@@ -668,8 +752,11 @@ touching the text.
 | complaint | almost always |
 |---|---|
 | "it looks generic" / "like stock" | Medium and grade unnamed |
-| "it changes between shots" | Style string not repeated verbatim across shots |
+| "it changes between shots" | Style string not repeated verbatim across separately generated shots |
 | "it ignores half my prompt" | Prompt is prose, not clauses. Restructure |
+| "it ignored the last part of my prompt" | The prompt exceeded the model's character cap and was truncated from the end. Count it |
+| "text and watermarks came back even though I excluded them" | Same cause. The exclusion clause is last, so it is the first thing truncation removes |
+| "the API rejected the prompt" | Over the cap, on a model that rejects rather than truncates. The friendlier of the two behaviours |
 
 ### House rules for the prompt text itself
 
@@ -681,6 +768,9 @@ touching the text.
 - Keep a single shot prompt under roughly 120 words. Past that, generators start dropping
   clauses, and the clauses they drop are the ones at the end, which is where the exclusions
   live.
+- Fit the model's character cap, counted. 1000 characters where the cap is unknown.
+- Say each shared decision once per prompt. A restated decision is budget spent to make the
+  output worse.
 
 ## Verification
 
@@ -692,9 +782,13 @@ Before delivering, check the prompt against this list:
   what is plausible for this shot.
 - Style guide clauses, when a guide was used, are byte identical to the guide, and every
   extrapolated clause is listed under **inferred**.
-- Multi-shot prompts repeat the shared style and exclusion lines byte identically across
-  every block.
+- Multi-shot prompts state the shared lines **once** in the header, and no shot block repeats
+  them. Where the shots are separate generations instead, every prompt carries the full shared
+  set, byte identical.
 - The single shot prompt is under roughly 120 words.
+- **The prompt fits the model's character limit, counted rather than estimated**, with the
+  exclusion clause fully inside it. Where the cap is unknown, it fits 1000 characters.
+- Exclusions appear in the negative field or in the prompt body, never in both.
 
 ## Examples
 

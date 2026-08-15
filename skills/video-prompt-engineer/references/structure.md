@@ -77,15 +77,46 @@ One clause per decision, commas between them. A prompt is a list of decisions, n
 
 Keep a single shot prompt under roughly 120 words. Past that, generators start dropping clauses, and the ones they drop are at the end, which is where the exclusions live.
 
+## Two limits, and the smaller one binds
+
+The 120 words above is a **craft limit**: past it a generator loses clauses on its own, whatever
+the API allows. On top of it sits the model's **hard character cap**, which truncates from the end
+without saying so. Kling 3.0 allows 2500 characters and others are tighter, so establish the real
+figure from the model's documentation rather than its name, and write to 1000 characters when it
+is unknown.
+
+For a single shot the craft limit binds first and the cap rarely matters. It bites on the two
+forms below, where a header plus 6 shots or 4 beats passes 2500 characters without feeling long.
+Count the characters on those. Both failure modes take the end of the prompt, which is why the
+exclusion clause is the thing you lose, and why the output comes back wrong in a way that never
+points at length.
+
+Two things buy back most of the budget:
+
+- **The shared header is stated once.** See below. It is the largest and most common waste.
+- **Exclusions move to the negative field** where the API has one, and are then deleted from the
+  prompt body. Not both: a repeated ban wastes the budget twice and reads as emphasis on the
+  banned thing.
+
 ## More than one shot
 
-Use a labelled block per shot and repeat the shared lines byte identically. Paraphrasing the style line between shots is the single biggest cause of a sequence that will not cut together.
+Use a labelled block per shot, with the shared lines stated **once** in a header above them.
+
+The header is the whole point of the form. Everything that is a decision about the piece rather
+than about one shot goes there, once, and no shot block restates it. Restating it wastes the
+character budget and invites the model to reinterpret a decision mid-prompt, which is the drift
+the header exists to prevent.
+
+**This applies inside one prompt.** When each shot is generated separately, every prompt carries
+its own full copy of the shared lines, byte identical, because the next call has no memory of the
+last. Paraphrasing between those separate prompts is the single biggest cause of a sequence that
+will not cut together. One call: state once. Several calls: repeat in full.
 
 ```
-STYLE: <one string, identical in every block>
-CHARACTERS: <one description per character on screen, identical in every block>
-AUDIO: <the theme, identical in every block, on a model that generates audio>
-NEGATIVE: <one string, identical in every block>
+STYLE: <one string for the whole prompt, stated here and nowhere else>
+CHARACTERS: <one description per character on screen, stated here and nowhere else>
+AUDIO: <the theme, stated here and nowhere else, on a model that generates audio>
+NEGATIVE: <one string for the whole prompt, stated here and nowhere else>
 
 SHOT 1
 SCENE: <what is in frame>

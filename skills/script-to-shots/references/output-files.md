@@ -150,6 +150,13 @@ number exists. Skip lens and depth of field for flat or illustrated styles, and 
 Keep the prompt under roughly 120 words. Past that, generators drop clauses, and the ones they
 drop are at the end, which is where the exclusions live.
 
+**And keep it inside the model's character cap, counted per chunk.** A chunk is a standalone
+generation carrying the full shared set, so the cap applies to each file separately rather than to
+the set. Where a chunk does not fit, take the character `Short form` instead of the `Long form` and
+move the exclusions into the negative field if the API has one, before cutting anything the shot
+actually needs. Record the cap in `<shots>/manifest.json` as `promptCharLimit`, so a later reader
+knows what the chunks were written against and does not lengthen one past it.
+
 ---
 
 ## `<shots>/shared.md`
@@ -244,6 +251,7 @@ punctuation, and that is a paraphrase.
   "createdAt": "...",
   "targetModel": "...",
   "unitDurations": [5, 10],
+  "promptCharLimit": 2500,
   "aspectRatio": "9:16",
   "audio": "generated",
   "themeMusic": {"spec": "...", "route": "post"},
@@ -291,6 +299,10 @@ punctuation, and that is a paraphrase.
   "openQuestions": ["..."]
 }
 ```
+
+`promptCharLimit` is the target model's prompt cap in characters, or `1000` when it could not be
+established. Every chunk prompt is written to fit it, and a later edit that lengthens a chunk has
+to be checked against it.
 
 `audio` is `generated` when the target model produces an audio track and `none` when it does not,
 which decides whether every chunk carries an audio clause or none of them do.
