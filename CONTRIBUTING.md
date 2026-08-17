@@ -9,8 +9,28 @@ Thanks for your interest in contributing to `gen-ai-skills`. Contributions that 
 | `skills/` | One directory per skill, named in kebab-case |
 | `scripts/` | Compliance checker, normalizer, and other dev utilities |
 | `.claude-plugin/` | Plugin manifest (`marketplace.json`) consumed by the Claude agent harness |
+| `.cursor-plugin/`, `.codex-plugin/`, `.agents/plugins/` | Equivalent plugin manifests for Cursor, Codex, and other OpenClaw-compatible agents |
+| `.mcp.json` | The single MCP server declaration, referenced by relative path from every plugin manifest above |
 | `.github/workflows/` | CI workflows; `skill-compliance.yml` blocks merge on any compliance failure |
 | `VERSION` | Single source of truth for the current release version |
+
+## MCP servers
+
+`.mcp.json` at the repo root is the one place MCP servers are declared. `.claude-plugin/plugin.json`,
+`.cursor-plugin/plugin.json`, and `.codex-plugin/plugin.json` all point at it via
+`"mcpServers": "./.mcp.json"` — don't inline a server config into any of those manifests, and don't
+duplicate an entry's JSON body elsewhere (a skill's `SKILL.md` may *document* how to reach a server, but
+should link to or mirror `.mcp.json`, not fork it).
+
+Keep each entry to transport and URL only — `type` and `url`, plus `headers` only for a Picsart-issued
+API key this repo's own users need (see the `picsart` entry). Do not add client-specific auth
+configuration (e.g. Claude Code's `oauth` block): the same `.mcp.json` is read by Claude Code, Cursor,
+and Codex, and a server that implements the MCP authorization spec correctly — free tools answering
+anonymously, gated tools returning a `401` with a `WWW-Authenticate` challenge — needs nothing more than
+that to work across all of them. Before removing what looks like a "duplicate" server, confirm by
+endpoint (not name) whether it's actually redundant with something every user already has, or whether
+it's the only route external users have to that server — see PR #10 for a case where that distinction
+was gotten wrong the first time.
 
 ## Local setup
 

@@ -1,6 +1,6 @@
 {
   "name": "picsart",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Picsart generative-AI skills for Claude Code, Cursor, Codex, and other agents that consume SKILL.md files.",
   "author": {
     "name": "Picsart",
