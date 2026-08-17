@@ -7,10 +7,6 @@
         "X-Picsart-API-Key": "${PICSART_API_KEY}",
         "Accept": "application/json"
       }
-    },
-    "picsart-gen-ai": {
-      "type": "http",
-      "url": "https://api.picsart.com/gen-ai/mcp"
     }
   }
 }

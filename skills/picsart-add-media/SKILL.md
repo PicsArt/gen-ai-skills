@@ -1,6 +1,6 @@
 ---
 name: picsart-add-media
-description: Turn a local file into a URL via the Picsart upload widget.
+description: Bring the user's own clips, photos, or files into Picsart.
 version: 1.0.0
 author: Picsart
 license: MIT
@@ -21,7 +21,9 @@ the resulting URL back to you. No file bytes ever pass through a tool call.
 
 ## When to Use
 
-_See the description above._
+Fires on things like "I have 3 video clips", "here are my photos", "use my footage", "combine
+these clips" — anything where the media is the user's own and you don't already have a link to
+it.
 
 Reach for this whenever the next step needs a URL (`image_url`, `video_url`, `startFrame`, …) and
 the source is something on the user's own machine, a chat attachment you can't fetch, or anything
