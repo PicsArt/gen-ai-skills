@@ -116,7 +116,7 @@ which is what should drive whether you ask about it.
 | 12 | Mood | medium | One adjective, placed early | `references/style-and-medium.md` |
 | 13 | Audio | **high on a model that generates sound**, absent on one that does not | Goes inside the prompt, last before the exclusions. Always says whether anyone speaks | `references/audio.md` |
 | 14 | Theme music | high across a sequence, absent for a one-off | One theme for the whole piece, byte identical in every scene, or a post track and no music in the prompts | `references/audio.md` |
-| 15 | Exclusions | high | Always include | `references/exclusions.md` |
+| 15 | Exclusions | high | Always include. Free where the model has a separate negative field | `references/exclusions.md` |
 
 Vocabulary and examples for each live in the reference file named above. Read the ones you
 need before writing, not after.
@@ -184,8 +184,13 @@ figure is in the API documentation rather than the marketing page.
 | what you know | what to write to |
 |---|---|
 | The exact cap | That number, less 10 percent of headroom |
-| The model but not the cap | Check its API documentation. Kling 3.0 allows 2500 characters, which is generous. Assume nothing tighter is impossible |
-| Nothing | **1000 characters.** A prompt that fits 1000 fits every generator worth using, and stays portable when the user switches model |
+| The model but not the cap | `references/model-limits.md` has the figure for most models, dated. Confirm it against the vendor's API reference, because caps move between versions |
+| Nothing | **1000 characters.** That is Runway's cap, the tightest among the major hosted models, so a prompt written to it runs anywhere without a rewrite |
+
+**The cap is a rejection threshold, not a target.** Every vendor that publishes a recommended
+length recommends roughly a quarter to a third of its own cap: 40 to 60 words on Kling 2.5 against
+a 2500 character limit, 50 to 80 on PixVerse, 100 to 150 on Veo. Writing to the cap produces worse
+output, not more detail. Use it to decide what has to be **cut**, never how much can be added.
 
 There are really two limits, and **the smaller one binds**:
 
@@ -196,6 +201,11 @@ There are really two limits, and **the smaller one binds**:
 For a single shot the craft limit binds first, so the cap rarely matters. It bites on **multi-shot
 and beat-form prompts**, where a shared header plus 6 shots passes 2500 characters easily. That is
 the case to count.
+
+Two figures on that page are worth knowing before you start. **Kling's storyboard mode caps each
+storyboard at 512 characters**, which is the tightest real constraint anywhere and exactly the
+multi-shot case where budgeting bites. And **image to video wants the shortest prompts of all**,
+15 to 40 words, because the frame already carries the subject and the prompt carries only motion.
 
 **Count, do not estimate.** `wc -c` on the prompt, or count it. "It looks about right" is how a
 prompt arrives 300 characters over and comes back missing its exclusions.
@@ -224,8 +234,9 @@ subject, and the `Long form` when they are. That is a second criterion on top of
 in `Is there a character bible` below, and where the two disagree, the budget wins: a truncated
 `Long form` is worse than a complete `Short form`.
 
-**Where the API has a separate negative field, the exclusions cost nothing.** Move them there and
-delete them from the prompt body. Do not put them in both: it wastes the budget twice and some
+**Where the API has a separate negative field, the exclusions cost nothing.** It is a genuinely
+separate budget: Kling gives the negative prompt its own 2500 characters and PixVerse its own
+2048. Move them there and delete them from the prompt body. Do not put them in both: it wastes the budget twice and some
 models read a repeated ban as emphasis on the banned thing.
 
 #### Does the model generate audio
