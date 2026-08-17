@@ -4,8 +4,8 @@ description: Generate AI images, videos, audio via Picsart gen-ai CLI.
 version: 1.4.0
 author: Picsart
 license: MIT
-platforms: [macos, linux]
 allowed-tools: Read, Bash, Grep, Glob
+platforms: [macos, linux]
 metadata:
   hermes:
     category: creative

@@ -1,8 +1,14 @@
 ---
 name: agency-multi-brand-pack
 description: Per-client asset templates scoped by workspace.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "agency", "tags": ["picsart", "agency", "creative", "client-work"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: agency
+    tags: [picsart, agency, creative, client-work]
 ---
 
 # Agency multi-brand pack

@@ -1,8 +1,14 @@
 ---
 name: marketer-localize-campaign
 description: Localize a campaign across N markets.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "marketing", "tags": ["picsart", "marketing", "campaigns", "creative"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: marketing
+    tags: [picsart, marketing, campaigns, creative]
 ---
 
 # Localize campaign

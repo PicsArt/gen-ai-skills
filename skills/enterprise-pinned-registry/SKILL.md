@@ -1,8 +1,14 @@
 ---
 name: enterprise-pinned-registry
 description: Pin exact model versions for reproducible output.
+version: 1.0.0
+author: Picsart
 license: MIT
-metadata: {"author": "Picsart", "version": "1.0.0", "hermes": {"category": "enterprise", "tags": ["picsart", "enterprise", "governance", "scale"]}}
+platforms: [macos, linux]
+metadata:
+  hermes:
+    category: enterprise
+    tags: [picsart, enterprise, governance, scale]
 ---
 
 # Enterprise Pinned Registry
