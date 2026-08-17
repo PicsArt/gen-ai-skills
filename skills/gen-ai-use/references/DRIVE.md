@@ -66,7 +66,8 @@ echo "$OUT" | jq -r '.files[] | select(.path == "/abs/path/photo.jpg") | .url'
   the same thing.
 
 Turning a user's local file into a URL for an MCP tool (rather than the CLI's own use) is its
-own procedure — see [`gen-ai-local-files`](../../gen-ai-local-files/SKILL.md).
+own procedure — see [`picsart-add-media`](../../picsart-add-media/SKILL.md), which uses a
+browser upload widget rather than the CLI.
 
 ## Upload a single file and get its URL (`upload-to-drive`)
 
