@@ -53,6 +53,10 @@ The `picsart` MCP server must be connected and a Picsart API key available:
 
 - **API key.** Export `PICSART_API_KEY` in the environment before starting the agent. Never hardcode it — the config interpolates `${PICSART_API_KEY}` at runtime.
 
+- **Two servers, two auth models.** The repo-root `.mcp.json` registers two Picsart servers. Use the one that matches your setup:
+  - `picsart` at `https://mcp.picsart.io/v1` — the server this skill uses. Auth via the `X-Picsart-API-Key: ${PICSART_API_KEY}` header (shown above). Exposes all `image-*`, `video-*`, `genai-*`, and `vd-*` tools.
+  - `picsart-gen-ai` at `https://api.picsart.com/gen-ai/mcp` — the generative-AI server. Auth via OAuth: the host (Cursor, Claude Code) runs an interactive sign-in the first time it connects; no API-key header is needed. Its tools overlap with the `genai-*` surface of the `picsart` server, so pick one path per session rather than mixing.
+
 ## How to Run
 
 1. Identify the user's intent and read only the matching `references/` doc (see Quick Reference). Do not read docs for surfaces the task won't touch.

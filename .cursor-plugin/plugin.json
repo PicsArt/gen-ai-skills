@@ -5,13 +5,15 @@
   "version": "0.2.1",
   "description": "Picsart generative-AI skills for Cursor.",
   "author": {
-    "name": "Picsart"
+    "name": "Picsart",
+    "url": "https://picsart.com"
   },
   "publisher": "Picsart",
   "homepage": "https://picsart.com",
   "repository": "https://github.com/PicsArt/gen-ai-skills",
   "license": "MIT",
-  "category": "ai-content",
+  "category": "developer-tools",
+  "logo": "./assets/logo.svg",
   "keywords": [
     "picsart",
     "gen-ai",
