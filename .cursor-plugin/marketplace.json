@@ -1,0 +1,18 @@
+{
+  "name": "picsart",
+  "owner": {
+    "name": "Picsart",
+    "url": "https://picsart.com"
+  },
+  "metadata": {
+    "description": "Picsart generative-AI skills for Cursor and other agent runtimes.",
+    "version": "0.2.1"
+  },
+  "plugins": [
+    {
+      "name": "picsart",
+      "source": "./",
+      "description": "Picsart generative-AI skills: image generation, video generation, and related creative workflows."
+    }
+  ]
+}
