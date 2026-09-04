@@ -49,6 +49,10 @@ If the user asks for a brand system rather than a look derived from references, 
 
 ## Prerequisites
 
+Styles are written into the project at `<root>/gen-ai/style/<slug>/`. A style shared across
+productions can also be read from `~/.gen-ai/projects/style/<slug>/`, which is read only. See
+`Where the files go` in the Procedure.
+
 - **Reference images.** Any number is accepted; 8 to 50 is the useful range. Under 8, say
   honestly that the guide will be thin — consistency cannot be distinguished from coincidence
   in a handful of frames.
@@ -64,9 +68,10 @@ If the user asks for a brand system rather than a look derived from references, 
 2. Ask the four stage 0 questions (purpose, audience, exclusions, model) in one message,
    with defaults.
 3. Work the stages in the Procedure below, in order.
-4. Write the guide files to `~/.gen-ai/projects/style/<slug>/`, where `<slug>` is a short
-   name for the style. Also offer to copy the set anywhere the user asks, such as into their
-   repository.
+4. Write the guide files into the project, at `<root>/gen-ai/style/<slug>/`, where `<root>` is
+   the git root if there is one and the working directory otherwise, and `<slug>` is a short name
+   for the style. Add one line for it to `<root>/gen-ai/README.md`. Never write to the shared
+   `~/.gen-ai/projects/style/`, which is read only.
 5. Report the ten rules that matter most, what is thin, and offer a test render.
 
 ## Quick Reference
@@ -77,7 +82,7 @@ If the user asks for a brand system rather than a look derived from references, 
 | 1 | Intake: authoritative vs incidental references, exclude non-references |
 | 2 | Describe each image: only what is observable |
 | 3 | Separate style from incident: rule vs example vs range |
-| 4 | Write the files to `~/.gen-ai/projects/style/<slug>/` |
+| 4 | Write the files to `<root>/gen-ai/style/<slug>/` in the project |
 | 5 | Palette rules: observed colours plus the rule for choosing a new one |
 | 6 | Characters and extrapolation: construction rules for unseen subjects |
 | 7 | Hand off: top ten rules, thin spots, test render |
@@ -98,9 +103,49 @@ If the user asks for a brand system rather than a look derived from references, 
 | `product.md` | Commercial references only. Product facts that must be preserved, kept apart from the style rules |
 | `extrapolation.md` | How to render something absent from the references. The most important file after `STYLE.md` |
 | `fragments.md` | Ready-to-paste prompt clauses assembled from the above |
-| `manifest.json` | Machine readable: slug, reference count, model used, file list, confidence per aspect |
+| `manifest.json` | Machine readable: slug, project, origin, reference count, model used, file list, confidence per aspect |
+
+One file is written outside the style directory: `<root>/gen-ai/README.md`, the index of what this
+project contains. Add or update the one line for this style under `## Styles` and leave every other
+section alone. `character-bible-builder` owns `## Characters` and `script-to-shots` owns
+`## Shot sets`.
 
 ## Procedure
+
+### Where the files go
+
+**A style belongs to a project, so it is written inside the project.** Not into a shared home
+directory. One folder holding every style you have ever built stops being readable within a few
+productions: `saturday-cartoon` does not tell you which idea it was for, and by the tenth entry
+nobody can say which of them is still in use.
+
+| | |
+|---|---|
+| Project root | The git root if there is one, otherwise the working directory |
+| Written to | `<root>/gen-ai/style/<slug>/` |
+| Also updated | `<root>/gen-ai/README.md`, 1 line for this style |
+
+If the working directory is plainly not a project, a home directory or `/tmp`, ask which folder
+the production lives in rather than writing somewhere it will be lost.
+
+**Read from both places, write to one.** A style meant to be shared across projects can live at
+`~/.gen-ai/projects/style/<slug>/`. Look there too, so a user who has one does not get asked to
+rebuild it:
+
+```bash
+ls -1 ./gen-ai/style/ 2>/dev/null             # this project, and where you write
+ls -1 ~/.gen-ai/projects/style/ 2>/dev/null   # shared across projects, read only
+```
+
+The shared location is **read only for this skill.** Never write or edit there, even when the
+user asks to change a style that came from it. Two projects can be using it, and editing it
+changes work that was already approved somewhere else.
+
+| situation | what to do |
+|---|---|
+| Same slug in both places | The project copy wins. Say which one you used |
+| The user wants to build on a shared style | Copy it into `<root>/gen-ai/style/<slug>/` first, then edit the copy. Record `"origin": "shared"` in the manifest |
+| The user wants this style available to other projects | Write it into the project as normal, then offer to copy it to the shared location afterwards |
 
 ### Stage 0: settle the ground rules
 
@@ -206,8 +251,8 @@ Say how many references support each rule. `Consistent across 11 of 12 frames` i
 
 ### Stage 4: write the files
 
-Write to `~/.gen-ai/projects/style/<slug>/`, where `<slug>` is a short name for the style.
-Also offer to copy the set anywhere the user asks, such as into their repository. The file
+Write to `<root>/gen-ai/style/<slug>/` in the project, where `<slug>` is a short name for the
+style. See `Where the files go` above, and never write to the shared location. The file
 list and what goes in each file are in the Quick Reference above.
 
 Every file states its evidence. A rule with no reference behind it is a guess, and a guess in

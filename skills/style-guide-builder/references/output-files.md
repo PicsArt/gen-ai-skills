@@ -1,7 +1,7 @@
 # Output files
 
-Required shape for each file written to `~/.gen-ai/projects/style/<slug>/`. Keep the headings
-exactly as given: other skills read these files, and a renamed heading breaks them.
+Required shape for each file written to `<root>/gen-ai/style/<slug>/` in the project. Keep the
+headings exactly as given: other skills read these files, and a renamed heading breaks them.
 
 Every rule carries its evidence in brackets: `[11/12 frames]`, `[2 frames, provisional]`,
 `[inferred, no example]`. A rule with no bracket is not finished.
@@ -269,6 +269,8 @@ assembled and judge whether the guide reproduces what they gave you.
 {
   "slug": "...",
   "name": "...",
+  "project": "...",
+  "origin": "project",
   "createdAt": "...",
   "referenceCount": 0,
   "referencesExcluded": [{"file": "...", "why": "..."}],
@@ -283,3 +285,34 @@ assembled and judge whether the guide reproduces what they gave you.
 `confidence` and `openQuestions` are what another skill reads to decide whether to trust an
 aspect or ask the user. Fill them honestly; they are the machine readable version of admitting
 what the references did not show.
+
+`project` is the project folder's name, and `origin` is `project` for a style built here or
+`shared` for one copied in from `~/.gen-ai/projects/style/`. With `origin: shared`, add
+`"vendoredFrom"` and `"vendoredAt"`. Both fields exist so that a directory copied out of its
+project still says where it came from. A style guide that has lost that is a folder of rules
+with no idea what they were for.
+
+---
+
+## The project index
+
+Not inside the style directory. `<root>/gen-ai/README.md` is shared with the other skills, and
+each owns one section of it. Create the file if it is missing, add or update **only** the line
+for this style, and change nothing else.
+
+```markdown
+# gen-ai files for <project name>
+
+Styles, characters and shot lists for this production. Built by the gen-ai skills.
+
+## Styles
+
+- `style/saturday-cartoon/`: flat cel shaded, dark brown outlines, pastel palette. 12 references. 2026-08-14
+```
+
+One line: the path, a colon, the same look description as the first line of `STYLE.md`
+compressed to a clause, the reference count, and the date. Someone opening this file in a year
+should be able to tell which style this project uses without opening anything else.
+
+If a `README.md` already exists in `<root>/gen-ai/` and is not this index, do not overwrite it.
+Write `GEN-AI.md` alongside it instead and say so.
