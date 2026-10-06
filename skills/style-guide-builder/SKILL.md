@@ -336,3 +336,9 @@ duplicating it.
 - **`text-to-visual`** and **`product-photo-studio`** can take `fragments.md` directly.
 - If the user asks for a brand system rather than a look derived from references, that is
   `agency-brand-scoping` and the brandkit tooling, not this.
+
+## References
+
+- [Extrapolation Guide](references/extrapolation.md)
+- [Observation Checklist](references/observation-checklist.md)
+- [Output Files](references/output-files.md)

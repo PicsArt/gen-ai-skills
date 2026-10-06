@@ -381,3 +381,18 @@ Before delivering, check the prompt against this list:
 
 Worked examples, including the questions to ask and the shape of the answer, are in
 `references/examples.md`.
+
+## References
+
+- [Animation Guide](references/animation.md)
+- [Audio Guide](references/audio.md)
+- [Camera Guide](references/camera.md)
+- [Cinematography Guide](references/cinematography.md)
+- [Commerce Guide](references/commerce.md)
+- [Examples](references/examples.md)
+- [Exclusions Guide](references/exclusions.md)
+- [Light and Colour Guide](references/light-and-colour.md)
+- [Motion and Pacing Guide](references/motion-and-pacing.md)
+- [Structure Guide](references/structure.md)
+- [Style and Medium Guide](references/style-and-medium.md)
+- [Timing and Format Guide](references/timing-and-format.md)

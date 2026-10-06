@@ -149,9 +149,8 @@ Run `gen-ai whoami` to confirm authentication, then re-run the failed command wi
 
 ## See also
 
-- [gen-ai-use.md](../../gen-ai-use/SKILL.md) — CLI command reference, flags, model IDs
-- [gen-ai-workflows.md](../../gen-ai-workflows/SKILL.md) — Workflow 5 (Launch kit) in the broader catalog
-- [gen-ai-batch.md](../../gen-ai-batch/SKILL.md) — manifest schema, concurrency, cost control
-- [install-gen-ai-cli-and-mcp.md](../../install-gen-ai-cli-and-mcp/SKILL.md) — set up the CLI + MCP server
+- [gen-ai-use.md](../../../gen-ai-use/SKILL.md) — CLI command reference, flags, model IDs
+- `gen-ai-workflows` — Workflow 5 (Launch kit) in the broader catalog
+- `gen-ai-batch` — manifest schema, concurrency, cost control
 - `prosumer-product-mockups` — if the launch needs physical/lifestyle product renders
 - `prosumer-content-visual-pair` — for the ongoing content queue after launch day

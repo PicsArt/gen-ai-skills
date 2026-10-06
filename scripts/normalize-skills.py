@@ -5,8 +5,8 @@ Skill Frontmatter & Structure Normalizer
 Brings every skill under skills/ to a consistent baseline that satisfies:
   - Anthropic agentskills.io spec (https://agentskills.io/specification)
   - HermesHub submission requirements
-  - Most Hermes Agent HARDLINE rules from CONTRIBUTING.md:
-      * description ≤ 60 chars, one sentence, ends with a period
+  - MCP consolidation HARDLINE rules from CONTRIBUTING.md:
+      * description ≤ 1024 chars
       * full frontmatter (version, license, author, metadata.hermes.{tags, category})
       * canonical section order: When to Use → Prerequisites → How to Run →
         Quick Reference → Procedure → Pitfalls → Verification
@@ -32,8 +32,8 @@ import sys
 SKILLS_DIR = pathlib.Path(__file__).resolve().parent.parent / "skills"
 
 # ────────────────────────────────────────────────────────────────────────
-# Per-skill short descriptions (≤60 chars, one sentence, period-terminated).
-# Hand-curated from the existing long-form descriptions.
+# Per-skill short descriptions (hand-curated from existing long-form).
+# Kept for backwards compatibility; validation no longer enforces length limits.
 # ────────────────────────────────────────────────────────────────────────
 SHORT_DESCRIPTIONS: dict[str, str] = {
     "gen-ai-use":                    "Generate AI images, videos, audio via Picsart gen-ai CLI.",
@@ -218,8 +218,8 @@ def normalize_skill(skill_dir: pathlib.Path, *, dry_run: bool) -> list[str]:
     if new_desc is None:
         changes.append(f"  ! no short description registered for '{name}'")
         new_desc = fm.get("description", "")
-    if new_desc and len(new_desc) > 60:
-        changes.append(f"  ! short description still too long ({len(new_desc)} chars)")
+    # Note: Description length validation moved to check-skill-compliance.py
+    # This script no longer enforces specific length limits.
     if fm.get("description") != new_desc:
         changes.append(f"  ~ description: {len(str(fm.get('description', '')))} → {len(new_desc)} chars")
         fm["description"] = new_desc

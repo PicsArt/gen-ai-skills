@@ -219,3 +219,13 @@ and decide which stage to resume from by which JSON files exist:
 | `render-report.json` | upload step |
 
 See `pipeline.yaml` for the machine-readable manifest.
+
+## References
+
+- [Asset Director](references/asset-director.md)
+- [Pipeline Definition](references/pipeline.yaml)
+- [Proposal Director](references/proposal-director.md)
+- [Render Director](references/render-director.md)
+- [Research Director](references/research-director.md)
+- [Scene Plan Director](references/scene-plan-director.md)
+- [Script Director](references/script-director.md)
