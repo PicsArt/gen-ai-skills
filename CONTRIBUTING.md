@@ -16,21 +16,21 @@ Thanks for your interest in contributing to `gen-ai-skills`. Contributions that 
 
 ## MCP servers
 
-`.mcp.json` at the repo root is the one place MCP servers are declared. `.claude-plugin/plugin.json`,
+`.mcp.json` at the repo root is the one place MCP servers are declared, and it declares exactly one:
+`picsart`, at `https://api.picsart.com/gen-ai/mcp`. `.claude-plugin/plugin.json`,
 `.cursor-plugin/plugin.json`, and `.codex-plugin/plugin.json` all point at it via
 `"mcpServers": "./.mcp.json"` — don't inline a server config into any of those manifests, and don't
 duplicate an entry's JSON body elsewhere (a skill's `SKILL.md` may *document* how to reach a server, but
 should link to or mirror `.mcp.json`, not fork it).
 
-Keep each entry to transport and URL only — `type` and `url`, plus `headers` only for a Picsart-issued
-API key this repo's own users need (see the `picsart` entry). Do not add client-specific auth
-configuration (e.g. Claude Code's `oauth` block): the same `.mcp.json` is read by Claude Code, Cursor,
-and Codex, and a server that implements the MCP authorization spec correctly — free tools answering
-anonymously, gated tools returning a `401` with a `WWW-Authenticate` challenge — needs nothing more than
-that to work across all of them. Before removing what looks like a "duplicate" server, confirm by
-endpoint (not name) whether it's actually redundant with something every user already has, or whether
-it's the only route external users have to that server — see PR #10 for a case where that distinction
-was gotten wrong the first time.
+Keep each entry to transport and URL only — `type` and `url`, nothing else. No `headers`, no API keys,
+and no client-specific auth configuration (e.g. Claude Code's `oauth` block): the same `.mcp.json` is
+read by Claude Code, Cursor, and Codex. The server implements the MCP authorization spec — an
+unauthenticated request gets a `401` whose `WWW-Authenticate` header points at the server's
+protected-resource metadata — so an OAuth-capable host discovers the sign-in flow from that and has the
+user sign in on first connect, with no extra config. Before adding, removing, or renaming a server
+entry, confirm by endpoint (not name) what it actually serves and who depends on it — see PR #10 for a
+case where judging a server "duplicate" by name went wrong the first time.
 
 ## Local setup
 

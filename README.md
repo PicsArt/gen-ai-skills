@@ -50,12 +50,11 @@ This bundle ships **21 skills**. Several skills are mode-routers — one entry p
 | [`gen-ai-persona-creation`](./skills/gen-ai-persona-creation) | Create AI influencers, branded characters, or pet personas from a brief or reference. |
 | [`gen-ai-explainer`](./skills/gen-ai-explainer) | Produce a short animated explainer video: research → script → assets → render. |
 
-### API
+### MCP
 
 | Skill | Description |
 |---|---|
-| [`picsart-api`](./skills/picsart-api) | Call Picsart's image, video, GenAI, and variable-data REST APIs via the `picsart` MCP server. |
-| [`picsart-add-media`](./skills/picsart-add-media) | Turn a user's local file into a hosted URL via the Picsart upload widget. |
+| [`picsart-add-media`](./skills/picsart-add-media) | Turn a user's local file into a hosted URL via the `picsart` MCP server's upload widget. |
 
 ### Multi-mode skills
 

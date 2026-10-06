@@ -5,7 +5,7 @@ registry, ClawHub, so OpenClaw users can find and install them.
 
 This repo contains two publishable things:
 - **Skills** — the 20 `skills/<name>/SKILL.md` packs.
-- **Bundle** — the Claude-style `marketplace.json` + `.mcp.json` (the Picsart MCP server).
+- **Bundle** — the Claude-style `marketplace.json` + `.mcp.json` (the single `picsart` MCP server).
 
 They publish by different commands. The skills path is confirmed and low-risk;
 the bundle path needs a dry-run check first.
@@ -68,7 +68,8 @@ openclaw plugins install picsart --marketplace https://github.com/PicsArt/gen-ai
 3. ClawHub CLI install method — confirm from clawhub.ai docs.
 
 ## Notes
-- The MCP server's tools surface in OpenClaw as `picsart__<tool>` under the
-  built-in `bundle-mcp` plugin.
+- The bundle ships exactly one MCP server, `picsart` (`https://api.picsart.com/gen-ai/mcp`,
+  OAuth); its tools surface in OpenClaw as `picsart__<tool>` under the built-in
+  `bundle-mcp` plugin.
 - There is no `openclaw plugins marketplace add` step — install points directly at
   the source.

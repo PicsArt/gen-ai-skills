@@ -76,10 +76,10 @@ REVIEWED_DOMAINS: dict[str, dict] = {
     },
     "picsart.io": {
         "name": "Picsart Developer APIs",
-        "category": "first-party MCP + REST API host",
+        "category": "first-party developer / media host",
         "reviewed": "2026-06-02",
         "privacy_url": "https://picsart.com/privacy-policy/",
-        "note": "Official Picsart developer API host. Serves the picsart MCP server (mcp.picsart.io) and the image/video/genai/variable-data REST APIs referenced by the picsart-api skill.",
+        "note": "Official Picsart developer domain (e.g. cdn.picsart.io for hosted media URLs). The picsart MCP server this repo ships lives on picsart.com (api.picsart.com/gen-ai/mcp), not here.",
     },
 }
 

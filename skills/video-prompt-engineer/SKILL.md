@@ -133,8 +133,7 @@ job, and do not assume a generic prompt suits every generator.
 | route | how | notes |
 |---|---|---|
 | Host model | You write the prompt yourself | Default. No setup |
-| Picsart gen-ai MCP | `picsart-gen-ai` server at `api.picsart.com/gen-ai/mcp` | Keeps generation and prompting in one place |
-| Picsart MCP | `picsart` server at `mcp.picsart.io/v1` | Editing and asset tools |
+| Picsart MCP | `picsart` server at `https://api.picsart.com/gen-ai/mcp` | Generation, editing, and asset tools in one place |
 | `gen-ai` CLI | `--model seedance-2.0`, `--model kling-v3-pro` | Explicit model, batch work |
 | A named model through MCP | ask for `gemini-3-pro-image` or similar | When the user wants a specific model to do the writing |
 

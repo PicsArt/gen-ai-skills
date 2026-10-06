@@ -77,8 +77,8 @@ openclaw skills install git:PicsArt/gen-ai-skills@main
 openclaw skills install git:PicsArt/gen-ai-skills@main --global
 ```
 
-Or install the whole thing as a bundle (skills + the Picsart MCP server), reading
-this repo's Claude-style `marketplace.json`:
+Or install the whole thing as a bundle (skills + the single `picsart` MCP server at
+`https://api.picsart.com/gen-ai/mcp`), reading this repo's Claude-style `marketplace.json`:
 
 ```bash
 openclaw plugins marketplace list https://github.com/PicsArt/gen-ai-skills   # inspect first
@@ -86,8 +86,9 @@ openclaw plugins install picsart --marketplace https://github.com/PicsArt/gen-ai
 ```
 
 There is no `openclaw plugins marketplace add` step — point `install` directly at
-the source. The MCP server's tools surface as `picsart__<tool>` under OpenClaw's
-built-in `bundle-mcp` plugin.
+the source. The bundle declares one MCP server, `picsart`; its tools surface as
+`picsart__<tool>` under OpenClaw's built-in `bundle-mcp` plugin. The server uses
+OAuth, so an OAuth-capable host prompts you to sign in to Picsart on first connect.
 
 Once published to ClawHub (see below), skills install by slug instead:
 
