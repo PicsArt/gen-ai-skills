@@ -4,7 +4,7 @@ Skills shipped in this repo are listed in [README.md](./README.md). Each skill i
 
 ## Prerequisites
 
-Most skills assume the Picsart `gen-ai` CLI is installed and authenticated. See the per-skill `SKILL.md` for the exact commands a skill expects.
+The `picsart-*` skills use the bundled `picsart` MCP server (`https://api.picsart.com/gen-ai/mcp`); an OAuth-capable host asks you to sign in to Picsart on first connect. The CLI-era skills (`gen-ai-*`, `agency-*`, `dev-*`, and the rest) assume the Picsart `gen-ai` CLI is installed and authenticated. See the per-skill `SKILL.md` for what a skill expects.
 
 ## Option 1 — `npx skills` (recommended, cross-agent)
 
@@ -33,7 +33,7 @@ Claude Code only. Inside Claude Code:
 /plugin install picsart@picsart
 ```
 
-This pulls the plugin manifest from `.claude-plugin/marketplace.json` and registers the skills declared there.
+This pulls the plugin manifest from `.claude-plugin/marketplace.json`; the plugin's skills are discovered from `skills/`.
 
 ## Option 4 — Setup script
 
@@ -47,9 +47,15 @@ cd gen-ai-skills
 
 The script auto-detects Claude Code / Cursor / Codex (override with `--host <agent>`) and symlinks each skill subdirectory into place. Idempotent.
 
+## Installing individual skills
+
+The `picsart-*` skills are installed as a set: all of them, together with `picsart-workflows`. Every `picsart-*` skill links the shared references in `picsart-workflows/references/`, cross-skill routes link sibling skills, and the hub's routing table links every `picsart-*` skill, so one picsart skill on its own has broken links. Installing everything (`npx skills add PicsArt/gen-ai-skills`, the default) satisfies this. A selective install must include every `picsart-*` skill.
+
+The CLI-era skills (`gen-ai-*`, `agency-*`, `dev-*`, `enterprise-*`, `marketer-*`, `prosumer-*`, and the rest) can be installed one by one.
+
 ## Option 5 — Hermes Agent
 
-For [Hermes Agent](https://hermes-agent.nousresearch.com/) by Nous Research. Install a single skill directly, or subscribe to the whole repo as a tap to browse and search all skills.
+For [Hermes Agent](https://hermes-agent.nousresearch.com/) by Nous Research. Install a single skill directly, or subscribe to the whole repo as a tap to browse and search all skills. Single-skill installs suit the CLI-era skills; install the `picsart-*` skills as a set (see [Installing individual skills](#installing-individual-skills)).
 
 ```bash
 # Install one skill (note the skills/ path)
