@@ -29,7 +29,16 @@ Apply these conventions in every `picsart-*` skill and its references. They hold
   quoted spend limits and production locks; do not infer authorization from a
   preview, a timeout, or an installed connection. A timed-out charged call needs
   a status check before considering a retry.
-- Motion import reads a design's layers through a connected Figma tool. If Figma
+- The film pipeline is six skills ([picsart-film](../../picsart-film/SKILL.md),
+  [picsart-film-development](../../picsart-film-development/SKILL.md),
+  [picsart-film-assets](../../picsart-film-assets/SKILL.md),
+  [picsart-film-scenes](../../picsart-film-scenes/SKILL.md),
+  [picsart-film-edit](../../picsart-film-edit/SKILL.md),
+  [picsart-film-finishing](../../picsart-film-finishing/SKILL.md)) and the motion
+  pipeline is three ([picsart-motion](../../picsart-motion/SKILL.md),
+  [picsart-motion-import](../../picsart-motion-import/SKILL.md),
+  [picsart-motion-design](../../picsart-motion-design/SKILL.md)). Route between them directly.
+- [Motion import](../../picsart-motion-import/SKILL.md) reads a design's layers through a connected Figma tool. If Figma
   is not connected in this host, use the flat-frame fallback and say so once.
 
 ## Motion server compatibility

@@ -41,6 +41,7 @@ Select the Picsart skill for a media-production request. This skill also holds t
 | Browse resources | [Library](../picsart-library/SKILL.md) |
 | Reuse references | [Asset reuse](../picsart-asset-reuse/SKILL.md) |
 | Publish or save resources | [Resource library](../picsart-resource-library/SKILL.md) |
+| Film production | [Film](../picsart-film/SKILL.md) |
 | Plan shots | [Storyboard](../picsart-storyboard/SKILL.md), [Continuity](../picsart-character-continuity/SKILL.md) |
 | Social ad | [Social ad](../picsart-social-ad/SKILL.md) |
 | Product images | [Product shoot](../picsart-product-shoot/SKILL.md) |
@@ -52,6 +53,7 @@ Select the Picsart skill for a media-production request. This skill also holds t
 | Repurpose footage | [Repurpose](../picsart-video-repurpose/SKILL.md) |
 | Remove video background | [Cutout](../picsart-video-cutout/SKILL.md) |
 | Graphics | [Scene design](../picsart-scene-design/SKILL.md) |
+| Animate supplied design | [Motion](../picsart-motion/SKILL.md) |
 | Music-timed montage | [Beat edit](../picsart-beat-edit/SKILL.md) |
 | Adapt master | [Scene variants](../picsart-scene-variants/SKILL.md) |
 | Data-driven exports | [Variable data](../picsart-variable-data/SKILL.md) |
