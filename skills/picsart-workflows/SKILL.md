@@ -36,6 +36,38 @@ Select the Picsart skill for a media-production request. This skill also holds t
 
 | Request | Skill |
 | --- | --- |
+| Connect | [Connect](../picsart-connect/SKILL.md) |
+| Generate | [Model choice](../picsart-model-choice/SKILL.md), [Generate](../picsart-generate/SKILL.md) |
+| Browse resources | [Library](../picsart-library/SKILL.md) |
+| Reuse references | [Asset reuse](../picsart-asset-reuse/SKILL.md) |
+| Publish or save resources | [Resource library](../picsart-resource-library/SKILL.md) |
+| Plan shots | [Storyboard](../picsart-storyboard/SKILL.md), [Continuity](../picsart-character-continuity/SKILL.md) |
+| Social ad | [Social ad](../picsart-social-ad/SKILL.md) |
+| Product images | [Product shoot](../picsart-product-shoot/SKILL.md) |
+| Product mockup | [Mockup](../picsart-product-mockup/SKILL.md) |
+| Image change | [Image edit](../picsart-image-edit/SKILL.md) |
+| Exact image derivatives | [Finishing](../picsart-image-finishing/SKILL.md) |
+| Merge or trim clips | [Video edit](../picsart-video-edit/SKILL.md) |
+| Revise accepted scene | [Revision](../picsart-scene-revision/SKILL.md) |
+| Repurpose footage | [Repurpose](../picsart-video-repurpose/SKILL.md) |
+| Remove video background | [Cutout](../picsart-video-cutout/SKILL.md) |
+| Graphics | [Scene design](../picsart-scene-design/SKILL.md) |
+| Music-timed montage | [Beat edit](../picsart-beat-edit/SKILL.md) |
+| Adapt master | [Scene variants](../picsart-scene-variants/SKILL.md) |
+| Data-driven exports | [Variable data](../picsart-variable-data/SKILL.md) |
+| Compare generated versions | [Batch variants](../picsart-batch-variants/SKILL.md) |
+| Brand | [Brand kit](../picsart-brand-kit/SKILL.md) |
+| Captions | [Captions](../picsart-captions/SKILL.md) |
+| Narration | [Voiceover](../picsart-voiceover/SKILL.md) |
+| Music or effects | [Music](../picsart-music-bed/SKILL.md), [Effects](../picsart-sound-effects/SKILL.md), [Mix](../picsart-audio-mix/SKILL.md) |
+| Cover | [Thumbnail](../picsart-thumbnail/SKILL.md) |
+| Explain | [Explainer](../picsart-explainer/SKILL.md) |
+| Presenter | [Presenter](../picsart-presenter/SKILL.md) |
+| Cartoon | [3D cartoon](../picsart-3d-cartoon/SKILL.md) |
+| Interrupted job | [Recovery](../picsart-job-recovery/SKILL.md) |
+| Editable handoff | [Portability](../picsart-scene-portability/SKILL.md) |
+| CTV file | [CTV](../picsart-ctv-delivery/SKILL.md) |
+| Final files | [Delivery](../picsart-delivery-check/SKILL.md) |
 | Local file to hosted URL | [Add media](../picsart-add-media/SKILL.md) |
 | Terminal generation (CLI alternative) | [gen-ai CLI](../gen-ai-use/SKILL.md) |
 
