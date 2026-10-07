@@ -158,9 +158,8 @@ Content-pair economics are why this workflow wins on volume — fifty posts a mo
 
 ## See also
 
-- [gen-ai-use.md](../../gen-ai-use/SKILL.md) — CLI command reference, `--json --no-input` mode, pipe patterns
-- [gen-ai-workflows.md](../../gen-ai-workflows/SKILL.md) — Workflow 1 (blog-to-visuals) for full-post illustration
-- [gen-ai-batch.md](../../gen-ai-batch/SKILL.md) — manifest schema, concurrency, `gen-ai batch resume <output-dir>`
-- [install-gen-ai-cli-and-mcp.md](../../install-gen-ai-cli-and-mcp/SKILL.md) — set up the CLI + MCP server
+- [gen-ai-use.md](../../../gen-ai-use/SKILL.md) — CLI command reference, `--json --no-input` mode, pipe patterns
+- `gen-ai-workflows` — Workflow 1 (blog-to-visuals) for full-post illustration
+- `gen-ai-batch` — manifest schema, concurrency, `gen-ai batch resume <output-dir>`
 - `prosumer-launch-kit` — when a single post grows into a launch day
 - `prosumer-headshot-studio` — when the "visual" should be the creator themselves

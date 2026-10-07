@@ -151,8 +151,6 @@ Background-replace models (`picsart-change-bg`) run roughly 3–5× cheaper per 
 
 ## See also
 
-- [enterprise-pinned-registry](../enterprise-pinned-registry/SKILL.md) — lock model versions for reproducibility
-- [enterprise-brand-governor](../enterprise-brand-governor/SKILL.md) — brand.md policy enforcement
-- [gen-ai-workflows](../../gen-ai-workflows/SKILL.md) — general multi-step patterns
-- [gen-ai-batch](../../gen-ai-batch/SKILL.md) — manifest schemas and concurrency tuning
-- [gen-ai-use](../../gen-ai-use/SKILL.md) — CLI reference
+- [enterprise-pinned-registry](../../../enterprise-pinned-registry/SKILL.md) — lock model versions for reproducibility
+- [enterprise-brand-governor](../../../enterprise-brand-governor/SKILL.md) — brand.md policy enforcement
+- [gen-ai-use](../../../gen-ai-use/SKILL.md) — CLI reference

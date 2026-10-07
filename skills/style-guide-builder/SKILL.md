@@ -135,7 +135,7 @@ work done by another. Offer the routes that exist:
 | route | how | good for |
 |---|---|---|
 | Host model vision | You look at the images yourself | Fast, no setup, good general description |
-| Picsart gen-ai MCP | `picsart-gen-ai` server at `api.picsart.com/gen-ai/mcp` | Stays inside Picsart, generation and analysis in one place |
+| Picsart MCP | `picsart` server at `https://api.picsart.com/gen-ai/mcp` | Stays inside Picsart, generation and analysis in one place |
 | `gen-ai` CLI | `--model gemini-3-pro-image`, `--model flux-2-pro` | Explicit model choice, batch work |
 | Named model via MCP | ask the MCP for `gemini-3-pro-image` or similar | When the user wants a specific vision model |
 
@@ -336,3 +336,9 @@ duplicating it.
 - **`text-to-visual`** and **`product-photo-studio`** can take `fragments.md` directly.
 - If the user asks for a brand system rather than a look derived from references, that is
   `agency-brand-scoping` and the brandkit tooling, not this.
+
+## References
+
+- [Extrapolation Guide](references/extrapolation.md)
+- [Observation Checklist](references/observation-checklist.md)
+- [Output Files](references/output-files.md)

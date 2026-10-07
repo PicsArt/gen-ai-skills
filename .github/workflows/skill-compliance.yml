@@ -25,34 +25,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Detect changed SKILL.md files
-        id: changed
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE=${{ github.event.pull_request.base.sha }}
-            HEAD=${{ github.event.pull_request.head.sha }}
-            CHANGED=$(git diff --name-only --diff-filter=d "$BASE" "$HEAD" -- 'skills/**/SKILL.md' || true)
-          else
-            CHANGED=$(git diff --name-only --diff-filter=d HEAD~1 HEAD -- 'skills/**/SKILL.md' 2>/dev/null || true)
-          fi
-
-          if [ -z "$CHANGED" ]; then
-            echo "No SKILL.md files changed in this event — checking all."
-            echo "scope=all" >> "$GITHUB_OUTPUT"
-          else
-            echo "Changed SKILL.md files:"
-            echo "$CHANGED"
-            echo "$CHANGED" > /tmp/changed_skills.txt
-            echo "scope=changed" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Run compliance check (changed)
-        if: steps.changed.outputs.scope == 'changed'
-        run: python3 scripts/check-skill-compliance.py --files-from /tmp/changed_skills.txt
-
-      - name: Run compliance check (all)
-        if: steps.changed.outputs.scope == 'all'
+      - name: Run compliance check (full)
         run: python3 scripts/check-skill-compliance.py
+
+      - name: Run unit tests
+        run: python3 -m unittest discover -s tests -v
 
       - name: Comment on PR (failure only)
         if: failure() && github.event_name == 'pull_request'
@@ -76,8 +53,16 @@ jobs:
             const body = [
               '## ❌ Skill Compliance Check Failed',
               '',
-              'One or more skills do not meet the catalog standards (description ≤60 chars,',
-              'full Hermes frontmatter, canonical section order, no broken links).',
+              'One or more skills do not meet the MCP consolidation standards:',
+              '- Description ≤1024 chars (proper YAML scalar parsing)',
+              '- Full Hermes frontmatter (name, version, author, license, platforms, metadata)',
+              '- Canonical section order (When to Use, Prerequisites, How to Run, etc.)',
+              '- SKILL.md ≤500 lines',
+              '- All relative links resolve and stay within skills/ directory',
+              '- All files are reachable from SKILL.md',
+              '- No symlinks',
+              '- No forbidden strings (API keys, internal URLs, etc.)',
+              '- All picsart_* tool names are served by the picsart MCP (scripts/picsart-mcp-tools.json)',
               '',
               'Fix locally with:',
               '',

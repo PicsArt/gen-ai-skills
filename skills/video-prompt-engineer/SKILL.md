@@ -133,8 +133,7 @@ job, and do not assume a generic prompt suits every generator.
 | route | how | notes |
 |---|---|---|
 | Host model | You write the prompt yourself | Default. No setup |
-| Picsart gen-ai MCP | `picsart-gen-ai` server at `api.picsart.com/gen-ai/mcp` | Keeps generation and prompting in one place |
-| Picsart MCP | `picsart` server at `mcp.picsart.io/v1` | Editing and asset tools |
+| Picsart MCP | `picsart` server at `https://api.picsart.com/gen-ai/mcp` | Generation, editing, and asset tools in one place |
 | `gen-ai` CLI | `--model seedance-2.0`, `--model kling-v3-pro` | Explicit model, batch work |
 | A named model through MCP | ask for `gemini-3-pro-image` or similar | When the user wants a specific model to do the writing |
 
@@ -382,3 +381,18 @@ Before delivering, check the prompt against this list:
 
 Worked examples, including the questions to ask and the shape of the answer, are in
 `references/examples.md`.
+
+## References
+
+- [Animation Guide](references/animation.md)
+- [Audio Guide](references/audio.md)
+- [Camera Guide](references/camera.md)
+- [Cinematography Guide](references/cinematography.md)
+- [Commerce Guide](references/commerce.md)
+- [Examples](references/examples.md)
+- [Exclusions Guide](references/exclusions.md)
+- [Light and Colour Guide](references/light-and-colour.md)
+- [Motion and Pacing Guide](references/motion-and-pacing.md)
+- [Structure Guide](references/structure.md)
+- [Style and Medium Guide](references/style-and-medium.md)
+- [Timing and Format Guide](references/timing-and-format.md)
