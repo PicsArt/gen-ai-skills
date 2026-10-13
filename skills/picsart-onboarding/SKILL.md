@@ -1,6 +1,9 @@
 ---
 name: picsart-onboarding
-description: Get started with Picsart Video - check that your Picsart account is connected and how many credits you have, open Picsart in the sidebar, and see what you can make and edit. Use when the user has just installed Picsart Video, asks to set it up, asks what it can do, or asks how to get started.
+description: Get started with Picsart Video - check that your Picsart account is connected and how many credits you have, open Picsart beside the conversation where the host can, and see what you can make and edit. Use when the user has just installed Picsart Video, asks to set it up, asks what it can do, or asks how to get started.
+metadata:
+  uses: open-picsart
+  optional: open-picsart
 ---
 
 # Getting started with Picsart Video
@@ -14,7 +17,7 @@ in the same conversation. Offer the rest in one line at the end instead.
 | Stage | Gate | Skills |
 |---|---|---|
 | 1. The account and the credits | — | — |
-| 2. Open Picsart | ASK | — |
+| 2. Open Picsart, when the host has it | ASK | open-picsart |
 | 3. What Picsart Video does | — | — |
 | 4. Where to start | ASK | — |
 
@@ -29,11 +32,10 @@ Call `picsart_credits` with `{}`.
   stage 3, and skip stage 2 until they are signed in.
 - **It fails otherwise:** say that the balance could not be read right now, and go on.
 
-## 2. Open Picsart
+## 2. Open Picsart, when the host has it
 
-Picsart opens beside the conversation: their recent files, their Picsart Drive, the AI tools, and
-where to start a film or a motion design video. ASK: "1. Open Picsart" / "2. Not now". On 1, call `picsart_workspace_open` with `{}`, and say in
-one line what they can do there. On 2, go on.
+Only when the open-picsart skill is among your skills: offer it as that skill says. Without it,
+skip this stage and say nothing about it: not every host can open Picsart beside the conversation.
 
 ## 3. What Picsart Video does
 

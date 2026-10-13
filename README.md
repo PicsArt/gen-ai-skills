@@ -69,6 +69,7 @@ Skills the use cases load:
 | [`media-analysis`](./skills/media-analysis) | Watch the user's own talking footage and turn it into facts you can build on. |
 | [`motion-design`](./skills/motion-design) | The craft of adding motion to any MP Scene, whatever the video. |
 | [`motion-import`](./skills/motion-import) | Bring a design or static assets into a scene as LAYERS, not flat frames, whenever they are going to move. |
+| [`open-picsart`](./skills/open-picsart) | Open Picsart beside the conversation, where the host can. |
 | [`music-bed`](./skills/music-bed) | Draft, generate and lay an instrumental music bed under a finished video's speech. |
 | [`reframe`](./skills/reframe) | Put the user's own footage in a frame of another shape. |
 | [`scene-compose`](./skills/scene-compose) | Build and edit an MP Scene with the scene tools. |
