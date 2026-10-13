@@ -8,7 +8,7 @@ on:
 
 jobs:
   compliance:
-    name: HARDLINE Compliance
+    name: Agent Skills Compliance
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -24,6 +24,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Test the checker
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
 
       - name: Detect changed SKILL.md files
         id: changed
@@ -76,15 +79,13 @@ jobs:
             const body = [
               '## ❌ Skill Compliance Check Failed',
               '',
-              'One or more skills do not meet the catalog standards (description ≤60 chars,',
-              'full Hermes frontmatter, canonical section order, no broken links).',
+              'One or more skills break the Agent Skills spec or Anthropic\'s skill rules',
+              '(name, description, XML tags, frontmatter fields, broken links, backslash paths).',
               '',
               'Fix locally with:',
               '',
               '```bash',
               'python3 scripts/check-skill-compliance.py',
-              '# auto-fix structure/frontmatter (you may still need to edit prose):',
-              'python3 scripts/normalize-skills.py',
               '```',
               '',
               '<details><summary>Full check output</summary>',

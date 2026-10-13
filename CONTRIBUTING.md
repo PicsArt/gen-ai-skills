@@ -7,7 +7,7 @@ Thanks for your interest in contributing to `gen-ai-skills`. Contributions that 
 | Path | Description |
 |---|---|
 | `skills/` | One directory per skill, named in kebab-case |
-| `scripts/` | Compliance checker, normalizer, and other dev utilities |
+| `scripts/` | Compliance checker, security scanner, and other dev utilities |
 | `.claude-plugin/` | Plugin manifest (`marketplace.json`) consumed by the Claude agent harness |
 | `.cursor-plugin/`, `.codex-plugin/`, `.agents/plugins/` | Equivalent plugin manifests for Cursor, Codex, and other OpenClaw-compatible agents |
 | `.mcp.json` | The MCP server declaration (`picsart-gen-ai`), referenced by relative path from every plugin manifest above |
@@ -51,34 +51,26 @@ After `./setup` completes, open your Claude agent and confirm the skill registry
 
 1. Create a directory under `skills/` named after your skill in kebab-case (e.g. `skills/picsart-upscale/`). The directory name is the install name users see at `~/.claude/skills/<name>/`.
 
-2. Add a `SKILL.md` at the root of that directory. **Frontmatter must include every field below** — CI will fail your PR otherwise:
+2. Add a `SKILL.md` at the root of that directory. It follows the open
+   [Agent Skills specification](https://agentskills.io/specification): `name` and `description` are
+   required, and the body is free-form Markdown.
 
    ```markdown
    ---
    name: picsart-upscale
-   description: One-sentence description ending with a period.
-   version: 1.0.0
-   author: Picsart
+   description: Upscale an image with the Picsart gen-ai MCP. Use when the user wants a photo larger or sharper.
    license: MIT
-   platforms: [macos, linux]
-   metadata:
-     hermes:
-       category: creative
-       tags: [picsart, upscale, image-quality]
    ---
 
    # Picsart Upscale
 
-   Two-to-three-sentence intro stating what the skill does and what it isn't for.
-
-   ## When to Use
-   ## Prerequisites
-   ## How to Run
-   ## Quick Reference
-   ## Procedure
-   ## Pitfalls
-   ## Verification
+   The instructions, in whatever sections help the agent most.
    ```
+
+   Optional fields: `license`, `compatibility`, `metadata`, `allowed-tools` from the spec. Hosts'
+   own fields are allowed but never required: Hermes Agent's `version`, `author`, `platforms` and
+   `metadata.hermes`, and Claude Code's `user-invocable`, `disable-model-invocation`,
+   `argument-hint` and `model`.
 
 3. Put supporting files inside the skill's own directory:
    - `references/` — supplementary docs (FLAGS, EXAMPLES, etc.)
@@ -94,29 +86,40 @@ After `./setup` completes, open your Claude agent and confirm the skill registry
 
 5. Bump the `version` in `VERSION` if this is a release-worthy change.
 
-## HARDLINE rules (CI-enforced)
+## Compliance rules (CI-enforced)
 
-Every skill must pass `python3 scripts/check-skill-compliance.py` before merge. The check verifies:
+Every skill must pass `python3 scripts/check-skill-compliance.py` before merge. It checks the open
+[Agent Skills specification](https://agentskills.io/specification) and Anthropic's
+[skill-authoring rules](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices),
+which are what Claude Code, Codex, Cursor and OpenClaw read.
+
+Errors block the merge:
 
 | Rule | What it checks |
 |---|---|
-| **description ≤ 60 chars** | One sentence, ends with a period. State the capability, not the implementation. No marketing words. |
-| **Full frontmatter** | `name`, `description`, `version`, `author`, `license`, `platforms`, `metadata.hermes.{category, tags}` all present. |
-| **Canonical section order** | `## When to Use` → `## Prerequisites` → `## How to Run` → `## Quick Reference` → `## Procedure` → `## Pitfalls` → `## Verification`. Extras allowed after the canonical seven. |
-| **No broken links** | Every relative link in SKILL.md must resolve to an existing file. |
+| **name** | Required. 1–64 lowercase letters, digits and single hyphens; equals the folder name; no "anthropic" or "claude". |
+| **description** | Required, 1–1024 characters. Say what the skill does and when to use it, with the words a user would say: the agent picks a skill from its description alone. |
+| **xml-tags** | No XML tag in `name` or `description`; hosts refuse the upload. |
+| **fields** | `compatibility` is a string of at most 500 characters, `metadata` is a mapping, `allowed-tools` is a string. |
+| **links** | Every relative link in the skill's Markdown files resolves. |
+| **paths** | File paths use forward slashes. |
+
+Warnings are printed but never block:
+
+| Rule | What it checks |
+|---|---|
+| **size** | `SKILL.md` stays under 500 lines; move detail into `references/`. |
+| **references** | References sit directly under `references/`, one level deep. |
+| **reference-toc** | A reference over 100 lines opens with a `## Contents` list of its sections. |
+| **leaves-skill** | No link out of the skill's folder; each skill installs on its own, so name another skill instead. |
+| **unknown-field** | A frontmatter field that is neither in the spec nor a known host extension. |
 
 Run the check locally:
 
 ```bash
 python3 scripts/check-skill-compliance.py            # all skills
 python3 scripts/check-skill-compliance.py skills/foo # one skill
-```
-
-If structural issues are flagged, use the normalizer as a starting point — it does what it can mechanically; you still need to write/review the prose:
-
-```bash
-python3 scripts/normalize-skills.py --dry-run        # preview changes
-python3 scripts/normalize-skills.py                  # apply
+python3 -m unittest discover -s scripts -p 'test_*.py'  # the checker's own tests
 ```
 
 The CI workflow (`.github/workflows/skill-compliance.yml`) runs the same check on every PR and blocks merge on failure.
