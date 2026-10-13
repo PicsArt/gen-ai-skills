@@ -53,7 +53,7 @@ If the user asks for a brand system rather than a look derived from references, 
   honestly that the guide will be thin — consistency cannot be distinguished from coincidence
   in a handful of frames.
 - **A vision-capable model** to do the analysis. Sensible default is your own vision; the
-  alternatives (Picsart gen-ai MCP, `gen-ai` CLI, a named model via MCP) are chosen in
+  alternatives (Picsart gen-ai MCP, a named model via MCP) are chosen in
   stage 0 of the Procedure.
 - **The stage 0 answers** — purpose, audience, exclusions, model — before a single image is
   examined.
@@ -136,7 +136,6 @@ work done by another. Offer the routes that exist:
 |---|---|---|
 | Host model vision | You look at the images yourself | Fast, no setup, good general description |
 | Picsart gen-ai MCP | `picsart-gen-ai` server at `api.picsart.com/gen-ai/mcp` | Stays inside Picsart, generation and analysis in one place |
-| `gen-ai` CLI | `--model gemini-3-pro-image`, `--model flux-2-pro` | Explicit model choice, batch work |
 | Named model via MCP | ask the MCP for `gemini-3-pro-image` or similar | When the user wants a specific vision model |
 
 Sensible default: **your own vision for analysis, and ask before generation** since that

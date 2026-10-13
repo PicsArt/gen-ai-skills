@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Picsart generative-AI skills for Cursor and other agent runtimes.",
-    "version": "0.2.1"
+    "version": "0.3.0"
   },
   "plugins": [
     {

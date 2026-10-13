@@ -4,8 +4,8 @@ Goal: get this repo's skills (and optionally the full bundle) into OpenClaw's
 registry, ClawHub, so OpenClaw users can find and install them.
 
 This repo contains two publishable things:
-- **Skills** — the 20 `skills/<name>/SKILL.md` packs.
-- **Bundle** — the Claude-style `marketplace.json` + `.mcp.json` (the Picsart MCP server).
+- **Skills** — the `skills/<name>/SKILL.md` packs.
+- **Bundle** — the Claude-style `marketplace.json` + `.mcp.json` (the Picsart gen-ai MCP server).
 
 They publish by different commands. The skills path is confirmed and low-risk;
 the bundle path needs a dry-run check first.
@@ -23,7 +23,7 @@ the bundle path needs a dry-run check first.
       ```
 
 ## Step 1 — Publish the skills (confirmed path, no wrapper needed)
-Each skill folder publishes as its own versioned package. Publish all 20 in a loop:
+Each skill folder publishes as its own versioned package. Publish them all in a loop:
 
 ```bash
 for d in skills/*/; do
@@ -34,7 +34,7 @@ done
 
 - `--slug` becomes the install name → `openclaw skills install @PicsArt/<slug>`.
 - Refine `--name` to human titles later if desired (optional).
-- UNCERTAIN: whether one command can publish all 20 at once. The loop publishes
+- UNCERTAIN: whether one command can publish them all at once. The loop publishes
   per-skill, which is the safe/confirmed behavior.
 
 - [ ] All skills published.
@@ -53,7 +53,7 @@ clawhub package publish PicsArt/gen-ai-skills --dry-run
 
 ## Step 3 — Verify it's live
 - [ ] `openclaw skills search picsart` shows the skills.
-- [ ] Install by slug works: `openclaw skills install @PicsArt/gen-ai-use`
+- [ ] Install by slug works: `openclaw skills install @PicsArt/picsart-add-media`
 
 ## No-registry fallback (works today, nothing to publish)
 Users can already install straight from GitHub:
@@ -68,7 +68,7 @@ openclaw plugins install picsart --marketplace https://github.com/PicsArt/gen-ai
 3. ClawHub CLI install method — confirm from clawhub.ai docs.
 
 ## Notes
-- The MCP server's tools surface in OpenClaw as `picsart__<tool>` under the
+- The MCP server's tools surface in OpenClaw as `picsart-gen-ai__<tool>` under the
   built-in `bundle-mcp` plugin.
 - There is no `openclaw plugins marketplace add` step — install points directly at
   the source.

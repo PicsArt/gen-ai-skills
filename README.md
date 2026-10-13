@@ -1,10 +1,8 @@
 # gen-ai-skills
 
-Shared skills, prompts, and tooling for working with Picsart's `gen-ai` CLI and related generative-AI workflows.
+Shared skills for Picsart's gen-ai MCP server (`picsart-gen-ai`, `https://api.picsart.com/gen-ai/mcp`), packaged as a plugin for Claude Code, Cursor and Codex.
 
-This repository is a public, community-friendly home for reusable skills and recipes. It is **not** the source of the `gen-ai` CLI itself — it complements it.
-
-Skills here are consumable by any agent that reads `SKILL.md` files: Claude Code, Cursor, Codex, and others.
+Skills here are consumable by any agent that reads `SKILL.md` files. Every skill uses the gen-ai MCP server's tools; the plugin manifests connect it through [`.mcp.json`](./.mcp.json).
 
 ## Install
 
@@ -24,14 +22,15 @@ gen-ai-skills/
 ├── .github/workflows/   # CI (security scan, lint)
 ├── scripts/             # Repo tooling (scan-skill.py, ...)
 ├── skills/              # All skills live here, one directory each
-│   ├── gen-ai-use/
+│   ├── picsart-add-media/
 │   │   └── SKILL.md
-│   ├── marketer-campaign-kit/
+│   ├── video-prompt-engineer/
 │   │   └── SKILL.md
 │   └── ...
 ├── INSTALL.md
 ├── CONTRIBUTING.md
 ├── VERSION
+├── .mcp.json            # the picsart-gen-ai MCP server, shared by every manifest
 ├── setup                # universal symlink installer
 └── README.md
 ```
@@ -40,68 +39,11 @@ Each skill lives in its own directory under `skills/`. The directory name is the
 
 ## Skills
 
-This bundle ships **21 skills**. Several skills are mode-routers — one entry point with `references/modes/` for variants — to keep the catalog small and trigger-friendly.
-
-### Core CLI
-
 | Skill | Description |
 |---|---|
-| [`gen-ai-use`](./skills/gen-ai-use) | Generate AI images, videos, audio via the Picsart `gen-ai` CLI. |
-| [`gen-ai-persona-creation`](./skills/gen-ai-persona-creation) | Create AI influencers, branded characters, or pet personas from a brief or reference. |
-| [`gen-ai-explainer`](./skills/gen-ai-explainer) | Produce a short animated explainer video: research → script → assets → render. |
-
-### API
-
-| Skill | Description |
-|---|---|
-| [`picsart-api`](./skills/picsart-api) | Call Picsart's image, video, GenAI, and variable-data REST APIs via the `picsart` MCP server. |
-| [`picsart-add-media`](./skills/picsart-add-media) | Turn a user's local file into a hosted URL via the Picsart upload widget. |
-
-### Multi-mode skills
-
-| Skill | Description |
-|---|---|
-| [`product-photo-studio`](./skills/product-photo-studio) | Transform product photos. Modes: bulk-restyle, compose, seasonal, variants, reshoot, mockups. |
-| [`text-to-visual`](./skills/text-to-visual) | Generate visuals from text. Modes: single image, article-set, OG image. |
-| [`multi-channel-bundle`](./skills/multi-channel-bundle) | Ship a coordinated multi-format bundle. Modes: campaign, launch. |
-
-### Agency
-
-| Skill | Description |
-|---|---|
-| [`agency-brand-scoping`](./skills/agency-brand-scoping) | Five on-direction visual variations for new-brand or pitch discovery. |
-| [`agency-client-handoff`](./skills/agency-client-handoff) | White-label deliverable export as a zip. |
-| [`agency-multi-brand-pack`](./skills/agency-multi-brand-pack) | Per-client asset templates scoped by workspace. |
-| [`agency-pitch-mockups`](./skills/agency-pitch-mockups) | Client-branded pitch mockups (hero + tiles + quote slides). |
-
-### Dev
-
-| Skill | Description |
-|---|---|
-| [`dev-app-assets`](./skills/dev-app-assets) | Consistent app asset set: icons, empty states, onboarding illustrations. |
-| [`dev-avatar-service`](./skills/dev-avatar-service) | Deterministic default-avatar generator per user seed. |
-| [`dev-screenshot-beautifier`](./skills/dev-screenshot-beautifier) | Turn a raw product screenshot into an LP-ready hero. |
-
-### Enterprise
-
-| Skill | Description |
-|---|---|
-| [`enterprise-brand-governor`](./skills/enterprise-brand-governor) | Gate every generation through a `brand.md` policy file. |
-| [`enterprise-pinned-registry`](./skills/enterprise-pinned-registry) | Pin exact model versions for reproducible output across teams. |
-| [`enterprise-press-batch`](./skills/enterprise-press-batch) | Process press photos into wire / web / print / social packs. |
-
-### Marketer
-
-| Skill | Description |
-|---|---|
-| [`marketer-ad-variant-factory`](./skills/marketer-ad-variant-factory) | Fan out 50+ platform-native ad variants from one hero image. |
-| [`marketer-localize-campaign`](./skills/marketer-localize-campaign) | Localize a campaign across N markets (copy + visuals). |
-
-### Prosumer
-
-| Skill | Description |
-|---|---|
-| [`prosumer-headshot-studio`](./skills/prosumer-headshot-studio) | Selfie → four polished headshots (LinkedIn / ID / editorial / casual). |
+| [`picsart-add-media`](./skills/picsart-add-media) | Turn the user's own files into hosted URLs with the gen-ai MCP's upload tools. |
+| [`style-guide-builder`](./skills/style-guide-builder) | Build a reusable visual style guide from reference images. |
+| [`video-prompt-engineer`](./skills/video-prompt-engineer) | Write and fix prompts for AI video generation. |
 
 More skills are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md).
 

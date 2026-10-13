@@ -10,7 +10,7 @@ Thanks for your interest in contributing to `gen-ai-skills`. Contributions that 
 | `scripts/` | Compliance checker, normalizer, and other dev utilities |
 | `.claude-plugin/` | Plugin manifest (`marketplace.json`) consumed by the Claude agent harness |
 | `.cursor-plugin/`, `.codex-plugin/`, `.agents/plugins/` | Equivalent plugin manifests for Cursor, Codex, and other OpenClaw-compatible agents |
-| `.mcp.json` | The single MCP server declaration, referenced by relative path from every plugin manifest above |
+| `.mcp.json` | The MCP server declaration (`picsart-gen-ai`), referenced by relative path from every plugin manifest above |
 | `.github/workflows/` | CI workflows; `skill-compliance.yml` blocks merge on any compliance failure |
 | `VERSION` | Single source of truth for the current release version |
 
@@ -22,8 +22,8 @@ Thanks for your interest in contributing to `gen-ai-skills`. Contributions that 
 duplicate an entry's JSON body elsewhere (a skill's `SKILL.md` may *document* how to reach a server, but
 should link to or mirror `.mcp.json`, not fork it).
 
-Keep each entry to transport and URL only — `type` and `url`, plus `headers` only for a Picsart-issued
-API key this repo's own users need (see the `picsart` entry). Do not add client-specific auth
+The one server is `picsart-gen-ai`; skills here use its tools and no other server's. Keep each entry
+to transport and URL only — `type` and `url`. Do not add client-specific auth
 configuration (e.g. Claude Code's `oauth` block): the same `.mcp.json` is read by Claude Code, Cursor,
 and Codex, and a server that implements the MCP authorization spec correctly — free tools answering
 anonymously, gated tools returning a `401` with a `WWW-Authenticate` challenge — needs nothing more than
