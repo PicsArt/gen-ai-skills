@@ -9,16 +9,24 @@
     "skills/film-finishing",
     "skills/film-shots",
     "skills/film-story",
+    "skills/layouts",
     "skills/media-analysis",
     "skills/motion",
     "skills/motion-design",
     "skills/motion-import",
     "skills/music-bed",
+    "skills/picsart-onboarding",
     "skills/reframe",
     "skills/scene-compose",
+    "skills/screen-analysis",
+    "skills/screen-promo",
+    "skills/screen-tutorial",
+    "skills/screen-zoom",
     "skills/short-film",
     "skills/short-reel-maker",
     "skills/speech-cuts",
-    "skills/video-core"
+    "skills/talking-head",
+    "skills/video-core",
+    "skills/voice-over"
   ]
 }
