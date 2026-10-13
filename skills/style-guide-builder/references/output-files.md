@@ -3,6 +3,25 @@
 Required shape for each file written to `~/.gen-ai/projects/style/<slug>/`. Keep the headings
 exactly as given: other skills read these files, and a renamed heading breaks them.
 
+## Contents
+
+One section per file:
+
+- STYLE.md
+- palette.md
+- rendering.md
+- lighting.md
+- camera.md
+- characters.md
+- environments.md
+- motion.md
+- typography.md
+- negatives.md
+- audience.md
+- product.md
+- extrapolation.md
+- fragments.md
+
 Every rule carries its evidence in brackets: `[11/12 frames]`, `[2 frames, provisional]`,
 `[inferred, no example]`. A rule with no bracket is not finished.
 

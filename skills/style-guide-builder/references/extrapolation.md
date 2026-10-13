@@ -2,6 +2,15 @@
 
 How to render something the references never showed.
 
+## Contents
+
+- The principle
+- Deriving the rules
+- Worked chains
+- Recording confidence
+- The interaction with prompt writing
+- What not to extrapolate
+
 This is the file that makes a style guide worth having. Describing what is in the references
 is the easy half; nearly everything generated later will be something else. A guide built from
 twelve frames of a cartoon will be asked for a pig, a bus stop and a rainstorm, none of which

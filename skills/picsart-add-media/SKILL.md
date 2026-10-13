@@ -115,5 +115,5 @@ whatever tool the user's original request needs (`image_url`, `video_url`, etc.)
 
 ## Related
 
-- [`video-prompt-engineer`](../video-prompt-engineer/SKILL.md) — writes the prompt for a video
-  generated from the URLs this skill returns.
+- The `video-prompt-engineer` skill writes the prompt for a video generated from the URLs this
+  skill returns.
