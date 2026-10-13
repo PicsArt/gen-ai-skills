@@ -1,8 +1,13 @@
 # gen-ai-skills
 
-Shared skills for Picsart's gen-ai MCP server (`picsart-gen-ai`, `https://api.picsart.com/gen-ai/mcp`), packaged as a plugin for Claude Code, Cursor and Codex.
+Picsart AI video skills for Picsart's gen-ai MCP server (`picsart-gen-ai`, `https://api.picsart.com/gen-ai/mcp`), packaged as a plugin for Claude Code, Cursor and Codex.
 
-Skills here are consumable by any agent that reads `SKILL.md` files. Every skill uses the gen-ai MCP server's tools; the plugin manifests connect it through [`.mcp.json`](./.mcp.json).
+- Turn a screen recording into a short vertical promo or a step-by-step tutorial.
+- Cut an interview, podcast or vlog into a tight vertical reel, with captions and music if wanted.
+- Turn a design or your own images into a motion-designed ad.
+- Make a short film from a story, with recurring characters and one look.
+
+Every paid step is quoted before anything is charged. The skills work in any agent that reads `SKILL.md` files; the plugin manifests connect the MCP server through [`.mcp.json`](./.mcp.json). You need a Picsart account.
 
 ## Install
 
@@ -31,11 +36,14 @@ gen-ai-skills/
 ├── CONTRIBUTING.md
 ├── VERSION
 ├── .mcp.json            # the picsart-gen-ai MCP server, shared by every manifest
+├── generated.json       # the skill folders that are generated, not hand-written
 ├── setup                # universal symlink installer
 └── README.md
 ```
 
-Each skill lives in its own directory under `skills/`. The directory name is the install name. The directory must contain a `SKILL.md` with YAML frontmatter (`name`, `description`, optional `argument-hint`, optional `allowed-tools`) followed by the skill body.
+Each skill lives in its own directory under `skills/`. The directory name is the install name. The directory holds a `SKILL.md` that follows the open [Agent Skills specification](https://agentskills.io/specification): YAML frontmatter with `name` and `description`, then the instructions.
+
+A use case loads other skills by name (every one reads `video-core` first), so install the whole repo rather than a single use case.
 
 ## Skills
 

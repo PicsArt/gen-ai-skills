@@ -11,6 +11,7 @@ Thanks for your interest in contributing to `gen-ai-skills`. Contributions that 
 | `.claude-plugin/` | Plugin manifest (`marketplace.json`) consumed by the Claude agent harness |
 | `.cursor-plugin/`, `.codex-plugin/`, `.agents/plugins/` | Equivalent plugin manifests for Cursor, Codex, and other OpenClaw-compatible agents |
 | `.mcp.json` | The MCP server declaration (`picsart-gen-ai`), referenced by relative path from every plugin manifest above |
+| `generated.json` | The skill folders that are generated rather than hand-written; see [Generated skills](#generated-skills) |
 | `.github/workflows/` | CI workflows; `skill-compliance.yml` blocks merge on any compliance failure |
 | `VERSION` | Single source of truth for the current release version |
 
@@ -78,13 +79,16 @@ After `./setup` completes, open your Claude agent and confirm the skill registry
    - `templates/` — output templates
    - `assets/` — fixtures, sample images, etc.
 
-4. Add an entry to `.claude-plugin/marketplace.json` under `plugins[0].skills`:
-
-   ```json
-   { "name": "picsart-upscale", "path": "skills/picsart-upscale", "invoke": "/picsart:picsart-upscale" }
-   ```
+4. No manifest change is needed: every plugin manifest reads the whole `skills/` folder. Add a row for
+   the skill to the README's hand-written table.
 
 5. Bump the `version` in `VERSION` if this is a release-worthy change.
+
+## Generated skills
+
+The folders listed in [`generated.json`](./generated.json) are generated, and the next generation
+overwrites them. Don't edit them in a pull request here; open an issue describing the change
+instead. A hand-written skill must not reuse a generated folder's name.
 
 ## Compliance rules (CI-enforced)
 
@@ -127,10 +131,10 @@ The CI workflow (`.github/workflows/skill-compliance.yml`) runs the same check o
 ## Skill conventions
 
 - One skill = one directory under `skills/`. Don't nest skills inside skills.
-- `description` is the single most important field — agents use it to decide whether to invoke the skill. Keep it short, factual, and trigger-friendly.
+- `description` is the single most important field — agents use it to decide whether to invoke the skill. Say what the skill does and when to use it, in the words a user would say.
 - Keep `SKILL.md` self-contained. Long references go in `references/` and link from `SKILL.md`.
 - Don't shell out to anything that requires interactive input.
-- Reference Hermes tool names in prose (`terminal`, `web_extract`, `read_file`, `search_files`, ...) instead of shell utilities (`grep`, `cat`, `curl`, `sed`).
+- Name MCP tools by their exact server names (`picsart_media_upload`, `picsart_generate`, ...), and only tools the gen-ai MCP serves.
 - If your skill requires a third-party CLI tool, API, or Python package, list it in the `## Prerequisites` section of `SKILL.md` with the minimum required version and where to obtain it. Do not assume the tool is installed.
 - Do not introduce Python package dependencies in `scripts/` without updating the top-level `README.md` and noting the package name, version, and license.
 

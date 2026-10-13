@@ -1,6 +1,6 @@
 ---
 name: style-guide-builder
-description: Build a reusable visual style guide from reference images.
+description: Build a reusable visual style guide from reference images - how the style renders what the references show and what they never show - as markdown files other skills read. Use when the user has reference images or screenshots and wants new images or video to match their look.
 version: 1.0.0
 author: Picsart
 license: MIT
@@ -44,8 +44,8 @@ guide has to answer two different questions:
 The second question is the one that makes a style guide useful rather than decorative, and
 most of the work goes into it. See `references/extrapolation.md`.
 
-If the user asks for a brand system rather than a look derived from references, that is
-`agency-brand-scoping` and the brandkit tooling, not this.
+A brand system designed from scratch, rather than a look derived from references, is not this
+skill's job.
 
 ## Prerequisites
 
@@ -332,6 +332,4 @@ duplicating it.
 - **`video-prompt-engineer`** reads this guide for style, palette, lighting and camera, and
   handles duration, camera movement, motion and exclusions. Point it at the slug. When it hits
   an element the guide does not cover, it applies `extrapolation.md` rather than inventing.
-- **`text-to-visual`** and **`product-photo-studio`** can take `fragments.md` directly.
-- If the user asks for a brand system rather than a look derived from references, that is
-  `agency-brand-scoping` and the brandkit tooling, not this.
+- Any image or video generation prompt can take `fragments.md` directly.

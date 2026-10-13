@@ -1,6 +1,6 @@
 ---
 name: video-prompt-engineer
-description: Write and fix prompts for AI video generation.
+description: Write, improve or repair prompts for AI video generation - commercial, live action and animation - and trace defects in generated clips (extra limbs, warping, drift, unwanted text) to the clause that was missing. Use when the user wants a video prompt written or reviewed, a clip to match a style guide, or a generated video fixed.
 version: 1.0.0
 author: Picsart
 license: MIT

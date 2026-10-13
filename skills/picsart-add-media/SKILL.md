@@ -1,6 +1,6 @@
 ---
 name: picsart-add-media
-description: Bring the user's own clips, photos, or files into Picsart.
+description: Bring the user's own clips, photos or audio into Picsart as hosted URLs, through the gen-ai MCP's upload widget or, where a shell can read the file, a direct upload. Use when a Picsart tool needs a URL and the media is on the user's machine or in a chat attachment.
 version: 1.0.0
 author: Picsart
 license: MIT

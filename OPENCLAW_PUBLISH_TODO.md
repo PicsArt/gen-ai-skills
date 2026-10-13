@@ -16,7 +16,7 @@ the bundle path needs a dry-run check first.
 ## Step 0 — Prerequisites
 - [ ] Install the ClawHub CLI (`clawhub`). Confirm install method at clawhub.ai docs.
 - [ ] GitHub account is **≥ 1 week old** (hard requirement to publish).
-- [ ] At repo root: `cd /Users/sargis/job/gen-ai-skills`
+- [ ] Work from the root of a clone of this repo.
 - [ ] Authenticate:
       ```bash
       clawhub login
