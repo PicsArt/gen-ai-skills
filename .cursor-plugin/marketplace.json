@@ -5,7 +5,7 @@
     "url": "https://picsart.com"
   },
   "metadata": {
-    "description": "Picsart AI video skills for Cursor and other agents that read SKILL.md files, on the Picsart gen-ai MCP.",
+    "description": "Picsart GenAI & Video - AI video skills for Cursor and other agents that read SKILL.md files, on the Picsart gen-ai MCP.",
     "version": "0.4.0"
   },
   "plugins": [

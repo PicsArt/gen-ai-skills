@@ -24,7 +24,7 @@ fi
 
 VERSION="$(tr -d '[:space:]' < "$SKILL_DIR/VERSION")"
 echo
-echo "${BOLD}Picsart setup — v$VERSION${RESET}"
+echo "${BOLD}Picsart GenAI & Video setup — v$VERSION${RESET}"
 echo
 
 # ─── Parse flags ────────────────────────────────────────────
