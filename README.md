@@ -51,6 +51,8 @@ A use case loads other skills by name (every one reads `video-core` first), so i
 
 Generated; [`generated.json`](./generated.json) lists them. Don't edit these folders by hand: the next generation overwrites them.
 
+<!-- generated-skills:start -->
+
 Use cases, the entry points a user asks for:
 
 | Skill | Description |
@@ -87,6 +89,8 @@ Skills the use cases load:
 | [`talking-head`](./skills/talking-head) | Put a generated presenter on screen and keep them honest. |
 | [`video-core`](./skills/video-core) | The rules every Picsart Video use case follows. |
 | [`voice-over`](./skills/voice-over) | Generate a voice-over from written lines. |
+
+<!-- generated-skills:end -->
 
 ### Hand-written
 
