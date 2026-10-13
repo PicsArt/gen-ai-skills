@@ -1,0 +1,24 @@
+{
+  "note": "Generated. Every path here is regenerated, and pruned when it is no longer generated. Do not edit these folders by hand.",
+  "mcp": "https://api.picsart.com/gen-ai/mcp",
+  "paths": [
+    "skills/captions",
+    "skills/evaluate",
+    "skills/film-cast",
+    "skills/film-edit",
+    "skills/film-finishing",
+    "skills/film-shots",
+    "skills/film-story",
+    "skills/media-analysis",
+    "skills/motion",
+    "skills/motion-design",
+    "skills/motion-import",
+    "skills/music-bed",
+    "skills/reframe",
+    "skills/scene-compose",
+    "skills/short-film",
+    "skills/short-reel-maker",
+    "skills/speech-cuts",
+    "skills/video-core"
+  ]
+}
