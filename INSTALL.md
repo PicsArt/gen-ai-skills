@@ -1,4 +1,4 @@
-# Install Picsart Gen-AI Skills
+# Install Picsart Video
 
 Skills shipped in this repo are listed in [README.md](./README.md). Each skill is a directory under `skills/` containing a `SKILL.md`.
 
