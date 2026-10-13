@@ -1,0 +1,29 @@
+{
+  "note": "Written by picsart-video-plugin (npm run build:gen-ai-skills). Every path here is regenerated, and pruned when it is no longer generated. Do not edit by hand.",
+  "source": "d9bda7b",
+  "mcp": "https://api.picsart.com/gen-ai/mcp",
+  "server": {
+    "name": "pa-ai-models-mcp-server",
+    "version": "3.4.0"
+  },
+  "paths": [
+    "skills/captions",
+    "skills/evaluate",
+    "skills/film-cast",
+    "skills/film-edit",
+    "skills/film-finishing",
+    "skills/film-shots",
+    "skills/film-story",
+    "skills/media-analysis",
+    "skills/motion",
+    "skills/motion-design",
+    "skills/motion-import",
+    "skills/music-bed",
+    "skills/reframe",
+    "skills/scene-compose",
+    "skills/short-film",
+    "skills/short-reel-maker",
+    "skills/speech-cuts",
+    "skills/video-core"
+  ]
+}
