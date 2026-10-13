@@ -23,7 +23,7 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "Picsart Video",
+    "displayName": "Picsart",
     "shortDescription": "Make finished short videos with Picsart.",
     "longDescription": "Turn a screen recording into a promo or a step-by-step tutorial, an interview or vlog into a tight vertical reel, a design into a motion ad, and a story into a short film. Built on the Picsart gen-ai MCP and one Picsart account; every paid step is quoted before anything is charged.",
     "developerName": "Picsart",
