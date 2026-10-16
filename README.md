@@ -1,10 +1,13 @@
 # gen-ai-skills
 
-Shared skills, prompts, and tooling for working with Picsart's `gen-ai` CLI and related generative-AI workflows.
+Picsart AI video skills for Picsart's gen-ai MCP server (`picsart-gen-ai`, `https://api.picsart.com/gen-ai/mcp`), packaged as a plugin for Claude Code, Cursor and Codex.
 
-This repository is a public, community-friendly home for reusable skills and recipes. It is **not** the source of the `gen-ai` CLI itself — it complements it.
+- Turn a screen recording into a short vertical promo or a step-by-step tutorial.
+- Cut an interview, podcast or vlog into a tight vertical reel, with captions and music if wanted.
+- Turn a design or your own images into a motion-designed ad.
+- Make a short film from a story, with recurring characters and one look.
 
-Skills here are consumable by any agent that reads `SKILL.md` files: Claude Code, Cursor, Codex, and others.
+Every paid step is quoted before anything is charged. The skills work in any agent that reads `SKILL.md` files; the plugin manifests connect the MCP server through [`.mcp.json`](./.mcp.json). You need a Picsart account.
 
 ## Install
 
@@ -24,84 +27,71 @@ gen-ai-skills/
 ├── .github/workflows/   # CI (security scan, lint)
 ├── scripts/             # Repo tooling (scan-skill.py, ...)
 ├── skills/              # All skills live here, one directory each
-│   ├── gen-ai-use/
+│   ├── picsart-add-media/
 │   │   └── SKILL.md
-│   ├── marketer-campaign-kit/
+│   ├── video-prompt-engineer/
 │   │   └── SKILL.md
 │   └── ...
 ├── INSTALL.md
 ├── CONTRIBUTING.md
 ├── VERSION
+├── .mcp.json            # the picsart-gen-ai MCP server, shared by every manifest
+├── generated.json       # the skill folders that are generated, not hand-written
 ├── setup                # universal symlink installer
 └── README.md
 ```
 
-Each skill lives in its own directory under `skills/`. The directory name is the install name. The directory must contain a `SKILL.md` with YAML frontmatter (`name`, `description`, optional `argument-hint`, optional `allowed-tools`) followed by the skill body.
+Each skill lives in its own directory under `skills/`. The directory name is the install name. The directory holds a `SKILL.md` that follows the open [Agent Skills specification](https://agentskills.io/specification): YAML frontmatter with `name` and `description`, then the instructions.
+
+A use case loads other skills by name (every one reads `video-core` first), so install the whole repo rather than a single use case.
 
 ## Skills
 
-This bundle ships **21 skills**. Several skills are mode-routers — one entry point with `references/modes/` for variants — to keep the catalog small and trigger-friendly.
+### Video
 
-### Core CLI
+Generated; [`generated.json`](./generated.json) lists them. Don't edit these folders by hand: the next generation overwrites them.
 
-| Skill | Description |
-|---|---|
-| [`gen-ai-use`](./skills/gen-ai-use) | Generate AI images, videos, audio via the Picsart `gen-ai` CLI. |
-| [`gen-ai-persona-creation`](./skills/gen-ai-persona-creation) | Create AI influencers, branded characters, or pet personas from a brief or reference. |
-| [`gen-ai-explainer`](./skills/gen-ai-explainer) | Produce a short animated explainer video: research → script → assets → render. |
+<!-- generated-skills:start -->
 
-### API
+Use cases, the entry points a user asks for:
 
 | Skill | Description |
 |---|---|
-| [`picsart-api`](./skills/picsart-api) | Call Picsart's image, video, GenAI, and variable-data REST APIs via the `picsart` MCP server. |
-| [`picsart-add-media`](./skills/picsart-add-media) | Turn a user's local file into a hosted URL via the Picsart upload widget. |
+| [`motion`](./skills/motion) | Turn static material into a real motion-designed video. |
+| [`picsart-onboarding`](./skills/picsart-onboarding) | Get started with Picsart Video. |
+| [`short-film`](./skills/short-film) | Make a short narrative film from a story. |
+| [`short-reel-maker`](./skills/short-reel-maker) | Cut the user's own footage. |
 
-### Multi-mode skills
-
-| Skill | Description |
-|---|---|
-| [`product-photo-studio`](./skills/product-photo-studio) | Transform product photos. Modes: bulk-restyle, compose, seasonal, variants, reshoot, mockups. |
-| [`text-to-visual`](./skills/text-to-visual) | Generate visuals from text. Modes: single image, article-set, OG image. |
-| [`multi-channel-bundle`](./skills/multi-channel-bundle) | Ship a coordinated multi-format bundle. Modes: campaign, launch. |
-
-### Agency
+Skills the use cases load:
 
 | Skill | Description |
 |---|---|
-| [`agency-brand-scoping`](./skills/agency-brand-scoping) | Five on-direction visual variations for new-brand or pitch discovery. |
-| [`agency-client-handoff`](./skills/agency-client-handoff) | White-label deliverable export as a zip. |
-| [`agency-multi-brand-pack`](./skills/agency-multi-brand-pack) | Per-client asset templates scoped by workspace. |
-| [`agency-pitch-mockups`](./skills/agency-pitch-mockups) | Client-branded pitch mockups (hero + tiles + quote slides). |
+| [`captions`](./skills/captions) | Put spoken words on screen from the transcript. |
+| [`evaluate`](./skills/evaluate) | Check a scene before the user sees it. |
+| [`film-cast`](./skills/film-cast) | Make a film's people, props and places consistent on pictures. |
+| [`film-edit`](./skills/film-edit) | Cut a film's accepted takes into one scene. |
+| [`film-finishing`](./skills/film-finishing) | Finish a film after picture lock. |
+| [`film-shots`](./skills/film-shots) | Shoot a film's shots as runs. |
+| [`film-story`](./skills/film-story) | Write a short film's story and break it down. |
+| [`media-analysis`](./skills/media-analysis) | Watch the user's own talking footage and turn it into facts you can build on. |
+| [`motion-design`](./skills/motion-design) | The craft of adding motion to any MP Scene, whatever the video. |
+| [`motion-import`](./skills/motion-import) | Bring a design or static assets into a scene as LAYERS, not flat frames, whenever they are going to move. |
+| [`music-bed`](./skills/music-bed) | Draft, generate and lay an instrumental music bed under a finished video's speech. |
+| [`reframe`](./skills/reframe) | Put the user's own footage in a frame of another shape. |
+| [`scene-compose`](./skills/scene-compose) | Build and edit an MP Scene with the scene tools. |
+| [`speech-cuts`](./skills/speech-cuts) | Choose the moments of talking footage worth keeping and cut them so no one is clipped mid-sentence. |
+| [`story-loops`](./skills/story-loops) | Keep a short video watched to the end with open loops. |
+| [`video-core`](./skills/video-core) | The rules every Picsart Video use case follows. |
 
-### Dev
+<!-- generated-skills:end -->
 
-| Skill | Description |
-|---|---|
-| [`dev-app-assets`](./skills/dev-app-assets) | Consistent app asset set: icons, empty states, onboarding illustrations. |
-| [`dev-avatar-service`](./skills/dev-avatar-service) | Deterministic default-avatar generator per user seed. |
-| [`dev-screenshot-beautifier`](./skills/dev-screenshot-beautifier) | Turn a raw product screenshot into an LP-ready hero. |
-
-### Enterprise
-
-| Skill | Description |
-|---|---|
-| [`enterprise-brand-governor`](./skills/enterprise-brand-governor) | Gate every generation through a `brand.md` policy file. |
-| [`enterprise-pinned-registry`](./skills/enterprise-pinned-registry) | Pin exact model versions for reproducible output across teams. |
-| [`enterprise-press-batch`](./skills/enterprise-press-batch) | Process press photos into wire / web / print / social packs. |
-
-### Marketer
+### Hand-written
 
 | Skill | Description |
 |---|---|
-| [`marketer-ad-variant-factory`](./skills/marketer-ad-variant-factory) | Fan out 50+ platform-native ad variants from one hero image. |
-| [`marketer-localize-campaign`](./skills/marketer-localize-campaign) | Localize a campaign across N markets (copy + visuals). |
-
-### Prosumer
-
-| Skill | Description |
-|---|---|
-| [`prosumer-headshot-studio`](./skills/prosumer-headshot-studio) | Selfie → four polished headshots (LinkedIn / ID / editorial / casual). |
+| [`picsart-add-media`](./skills/picsart-add-media) | Turn the user's own files into hosted URLs with the gen-ai MCP's upload tools. |
+| [`style-guide-builder`](./skills/style-guide-builder) | Build a reusable visual style guide from reference images. |
+| [`video-prompt-engineer`](./skills/video-prompt-engineer) | Write and fix prompts for AI video generation. |
 
 More skills are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md).
 

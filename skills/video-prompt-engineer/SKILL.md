@@ -1,6 +1,6 @@
 ---
 name: video-prompt-engineer
-description: Write and fix prompts for AI video generation.
+description: Write, improve or repair prompts for AI video generation - commercial, live action and animation - and trace defects in generated clips (extra limbs, warping, drift, unwanted text) to the clause that was missing. Use when the user wants a video prompt written or reviewed, a clip to match a style guide, or a generated video fixed.
 version: 1.0.0
 author: Picsart
 license: MIT
@@ -134,8 +134,6 @@ job, and do not assume a generic prompt suits every generator.
 |---|---|---|
 | Host model | You write the prompt yourself | Default. No setup |
 | Picsart gen-ai MCP | `picsart-gen-ai` server at `api.picsart.com/gen-ai/mcp` | Keeps generation and prompting in one place |
-| Picsart MCP | `picsart` server at `mcp.picsart.io/v1` | Editing and asset tools |
-| `gen-ai` CLI | `--model seedance-2.0`, `--model kling-v3-pro` | Explicit model, batch work |
 | A named model through MCP | ask for `gemini-3-pro-image` or similar | When the user wants a specific model to do the writing |
 
 **The target generator changes the prompt**, so ask which one the output is for even when you

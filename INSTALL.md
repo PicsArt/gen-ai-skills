@@ -1,10 +1,12 @@
-# Install Picsart Gen-AI Skills
+# Install Picsart GenAI & Video
 
-Skills shipped in this repo are listed in [README.md](./README.md). Each skill is a top-level directory containing a `SKILL.md` manifest.
+Skills shipped in this repo are listed in [README.md](./README.md). Each skill is a directory under `skills/` containing a `SKILL.md`.
+
+Install them all. A use case such as `screen-promo` loads other skills by name (`video-core`, `layouts`, `screen-zoom` and more), so a use case installed on its own is missing its steps. Every option below except a single-skill Hermes install takes the whole set.
 
 ## Prerequisites
 
-Most skills assume the Picsart `gen-ai` CLI is installed and authenticated. See the per-skill `SKILL.md` for the exact commands a skill expects.
+The skills call the Picsart gen-ai MCP server (`picsart-gen-ai`, `https://api.picsart.com/gen-ai/mcp`), declared in [`.mcp.json`](./.mcp.json). The plugin installs (Claude Code, Cursor, Codex, OpenClaw bundle) connect it for you; with a skills-only install, add that server to your agent yourself. You need a Picsart account: the server asks you to sign in the first time a step needs it, and every paid step is quoted before anything is charged.
 
 ## Option 1 — `npx skills` (recommended, cross-agent)
 
@@ -53,12 +55,12 @@ For [Hermes Agent](https://hermes-agent.nousresearch.com/) by Nous Research. Ins
 
 ```bash
 # Install one skill (note the skills/ path)
-hermes skills install PicsArt/gen-ai-skills/skills/gen-ai-use
+hermes skills install PicsArt/gen-ai-skills/skills/picsart-add-media
 
 # Or add the repo as a tap (recommended — surfaces every skill in `hermes skills browse`)
 hermes skills tap add PicsArt/gen-ai-skills
 hermes skills search picsart
-hermes skills install gen-ai-use
+hermes skills install picsart-add-media
 ```
 
 The tap layout uses `skills/` as the root path (Hermes' default), so adding the tap discovers every skill automatically. Skills install through Hermes' security scanner; trust level defaults to `community`.
@@ -77,7 +79,7 @@ openclaw skills install git:PicsArt/gen-ai-skills@main
 openclaw skills install git:PicsArt/gen-ai-skills@main --global
 ```
 
-Or install the whole thing as a bundle (skills + the Picsart MCP server), reading
+Or install the whole thing as a bundle (skills + the Picsart gen-ai MCP server), reading
 this repo's Claude-style `marketplace.json`:
 
 ```bash
@@ -86,10 +88,10 @@ openclaw plugins install picsart --marketplace https://github.com/PicsArt/gen-ai
 ```
 
 There is no `openclaw plugins marketplace add` step — point `install` directly at
-the source. The MCP server's tools surface as `picsart__<tool>` under OpenClaw's
+the source. The MCP server's tools surface as `picsart-gen-ai__<tool>` under OpenClaw's
 built-in `bundle-mcp` plugin.
 
-Once published to ClawHub (see below), skills install by slug instead:
+Once published to ClawHub (see [OPENCLAW_PUBLISH_TODO.md](./OPENCLAW_PUBLISH_TODO.md)), skills install by slug instead:
 
 ```bash
 openclaw skills install @PicsArt/<slug>
@@ -103,5 +105,5 @@ openclaw skills install @PicsArt/<slug>
 | `gh skill install` | `gh skill update PicsArt/gen-ai-skills` |
 | Claude Code marketplace | `/plugin update picsart@picsart` |
 | Setup script | `cd gen-ai-skills && git pull && ./setup` |
-| Hermes Agent | `hermes skills update gen-ai-use` |
+| Hermes Agent | `hermes skills update picsart-add-media` |
 | OpenClaw | `openclaw skills update --all` (or `openclaw plugins update picsart`) |

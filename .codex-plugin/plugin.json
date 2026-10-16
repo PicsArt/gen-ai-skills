@@ -1,7 +1,7 @@
 {
   "name": "picsart",
-  "version": "0.2.1",
-  "description": "Picsart generative-AI skills for Codex.",
+  "version": "0.4.0",
+  "description": "Picsart AI video skills for Codex, on the Picsart gen-ai MCP.",
   "author": {
     "name": "Picsart",
     "url": "https://picsart.com"
@@ -12,15 +12,20 @@
   "keywords": [
     "picsart",
     "gen-ai",
-    "image-generation",
-    "video-generation"
+    "mcp",
+    "video",
+    "screen-recording",
+    "reels",
+    "motion-design",
+    "short-film",
+    "video-editing"
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "Picsart Gen-AI",
-    "shortDescription": "Generate and edit image, video, and audio.",
-    "longDescription": "Generate high-quality video, images, and audio from 140+ AI models - all with one Picsart account.",
+    "displayName": "Picsart GenAI & Video",
+    "shortDescription": "Make finished short videos with Picsart.",
+    "longDescription": "Turn a screen recording into a promo or a step-by-step tutorial, an interview or vlog into a tight vertical reel, a design into a motion ad, and a story into a short film. Built on the Picsart gen-ai MCP and one Picsart account; every paid step is quoted before anything is charged.",
     "developerName": "Picsart",
     "category": "Creativity",
     "capabilities": [
@@ -31,9 +36,9 @@
     "privacyPolicyURL": "https://picsart.com/privacy-policy/",
     "termsOfServiceURL": "https://picsart.com/terms-of-use/",
     "defaultPrompt": [
-      "Generate three photoreal hero images for a product launch",
-      "Turn this product photo into a 6-second vertical video",
-      "Remove the background from this image and place it on marble"
+      "Turn this screen recording into a 30-second vertical promo",
+      "Cut a 30-second reel from my interview video",
+      "Make a short film about a lighthouse keeper and her cat"
     ],
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/icon.png",
