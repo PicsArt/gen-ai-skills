@@ -39,7 +39,9 @@ The input is one JSON object:
     darkens it) or `black`.
 - `transition` is optional and plays on every seam. Without it, every seam is a hard cut.
 
-It prints one JSON line, `{scene, duration, clips, notes}`. `notes` says, per clip, where the
+It prints one JSON line, `{scene, duration, clips, notes}`. `duration` is the clips' lengths added
+up, a transition included: its window overlaps the two clips it joins and adds no time. The scene's
+composition gives no `duration` of its own, so it follows the track. `notes` says, per clip, where the
 camera path swings across more of the source than one person would, with the centre to `hold`
 instead. Input it cannot cut from exits 1, with one line on stderr that says what is wrong.
 
@@ -147,8 +149,13 @@ def read_reframe(source_id: str, reframe: Json) -> Json:
     if not layers or not isinstance(layers[0], dict):
         raise InputError(f'{where}: its scene has no layer; pass the result as the tool returned it')
     layer = layers[0]
+    # The recording is the asset the layer plays, declared in a list or keyed by id.
     assets = scene.get('assets') or []
-    asset = assets[0] if isinstance(assets, list) and assets else {}
+    asset_id = (layer.get('content') or {}).get('assetId')
+    if isinstance(assets, dict):
+        assets = [{'id': k, **v} for k, v in assets.items() if isinstance(v, dict)]
+    assets = [a for a in assets if isinstance(a, dict)] if isinstance(assets, list) else []
+    asset = next((a for a in assets if a.get('id') == asset_id), assets[0] if assets else {})
     src_w = reframe.get('srcW', asset.get('width'))
     src_h = reframe.get('srcH', asset.get('height'))
     duration = reframe.get('duration', asset.get('duration', comp.get('duration')))
@@ -415,8 +422,9 @@ def cut(data: Any, base: str = '.') -> Json:
         assets.append(asset)
     scene = {
         'version': '1.0',
-        'composition': {'width': int(width), 'height': int(height), 'fps': fps, 'duration': duration,
-                        'background': BACKGROUND},
+        # No `duration`: the composition then lasts as long as the track, so a clip trimmed or
+        # deleted later shortens the reel instead of leaving its old end behind.
+        'composition': {'width': int(width), 'height': int(height), 'fps': fps, 'background': BACKGROUND},
         'assets': assets,
         'layers': [{'id': 'reel', 'content': track}],
     }

@@ -13,10 +13,17 @@ the draft wastes the grade; exporting before the grade wastes an export. Read
 
 ## The final-resolution pass
 
-Where the film was shot in drafts, the final quality comes from **re-generating every approved run
+The film was shot in drafts, as film-shots says, so its final quality comes from **re-generating every approved run
 at the finish settings with its saved final prompt, verbatim**: same blocks, same references, the
 model's final settings as `picsart_model_params` names them (a draft switch, a resolution). The
-whole batch is one quote and the film's biggest single spend.
+whole batch is one quote and the film's biggest single spend. Only a model with no draft setting
+skips this pass: its takes are already final.
+
+**The pass is offered, never assumed.** First ask the user whether the drafts are good enough for where the
+film goes, with the pass priced beside them: keep the drafts, or run the pass. Keeping them skips
+this section. A model whose draft returns a `finalizeDraft` handle (Seedance 2.5) renders the same
+take at the finish settings instead of a fresh roll: send its arguments unchanged, with the
+draft's prompt.
 
 Say it before it runs: this is a **fresh roll**, not an upscale. Small differences from the draft
 are expected. Where a re-roll breaks something the draft had (a face, a join), that is a repair on

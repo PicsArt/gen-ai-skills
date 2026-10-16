@@ -1,6 +1,6 @@
 ---
 name: film-shots
-description: Shoot a film's shots as runs - narrowing the video models a film can use, packing shot cards into multi-shot generations against the model's ceiling, joining runs, the scene pictures a run opens on, compiling and verifying every prompt on the server and passing it verbatim, the reference images a run carries, following async jobs, splitting takes at their real cuts, and routing notes to an edit, an extend or a re-roll. Use when a film's video models are narrowed, or its shots are planned into runs, pictured, generated, checked or repaired.
+description: Shoot a film's shots as runs - narrowing the video models a film can use, packing shot cards into multi-shot generations against the model's ceiling, joining runs, the scene pictures a run opens on, the key frames any generated video is drafted as before its footage is bought, compiling and verifying every prompt on the server and passing it verbatim, the reference images a run carries, following async jobs, splitting takes at their real cuts, and routing notes to an edit, an extend or a re-roll. Use when a film's video models are narrowed, or its shots are planned into runs, pictured, generated, checked or repaired.
 user-invocable: false
 ---
 
@@ -71,11 +71,28 @@ edge falls on a rest, propose the fix; never move an approved edge in silence.
 A run that changes a place or a person's state makes later runs wait for its accepted take: their
 frames of the change replace the clean pictures they contradict.
 
+## Key frames
+
+Any video that buys footage, a film or a single generated shot in another kind of video, is first
+seen as stills at its key points, as video-core says. Run `scripts/keyframes.py` on the plan's
+beats: it names each key point (the hook, the turn, the payoff, and the opening of every generated
+beat), says which of them the user's own footage already shows, and how the video reuses each
+still. Run it again with the stills before the video is quoted; `ready` stays false until every
+generated beat has an approved still.
+
+- A film's scene pictures are its key frames (`references/scene-pictures.md`).
+- Outside a film, make a key frame the way a scene picture is made: at the video's frame, from
+  full-size references. A crop of a screen recording is a low-resolution frame, never a reference.
+- **An approved key frame is used, not thrown away**: it opens its generation as picture 1 of
+  `imageUrls`, or travels as a `FRAME REFERENCE` (`references/references.md`). A still nothing in
+  the video will use is not a key frame.
+
 ## Compile and verify
 
 Every prompt is compiled on the server and passed to `picsart_generate` **verbatim**. The camera,
 lighting and acting language, the house lines and the templates are the compiler's; a paraphrase
-renders worse.
+renders worse. This holds for one shot made for another use case too, such as a screen video's
+generated opening: it goes through these steps like a run.
 
 1. **Compile** with `picsart_film_compile_prompt`: `kind` (`run` for a video, `still` or
    `scene-picture` for a picture, `map`, `edit`), the world's `look` ids (with `look.scheme` and
@@ -139,6 +156,11 @@ prompt.
   and model-specific settings in `extra` as `picsart_model_params` names them. **Every reference
   travels in `imageUrls`**, and no other image parameter is set: a frame travels as picture 1 of
   `imageUrls`.
+- **Runs are shot as drafts**: the lowest `resolution`, or the draft switch, that
+  `picsart_model_params` offers for the model, never its finish settings. A run keeps its `genSec`.
+  The finish settings are bought once, in film-finishing's final-resolution pass, after the user
+  calls the cut final. A model with no setting below its finish has no draft: say so in the
+  forecast, and its takes are final.
 - The batch is followed on one `picsart_render_monitor`, which reports back, as video-core says.
   Label each run's job with the run's shots.
 - **A dropped or timed-out call is not a failed generation.** The job is usually still running and
@@ -149,6 +171,7 @@ prompt.
 
 ## Traps
 
+- A run sent at the finish settings before the user calls the cut final.
 - Shooting shot by shot, or splitting runs for emphasis when the same shots fit fewer runs.
 - Treating the model's ceiling as a reason to make one long shot.
 - A prompt typed by hand, or a compiled one edited without compiling again.

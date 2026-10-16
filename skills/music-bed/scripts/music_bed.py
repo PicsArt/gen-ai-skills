@@ -19,6 +19,9 @@ The input is one JSON object:
 - `scene` is the scene the user approved. Speech is read from it where it plays: a clip of a
   `track` layer, an `audio` layer, or a `media` layer with a `duration` (a presenter's take over
   the picture), whose asset has a transcript, at that clip's or layer's place and trim. So a clip the user retrimmed in the editor is read as they left it.
+  The same is read inside a nested scene (a `scene_ref` to a `scene` asset: a nested panel or head
+  bubble), on the parent's clock through its trim and speed, until the layer ends. A source the
+  nested scene renames (panels.py's `rec`) is read by the id the parent declares for its uri.
 - `transcripts` maps an asset id in the scene to its `picsart_media_transcribe` result (or that
   result's `transcript`), or to the path of a file that holds it.
 - `music` is the generated bed: its hosted `url`, and its `duration` in seconds, as the
@@ -111,13 +114,29 @@ def windows(scene: Json) -> Tuple[List[Json], float]:
     """Where each source plays on the scene's clock, and when the scene ends."""
     out = []
     end = 0.0
-    images = {a.get('id') for a in scene.get('assets') or [] if isinstance(a, dict) and a.get('type') == 'image'}
+    assets = scene.get('assets') or []
+    declared = [{'id': k, **v} for k, v in assets.items() if isinstance(v, dict)] if isinstance(assets, dict) else [a for a in assets if isinstance(a, dict)]
+    images = {a.get('id') for a in declared if a.get('type') == 'image'}
+    lengths = {a.get('id'): a['duration'] for a in declared if isinstance(a.get('duration'), (int, float)) and not isinstance(a.get('duration'), bool)}
+    scenes = {a.get('id'): a.get('scene') for a in declared if a.get('type') == 'scene'}
+    uri_of = {a.get('id'): a.get('uri') for a in declared if isinstance(a.get('uri'), str)}
+    by_uri: Dict[str, List[Any]] = {}
+    for a in declared:
+        if isinstance(a.get('uri'), str):
+            by_uri.setdefault(a['uri'], []).append(a.get('id'))
+    spanning = []
+    composed = (scene.get('composition') or {}).get('duration')
     for layer in scene.get('layers') or []:
         if not isinstance(layer, dict):
             continue
         content = layer.get('content') or {}
         at = number(layer.get('start', 0), f'layer "{layer.get("id")}" start')
         if content.get('kind') == 'track':
+            # With no composition duration the track stops at its own layer's end, as reel_text.py
+            # reads it: a clip that runs over is cut there. With one, the composition decides.
+            stop = math.inf
+            if composed is None and layer.get('duration') is not None:
+                stop = at + number(layer['duration'], f'layer "{layer.get("id")}" duration')
             for i, clip in enumerate(content.get('clips') or []):
                 media = clip.get('content') or {}
                 trim = media.get('trim')
@@ -128,21 +147,28 @@ def windows(scene: Json) -> Tuple[List[Json], float]:
                     length = (number(trim['out'], 'trim out') - number(trim['in'], 'trim in')) / speed
                 else:
                     raise InputError(f'clips[{i}] has no duration and no trim, so its length is unknown')
-                if not media.get('muted') and media.get('assetId') not in images:
-                    out.append({'asset': media.get('assetId'), 'start': at, 'end': heard_until(at, length, trim, speed),
+                if not media.get('muted') and media.get('assetId') not in images and at < stop:
+                    out.append({'asset': media.get('assetId'), 'start': at, 'end': min(heard_until(at, length, trim, speed), stop),
                                 'in': float(trim['in']) if trim else 0.0, 'speed': speed})
                 at += length
-            end = max(end, at)
+            end = max(end, min(at, stop))
         elif content.get('kind') == 'audio':
             trim = content.get('trim')
+            speed = number(content.get('speed', 1), 'speed')
             if layer.get('duration') is not None:
                 length = number(layer['duration'], f'layer "{layer.get("id")}" duration')
             elif trim:
-                length = number(trim['out'], 'trim out') - number(trim['in'], 'trim in')
+                # The trim is in source seconds; at `speed` it plays for that long over the speed.
+                length = (number(trim['out'], 'trim out') - number(trim['in'], 'trim in')) / speed
             else:
+                # No duration and no trim: it spans the composition and bounds nothing, heard from the
+                # start of its source until the composition ends, or sooner where its asset runs out.
+                if not content.get('muted'):
+                    source = lengths.get(content.get('assetId'))
+                    spanning.append({'asset': content.get('assetId'), 'start': at, 'in': 0.0, 'speed': speed,
+                                     'end': at + source / speed if source is not None else math.inf})
                 continue
             if not content.get('muted'):
-                speed = number(content.get('speed', 1), 'speed')
                 out.append({'asset': content.get('assetId'), 'start': at, 'end': heard_until(at, length, trim, speed),
                             'in': float(trim['in']) if trim else 0.0, 'speed': speed})
             end = max(end, at + length)
@@ -155,16 +181,55 @@ def windows(scene: Json) -> Tuple[List[Json], float]:
                 out.append({'asset': content.get('assetId'), 'start': at, 'end': heard_until(at, length, trim, speed),
                             'in': float(trim['in']) if trim else 0.0, 'speed': speed})
             end = max(end, at + length)
+        elif content.get('kind') == 'scene_ref' and (isinstance(content.get('asset'), dict) or content.get('assetId') in scenes):
+            # A nested scene, a panel or a head bubble clipped by nesting: its sources play on its
+            # own clock, from its trim's in, at its speed, for as long as the layer lasts.
+            inner = content['asset'].get('scene') if isinstance(content.get('asset'), dict) else scenes[content['assetId']]
+            if not isinstance(inner, dict):
+                raise InputError(f'layer "{layer.get("id")}" refers to a scene that is not in the document')
+            plays, inner_end = windows(inner)
+            speed = number(content.get('speed', 1), 'speed')
+            trim = content.get('trim')
+            t_in = number(trim['in'], 'trim in') if trim else 0.0
+            t_out = number(trim['out'], 'trim out') if trim else inner_end
+            if layer.get('duration') is not None:
+                length = number(layer['duration'], f'layer "{layer.get("id")}" duration')
+                t_out = min(t_out, t_in + length * speed)
+            else:
+                length = (t_out - t_in) / speed
+            if not content.get('muted'):
+                for play in plays:
+                    # Nothing past the nested composition's end is heard, whatever the trim says.
+                    a, b = max(play['start'], t_in), min(play['end'], t_out, inner_end)
+                    if b > a:
+                        # A source the parent declares under another id is read by the parent's ids,
+                        # every one sharing its uri, so whichever has the transcript is heard. Its own
+                        # ids hold only where the parent does not give them to another source.
+                        ids = by_uri.get(play.get('uri')) or [
+                            i for i in [play['asset'], *play.get('aliases', [])]
+                            if play.get('uri') is None or uri_of.get(i) in (None, play.get('uri'))]
+                        ids = ids or [None]  # no id here, but the uri still lets an outer scene name it
+                        out.append({'asset': ids[0], 'aliases': ids[1:], 'uri': play.get('uri'),
+                                    'start': at + (a - t_in) / speed, 'end': at + (b - t_in) / speed,
+                                    'in': play['in'] + (a - play['start']) * play['speed'], 'speed': play['speed'] * speed})
+            end = max(end, at + length)
         elif layer.get('duration') is not None:
             end = max(end, at + number(layer['duration'], f'layer "{layer.get("id")}" duration'))
-    composed = (scene.get('composition') or {}).get('duration')
-    return out, number(composed, 'the composition duration') if composed is not None else end
+    end = number(composed, 'the composition duration') if composed is not None else end
+    for play in spanning:
+        play['end'] = min(play['end'], end)
+        out.append(play)
+    uris = {a.get('id'): a.get('uri') for a in declared}
+    for play in out:
+        play.setdefault('uri', uris.get(play['asset']))
+    return out, end
 
 
 def speech_on_scene(plays: List[Json], spans: Dict[str, List[Span]]) -> List[Span]:
     heard = []
     for play in plays:
-        for a, b in spans.get(play['asset'], []):
+        ids = [play['asset'], *play.get('aliases', [])]
+        for a, b in next((spans[i] for i in ids if i in spans), []):
             a = play['start'] + (a - play['in']) / play['speed']
             b = play['start'] + (b - play['in']) / play['speed']
             a, b = max(a, play['start']), min(b, play['end'])
@@ -198,6 +263,9 @@ def envelope(speech: List[Span], end: float, level: float, duck: float, fade_in:
         return max(0.0, min(rise, fall))
 
     times = {0.0, end, min(fade_in, end), max(end - fade_out, 0.0)}
+    if fade_in > 0 and fade_out > 0 and fade_in + fade_out > end:
+        # The fades overlap: the bed peaks where the rise meets the fall, so key that point too.
+        times.add(end * fade_in / (fade_in + fade_out))
     for a, b in speech:
         times.update({a - ATTACK, a, b, b + RELEASE})
     times = sorted(t for t in times if 0 <= t <= end)

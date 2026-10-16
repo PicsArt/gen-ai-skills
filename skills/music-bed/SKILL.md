@@ -63,7 +63,8 @@ Run `python3 scripts/music_bed.py bed.json` on the final scene:
 ```
 
 `transcripts` names every spoken source's saved transcript by its asset id: a clip of the reel, a
-voice-over layer or a presenter's take alike; media-analysis says how a source gets one.
+voice-over layer or a presenter's take alike, nested panels and bubbles included (the scene's
+own id for the source, not the nest's `rec`); media-analysis says how a source gets one.
 `duration` is the bed's length, as the generation or `picsart_media_probe_media` reports it. The script adds the bed as one `audio` layer: faded in over 1 s and out over 2 s, at
 volume 30 between lines and 15 under speech, dipping just before each spoken stretch and coming
 back over 0.6 s after it. It prints the scene and the stretches it ducked under.

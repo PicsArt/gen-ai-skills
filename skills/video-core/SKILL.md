@@ -1,6 +1,6 @@
 ---
 name: video-core
-description: The rules every Picsart Video use case follows - the five interactions (ASK, REVIEW, SHOW, SPEND, DELIVER), credit consent, asset URLs, when to preview and when to export, and the evaluation budget. Read it first, before any step of a use case.
+description: The rules every Picsart Video use case follows - how to talk to the user and ask, the five interactions (ASK, REVIEW, SHOW, SPEND, DELIVER), credit consent, asset URLs, when to preview and when to export, and the evaluation budget. Read it first, before any step of a use case.
 user-invocable: false
 ---
 
@@ -41,11 +41,95 @@ the six `apply_*` tools take `returnSceneUrl: true`: the result then names the e
 takes a URL, and as `sceneUrl` to `picsart_scene_editor`. Leave it off when you need to read the
 scene yourself, or when the next tool takes only the document.
 
+## How you talk to the user
+
+- **Say only what they need to decide.** The stages are your bookkeeping. No stage, tool or model
+  names, no accounting of what the last step cost, no explaining how the machine works, no
+  standing offers ("send more clips any time"). Two sentences and one question is a good turn.
+- **One decision per turn.** Keep everything else in the project record's `openDecisions` until
+  it blocks. Two questions go in one turn only when they are independent and weigh the same,
+  such as a length and a sound.
+- **One confirmation covers a set.** Things shown together get one "anything to change?", never
+  one sign-off per item.
+- **Free work never asks permission.** Opening a board, drafting, building a preview, updating the
+  record: do it. Questions are for taste and for money.
+- **A board is the whole turn.** Open it, add at most one line, and end the turn. Never write the
+  board's content out in chat beside it.
+- **Read the reply before the sentence around it.** A board's decision arrives as the host notes
+  say. Never ask the user to repeat, press again or paste a decision.
+- **A request to see something is a request to open its surface**: a plan on its board, a picture
+  as the picture, a cut in REVIEW. Never print its data instead.
+- **Material arriving is itself the request.** Pictures, takes or files that land are shown,
+  checked and put up for the user's verdict in that turn, unasked. Say what you observed; never
+  grant the approval yourself.
+- **Where things stand.** At the start of a session, and when a stage changes, one line: "Step 4 of
+  9 · the style — three to pick from". When asked, show the stages with ✓ or ✗, read from the
+  project record, in plain words.
+- **A picture of the plan is not the product.** A generated picture of what a planned shot or
+  screen would look like is shown as the plan's picture ("the plan's picture of the opening"),
+  never as the product's output or as something the app made. When the user's brief says no
+  finished footage exists, say so beside it.
+- **Progress is never damage.** Mid-stage state is "not yet". Alarm words are for a real gate
+  violation.
+- **Pace: director by default.** The user sees each decision before the next step starts. Say
+  once, at the start, that they can ask for express pace: you take the recommended answers and
+  bring them in only for the choices made by eye, every charged call and every review. Pace
+  changes how often you ask, never a safeguard.
+
+## Asking
+
+The questions themselves are in each use case. This is how every one of them is asked.
+
+1. **Read before you ask.** Read what the user gave first: their message, their file, the project
+   record. Never ask what they said or what you can see, and say it back instead: "Reels, so
+   9:16."
+2. **One field per question, the recommended answer first.** Put the reason in each option's own
+   line: what it changes in the video. Every option must lead to a visibly different result; an
+   option that changes nothing is not a choice.
+3. **Facts get options; ideas get words.** Where it goes, how long, how many, which language and
+   which sound are closed questions. The message, the angle and the tone are asked as a sentence
+   with one example to anchor it, or as 2–3 drafted sentences that differ, because a list of
+   generic options steers the answer instead of collecting it.
+4. **A guess is not an answer.** What you inferred stays "assumed", with how to change it, until
+   the user confirms it or a later answer settles it.
+5. **Derive, then say.** What follows from an answer, such as the frame from the destination, is
+   stated in one line, never asked.
+6. **"You decide" or "just make it"** takes the recommended answers for everything still open and
+   lists them as assumed. Ask nothing more until the next choice made by eye or the next charge.
+7. **Close the interview with the brief**: what the user said, what you read, what you assumed,
+   as three short lists, and anything that does not fit together ("topic 4 has 9 steps; at 20 s it
+   would rush"). The confirmation is the next real decision, never a yes.
+8. **Never ask a yes-or-tweak question.** "Looks good?" with "Change something" decides nothing,
+   because everyone says yes. Ask the decision that is actually open (which hook, which style,
+   which topics), or show the work and go on. Approving a played draft is REVIEW's.
+9. **Agree how you will iterate before the first build**: what the first draft is (a written plan,
+   stills, or a finished first video), what the user judges at each pass, and what is free and
+   what costs. Say it back in one line at each pass: "Pass 2 of 4 · stills of short 1".
+10. **Revise only what was named.** A comment changes what it points at. After the third round on
+    the same pass, ask what is causing the misses (the look, the pace, the words) instead of
+    patching again.
+11. **A note that holds everywhere becomes a standing decision.** When a correction is general
+    ("never zoom on the sidebar", "always end on the logo"), keep it in the project record with
+    its reason and apply it to everything after, so the user never gives the same note twice.
+
+## The project record
+
+A use case's state is one record, and it outranks your memory of it. Where the host gives you
+files, keep it as a JSON file in the working folder, named by the use case; otherwise keep it in
+the conversation and give it to the user once, at the end of a working session, to paste back.
+Never print it mid-flow. Update it at every gate. It keeps the brief (said, read and assumed
+apart), the agreed iteration plan, the choices made and `openDecisions`. Each use case says its
+shape.
+
+**A summary is not the rules.** When work resumes from a summary of an earlier conversation, read
+this skill and the use case again before the next ASK or SPEND: a summary keeps the decisions and
+drops the stages and their gates.
+
 ## The five interactions
 
 | Interaction | When | What happens |
 |---|---|---|
-| **ASK** | The user must choose | Closed questions with 2–4 options each. Ask everything a step needs in one turn, and never make the user type an answer you have already listed |
+| **ASK** | The user must choose | One decision per question: 2–4 options, the recommended one first, each option saying what it changes. Never make the user type an answer you have already listed. How to ask is under Asking |
 | **REVIEW** | The user must see the work before it is final | Open the scene in `picsart_scene_editor` and wait |
 | **SHOW** | An image, a video or audio is ready | Show it, with one line on what it is |
 | **SPEND** | A call charges credits | Quote it, then get an explicit yes |
@@ -106,6 +190,34 @@ credits. Before one:
    `picsart_render_monitor`, each with the `model` it was submitted with and a `label` that names
    its entry (a shot id, an asset tag). The monitor follows them and posts
    `render_monitor_feedback` when all have finished; never ask anyone to wait or check back.
+5. **Prove the idea before you pay for quality.** A picture or video whose idea the user has not
+   seen yet is made first at the cheapest setting that answers the open question: a still or a
+   frame before a video, or one take at the lowest resolution and shortest duration that
+   `picsart_model_params` offers. SHOW it. The final resolution and extra takes are a new SPEND,
+   asked only after the user approves the idea. A use case that already drafts on stills or a
+   storyboard has done this step.
+   **An approved draft may be the delivery.** Never assume the final resolution: ASK whether the
+   draft is good enough for where it goes, or should be made again at final resolution, the final
+   priced beside it. Keeping the draft costs nothing more.
+6. **The quote names the draft beside the final**, each priced with `picsart_preflight`, and
+   recommends the draft while the idea is unseen.
+7. **A reference smaller than the output frame is said, never hidden.** It caps how sharp and how
+   faithful the result can be. Say so in the quote, and never upscale it silently to pass a check.
+8. **Generated footage starts as key frames.** For a video, rule 5's draft is three or four stills
+   at its key points, the hook, the turn and the payoff, with the opening of every generated shot
+   among them, planned with the film-shots skill's `scripts/keyframes.py`. Buy them as one batch,
+   SHOW them together as the concept, and ASK what they leave open (which hook, which payoff). Quote
+   the video only after the user approves them. **An approved key frame is reused, never thrown
+   away**: it opens its shot as the start frame, as film-shots says. short-film's cast and scene
+   pictures are this step in full. A generated shot added to a free plan reopens the agreed
+   iteration (Asking, rule 9): say what it now costs before you ask.
+9. **Every generated shot's prompt is compiled, never typed.** A video shot, a key frame or a
+   scene picture is compiled with `picsart_film_compile_prompt`, and a person or a prop with
+   `picsart_film_compile_asset_prompt`, in any use case, a single shot in a screen video
+   included. It is checked with `picsart_prompt_verify` and sent verbatim, as film-shots says.
+   The compiler holds the camera, lens and acting wording tuned against real renders; a prompt
+   written by hand loses it. The shot's size and lens go in the compile call: a close-up is
+   generated as a close-up, never cut out of a wide take with a zoom.
 
 If the user declines, say plainly what the work cannot do without it, and stop that part.
 `picsart_media_export`, `picsart_media_contact_sheet`, `picsart_media_validate_scene` and the
@@ -137,6 +249,20 @@ the user says yes.
   (`action: "upload"`, with the link as `url` and a `name`), and the `url` it returns goes into the
   scene. A file the user names in their Picsart Drive is found with `picsart_drive`
   (`action: "list"`); use its `url`, never its `downloadUrl`.
+
+## The user's own brief
+
+The material can come with the product team's own brief: notes, a guide, a script, a `.txt` per
+recording with its main message, audience, key moments and editing direction. Before the first
+question, list every file in the material that is not media (in the folder, the Drive folder,
+the archive or the attachments) and read each in full.
+
+- A brief found there sets the message, the audience and the must-shows. Its words beat your
+  defaults and any slogan you would draft.
+- Say it at the first question, as a decision: "Your brief says the main message is …; build on
+  it?" Keep it, quoted, in the project record's brief as read.
+- Never write a message, a slogan or a plan that contradicts it unless the user chose to. Give it
+  to evaluate's critics and challenger.
 
 ## Preview and export
 

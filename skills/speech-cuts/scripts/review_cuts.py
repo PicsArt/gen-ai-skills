@@ -158,13 +158,24 @@ class Speech:
 # --- The review -----------------------------------------------------------------------------
 
 
-def review_clip(speech: Speech, t_in: float, t_out: float, first: bool) -> Json:
+def review_clip(speech: Speech, t_in: float, t_out: float, first: bool,
+                before: Optional[List[float]] = None) -> Json:
+    """`before` is the range of the clip played just before this one, when it is of the same source."""
     words = speech.kept(t_in, t_out)
     issues: List[Json] = []
     repairs: List[Json] = []
 
     def problem(check: str, text: str) -> None:
         issues.append({'check': check, 'problem': text})
+
+    # The seam carries on the source's own passage when the clip before kept the word before this one
+    # and stopped before this one's first word: an overlapping or backward range replays speech.
+    carried = False
+    if words and before is not None:
+        k = speech.words.index(words[0])
+        prev = speech.words[k - 1] if k > 0 else None
+        carried = (prev is not None and before[0] - EDGE <= prev['s'] and prev['e'] <= before[1] + EDGE
+                   and before[1] <= words[0]['s'] + EDGE)
 
     def repair(edge: str, to: float) -> None:
         to = round(to, 3)
@@ -182,7 +193,7 @@ def review_clip(speech: Speech, t_in: float, t_out: float, first: bool) -> Json:
         problem('integrity', 'no whole words are inside this clip')
     else:
         lead = words[0]['w']
-        if not (lead[:1].isupper() or speech.silence_before(t_in) >= PAUSE) and speech.inside(t_in) is None:
+        if not (lead[:1].isupper() or carried or speech.silence_before(t_in) >= PAUSE) and speech.inside(t_in) is None:
             problem('integrity', f'it opens mid-sentence, on "{lead}"')
             repair('in', speech.thought_start(words[0]['s']))
         last = words[-1]['w']
@@ -205,7 +216,7 @@ def review_clip(speech: Speech, t_in: float, t_out: float, first: bool) -> Json:
 
     # Fluency: the seam plays.
     if tokens:
-        if tokens[0] in DANGLING:
+        if tokens[0] in DANGLING and not carried:
             problem('fluency', f'it opens on "{words[0]["w"].split()[0]}", with nothing before it to connect to')
             repair('in', speech.thought_start(words[0]['s'] - EDGE * 2))
         elif first and tokens[0] in ORPHAN:
@@ -274,7 +285,8 @@ def review(data: Any, base: str = '.') -> Json:
                 script.append(f'[{kinds[sid]}]')
             else:
                 item = dict({'clip': i, 'source': sid, 'range': [t_in, t_out]},
-                            **review_clip(speech[sid], t_in, t_out, first=spoken == 0))
+                            **review_clip(speech[sid], t_in, t_out, first=spoken == 0,
+                                          before=out[-1].get('range') if out and out[-1]['source'] == sid else None))
                 spoken += 1
                 script.append(item['heard'])
         duration += length

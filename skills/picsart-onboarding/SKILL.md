@@ -61,7 +61,8 @@ Edits charge credits too; each is quoted first. Say that once, not per item.
 Offer the use cases in this package that fit the user, in their words. Name only use cases that
 are here: look at the skills you have, not at this list. Today they can include:
 
-- `screen-promo`: a screen recording of an app or website becomes a short vertical promo;
+- `screen-video`: a screen recording of an app or website becomes how-to shorts, a promo or a
+  tutorial;
 - `motion`: a design or the user's own images and clips become an animated ad or reel;
 - `short-film`: a story becomes a short film with recurring characters, one look and several
   scenes.

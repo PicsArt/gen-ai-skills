@@ -48,39 +48,21 @@ Read these before you need them:
 | A story: scenes, people who recur, dialogue | This use case, from stage 1 |
 | A film already under way (a project record) | Resume: read the record, say where the film stands, continue at its stage |
 
-**Pace: director by default.** The user sees each stage's decision before the next one starts.
-Say once, at the start, that they can ask for express pace: you make the routine craft calls and
-bring them in only for the boards, the three locks (the look, the story with its model, the
-assets), every charged call and anything beyond a quote. Pace changes how often you ask, never a
-safeguard: every SPEND still gets its own quote and its own yes.
+**Pace: director by default**, as video-core says. In express pace the user comes in only for the
+boards, the three locks (the look, the story with its model, the assets), every charged call and
+anything beyond a quote.
 
 ## How you talk to the user
 
-- **Say only what they need to decide.** The pipeline is your bookkeeping. No accounting of what
-  the last stage cost, no explaining how the machine works, no subtitles on a stage name, no
-  standing offers ("drop in references any time"). Two sentences and one question is a good turn.
-- **One decision per turn**, and one board per decision. Keep everything else in the record's
-  `openDecisions` until it blocks.
-- **One confirmation covers a set.** Things shown together get one "anything to change?", never
-  one sign-off per item.
-- **Free work never asks permission.** Opening a board, drafting descriptors, compiling a prompt,
-  updating the record: do it. Questions are for taste and for money.
-- **A board is the whole turn.** Open it, add at most one line, and end the turn. Never write the
-  board's content out in chat beside it.
-- **Read the reply before the sentence around it.** A board's decision arrives as the host notes
-  say; what each one holds is in `references/board-replies.md`. Never ask the user to repeat, press
-  again or paste a decision.
-- **A request to see something is a request to open its surface**: the shot list on its board, an
-  asset as its picture, a cut in REVIEW. Never print its data instead.
-- **Material arriving is itself the request.** Pictures or takes that land are shown, checked and
-  put up for the user's verdict in that turn, unasked. Say what you observed; never grant the
-  approval yourself ("three of the four check out").
-- **Where things stand.** At the start of a session, and when a stage changes, one line: "Stage 5
-  of 10 · cast, places and props — locking Cal (2 of 5 done)". When asked, show the stage list with
-  ✓ or ✗ per gate and which scenes have everything they need, as markdown tables read from the
-  record, in plain words ("not ready yet", never "a hole").
-- **Progress is never damage.** Mid-stage state is "not yet". Alarm words are for a real gate
-  violation, such as a video about to be bought for a scene whose assets are not locked.
+Talk and ask as video-core says. Here that means:
+
+- one board per decision; everything else waits in the record's `openDecisions`;
+- what each board's reply holds is in `references/board-replies.md`;
+- where things stand reads like "Stage 5 of 10 · cast, places and props — locking Cal (2 of 5
+  done)", and the gate view shows which scenes have everything they need ("not ready yet", never
+  "a hole");
+- an alarm word is for a real gate violation, such as a video about to be bought for a scene
+  whose assets are not locked.
 
 ## The project record
 
@@ -107,7 +89,18 @@ gate is never yours.** Which model shortlist, which order, whether a face needs 
 recorded, never asked. Buying video for a scene whose assets are not locked, going beyond a quote,
 trading quality for money: the user's.
 
+**The challenger at each decision.** Before you go on from a decision, evaluate's challenger (the
+`challenger` agent where the host has it) asks "why this?" of it: the idea (stage 1), the look and
+the story (2, 3), the shot list (4), each sheet, plate and scene picture picked and why (5, 6), and
+every quote before its SPEND (5, 6, 7, 9, and a repair in 8 that needs a generation). Act on its
+verdict as evaluate says. A `stop`, or a `rethink` of the user's own choice, goes to the user in the
+next ASK, the cheaper alternative first, before anything is spent.
+
 ## 1. The idea
+
+- **Read the user's brief first.** Every file in the material that is not media, read in full
+  before the first question, as video-core's The user's own brief says. A brief sets the message, the
+  audience and the must-shows.
 
 Ask for the idea only if the user has not given one. Once there is one, ask nothing more here:
 runtime and frame are set on the look console, and the story proposes an ending the user can
@@ -215,9 +208,11 @@ Before any run is quoted, a shot that film-shots flags for a palette arguing wit
 scheme gets one short ASK with its options.
 
 1. **The forecast, once, before the first video:** runs × two takes × each run's seconds at the
-   model's rate from `picsart_preflight`, plus a margin for repairs. It is an estimate, not a quote.
+   model's draft rate from `picsart_preflight`, plus a margin for repairs, beside the
+   final-resolution pass at its finish rate. It is an estimate, not a quote.
 2. **One run first.** If the whole film is one run, that is the film. Otherwise the riskiest run:
    the one with dialogue and the most cuts. SPEND on its own quote, saying a re-roll costs again.
+   Every run is shot as a draft, as film-shots says; the finish settings come only in Finishing.
    What it teaches goes into the recipe before the rest are bought.
 3. **Then the rest, as a conveyor**: independent runs dispatched together, each run compiled, verified and
    sent as film-shots says, one call per run. One quote for the batch, one yes, one monitor.
@@ -248,7 +243,7 @@ final, change no picture unless they ask.
 In this order, as film-finishing says: the final-resolution pass, then colour, then sound.
 
 1. **The final-resolution pass**, as film-finishing describes it, on its own quote and its own
-   yes.
+   yes, after asking whether the drafts are good enough to keep.
 2. **Colour:** ASK with three or four looks that suit the film, from the look list in
    `picsart_media_get_capabilities` (`sections: ["looksCompact"]`). Applying one is free.
 3. **Music:** offer it once, only after the cut is final, and never bare: ASK with the brief

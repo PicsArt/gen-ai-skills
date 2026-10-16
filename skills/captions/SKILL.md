@@ -69,8 +69,12 @@ scene the user approved, with `python3 scripts/reel_text.py words.json`:
 so a clip the user retrimmed in the editor is read as they left it, and it prints the scene with
 the new layers on top. A phrase it had to cut short comes back in `notes`.
 
-- **Captions** become one `captions` layer per spoken clip, open exactly while that clip plays,
-  with the source's transcript as returned. A photo or a shot without a transcript gets none.
+- **Captions** become one `captions` layer per spoken clip, open while that clip plays its
+  source, with the source's transcript as returned. A clip held past its `trim.out` freezes on its
+  last frame, so its captions close where the trim ends. The reel ends at the composition's
+  `duration`, or with none at the track layer's: captions stop there. A photo, a `muted` clip, a
+  shot without a transcript or a clip past the reel's end gets none, and a highlight on a muted
+  clip or one past the end is refused.
 - **Highlights** all go on one `captions` layer, one segment per phrase, each on a pill the
   renderer fits to the measured words. Pass `highlightStyle` to change the look; the font follows
   the scene-compose skill.

@@ -21,12 +21,14 @@ The input is one JSON object:
 
 - `scene` is the scene the user approved, theirs if they edited it: the words are timed on its
   own clips, so a clip they trimmed in the editor is read as they left it. Its reel is its first
-  `track` layer.
+  `track` layer, and it ends at the composition's `duration`, or with none at that layer's: a clip
+  that runs over the end is cut there, and one past it gets no words.
 - `transcripts` maps a media asset id in the scene to its `picsart_media_transcribe` result (or
   that result's `transcript`), or to the path of a file that holds it. A clip whose asset has no
-  transcript (a photo, a muted shot) gets no words.
-- `captions` asks for running captions: one `captions` layer per spoken clip, open exactly while
-  that clip plays, carrying its source's transcript as returned and a `timeOffset` that lines the
+  transcript (a photo) or that is `muted` gets no words. A clip held past its `trim.out` freezes
+  on its last frame, so only the words inside its trim count.
+- `captions` asks for running captions: one `captions` layer per spoken clip, open while that
+  clip plays its source, carrying its source's transcript as returned and a `timeOffset` that lines the
   source's clock up with the clip's trim. `style` is the caption style, passed through as given.
 - `highlights` asks for phrases: each names a clip of the track, by its index, and `say`, the
   words in that clip it calls out, as spoken (case and punctuation do not matter). `text` is what
@@ -116,12 +118,25 @@ def timed_words(transcript: Json) -> List[Word]:
 
 
 def reel_clips(scene: Json) -> List[Json]:
-    """Each clip of the reel's track: where it starts on the reel, how long, and what it plays."""
+    """Each clip of the reel's track: where it starts on the reel, how long, and what it plays.
+
+    `out` is the last source second the clip plays: a clip longer than its trim holds the last
+    frame, so `spoken_end` is where its source stops on the reel, before `end`.
+    """
     track = next((layer for layer in scene.get('layers') or []
                   if isinstance(layer, dict) and (layer.get('content') or {}).get('kind') == 'track'), None)
     if track is None:
         raise InputError('the scene has no track layer to time the words on')
     at = number(track.get('start', 0), 'the track layer start')
+    # Where the reel stops: the composition's duration, or with none, the track layer's own. A
+    # clip past it is never seen, and one that runs over it is cut there.
+    composed = scene['composition'].get('duration')
+    if composed is not None:
+        stop = number(composed, 'the composition duration')
+    elif track.get('duration') is not None:
+        stop = at + number(track['duration'], 'the track layer duration')
+    else:
+        stop = math.inf
     images = {a.get('id') for a in scene.get('assets') or [] if isinstance(a, dict) and a.get('type') == 'image'}
     out = []
     for i, clip in enumerate(track['content'].get('clips') or []):
@@ -134,9 +149,17 @@ def reel_clips(scene: Json) -> List[Json]:
             length = (number(trim['out'], f'clips[{i}] trim out') - number(trim['in'], f'clips[{i}] trim in')) / speed
         else:
             raise InputError(f'clips[{i}] has no duration and no trim, so its length is unknown')
-        out.append({'start': at, 'end': at + length, 'asset': content.get('assetId'),
-                    'image': content.get('assetId') in images,
-                    'in': float(trim['in']) if trim else 0.0, 'speed': speed})
+        source_in = float(trim['in']) if trim else 0.0
+        source_out = source_in + length * speed
+        if trim:
+            source_out = min(source_out, number(trim['out'], f'clips[{i}] trim out'))
+        start = min(at, stop)
+        if at + length > stop:
+            source_out = min(source_out, source_in + max(0.0, stop - at) * speed)
+        out.append({'start': start, 'end': min(at + length, stop), 'asset': content.get('assetId'),
+                    'image': content.get('assetId') in images, 'muted': content.get('muted') is True,
+                    'in': source_in, 'out': source_out, 'speed': speed, 'cut': at >= stop,
+                    'spoken_end': start + max(0.0, source_out - source_in) / speed})
         at += length
     if not out:
         raise InputError('the track has no clips')
@@ -146,8 +169,7 @@ def reel_clips(scene: Json) -> List[Json]:
 def find(words: List[Word], say: str, clip: Json) -> Optional[Tuple[float, float]]:
     """The reel times of `say`, spoken inside `clip`."""
     wanted = [bare(w) for w in say.split() if bare(w)]
-    source_out = clip['in'] + (clip['end'] - clip['start']) * clip['speed']
-    inside = [w for w in words if w[1] >= clip['in'] - EDGE and w[2] <= source_out + EDGE]
+    inside = [w for w in words if w[1] >= clip['in'] - EDGE and w[2] <= clip['out'] + EDGE]
     keys = [bare(w[0]) for w in inside]
     for k in range(len(inside) - len(wanted) + 1):
         if keys[k:k + len(wanted)] == wanted:
@@ -159,7 +181,7 @@ def find(words: List[Word], say: str, clip: Json) -> Optional[Tuple[float, float
 def caption_layers(clips: List[Json], transcripts: Dict[str, Json], style: Any) -> List[Json]:
     layers = []
     for i, clip in enumerate(clips):
-        if clip['image'] or clip['asset'] not in transcripts:
+        if clip['image'] or clip['muted'] or clip['cut'] or clip['asset'] not in transcripts:
             continue
         if clip['speed'] != 1:
             raise InputError(f'clips[{i}] plays at speed {clip["speed"]}; captions follow a clip at its own speed only')
@@ -168,9 +190,9 @@ def caption_layers(clips: List[Json], transcripts: Dict[str, Json], style: Any) 
         if style:
             content['style'] = style
         layers.append({'id': f'captions-{i}', 'start': round(clip['start'], 3),
-                       'duration': round(clip['end'] - clip['start'], 3), 'content': content})
+                       'duration': round(clip['spoken_end'] - clip['start'], 3), 'content': content})
     if not layers:
-        raise InputError('no clip of the track plays a source with a transcript, so there is nothing to caption')
+        raise InputError('no unmuted clip of the track plays a source with a transcript, so there is nothing to caption')
     return layers
 
 
@@ -198,6 +220,10 @@ def place_highlights(raw: Any, clips: List[Json], words: Dict[str, List[Word]]) 
         clip = clips[index]
         if clip['image'] or clip['asset'] not in words:
             raise InputError(f'highlights[{i}]: clip {index} plays "{clip["asset"]}", which has no transcript')
+        if clip['muted']:
+            raise InputError(f'highlights[{i}]: clip {index} is muted, so its words are not heard')
+        if clip['cut']:
+            raise InputError(f'highlights[{i}]: clip {index} starts after the reel ends, so it is never seen')
         found = find(words[clip['asset']], h['say'], clip)
         if found is None:
             raise InputError(f'highlights[{i}]: "{h["say"]}" is not spoken, with word times, in clip {index}')

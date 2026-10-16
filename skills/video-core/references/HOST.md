@@ -4,7 +4,7 @@ How this host performs the five interactions in `video-core`.
 
 | Interaction | How |
 |---|---|
-| **ASK** | The host's own question tool, so the options show as buttons the user taps: `AskUserQuestion` in Claude Code, and in the Claude apps (claude.ai, the desktop and mobile apps, Cowork) the tool they offer for tappable options. Up to 4 questions per call, 2–4 options each; the tool adds an "Other" answer itself. Only when the host offers no such tool: one message with numbered options |
+| **ASK** | The host's own question tool, so the options show as buttons the user taps: `AskUserQuestion` in Claude Code, and in the Claude apps (claude.ai, the desktop and mobile apps, Cowork) the tool they offer for tappable options. Never type options as a list in chat where the tool exists. One question per call unless video-core allows two; 2–4 options each, the recommended one first with " (Recommended)" at the end of its label, and each option's `description` saying what it changes. `header` is at most 12 characters. A choice of several items (which shorts, which steps) uses `multiSelect: true`; more than four go as two questions in one call, or a numbered list in text. The tool adds an "Other" answer itself. A question for words (a message, a hook in the user's own words) is plain text, not the tool. Only when the host offers no such tool: one message with numbered options |
 | **REVIEW** | The scene editor board the use case names. Where the app draws it, the user reviews there. The decision and the fallback are below |
 | **SHOW** | The URL as a Markdown link, with one line on what it is |
 | **SPEND** | The quote in text, then ASK with "Yes, go ahead" and "No" |
@@ -36,7 +36,9 @@ cannot see it:
 
 1. export a preview of the scene with `picsart_media_export` and give its link;
 2. show the frames from `picsart_media_contact_sheet` at the moments the use case checks;
-3. ASK: "Approve" or "Change something".
+3. ASK what to change, with the questions the use case's REVIEW line names as options, for
+   example "The pacing" / "The words" / "The look" / "Ship it as it is". "Ship it as it is" is the
+   approval.
 
 A preview exported here is a draft. Export the approved version again to DELIVER.
 
@@ -54,6 +56,17 @@ a file in the session's scratch or working directory, not inline.
 
 If `python3` is missing, say so in one line and stop. On a Mac without Apple's command line tools,
 `python3` offers to install them. Tell the user what it is, and wait for them.
+
+## The critics and the challenger as agents
+
+The Claude Code package ships seven agents: `critic-roots`, `critic-radical`, `critic-interface`,
+`critic-story`, `critic-growth`, `critic-art` and `challenger`. When they are in your list of
+agents (the plugin's name may come before a colon, as `picsart-video:critic-art`), the host has
+them. Start each with the `Agent` tool by that name, and start the six critics in one message so
+they run in parallel. Each prompt holds only the inputs the evaluate skill names, as file paths in
+the session's scratch directory or as links. Each agent returns its JSON note. When they are not
+in the list (the gen-ai-skills skills, and the Claude apps without the plugin's agents), run each
+from its brief in the evaluate skill, `references/agent-<name>.md`, as the evaluate skill says.
 
 ## When the upload is not drawn
 
