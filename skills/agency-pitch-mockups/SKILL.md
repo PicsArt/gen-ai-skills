@@ -1,6 +1,6 @@
 ---
 name: agency-pitch-mockups
-description: "Client-branded pitch mockups: hero, tiles, slides."
+description: Client-branded pitch mockups for heroes, tiles, and slides.
 version: 1.0.0
 author: Picsart
 license: MIT
