@@ -13,7 +13,7 @@ the draft wastes the grade; exporting before the grade wastes an export. Read
 
 ## The final-resolution pass
 
-The film was shot in drafts, as film-shots says, so its final quality comes from **re-generating every approved run
+The film was shot in drafts, as film-shot-generation says, so its final quality comes from **re-generating every approved run
 at the finish settings with its saved final prompt, verbatim**: same blocks, same references, the
 model's final settings as `picsart_model_params` names them (a draft switch, a resolution). The
 whole batch is one quote and the film's biggest single spend. Only a model with no draft setting
@@ -27,11 +27,11 @@ draft's prompt.
 
 Say it before it runs: this is a **fresh roll**, not an upscale. Small differences from the draft
 are expected. Where a re-roll breaks something the draft had (a face, a join), that is a repair on
-the final take (film-shots), logged and fixed.
+the final take (film-shot-generation), logged and fixed.
 
 Upscaling is a separate model, chosen from `picsart_model_catalog` at the time; none is named here.
 Upscale first, then texture, then grade: every correction touches the highest-resolution pixels.
-Then re-assemble the locked cut at the finish size (film-edit), with its windows unchanged.
+Then re-assemble the locked cut at the finish size (film-cutting), with its windows unchanged.
 
 ## Colour: match, then grade
 
@@ -39,13 +39,13 @@ Every generation carries its own baked-in grade, so the first job is **matching*
 of each scene, and only then the look. The film's tone already lives in its places' pictures, so
 the grade refines it and never invents a new one.
 
-- Read the real looks from `picsart_media_get_capabilities` with `sections: ["looksCompact"]`
+- Read the real looks from `picsart_scene_capabilities` with `sections: ["looksCompact"]`
   (never a remembered look name, and never the full `looks` section, which can overflow), and
   return three or four that suit the film's colour.
-- Apply with `picsart_media_apply_look`, one call per clip layer: it takes `scene` (the assembled
-  scene), `layerId` (that clip's layer) and `look`, and changes only that layer. Do the layers of
+- Apply with `picsart_scene_apply_preset`, one call per clip layer: it takes `scene` (the assembled
+  scene), `layerId` (that clip's layer) and `preset` (`look:<id>`), and changes only that layer. Do the layers of
   one scene first, then the rest of the film. Setting a look is free.
-- Check a chosen look on a few frames from two or three scenes with `picsart_media_contact_sheet`
+- Check a chosen look on a few frames from two or three scenes with `picsart_scene_contact_sheet`
   before applying it to the film.
 - A fine grain or texture pass at finishing is distinct from the grain the look put in the
   generation: this one unifies what the renders became.
@@ -60,7 +60,7 @@ it cannot give: one voice timbre across takes, licensed music, a mix.
   enough to distract, prefer a retake of the worse clip over pretending a mix exists.
 - **Ambience is the glue.** Generated audio is per clip, so seams are audible: a continuous bed under
   each scene hides the level and tone steps. Match levels shot to shot.
-- **A music bed is drafted and laid as the music-bed skill says**: its brief takes the register
+- **A music bed is drafted and laid as the background-music skill says**: its brief takes the register
   from the film's look and the tempo from its cut, and it is laid under the takes' dialogue and the
   ambience, never in place of them.
 - A film going to festivals or dubbing needs a sound team: it gets the handoff package, never an
@@ -72,8 +72,8 @@ it cannot give: one voice timbre across takes, licensed music, a mix.
 - Calling the final pass an upscale.
 - Re-rolling the film at final resolution on the strength of the forecast: quote this batch, then
   wait.
-- Another export per master nobody asked for. Free or not (video-core says which tools are), each
+- Another export per master nobody asked for. Free or not (picsart-video-rules says which tools are), each
   is a render and a file in the user's Drive.
-- Music shipped without the music-bed skill's licence caveat.
+- Music shipped without the background-music skill's licence caveat.
 - Archiving the film without its prompts and asset rows: a film without its means of production
   cannot be revised or continued.

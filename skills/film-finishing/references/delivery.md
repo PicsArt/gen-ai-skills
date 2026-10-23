@@ -17,7 +17,7 @@ final take, fixed as a text layer or a sound fix, or accepted by the user in wri
 
 | Purpose | Here |
 |---|---|
-| Online, streaming | Yes: `picsart_media_export`, within its size limit |
+| Online, streaming | Yes: `picsart_scene_export`, within its size limit |
 | Vertical or square promo | Yes, as a new composition per shot, framed so faces and action survive; often a shorter selects-of-selects cut rather than the whole film in a phone frame |
 | Archive master (a mastering codec at full resolution) | No. The final-resolution takes filed in the project's Drive folder are its sources |
 | Cinema package, surround mix, stems | No. Hand off to a post house |
