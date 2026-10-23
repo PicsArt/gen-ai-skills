@@ -4,6 +4,17 @@ What to look at in each reference, and what each observation lets you conclude. 
 aspects in this order: earlier ones constrain later ones, and a palette read before you have
 established the medium will mislead you.
 
+## Contents
+
+1. Medium and rendering
+2. Palette
+3. Lighting
+4. Camera
+5. Subjects
+6. Environments
+7. Motion, only for sequential references
+8. Anomalies
+
 Record observations per image first. Synthesise afterwards. If you synthesise while looking,
 you will remember the last three frames and call them the style.
 

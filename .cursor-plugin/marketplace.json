@@ -5,14 +5,14 @@
     "url": "https://picsart.com"
   },
   "metadata": {
-    "description": "Picsart generative-AI skills for Cursor and other agent runtimes.",
-    "version": "0.2.1"
+    "description": "Picsart GenAI & Video - AI video skills for Cursor and other agents that read SKILL.md files, on the Picsart gen-ai MCP.",
+    "version": "0.4.0"
   },
   "plugins": [
     {
       "name": "picsart",
       "source": "./",
-      "description": "Picsart generative-AI skills: image generation, video generation, and related creative workflows."
+      "description": "Picsart AI video skills on the Picsart gen-ai MCP: screen recordings become promos and tutorials, your own footage becomes short reels, designs become motion ads, and a story becomes a short film. Every paid step is quoted first."
     }
   ]
 }

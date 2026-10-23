@@ -4,6 +4,16 @@ Commercial video has a constraint the rest of this skill does not: **the product
 the product.** A cinematic clip that invents a detail is interesting. A product clip that
 invents a detail is unusable, and often legally unusable.
 
+## Contents
+
+- Brand assets fail first
+- Product animation
+- Apparel and garment swap
+- Changing the model
+- Jewellery and small reflective goods
+- Vehicles
+- Before you finish a commercial prompt
+
 So the governing rule for everything on this page:
 
 > Prefer an image-to-video route from a real product photograph over text-to-video. The model

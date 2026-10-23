@@ -4,6 +4,17 @@ For live action and photoreal work, where the reader expects the clip to obey th
 camera. Generators respond well to this vocabulary because it is heavily represented in what
 they were trained on: naming a real setup gets you closer than describing a feeling.
 
+## Contents
+
+- Motivate the movement
+- Lens language
+- Lighting setups worth naming
+- Grades that mean something
+- Continuity across shots
+- Shot progression
+- What fails
+- Fragments
+
 ## Motivate the movement
 
 A camera move should have a reason, and the reason changes which move to use. Unmotivated
