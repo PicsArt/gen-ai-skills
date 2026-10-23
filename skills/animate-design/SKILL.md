@@ -153,7 +153,7 @@ card and title is whole or gone, never cut by the edge of the frame.
 
 ## Tool names — read this first
 
-Two families on this plugin's `picsart-gen-ai` connector, and they are wired differently:
+Two families on this plugin's `picsart` connector, and they are wired differently:
 
 - **Scene tools — `picsart_scene_*` / `picsart_media_*`.** Import, compose, validate, patch, translate,
   export, contact-sheet: the scene tools are surfaced under the `picsart_scene_` prefix, and the
