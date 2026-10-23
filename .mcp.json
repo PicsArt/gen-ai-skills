@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "picsart-gen-ai": {
+    "picsart": {
       "type": "http",
       "url": "https://api.picsart.com/gen-ai/mcp"
     }

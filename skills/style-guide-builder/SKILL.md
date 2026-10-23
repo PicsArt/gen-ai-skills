@@ -135,7 +135,7 @@ work done by another. Offer the routes that exist:
 | route | how | good for |
 |---|---|---|
 | Host model vision | You look at the images yourself | Fast, no setup, good general description |
-| Picsart gen-ai MCP | `picsart-gen-ai` server at `api.picsart.com/gen-ai/mcp` | Stays inside Picsart, generation and analysis in one place |
+| Picsart gen-ai MCP | `picsart` server at `api.picsart.com/gen-ai/mcp` | Stays inside Picsart, generation and analysis in one place |
 | Named model via MCP | ask the MCP for `gemini-3-pro-image` or similar | When the user wants a specific vision model |
 
 Sensible default: **your own vision for analysis, and ask before generation** since that

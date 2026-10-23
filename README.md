@@ -1,6 +1,6 @@
 # gen-ai-skills
 
-Picsart AI video skills for Picsart's gen-ai MCP server (`picsart-gen-ai`, `https://api.picsart.com/gen-ai/mcp`), packaged as a plugin for Claude Code, Cursor and Codex.
+Picsart AI video skills for Picsart's gen-ai MCP server (`picsart`, `https://api.picsart.com/gen-ai/mcp`), packaged as a plugin for Claude Code, Cursor and Codex.
 
 - Turn a screen recording into a short vertical promo or a step-by-step tutorial.
 - Cut an interview, podcast or vlog into a tight vertical reel, with captions and music if wanted.
@@ -35,7 +35,7 @@ gen-ai-skills/
 ├── INSTALL.md
 ├── CONTRIBUTING.md
 ├── VERSION
-├── .mcp.json            # the picsart-gen-ai MCP server, shared by every manifest
+├── .mcp.json            # the picsart MCP server, shared by every manifest
 ├── generated.json       # the skill folders that are generated, not hand-written
 ├── setup                # universal symlink installer
 └── README.md

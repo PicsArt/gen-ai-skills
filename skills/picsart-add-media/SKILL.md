@@ -31,7 +31,7 @@ else not already a public `https://` link.
 
 ## Prerequisites
 
-The Picsart gen-ai MCP server (`picsart-gen-ai`, declared in this repo's `.mcp.json`) in the
+The Picsart gen-ai MCP server (`picsart`, declared in this repo's `.mcp.json`) in the
 current tool list. It offers two routes:
 
 - **`picsart_media_upload`** — opens the upload widget. Works on every host, including ones with
@@ -104,7 +104,7 @@ whatever tool the user's original request needs (`image_url`, `video_url`, etc.)
 - **Re-asking for a file that's already uploaded.** Check the conversation for a URL you already
   have before opening the widget — pass it via `known_urls` instead of starting over.
 - **Guessing the tool name.** The upload tools are `picsart_media_upload` and
-  `picsart_upload_local_files`, both on `picsart-gen-ai`. Read what the tool list actually shows.
+  `picsart_upload_local_files`, both on `picsart`. Read what the tool list actually shows.
 
 ## Verification
 

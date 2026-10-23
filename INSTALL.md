@@ -6,7 +6,7 @@ Install them all. A use case such as `screen-promo` loads other skills by name (
 
 ## Prerequisites
 
-The skills call the Picsart gen-ai MCP server (`picsart-gen-ai`, `https://api.picsart.com/gen-ai/mcp`), declared in [`.mcp.json`](./.mcp.json). The plugin installs (Claude Code, Cursor, Codex, OpenClaw bundle) connect it for you; with a skills-only install, add that server to your agent yourself. You need a Picsart account: the server asks you to sign in the first time a step needs it, and every paid step is quoted before anything is charged.
+The skills call the Picsart gen-ai MCP server (`picsart`, `https://api.picsart.com/gen-ai/mcp`), declared in [`.mcp.json`](./.mcp.json). The plugin installs (Claude Code, Cursor, Codex, OpenClaw bundle) connect it for you; with a skills-only install, add that server to your agent yourself. You need a Picsart account: the server asks you to sign in the first time a step needs it, and every paid step is quoted before anything is charged.
 
 ## Option 1 — `npx skills` (recommended, cross-agent)
 
@@ -88,7 +88,7 @@ openclaw plugins install picsart --marketplace https://github.com/PicsArt/gen-ai
 ```
 
 There is no `openclaw plugins marketplace add` step — point `install` directly at
-the source. The MCP server's tools surface as `picsart-gen-ai__<tool>` under OpenClaw's
+the source. The MCP server's tools surface as `picsart__<tool>` under OpenClaw's
 built-in `bundle-mcp` plugin.
 
 Once published to ClawHub (see [OPENCLAW_PUBLISH_TODO.md](./OPENCLAW_PUBLISH_TODO.md)), skills install by slug instead:

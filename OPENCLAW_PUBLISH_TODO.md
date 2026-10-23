@@ -68,7 +68,7 @@ openclaw plugins install picsart --marketplace https://github.com/PicsArt/gen-ai
 3. ClawHub CLI install method — confirm from clawhub.ai docs.
 
 ## Notes
-- The MCP server's tools surface in OpenClaw as `picsart-gen-ai__<tool>` under the
+- The MCP server's tools surface in OpenClaw as `picsart__<tool>` under the
   built-in `bundle-mcp` plugin.
 - There is no `openclaw plugins marketplace add` step — install points directly at
   the source.
