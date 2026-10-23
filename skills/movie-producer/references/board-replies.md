@@ -10,7 +10,7 @@ blocks its own send until it has one.
 | Field | Use |
 |---|---|
 | `verdict` | Always `locked`. The look is locked |
-| `selections` | The console's picks as preset ids: `genre`, `tone`, `palette`, `ratio`, `duration` (whole seconds, as a string), `camera`, `lens`. `palette` is always `auto`: the console has no palette, and each shot picks its own. `lens` is a lens family, never a focal length. A `custom` genre or tone comes with `customGenre` / `customTone`, the user's own words. At compile time a custom genre goes as `look.customGenre` with no `genre`; a custom tone keeps `tone: "custom"` beside `customTone` |
+| `selections` | The console's picks as preset ids: `genre`, `tone`, `palette`, `ratio`, `duration` (whole seconds, as a string), `camera`, `lens`. `palette` is always `auto`: the console has no palette, and each shot picks its own. `lens` is a lens family, never a focal length. A `custom` genre or tone comes with `customGenre` / `customTone`, the user's own words. At compile time a custom genre goes as `look.customGenre` with no `look.genre`; a custom tone keeps `look.tone: "custom"` beside `look.customTone` |
 | `selections.scheme`, `selections.hue` | Present when the user chose a colour scheme; absent means Auto, and the style line carries no colour. Pass them as `look.scheme` and `look.hue` on every `picsart_film_compile_prompt` call of this world, the cast's reference kinds included |
 | `stylePrefix` | Store it verbatim. Never reword or rebuild it |
 | `summary` | The console's one line; quote it back if you say anything |
@@ -54,8 +54,8 @@ against them.
 | `total` | `approved` + `changes` + `discarded` always equals it |
 | a general note | Applies to the whole board; fold it into each change it concerns |
 
-After changes, open a FRESH board with only the changed assets, each with `version` (`"v2"`) and
-`previousUrl`, so the user can compare and ask to go back. Approved assets never reappear. Repeat
+After changes, open a FRESH board with only the changed assets, each with `assets[].version` (`"v2"`) and
+`assets[].previousUrl`, so the user can compare and ask to go back. Approved assets never reappear. Repeat
 until `changes` is empty. A change is a new generation: its own SPEND.
 
 ## Renders: `render_monitor_feedback`

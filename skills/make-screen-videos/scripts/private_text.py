@@ -152,7 +152,7 @@ def pieces(text: str, m: 're.Match[str]', ok: Any) -> List[Tuple[int, int]]:
     return found
 
 
-def phone_pieces(text: str, m: 're.Match[str]') -> List[Tuple[int, int]]:
+def phone_pieces(text: str, m: 're.Match[str]', split_dates: bool = True) -> List[Tuple[int, int]]:
     """
     The phone numbers in one greedy run. The run as a whole first, as it is written. When it is
     too long to be one number, the run is split at its spaces and each shortest stretch of whole
@@ -164,19 +164,29 @@ def phone_pieces(text: str, m: 're.Match[str]') -> List[Tuple[int, int]]:
         return [(m.start(), m.end())]
     chunks = [(m.start() + c.start(), m.start() + c.end()) for c in re.finditer(r'\S+', m.group(0))]
     found: List[Tuple[int, int]] = []
-    i = 0
-    while i < len(chunks):
-        nxt = i + 1
-        for j in range(i, len(chunks)):
-            a, b = chunks[i][0], chunks[j][1]
-            s = text[a:b]
-            if sum(c.isdigit() for c in s) > LONGEST:
-                break
-            if (s.startswith('+') or re.search(r'[().-]', s) or any(len(g) != 4 for g in s.split())) and is_phone(s):
-                found.append((a, b))
-                nxt = j + 1
-                break
-        i = nxt
+    # Two readings, and every stretch either finds is kept: masking more is safe, masking less
+    # leaks. The second treats a date as a field boundary, where no stretch starts or runs
+    # through: read as written, a date before a phone takes its area code and leaves the rest
+    # too short to be found. The card check reads the run as written only (split_dates=False):
+    # the second reading's stretches overlap the first's, and two of them together could veto a
+    # whole card.
+    for dates_split in (False, True) if split_dates else (False,):
+        i = 0
+        while i < len(chunks):
+            nxt = i + 1
+            for j in range(i, len(chunks)):
+                if dates_split and DATE.fullmatch(text, *chunks[j]):
+                    break
+                a, b = chunks[i][0], chunks[j][1]
+                s = text[a:b]
+                if sum(c.isdigit() for c in s) > LONGEST:
+                    break
+                if (s.startswith('+') or re.search(r'[().-]', s) or any(len(g) != 4 for g in s.split())) and is_phone(s):
+                    if (a, b) not in found:
+                        found.append((a, b))
+                    nxt = j + 1
+                    break
+            i = nxt
     return found
 
 
@@ -209,7 +219,7 @@ def scan(text: str) -> List[Tuple[str, str]]:
     for m in RANDOM.finditer(text):
         if looks_random(m.group(0)):
             add('token', m)
-    phones = [span for m in PHONE.finditer(text) for span in phone_pieces(text, m)]
+    phones = [span for m in PHONE.finditer(text) for span in phone_pieces(text, m, split_dates=False)]
 
     def phone_digits(a: int, b: int, strict: bool) -> bool:
         covering = [(x, y) for x, y in phones if x < b and a < y]

@@ -1,6 +1,6 @@
 ---
 name: movie-producer
-description: Make a short narrative film from a story - several scenes, characters who look like themselves in every shot, one locked look - through a staged production the user approves step by step. Use when the user wants to make a short film, a movie, an episode or a multi-scene story ("make a short film about…", "I have a script", "a movie with two characters"), or carries on a film already under way here (its shot list, a change to one shot, or the next step). Load it first for any work on such a film; it brings in the film skills each step needs. Not for a single clip from a description, and not for cutting footage the user already has.
+description: Make a short narrative film from a story - several scenes, recurring characters, one locked look - staged and approved step by step. Use when the user wants a short film, a movie or a multi-scene story ("I have a script"), or carries on a film already under way here (its shot list, a change to one shot, or the next step). Load it first for any work on such a film; it brings in the film skills each step needs. Not for a drama series or its episodes (make-short-drama), a single clip, or footage the user already has.
 metadata:
   uses: film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, background-music, scene-building-basics, quality-review, realistic-color-grade
   optional: realistic-color-grade
@@ -116,7 +116,7 @@ world. Genre decides how the story is told, and every shot card sits under what 
 locks: the style line, the lens family the cards' focal lengths come from, and the colour scheme
 each card's own palette has to fit.
 
-- Pre-set it from the idea with `suggested`, one `why` line each, as film-story-writing says: the genre the
+- Pre-set it from the idea with `suggested`, one `suggested.why` line each, as film-story-writing says: the genre the
   events make, a tone when the story names a period, and the colour.
 - **`film` (the title) is required.** `ratio` and `duration` go inside `suggested.selections`, under
   those field names, never as top-level arguments: the schema rejects anything it does not list.
@@ -134,7 +134,7 @@ faces and one garage") rather than asking for it.
 
 **The model, in the same turn.** film-shot-generation narrows the video models to the few that can shoot
 this film. Then open `picsart_model_choose` under the story: 3 candidates (2 is fine; a 4th becomes a suggestion), exactly one
-`recommended`, each `bestFor` line written as this film's trade ("one continuous 30 s take, tops
+`candidates[].recommended`, each `candidates[].bestFor` line written as this film's trade ("one continuous 30 s take, tops
 out at 720p").
 
 - The pick is the story's yes unless the user sends a note with it. A note about what happens is
@@ -185,10 +185,10 @@ Then film-cast-design's conveyor, in one pass:
 3. Dispatch on the yes as one batch (picsart-video-rules, SPEND), with `folderUid` set to Assets, and
    let the batch's card follow the jobs as picsart-video-rules says.
 4. Look at each picture (picsart-video-rules, Asset URLs) before anything uses it, then put them all on
-   `picsart_film_review_assets` in one call (at most 12 tiles; more go on a second board), with the one thing to judge them by as the board's `judge`, and one line per tile as its `why`.
+   `picsart_film_review_assets` in one call (at most 12 tiles; more go on a second board), with the one thing to judge them by as the board's `judge`, and one line per tile as its `assets[].why`.
 5. Act on the reply as `references/board-replies.md` says. Each approved asset is cut into views and
-   locked with `picsart_film_save_asset`, as film-cast-design says. A change is regenerated under its own SPEND and put on a fresh board with `version` and
-   `previousUrl`. A discarded tile is never used.
+   locked with `picsart_film_save_asset`, as film-cast-design says. A change is regenerated under its own SPEND and put on a fresh board with `assets[].version` and
+   `assets[].previousUrl`. A discarded tile is never used.
 
 A person the user photographed is saved as it came and is not put up for approval: it is theirs.
 film-cast-design flags what it cannot settle on its own, about a photo the user brought or about the

@@ -1,6 +1,6 @@
 ---
 name: generate-media
-description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture - remove or replace its background, enhance or upscale it, or turn it into a vector - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers which models there are, what a model's settings are, what something would cost, the credit balance, and what is in the user's Picsart Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files.
+description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture - remove or replace its background, enhance or upscale it, or turn it into a vector - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers questions about models, prices, credits and Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files.
 metadata:
   uses: film-shot-generation
 ---

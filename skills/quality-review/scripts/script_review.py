@@ -93,6 +93,41 @@ TARGET = re.compile(r"\s*(?:(?:the|a|an|your)\s+)?(?!(?:so|to|because|until|whic
                     r"\b" + CONTROL_NOUN + r"|[^\W_]+(?:['’][^\W_]+)?)")
 TITLE_TARGET = re.compile(r"\s*(?:(?:the|a|an|your)\s+)?[A-Z][a-z]+"
                           r"(?:\s+(?!(?i:" + LABEL_STOP + r"))[A-Z][a-z]+)+\b")
+# A label runs through a reason word to its noun only as a name is written: after an article
+# ("Tap the Save to your device button"), capitalized on ("Tap Save to Drive button"), or on
+# to its noun with no place on the way ("Tap Add to cart button", "Select Keep only the
+# selected shots option", "Tap Paste without formatting option at the top"). A clause runs
+# to a place before the noun: "to" and a verb with its object ("Tap Export to save time in the
+# next tab", "Tap Export to share with clients from the menu"), or "without" and a word no
+# label uses there ("Tap Save without any loss in the tab"). The target is then the name alone
+# and the clause is the reason. Only these: "to cloud drive in the next tab" and "to save time
+# in the next tab" differ only in the verb, and a label can go on with "only", "or" or
+# "without an account" before its place ("Tap Continue without an account in the next tab").
+NAME_TARGET = re.compile(r"\s*[^\W_]+(?:['’][^\W_]+)?")
+PLACE = r"(?:in|on|at|from|of|for|with|into|onto|by|near|under|over|inside|below|above|beside)\b"
+DETERMINER = r"(?:your|our|its|the|a|an|this|that|these|those|my|their)\b"
+CLAUSE_VERB = (r"(?:accept|access|add|adjust|align|allow|animate|annotate|apply|approve|archive|arrange|attach|"
+               r"avoid|back|blur|boost|bring|browse|build|bump|calculate|cancel|capture|change|check|choose|clean|"
+               r"clear|clip|close|collect|color|combine|comment|compare|compress|confirm|connect|continue|control|"
+               r"convert|copy|correct|count|create|crop|cut|darken|decide|delete|deliver|describe|design|detect|"
+               r"disable|discard|display|download|drag|draw|drop|duplicate|edit|email|enable|enhance|enter|erase|"
+               r"expand|explore|export|extend|extract|fade|fetch|fill|filter|find|finish|fit|fix|flag|flip|follow|"
+               r"format|frame|free|gather|generate|get|give|grab|group|guide|handle|hear|help|hide|highlight|hold|"
+               r"import|improve|include|increase|insert|inspect|install|invite|join|jump|keep|label|launch|layer|"
+               r"learn|lighten|limit|link|list|load|locate|lock|log|loop|lower|make|manage|mark|match|measure|"
+               r"merge|mix|move|mute|name|narrate|navigate|note|notify|open|order|organize|outline|paste|pause|"
+               r"pick|pin|place|plan|play|polish|post|prepare|present|preserve|prevent|preview|print|process|"
+               r"produce|protect|publish|pull|push|queue|reach|read|rearrange|receive|record|recover|redo|reduce|"
+               r"refine|reframe|refresh|remove|rename|render|reorder|repeat|replace|reply|request|reset|resize|"
+               r"restore|resume|retain|retouch|return|reuse|review|revise|rewind|rotate|run|sample|save|scale|scan|"
+               r"schedule|score|scroll|search|see|select|send|set|share|sharpen|show|shrink|sign|skip|slow|smooth|"
+               r"snap|sort|speed|split|stabilize|start|stop|store|straighten|stream|submit|subscribe|swap|switch|"
+               r"sync|tag|take|test|tidy|time|tint|toggle|track|transcribe|transfer|translate|trim|try|tune|turn|"
+               r"type|undo|unlock|update|upload|use|verify|view|watch|wrap|write|zoom)\b")
+CLAUSE_IN_LABEL = re.compile(r"\b(?:to\s+" + CLAUSE_VERB + r"|without\s+(?:any|extra|further|more|much|another))\s+(?:"
+                             + PLACE + r"\s+(?!" + DETERMINER + r")"
+                             r"|(?!" + PLACE + r"|" + CONTROL_NOUN + r"))[a-z][\w'’]*\b"
+                             r"(?:\s+(?!" + CONTROL_NOUN + r")[\w'’]+)*?\s+" + PLACE)
 QUOTED = re.compile(r'\s*(?:(?:the|a|an|your)\s+)?(?:"[^"]*"|“[^”]*”|‘[^’]*’|\'[^\']*\')')
 NEGATION = {'not', 'no', 'never', 'nothing', 'none', 'without', 'cannot'}
 GENERIC_CTA = re.compile(r"^(?:follow|like|subscribe|share|comment|save)\b")
@@ -185,6 +220,9 @@ def review(plan: Dict[str, Any], answers: Dict[str, Any]) -> Dict[str, Any]:
         # The reason is in what follows the click and its target: "Tap Save" names a button, not a why.
         rest = text[click.end():] if click else ''
         target = QUOTED.match(rest) or TARGET.match(rest)
+        if target and not QUOTED.match(rest) and not re.match(r"\s*(?:the|a|an|your)\b", rest) \
+                and CLAUSE_IN_LABEL.search(original[len(original) - len(rest):][:target.end()]):
+            target = NAME_TARGET.match(rest)
         title = TITLE_TARGET.match(original[len(original) - len(rest):]) if click else None
         if title and (target is None or title.end() > target.end()):
             target = title

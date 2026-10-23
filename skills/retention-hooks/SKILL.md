@@ -11,7 +11,8 @@ viewer is an **open loop**: a question the video has raised and not yet answered
 long as one loop is open, and sags wherever none is.
 
 A loop is two moments: the line that **opens** a question and the later one that **closes** it.
-Never open a loop the video cannot close, and never close one before the next is open.
+Never open a loop the video cannot close, and never close one before the next is open. A serial
+episode's exit question follows drama-series-writing instead.
 
 ## The three loops
 
@@ -22,7 +23,7 @@ Never open a loop the video cannot close, and never close one before the next is
 | **Rehook** | a new question, just as the first ones start to fade | near the middle, from 35% to 60% of the length | it is new: a second problem, a twist, the part the viewer did not expect, never the hook said again |
 
 The **payoff** closes the hook's loop, at or near the end. The rehook's loop closes before or with
-it.
+it. The serial exit question above may remain open.
 
 Scale them to the length:
 
@@ -108,7 +109,7 @@ Any one of these makes a short read as an ad, and the viewer scrolls past it:
 
 **The ending loops back.** When the video ends without a call to action, its last frame leads into
 the first, for instance by ending on the problem the hook opened on, now solved. A replay then
-reads as one continuous video.
+reads as one continuous video. A serial exit follows drama-series-writing instead.
 
 The quality-review skill's viewer panel tests a hook on simulated viewers before anything is paid for.
 
@@ -120,7 +121,7 @@ the second it closes. Then read it back:
 - Does a loop open in the first 2 s?
 - Is some loop open at every second until the payoff, or is there a stretch where the viewer has
   nothing left to wait for?
-- Does every loop close?
+- Does every loop close? A serial exit question may stay open.
 - Does the hook break none of the four rules above, and use none of the ad tells?
 
 A missing loop is a note, not a block: when the material has no second question, build without a

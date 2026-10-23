@@ -62,6 +62,7 @@ Use cases, the entry points a user asks for:
 | [`generate-media`](./skills/generate-media) | Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture. |
 | [`get-started`](./skills/get-started) | Get started with Picsart Video. |
 | [`make-screen-videos`](./skills/make-screen-videos) | Turn a screen recording of an app or website into finished videos. |
+| [`make-short-drama`](./skills/make-short-drama) | Make a vertical drama series, pilot or episode with a recurring cast. |
 | [`movie-producer`](./skills/movie-producer) | Make a short narrative film from a story. |
 | [`recreate-video`](./skills/recreate-video) | Rebuild a reference video as an editable animated scene that moves and looks like it. |
 
@@ -73,6 +74,7 @@ Skills the use cases load:
 | [`background-music`](./skills/background-music) | Draft, generate and lay an instrumental music bed under a finished video's speech. |
 | [`caption-decorations`](./skills/caption-decorations) | Author and validate scene caption decorations, choosing between measured procedural decoration presets and arbitrary scene artwork. |
 | [`design-layer-import`](./skills/design-layer-import) | Bring a design or static assets into a scene as LAYERS, not flat frames, whenever they are going to move. |
+| [`drama-series-writing`](./skills/drama-series-writing) | Write a drama series' bible, season arc and episode cliffhangers, from templates or the user's idea. |
 | [`film-cast-design`](./skills/film-cast-design) | Make a film's people, props and places consistent on pictures. |
 | [`film-cutting`](./skills/film-cutting) | Cut a film's accepted takes into one scene. |
 | [`film-finishing`](./skills/film-finishing) | Finish a film after picture lock. |

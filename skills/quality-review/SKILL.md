@@ -132,3 +132,4 @@ costs anything. The review runs `scripts/script_review.py`; the reference below 
 | Read this | Before you |
 |---|---|
 | `references/script-review.md` | review a script, or report its verdict |
+| `references/readiness-verdict.md` | declare a generated video's decisive evidence before paying for it, or say whether a candidate is ready |
