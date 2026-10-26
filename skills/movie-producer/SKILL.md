@@ -4,6 +4,11 @@ description: Make a short narrative film from a story - several scenes, recurrin
 metadata:
   uses: film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, background-music, scene-building-basics, quality-review, realistic-color-grade
   optional: realistic-color-grade
+  title: Produce a short film
+  short-description: Make a short film from your story, scene by scene
+  argument-hint: '[story idea or script]'
+  starter-prompt: Make a short film from my story.
+argument-hint: '[story idea or script]'
 ---
 
 # Short film

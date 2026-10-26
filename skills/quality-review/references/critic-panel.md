@@ -91,8 +91,9 @@ brief, when there is one, as files or links. Each returns its note as JSON, read
 
 **Otherwise**, run them apart as the viewer panel runs its viewers (`references/viewer-panel.md`):
 where the host can run isolated workers in parallel, run each critic as its own worker, all six at
-once. Each worker's prompt is the whole text of its `references/agent-critic-<id>.md`, then what
-the section above gives, as files or links, and nothing else. Each returns only its JSON note.
+once. Each worker's prompt is the whole text of its `references/agent-critic-<id>.md`, then the
+"Looking at an image" section of your host notes (the worker has no host notes of its own), then
+what the section above gives, as files or links, and nothing else. Each returns only its JSON note.
 Where it cannot, run the critics inline, one after another, the first-principles critic first,
 each from its file, with its note written out in full before the next starts.
 

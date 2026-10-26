@@ -88,7 +88,8 @@ def says(blocks: List[Dict[str, Any]], line: str) -> bool:
     """The line's words, in order, starting where a block starts: "Do not try it" does not say "Try it"."""
     want, seq, starts = words(line), [], []
     for b in blocks:
-        starts.append(len(seq))
+        if 'context' not in b or b.get('context_first'):
+            starts.append(len(seq))
         seq += words(b['words'])
     return any(seq[i:i + len(want)] == want for i in starts)
 
@@ -142,18 +143,23 @@ def grade_scene(item: Dict[str, Any], brief: Dict[str, Any], scene: Dict[str, An
         early = [b for b in word_blocks(scene, ('text', 'captions'), completed=False) if b['at'] <= 1.0 and b['words']]
         said = ' '.join(b['words'] for b in early if b['words'])
         want = words(brief['hook'])
-        blocks = word_blocks(scene, ('text', 'captions'))
         opening, count = [], 0
         for b in early:
             if count >= len(want):
                 break
             opening.append(b)
             count += len(words(b['words']))
-        ready = all(any(c['layer'] == b['layer'] and c['words'] == b['words'] and c['end'] == b['end']
-                        and c['at'] <= 1.0 for c in blocks) for b in opening)
+        ready, remaining = True, len(want)
+        for b in opening:
+            tokens = list(re.finditer(r"[^\W_]+(?:'[^\W_]+)?", b['words']))
+            take = min(remaining, len(tokens))
+            if take:
+                revealed = b.get('reveal_start', b['at']) + b.get('typing', 0) * tokens[take - 1].end() / max(1, len(b['words']))
+                ready = ready and max(b['at'], revealed) <= 1.0 and revealed < b['end']
+            remaining -= take
         evidence = f'the first words say "{said}"' if said else 'no words in the first second'
         if not ready:
-            evidence += '; their reveal is not complete in the first second'
+            evidence += '; their reveal is not complete while visible in the first second'
         verdict(bool(early) and ready and words(said)[:len(want)] == want, evidence,
                 'put the hook\'s words on screen in the first second')
     elif i == 'cta':

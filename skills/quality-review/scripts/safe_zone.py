@@ -432,9 +432,10 @@ def words_layers(scene: Dict[str, Any], place: Place = _same, comp: Optional[Tup
                 yield from words_layers(inner, _placed_by(layer, inner_size, size, place, clip=True), inner_size, seen | {id(inner)}, unknown)
 
 
-def _timed(layer: Dict[str, Any], offset: float = 0, rate: float = 1) -> Dict[str, Any]:
+def _timed(layer: Dict[str, Any], offset: float = 0, rate: float = 1,
+           hold_until: Optional[float] = None) -> Dict[str, Any]:
     """Carry a placement source; compile its tracks only when checked words need it."""
-    return {'layer': layer, 'tracks': None, 'offset': offset, 'rate': rate}
+    return {'layer': layer, 'tracks': None, 'offset': offset, 'rate': rate, 'hold_until': hold_until}
 
 
 def _tracks(source: Dict[str, Any]) -> Dict[str, Any]:
@@ -497,6 +498,8 @@ def _ease(easing: Any, t: float) -> float:
 
 def _value(source: Dict[str, Any], prop: str, time: float, default: Any) -> Any:
     """Evaluate one property at the same time as every other transform in the chain."""
+    if source.get('hold_until') is not None:
+        time = max(time, source['hold_until'])
     keys = _tracks(source).get(prop) or []
     if not keys:
         return (source['layer'].get('transform') or {}).get(prop, default)
@@ -534,14 +537,23 @@ def _times(sources: List[Dict[str, Any]], start: float, end: float,
                     continue
                 va, vb = _vec(a.get('value')), _vec(b.get('value'))
                 ta, tb = _vec(a.get('outTangent')), _vec(b.get('inTangent'))
+                if a.get('value') != b.get('value') or ta or tb:
+                    count = 32
+                    if prop == 'position' and va and vb:
+                        count = max(count, min(512, int(math.dist(va, vb) / PATH_STEP) + 1))
+                    if prop == 'rotation' and isinstance(a.get('value'), (int, float)) and isinstance(b.get('value'), (int, float)):
+                        count = max(count, min(720, int(abs(b['value'] - a['value']) / 5) + 1))
+                    progress = {i / count for i in range(1, count)}
+                else:
+                    progress = set()
                 if va and vb and (ta or tb):
-                    progress = {i / 16 for i in range(1, 16)}
                     for j in range(2):
                         ca, cb = va[j] + (ta or [0, 0])[j], vb[j] + (tb or [0, 0])[j]
                         progress.update(t for t in _roots(3 * (-va[j] + 3 * ca - 3 * cb + vb[j]),
                                                          6 * (va[j] - 2 * ca + cb), 3 * (ca - va[j]))
                                         if 0 < t < 1)
-                    # Keep extrema for linear curves and a local grid for eased curves.
+                if progress:
+                    # Keep a local grid even for short eased and rotation-only segments.
                     track_times.update(t for p in progress for t in [a['time'] + (b['time'] - a['time']) * p]
                                        if start <= t <= end)
             for i, key in enumerate(keys):
@@ -552,7 +564,7 @@ def _times(sources: List[Dict[str, Any]], start: float, end: float,
                     if start < t and i and keys[i - 1].get('easing') == 'step':
                         track_times.add(math.nextafter(t, start))
             times.update(track_times)
-            if required is not None and prop not in NON_GEOMETRIC:
+            if required is not None and prop != 'volume':
                 required.update(track_times)
     ordered = sorted(times)
     times.update((a + b) / 2 for a, b in zip(ordered, ordered[1:]))
@@ -566,10 +578,17 @@ def _times(sources: List[Dict[str, Any]], start: float, end: float,
     return sorted(times)
 
 
-def _window(source: Dict[str, Any], window: Tuple[float, float]) -> Tuple[float, float]:
+def _window(source: Dict[str, Any], window: Tuple[float, float], preroll: float = 0) -> Tuple[float, float]:
     layer = source['layer']
     start = source['offset'] + float(layer.get('start') or 0) / source['rate']
     end = start + float(layer['duration']) / source['rate'] if layer.get('duration') is not None else window[1]
+    hold = source.get('hold_until')
+    if hold is not None:
+        if start <= hold < end:
+            # The held first frame appears only within the incoming transition.
+            start = hold - preroll
+        elif end <= hold:
+            end = min(end, window[0])
     return max(window[0], start), min(window[1], end)
 
 
@@ -602,6 +621,27 @@ def _clip_polygon(points: List[List[float]], size: Tuple[float, float]) -> List[
     return points
 
 
+def _intersect(points: List[List[float]], clip: List[List[float]]) -> List[List[float]]:
+    """Intersect two convex painted polygons, preserving the mask's actual outline."""
+    winding = sum(a[0] * b[1] - b[0] * a[1] for a, b in zip(clip, clip[1:] + clip[:1]))
+    if abs(winding) < 1e-9:
+        return []
+    sign = 1 if winding > 0 else -1
+    for a, b in zip(clip, clip[1:] + clip[:1]):
+        def side(p):
+            return sign * ((b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]))
+        out = []
+        for u, v in zip(points, points[1:] + points[:1]):
+            su, sv = side(u), side(v)
+            if (su >= 0) != (sv >= 0):
+                t = su / (su - sv)
+                out.append([u[j] + t * (v[j] - u[j]) for j in range(2)])
+            if sv >= 0:
+                out.append(v)
+        points = out
+    return points
+
+
 def _points(points: List[List[float]], ops: List[Any], time: float, clip: bool = True) -> List[List[float]]:
     """Apply the scoped transforms and camera, optionally clipping to nested canvases."""
     depth = 0.0
@@ -626,6 +666,9 @@ def _points(points: List[List[float]], ops: List[Any], time: float, clip: bool =
             c, s = math.cos(angle), math.sin(angle)
             points = [[pivot[0] + zoom * ((x - pivot[0]) * c - (y - pivot[1]) * s),
                        pivot[1] + zoom * ((x - pivot[0]) * s + (y - pivot[1]) * c)] for x, y in points]
+        elif op[0] == 'paint':
+            if clip:
+                points = _intersect(points, _points(op[1], op[2], time))
         elif clip:
             points = _clip_polygon(points, op[1])
     return points
@@ -641,10 +684,29 @@ def _measured_boxes(box: Box, placements: List[Any], ops: List[Any], times: List
     det = ax * by - ay * bx
     if abs(det) < 1e-12:
         return None
-    local = [((by * (x - origin[0]) - bx * (y - origin[1])) / det,
-              (ax * (y - origin[1]) - ay * (x - origin[0])) / det)
-             for x in (box['x'], box['x'] + box['w']) for y in (box['y'], box['y'] + box['h'])]
-    local = [local[i] for i in (0, 2, 3, 1)]
+    # Translation preserves a frame AABB even when its local aspect is ambiguous.
+    # Clipping needs the original corners, so keep that on the reconstruction path.
+    if not any(op[0] in ('clip', 'paint') for op in ops) and all(
+            abs(p[1][0] - p[0][0] - ax) < 1e-8 and abs(p[1][1] - p[0][1] - ay) < 1e-8
+            and abs(p[2][0] - p[0][0] - bx) < 1e-8 and abs(p[2][1] - p[0][1] - by) < 1e-8
+            for p in placements):
+        return [{**box, 'x': round(box['x'] + p[0][0] - origin[0], 1),
+                 'y': round(box['y'] + p[0][1] - origin[1], 1)} for p in placements]
+    cx, cy = box['x'] + box['w'] / 2 - origin[0], box['y'] + box['h'] / 2 - origin[1]
+    x, y = (by * cx - bx * cy) / det, (ax * cy - ay * cx) / det
+    # A frame AABB is the envelope of a rotated rectangle, not its four local corners.
+    envelope = abs(ax) * abs(by) - abs(bx) * abs(ay)
+    if abs(envelope) > 1e-8:
+        w = (box['w'] * abs(by) - box['h'] * abs(bx)) / envelope
+        h = (box['h'] * abs(ax) - box['w'] * abs(ay)) / envelope
+    else:
+        # At 45 degrees many local rectangles share this envelope. Font estimates
+        # cannot determine the measured aspect, so later placements are unmeasured.
+        return None
+    if w < 0 or h < 0:
+        return None
+    local = [[x - w / 2, y - h / 2], [x + w / 2, y - h / 2],
+             [x + w / 2, y + h / 2], [x - w / 2, y + h / 2]]
     boxes = []
     for time in times:
         points = _points(local, ops, time)
@@ -677,19 +739,33 @@ def _parent_anchor(layer: Dict[str, Any], size: Tuple[float, float], assets: Dic
             float(dimensions.get('height') or size[1]) / 2]
 
 
+def _clip_length(layer: Dict[str, Any], assets: Dict[str, Any]) -> Optional[float]:
+    if isinstance(layer.get('duration'), (int, float)):
+        return float(layer['duration'])
+    content = layer.get('content') or {}
+    speed = content.get('speed', 1)
+    if not isinstance(speed, (int, float)) or speed <= 0:
+        return None
+    trim = content.get('trim') or {}
+    asset = content.get('asset') or assets.get(content.get('assetId')) or {}
+    end = trim.get('out', asset.get('duration', (asset.get('scene', {}).get('composition') or {}).get('duration')))
+    return max(0, end - trim.get('in', 0)) / speed if isinstance(end, (int, float)) else None
+
+
 def _sampled_layers(scene: Dict[str, Any], outer: Optional[List[Any]] = None,
                     sources: Optional[List[Dict[str, Any]]] = None, offset: float = 0,
                     window: Optional[Tuple[float, float]] = None,
                     seen: FrozenSet[int] = frozenset(), size: Optional[Tuple[float, float]] = None,
                     clipped: bool = False, rate: float = 1,
                     unmeasured: bool = False, camera_source: Optional[Dict[str, Any]] = None,
-                    plane: Optional[List[Dict[str, Any]]] = None) -> Iterator[Tuple[Dict[str, Any], List[Box]]]:
+                    plane: Optional[List[Dict[str, Any]]] = None,
+                    preroll: float = 0, hold_until: Optional[float] = None) -> Iterator[Tuple[Dict[str, Any], List[Box]]]:
     """Walk words with scoped transforms, carrying time through every enclosing scene."""
     comp = scene.get('composition') or {}
     size = size or (float(comp.get('width') or 1080), float(comp.get('height') or 1920))
     window = window if window is not None else (offset, math.inf)
     if comp.get('duration') is not None:
-        window = (max(window[0], offset), min(window[1], offset + float(comp['duration']) / rate))
+        window = (max(window[0], offset - preroll), min(window[1], offset + float(comp['duration']) / rate))
     outer, sources = outer or [], sources or []
     layers = [l for l in scene.get('layers') or [] if isinstance(l, dict)]
     by_id = {l.get('id'): l for l in layers if l.get('id')}
@@ -697,7 +773,7 @@ def _sampled_layers(scene: Dict[str, Any], outer: Optional[List[Any]] = None,
     camera = comp.get('camera') or {}
     if camera_source is None:
         camera_source = _timed({'transform': {k: v for k, v in camera.items() if not isinstance(v, dict)},
-                                'animations': {**{k: v for k, v in camera.items() if isinstance(v, dict) and k != 'animations'}, **(camera.get('animations') or {})}}, offset, rate)
+                                'animations': {**{k: v for k, v in camera.items() if isinstance(v, dict) and k != 'animations'}, **(camera.get('animations') or {})}}, offset, rate, hold_until)
     for layer in layers:
         content = layer.get('content') or {}
         kind = content.get('kind')
@@ -714,21 +790,27 @@ def _sampled_layers(scene: Dict[str, Any], outer: Optional[List[Any]] = None,
             source_layer = node if node is layer else {
                 **node, 'transform': {k: v for k, v in (node.get('transform') or {}).items() if k != 'opacity'},
                 'animations': {k: v for k, v in (node.get('animations') or {}).items() if k != 'opacity'}}
-            chain.append(_timed(source_layer, offset, rate))
+            chain.append(_timed(source_layer, offset, rate, hold_until))
             parent = node.get('parentId')
             if parent and parent not in by_id:
                 raise InputError(f"{layer.get('id', '')}: missing parentId {parent}")
             node = by_id.get(parent) if parent else None
-        local_window = _window(chain[0], window)
+        local_window = _window(chain[0], window, preroll)
+        # Incoming transitions reveal the first frame early; animation time still
+        # starts at the nominal seam. Only layers present at that frame can show.
+        layer_preroll = preroll if hold_until is not None and offset + float(layer.get('start') or 0) / rate <= hold_until else 0
+        length = _clip_length(layer, assets)
+        if length is not None:
+            local_window = (local_window[0], min(local_window[1], offset + (float(layer.get('start') or 0) + length) / rate))
         all_sources = sources + chain
         if isinstance(mask, dict):
             owner = _timed({**layer, 'transform': {'opacity': (layer.get('transform') or {}).get('opacity', 1)},
-                            'animations': {k: v for k, v in (layer.get('animations') or {}).items() if k == 'opacity'}}, offset, rate)
+                            'animations': {k: v for k, v in (layer.get('animations') or {}).items() if k == 'opacity'}}, offset, rate, hold_until)
             depth_sources = (plane or []) + [_timed({
                 'transform': {k: v for k, v in (s['layer'].get('transform') or {}).items() if k == 'z'},
                 'animations': {k: v for k, v in (s['layer'].get('animations') or {}).items() if k == 'z'},
                 'start': s['layer'].get('start', 0), 'timeMode': s['layer'].get('timeMode', 'composition')},
-                s['offset'], s['rate']) for s in chain]
+                s['offset'], s['rate'], hold_until) for s in chain]
             mask = {**mask, 'transform': {k: v for k, v in (mask.get('transform') or {}).items() if k != 'z'},
                     'animations': {k: v for k, v in (mask.get('animations') or {}).items() if k != 'z'},
                     'cameraExempt': mask.get('cameraExempt') or any(s['layer'].get('cameraExempt') for s in chain)}
@@ -736,9 +818,36 @@ def _sampled_layers(scene: Dict[str, Any], outer: Optional[List[Any]] = None,
             if mask_spec.get('clip'):
                 mask_offset += float(layer.get('start') or 0) / rate
                 mask = {**mask, 'start': 0, 'duration': layer.get('duration')}
-            yield from _sampled_layers({**scene, 'layers': [mask]}, outer, sources + [owner], mask_offset,
+            mask_outer = outer
+            mask_sources = sources + chain + [owner]
+            items = content.get('items') or []
+            rects = [item for item in items if item.get('type') == 'rect' and _vec(item.get('size'))
+                     and not set(item) - {'type', 'size', 'position', 'roundness'}]
+            # Only a static rectangle with fills has a known painted envelope.
+            # Other primitives, strokes, item transforms and effects can extend it.
+            if (kind == 'shape' and len(rects) == 1 and not layer.get('effects') and not layer.get('contentEffects')
+                    and not set(content) - {'kind', 'items'}
+                    and all(item is rects[0] or item.get('type') == 'fill' for item in items)):
+                rect = rects[0]
+                rw, rh = rect['size']
+                cx, cy = rect.get('position') or [0, 0]
+                paint = [[cx - rw / 2, cy - rh / 2], [cx + rw / 2, cy - rh / 2],
+                         [cx + rw / 2, cy + rh / 2], [cx - rw / 2, cy + rh / 2]]
+                paint_ops = [('transform', source, [size[0] / 2, size[1] / 2],
+                              _parent_anchor(source['layer'], size, assets) if i else [0, 0], (1, 1))
+                             for i, source in enumerate(chain)]
+                if plane:
+                    paint_ops.append(('depth', plane))
+                if (not any(source['layer'].get('cameraExempt') for source in chain)
+                        and not any(op[0] == 'camera' and op[1] is camera_source for op in outer)):
+                    paint_ops.append(('camera', camera_source, size))
+                    # Exempt words still need the camera times that reveal paint.
+                    mask_sources = mask_sources + [camera_source]
+                mask_outer = [('paint', paint, paint_ops)] + outer
+            yield from _sampled_layers({**scene, 'layers': [mask]}, mask_outer, mask_sources, mask_offset,
                                        local_window, seen, size, clipped, rate, unmeasured,
-                                       camera_source=camera_source, plane=depth_sources)
+                                       camera_source=camera_source, plane=depth_sources, preroll=layer_preroll,
+                                       hold_until=hold_until)
         if kind not in ('text', 'captions', 'composition', 'track', 'scene_ref'):
             continue
         ops = []
@@ -767,7 +876,11 @@ def _sampled_layers(scene: Dict[str, Any], outer: Optional[List[Any]] = None,
         ops += outer
         if kind in ('text', 'captions'):
             if local_window[1] <= local_window[0]:
-                yield layer, []
+                yield {**layer, '_inactive': True}, []
+                continue
+            if any(not _opacity_expression(source) and not _tracks(source).get('opacity')
+                   and _value(source, 'opacity', local_window[0], 1) <= 0 for source in all_sources):
+                yield {**layer, '_inactive': True}, []
                 continue
             if unmeasured or any(_spatial_expression(source['layer']) for source in all_sources):
                 yield {**layer, '_unmeasured': True}, []
@@ -782,52 +895,84 @@ def _sampled_layers(scene: Dict[str, Any], outer: Optional[List[Any]] = None,
             times = _times(all_sources, local_window[0], end, required)
             # A bounded grid alone can miss a brief rail hold or curve excursion.
             times = sorted(required | set(times))
+            caption_spans = None
+            if kind == 'captions' and isinstance(content.get('transcript'), dict):
+                origin = offset + (float(layer.get('start') or 0) + float(content.get('timeOffset') or 0)) / rate
+                caption_spans = [(origin + seg['start'] / rate, origin + seg['end'] / rate)
+                                 for seg in content['transcript'].get('segments', [])
+                                 if isinstance(seg.get('start'), (int, float)) and isinstance(seg.get('end'), (int, float))]
+                times = sorted(set(times) | {max(local_window[0], a) for a, b in caption_spans
+                                            if b > local_window[0] and a < end})
             boxes, placements, visible_times = [], [], []
+            singular = False
+            corners = None
             if kind == 'text':
                 static = {**layer, 'transform': {'position': [0, 0]}, 'animations': {}}
                 b = text_boxes(static, size)[0]
                 corners = [[x, y] for x in (b['x'], b['x'] + b['w']) for y in (b['y'], b['y'] + b['h'])]
                 corners = [corners[i] for i in (0, 2, 3, 1)]
             for time in times:
+                if caption_spans is not None and not any(a <= time < b for a, b in caption_spans):
+                    continue
                 # An opacity expression cannot be evaluated: assume the words are visible.
                 if any(_value(s, 'opacity', time, 1) <= 0 for s in all_sources if not _opacity_expression(s)):
                     continue
                 placement = _points([[0, 0], [1, 0], [0, 1]], ops, time, clip=False)
                 if not placement:
                     continue
-                placements.append(placement)
-                visible_times.append(time)
+                o, x, y = placement
+                if abs((x[0] - o[0]) * (y[1] - o[1]) - (x[1] - o[1]) * (y[0] - o[0])) < 1e-12:
+                    # An initial collapse leaves the snapshot origin unknown;
+                    # later zero-area samples do not invalidate that origin.
+                    singular = singular or not placements
+                    continue
                 if kind == 'captions':
+                    placements.append(placement)
+                    visible_times.append(time)
                     boxes.append({})
                     continue
                 points = _points(corners, ops, time)
-                if points:
+                if points and abs(sum(a[0] * b[1] - b[0] * a[1] for a, b in zip(points, points[1:] + points[:1]))) > 1e-9:
+                    placements.append(placement)
+                    visible_times.append(time)
                     xs, ys = [p[0] for p in points], [p[1] for p in points]
                     boxes.append({'x': round(min(xs), 1), 'y': round(min(ys), 1), 'w': round(max(xs) - min(xs), 1), 'h': round(max(ys) - min(ys), 1)})
-            yield {**layer, '_placements': placements, '_ops': ops, '_times': visible_times}, boxes
+            yield {**layer, '_placements': placements, '_ops': ops, '_times': visible_times,
+                   '_singular': singular}, boxes
         elif kind == 'composition':
             children = content.get('layers') or []
             if canvas:
                 # Its own size, duration and camera, cropped to its canvas.
                 inner_scene = {**scene, 'composition': ic, 'layers': children}
                 yield from _sampled_layers(inner_scene, ops, all_sources, offset + float(layer.get('start') or 0) / rate,
-                                           local_window, seen, inner_size, clipped=True, rate=rate, unmeasured=unmeasured)
+                                           local_window, seen, inner_size, clipped=True, rate=rate, unmeasured=unmeasured,
+                                           preroll=layer_preroll, hold_until=hold_until)
             else:
                 inner_scene = {**scene, 'composition': {'width': size[0], 'height': size[1]}, 'layers': children}
                 yield from _sampled_layers(inner_scene, ops, all_sources, offset + float(layer.get('start') or 0) / rate,
-                                           local_window, seen, size, rate=rate, unmeasured=unmeasured)
+                                           local_window, seen, size, rate=rate, unmeasured=unmeasured,
+                                           preroll=layer_preroll, hold_until=hold_until)
         elif kind == 'track':
             cursor = offset + float(layer.get('start') or 0) / rate
             clips = content.get('clips') or []
             unknown = unmeasured
-            for child in clips:
+            for index, child in enumerate(clips):
                 if not isinstance(child, dict):
                     continue
-                inner_scene = {**scene, 'composition': {'width': size[0], 'height': size[1]},
-                               'layers': [{**child, 'start': 0}]}
-                yield from _sampled_layers(inner_scene, ops, all_sources, cursor, local_window, seen, size, rate=rate, unmeasured=unknown)
-                unknown = unknown or child.get('duration') is None
-                cursor += float(child.get('duration') or 0) / rate
+                overlap = max((float(t.get('duration') or 0) / 2 for t in content.get('transitions', [])
+                               if t.get('between') == index - 1), default=0) if index else 0
+                child_length = _clip_length(child, assets)
+                placed = {**child, 'id': child.get('id', layer.get('id', '')), 'start': 0}
+                if child_length is not None:
+                    placed['duration'] = child_length
+                inner_scene = {**scene, 'composition': {'width': size[0], 'height': size[1]}, 'layers': [placed]}
+                yield from _sampled_layers(inner_scene, ops, all_sources, cursor, local_window, seen, size, rate=rate,
+                                           unmeasured=unknown,
+                                           preroll=overlap / rate if index else layer_preroll,
+                                           hold_until=max(cursor, hold_until if hold_until is not None else cursor) if overlap else hold_until)
+                length = _clip_length(child, assets)
+                unknown = unknown or length is None
+                cursor += (length or 0) / rate
         elif kind == 'scene_ref':
             inner = (content.get('asset') or assets.get(content.get('assetId')) or {}).get('scene')
             if isinstance(inner, dict) and id(inner) not in seen:
@@ -840,8 +985,25 @@ def _sampled_layers(scene: Dict[str, Any], outer: Optional[List[Any]] = None,
                 child_offset = offset + float(layer.get('start') or 0) / rate - float(trim.get('in') or 0) / child_rate
                 if trim.get('out') is not None:
                     local_window = (local_window[0], min(local_window[1], child_offset + float(trim['out']) / child_rate))
-                yield from _sampled_layers(inner, ops, all_sources, child_offset, local_window,
-                                           seen | {id(inner)}, size=inner_size, clipped=True, rate=child_rate, unmeasured=unknown)
+                duration = (inner.get('composition') or {}).get('duration')
+                cycle_end = trim.get('out', duration)
+                cycle = (cycle_end - float(trim.get('in') or 0)) / child_rate if isinstance(cycle_end, (int, float)) else 0
+                if content.get('loop') and cycle > 0 and math.isfinite(_window(chain[0], window, preroll)[1]):
+                    stop = _window(chain[0], window, preroll)[1]
+                    begin = offset + float(layer.get('start') or 0) / rate
+                    # Bound hostile loop counts; an unknown clock must never pass.
+                    count = int(math.ceil((stop - begin) / cycle))
+                    if count > 1000:
+                        unknown, count = True, 1
+                    for n in range(max(0, count)):
+                        yield from _sampled_layers(inner, ops, all_sources, child_offset + n * cycle,
+                                                   (max(begin + n * cycle, window[0]), min(stop, begin + (n + 1) * cycle)),
+                                                   seen | {id(inner)}, size=inner_size, clipped=True, rate=child_rate, unmeasured=unknown)
+                else:
+                    yield from _sampled_layers(inner, ops, all_sources, child_offset, local_window,
+                                               seen | {id(inner)}, size=inner_size, clipped=True, rate=child_rate,
+                                               unmeasured=unknown or bool(content.get('loop')), preroll=layer_preroll,
+                                               hold_until=hold_until)
 
 
 def check(scene: Dict[str, Any], destination: List[str], measured: Optional[Dict[str, Box]] = None) -> Dict[str, Any]:
@@ -861,10 +1023,15 @@ def check(scene: Dict[str, Any], destination: List[str], measured: Optional[Dict
                 continue
             # Its motion cannot be evaluated, but a measured box is still checked.
             boxes = [measured[lid]]
-        elif not estimates:
+        elif layer.get('_inactive'):
             continue
+        elif not estimates:
+            if lid not in measured:
+                continue
+            boxes = [measured[lid]]
         elif lid in measured:
-            boxes = _measured_boxes(measured[lid], layer.get('_placements') or [], layer['_ops'], layer['_times'])
+            boxes = None if layer.get('_singular') else _measured_boxes(
+                measured[lid], layer.get('_placements') or [], layer['_ops'], layer['_times'])
             if boxes is None:
                 unmeasured.append(lid)
                 boxes = [measured[lid]]
@@ -897,7 +1064,7 @@ def check(scene: Dict[str, Any], destination: List[str], measured: Optional[Dict
                 'fix': f'move it {" and ".join(moves)}, or shorten the line or make it smaller',
             })
             continue
-        for b in boxes:
+        for b in sorted(boxes, key=lambda b: b['x'] + b['w'], reverse=True):
             hit = next((r for r in rails if _overlap(b, r)), None)
             if hit:
                 into = round(b['x'] + b['w'] - hit['x'], 1)

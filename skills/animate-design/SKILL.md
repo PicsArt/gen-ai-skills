@@ -4,6 +4,11 @@ description: Turn static material into a real motion-designed video — a Figma 
 metadata:
   owner: motion-designer
   uses: design-layer-import, motion-design-craft, resting-frame-rules
+  title: Animate a design
+  short-description: Turn a design or your assets into a motion video
+  argument-hint: '[Figma link, design or assets]'
+  starter-prompt: Animate my design into a short motion video.
+argument-hint: '[Figma link, design or assets]'
 ---
 
 # Motion — a static design becomes a motion-designed ad

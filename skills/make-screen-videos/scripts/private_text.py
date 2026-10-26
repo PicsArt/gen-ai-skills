@@ -190,8 +190,8 @@ def phone_pieces(text: str, m: 're.Match[str]', split_dates: bool = True) -> Lis
     return found
 
 
-def scan(text: str) -> List[Tuple[str, str]]:
-    """Each hit in one text, as (kind, match), without counting an identical span twice."""
+def scan(text: str, spans: bool = False) -> List[Any]:
+    """Each hit once, as (kind, match), or (offset, kind, match) for joint masking."""
     taken: List[Tuple[int, int]] = []
     hits: List[Tuple[int, str, str]] = []
 
@@ -268,7 +268,16 @@ def scan(text: str) -> List[Tuple[str, str]]:
             # A phone that only repeats a card's digits adds nothing: the card already masks them.
             if any(text[i].isdigit() and not any(x <= i < y for x, y in cards) for i in range(a, b)):
                 add_span('phone', a, b)
-    return [(kind, match) for _, kind, match in sorted(hits)]
+    # Cards may cut a phone into fragments too short to recognize. Retain the original
+    # reading where it covers digits still uncovered, without borrowing dates or card groups.
+    for m in PHONE.finditer(masked(others)):
+        for a, b in phone_pieces(text, m):
+            groups = re.findall(r'\d+', text[a:b])
+            covered = [(x, x + len(s)) for x, _, s in hits]
+            if (max(map(len, groups)) <= 4 and (b == len(text) or text[b] not in '/.')) and any(
+                    text[i].isdigit() and not any(x <= i < y for x, y in covered) for i in range(a, b)):
+                add_span('phone', a, b)
+    return sorted(hits) if spans else [(kind, match) for _, kind, match in sorted(hits)]
 
 
 def run(data: Any) -> Dict[str, Any]:
@@ -281,8 +290,23 @@ def run(data: Any) -> Dict[str, Any]:
             entry = {'text': entry}
         if not isinstance(entry, dict) or not isinstance(entry.get('text'), str):
             raise InputError(f'texts[{i}] must be a string, or an object with a text')
-        for kind, match in scan(entry['text']):
-            hit: Dict[str, Any] = {'kind': kind, 'entry': i, 'masked': mask(match)}
+        found = scan(entry['text'], spans=True)
+        # Shared windows may reveal each other's interior. Only the union's outer characters
+        # may survive in any returned mask, including windows classified as phones.
+        merged: List[Tuple[int, int]] = []
+        for at, _, match in found:
+            end = at + len(match)
+            if merged and at < merged[-1][1]:
+                merged[-1] = (merged[-1][0], max(end, merged[-1][1]))
+            else:
+                merged.append((at, end))
+        for at, kind, match in found:
+            a, b = next((a, b) for a, b in merged if a <= at and at + len(match) <= b)
+            masked_match = mask(match)
+            if a != at or b != at + len(match):
+                masked_match = ''.join(ch if at + j < a + 2 or at + j >= b - 2 else '*'
+                                       for j, ch in enumerate(match))
+            hit: Dict[str, Any] = {'kind': kind, 'entry': i, 'masked': masked_match}
             for key in ('at', 'box', 'from'):
                 if entry.get(key) is not None:
                     hit[key] = entry[key]

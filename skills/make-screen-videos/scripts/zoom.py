@@ -144,7 +144,19 @@ def zoom_track(src: Size, comp: Size, panel: Box, content: Box, foci: List[Dict[
     t = 0
     skipped = None
     ordered = sorted(foci, key=lambda x: x['at'])
-    peaks = [peak_framing(src, panel, rest, f['box'], f['luma'], o, f.get('card'), least)['S'] for f in ordered]
+
+    def framing_for(focus: Dict[str, Any], settings: Dict[str, Any] = o, floor: float = least) -> Framing:
+        try:
+            return peak_framing(src, panel, rest, focus['box'], focus['luma'], settings, focus.get('card'), floor)
+        except InputError:
+            if content != {'x': 0, 'y': 0, **src}:
+                raise
+            # A valid wide result can have no covering crop: hold the rest pose.
+            return rest.copy()
+
+    peaks = [framing_for(f)['S']
+             if duration - max(0.05, f['at'] + o['delay']) >= o['minRamp'] - 1e-9 else rest['S']
+             for f in ordered]
     shared = None
     for i, f in enumerate(ordered):
         start = max(t + 0.05, f['at'] + o['delay'])
@@ -167,7 +179,7 @@ def zoom_track(src: Size, comp: Size, panel: Box, content: Box, foci: List[Dict[
                     if duration - next_start < o['minRamp'] - 1e-9:
                         break
                     group.append(peaks[j])
-                    future_framing = peak_framing(src, panel, rest, future['box'], future['luma'], {**o, 'peak': shared / rest['S'], 'whitePeak': shared / rest['S']}, future.get('card'))
+                    future_framing = framing_for(future, {**o, 'peak': shared / rest['S'], 'whitePeak': shared / rest['S']}, 0)
                     future_pose = pose(src, comp, panel, future_framing)
                     if moved(next_pose, future_pose):
                         next_t = next_start + min(o['ramp'], duration - next_start)
@@ -177,7 +189,7 @@ def zoom_track(src: Size, comp: Size, panel: Box, content: Box, foci: List[Dict[
                             break
                 if min(group) == shared:
                     break
-        framing = peak_framing(src, panel, rest, f['box'], f['luma'], {**o, 'peak': shared / rest['S'], 'whitePeak': shared / rest['S']}, f.get('card'))
+        framing = framing_for(f, {**o, 'peak': shared / rest['S'], 'whitePeak': shared / rest['S']}, 0)
         target = pose(src, comp, panel, framing)
         held = {'scale': scale[-1]['value'], 'position': position[-1]['value']}
         # A push that goes nowhere is no push: skip it rather than key a still. Its `until` still

@@ -99,7 +99,7 @@ def word_blocks(scene: Dict[str, Any], kinds: Tuple[str, ...] = ('text',), compl
     With `completed` false, typed blocks count from the start of their reveal.
     """
     out = []
-    for layer, start, zero, bound in _visits(scene, 0.0, math.inf, set()):
+    for layer, start, zero, bound in _visits(scene, 0.0, math.inf, set(), words_only=True):
         content = layer.get('content') or {}
         rate = getattr(layer, 'rate', 1.0)
         if content.get('kind') not in kinds:
@@ -116,13 +116,21 @@ def word_blocks(scene: Dict[str, Any], kinds: Tuple[str, ...] = ('text',), compl
             lid = str(layer.get('id', ''))
             if content['kind'] == 'captions':
                 # A caption's words are its transcript's segments, each on screen only while it is said.
-                for a, b, words in caption_blocks(content, start):
-                    a, b = start + (a - start) * rate, start + (b - start) * rate
-                    a, b = max(a, at), min(b, end)
-                    if b > a + 1e-6:
-                        out.append({'at': round(a, 3), 'end': b, 'layer': lid, 'kind': 'captions', 'words': words})
+                style = content.get('style') or {}
+                needs_words = completed and 'reveal' in style and style['reveal'].get('window', 'sustain') == 'sustain'
+                for segment in (content.get('transcript') or {}).get('segments') or []:
+                    if needs_words and not segment.get('words'):
+                        continue
+                    display = {**content, 'transcript': {'segments': [segment]}}
+                    for index, (a, b, words) in enumerate(caption_blocks(display, start)):
+                        a, b = start + (a - start) * rate, start + (b - start) * rate
+                        a, b = max(a, at), min(b, end)
+                        if b > a + 1e-6:
+                            out.append({'at': round(a, 3), 'end': b, 'layer': lid, 'kind': 'captions',
+                                        'words': words, 'context': text_of(segment), 'context_first': index == 0})
                 continue
-            out.append({'at': round(at, 3), 'end': end, 'layer': lid, 'kind': content['kind'], 'words': text_of(content)})
+            out.append({'at': round(at, 3), 'end': end, 'layer': lid, 'kind': content['kind'], 'words': text_of(content),
+                        'reveal_start': start, 'typing': max(0.0, typed or 0) * rate})
     return sorted(out, key=lambda b: b['at'])
 
 

@@ -100,7 +100,7 @@ def _clip_length(clip: Dict[str, Any], assets: Dict[str, Any]) -> Optional[float
     if _num(trim.get('in')) and _num(trim.get('out')):
         return (float(trim['out']) - float(trim['in'])) / speed
     record = content.get('asset') or assets.get(content.get('assetId')) or {}
-    return float(record['duration']) / speed if _num(record.get('duration')) else None
+    return max(0.0, float(record['duration']) - float(trim.get('in') or 0)) / speed if _num(record.get('duration')) else None
 
 
 class _Placed(dict):
@@ -172,7 +172,7 @@ def _check_container(layer: Dict[str, Any]) -> None:
         _check_container(mask)
 
 
-def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], visible: Optional[List[Tuple[float, float]]] = None, cameras: bool = False, rate: float = 1.0, inherited_assets: Optional[Dict[str, Any]] = None, opacity: bool = True, containers: Tuple[Any, ...] = ()) -> Iterator[Tuple[Dict[str, Any], float, float, float]]:
+def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], visible: Optional[List[Tuple[float, float]]] = None, cameras: bool = False, rate: float = 1.0, inherited_assets: Optional[Dict[str, Any]] = None, opacity: bool = True, containers: Tuple[Any, ...] = (), words_only: bool = False) -> Iterator[Tuple[Dict[str, Any], float, float, float]]:
     """
     Every layer the viewer can see, with its start, its scene's zero and the last moment it can be
     seen, in the outer scene's seconds. A layer's `duration` is cut to what is seen of it: the end of
@@ -187,20 +187,27 @@ def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], 
     if _num(comp.get('duration')):
         until = min(until, offset + float(comp['duration']) * rate)
     if cameras and isinstance(comp.get('camera'), dict):
-        camera = {**comp['camera'], 'content': {'kind': 'camera'}}
-        camera['depth'] = any('z' in (l.get('transform') or {}) or 'z' in (l.get('animations') or {})
+        camera = {**{k: v for k, v in comp['camera'].items() if not isinstance(v, dict)}, 'content': {'kind': 'camera'},
+                  'animations': {**{k: v for k, v in comp['camera'].items() if isinstance(v, dict) and k != 'animations'},
+                                 **(comp['camera'].get('animations') or {})}}
+        camera['depth'] = any((l.get('transform') or {}).get('z', 0) != 0 or 'z' in (l.get('animations') or {})
                               for l in scene.get('layers') or [] if isinstance(l, dict))
-        yield _visible_layer(camera, offset, offset, until, visible, rate, opacity), offset, offset, until
+        seen_camera = _visible_layer(camera, offset, offset, until, visible, rate, opacity)
+        seen_camera.scope = scope
+        yield seen_camera, offset, offset, until
 
     def visit(layer: Dict[str, Any], start: float, bound: float,
               inherited: List[Tuple[float, float]], owners: Tuple[Any, ...] = containers) -> Iterator[Tuple[Dict[str, Any], float, float, float]]:
         """Layers and sequential clips share the same container traversal and clocks."""
-        _check_container(layer)
+        if opacity:
+            _check_container(layer)
         if start >= bound - 1e-6:
             return
         length = _clip_length(layer, assets)
         end = min(bound, start + length * rate) if length is not None else bound
-        seen_layer = _visible_layer(layer, start, offset, end, inherited, rate, opacity)
+        kind = (layer.get('content') or {}).get('kind')
+        seen_layer = _visible_layer(layer, start, offset, end, inherited, rate,
+                                    opacity and (not words_only or kind in ('text', 'captions', 'composition', 'scene_ref', 'track')))
         seen_layer.assets = assets
         seen_layer.scope = scope
         seen_layer.containers = owners
@@ -209,7 +216,7 @@ def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], 
         if content.get('kind') == 'track':
             at = start
             for i, clip in enumerate(content.get('clips') or []):
-                if isinstance(clip, dict):
+                if opacity and isinstance(clip, dict):
                     _check_container(clip)
                 length = _clip_length(clip, assets) if isinstance(clip, dict) else None
                 if length is None or at >= end - 1e-6:
@@ -220,14 +227,14 @@ def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], 
                 at += length * rate
         if content.get('kind') == 'composition' and id(content) not in seen:
             # Inline groups share this scene's assets, but their children start on the group's clock.
-            yield from _visits(content, start, end, seen, seen_layer.spans, cameras, rate, assets, opacity, owners + (seen_layer,))
+            yield from _visits(content, start, end, seen, seen_layer.spans, cameras, rate, assets, opacity, owners + (seen_layer,), words_only)
         ref = content.get('assetId') if content.get('kind') == 'scene_ref' else None
         inner = (content.get('asset') or assets.get(ref) or {}).get('scene') if content.get('kind') == 'scene_ref' else None
         if isinstance(inner, dict) and id(inner) not in seen:
             speed = content.get('speed', 1)
             trim = content.get('trim') or {}
             trim_in, trim_out = trim.get('in', 0), trim.get('out')
-            if (not _num(speed) or not math.isfinite(speed) or speed <= 0 or content.get('loop')
+            if (not _num(speed) or not math.isfinite(speed) or speed <= 0 or (opacity and content.get('loop'))
                     or not _num(trim_in) or not math.isfinite(trim_in) or trim_in < 0
                     or (trim_out is not None and (not _num(trim_out) or not math.isfinite(trim_out) or trim_out <= trim_in))):
                 raise InputError('unsupported scene_ref speed, trim or loop: timing was not checked')
@@ -235,7 +242,7 @@ def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], 
             child_zero = start - trim_in * child_rate
             if trim_out is not None:
                 end = min(end, child_zero + trim_out * child_rate)
-            yield from _visits(inner, child_zero, end, seen, seen_layer.spans, cameras, child_rate, opacity=opacity, containers=owners + (seen_layer,))
+            yield from _visits(inner, child_zero, end, seen, seen_layer.spans, cameras, child_rate, opacity=opacity, containers=owners + (seen_layer,), words_only=words_only)
 
     for layer in scene.get('layers') or []:
         if isinstance(layer, dict):
@@ -298,6 +305,47 @@ def change_times(scene: Dict[str, Any], extra: List[float], moving: Optional[Lis
     visits = list(_visits(scene, 0.0, math.inf, set(), cameras=True))
     parents = {(layer.scope, layer.get('id')): layer for layer, _, _, _ in visits
                if hasattr(layer, 'scope') and layer.get('id')}
+
+    def camera_picture(child: Any) -> bool:
+        content = child.get('content') or {}
+        kind = content.get('kind')
+        if kind == 'scene_ref':
+            asset = content.get('asset') or child.assets.get(content.get('assetId')) or {}
+            canvas = asset.get('scene') or {}
+        elif kind == 'composition':
+            canvas = content
+        else:
+            return kind not in ('empty', 'audio', 'camera', 'track')
+        # A rendered canvas can carry picture even when it has no child layers.
+        background = (canvas.get('composition') or {}).get('background')
+        if not isinstance(background, str):
+            return False
+        color = background.strip().lower()
+        return bool(color) and color != 'transparent' and not re.fullmatch(r'#(?:[0-9a-f]{3}0|[0-9a-f]{6}00)', color)
+
+    def camera_affected(child: Any, camera_scope: Any) -> bool:
+        # Each camera owns one composition. A reference's exemption applies to
+        # its outer camera, while the referenced scene's own camera still runs.
+        owners = child.containers + (child,)
+        boundary = next((i for i, owner in enumerate(owners) if owner.scope == camera_scope), -1)
+        if boundary < 0:
+            return False
+        for owner in owners[boundary:]:
+            node, chain = owner, set()
+            while node is not None:
+                if node.get('cameraExempt'):
+                    return False
+                key = (node.scope, node.get('parentId'))
+                if key in chain:
+                    break
+                chain.add(key)
+                node = parents.get(key)
+            content = owner.get('content') or {}
+            if content.get('kind') == 'scene_ref' or (
+                    content.get('kind') == 'composition' and isinstance(content.get('composition'), dict)):
+                break  # The outer camera moves the rendered canvas, not its individual children.
+        return True
+
     rig_spans: Dict[Tuple[Any, str], List[Tuple[float, float]]] = {}
     for child, start, _, _ in visits:
         if (child.get('content') or {}).get('kind') in ('empty', 'audio', 'camera', 'composition', 'scene_ref', 'track'):
@@ -315,6 +363,11 @@ def change_times(scene: Dict[str, Any], extra: List[float], moving: Optional[Lis
             continue
         content = layer.get('content') or {}
         spans = shown(layer, start)
+        if content.get('kind') == 'camera':
+            picture = [span for child, child_start, _, _ in visits
+                       if camera_picture(child) and camera_affected(child, layer.scope)
+                       for span in shown(child, child_start)]
+            spans = [(max(a, c), min(b, d)) for a, b in spans for c, d in picture if min(b, d) > max(a, c)]
         if content.get('kind') == 'empty':
             spans = rig_spans.get((layer.scope, layer.get('id')), [])
         if content.get('kind') not in ('empty', 'camera'):
@@ -421,6 +474,11 @@ def caption_blocks(content: Dict[str, Any], start: float, readable: bool = False
         if window == 'active' or (window == 'sustain' and not readable):
             tokens = text_of(seg).split()
             timed = seg.get('words') or []
+            if window == 'sustain' and not timed:
+                words = text_of(seg)
+                if words:
+                    out.append((start + offset + float(seg['start']), start + offset + float(seg['end']), words))
+                continue
             if readable and not timed:
                 raise InputError('active captions need word timings to check readable holds')
             for i, word in enumerate(timed):

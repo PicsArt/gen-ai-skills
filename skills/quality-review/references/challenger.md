@@ -40,8 +40,9 @@ question, its temper and its answer's shape. Then give it only:
 - the brief, when the user supplied one: its main message, audience and must-shows, quoted.
 
 Never give it the conversation, this skill's other files, or a critic's note. Without the agent, run it as its own
-isolated worker where the host can, its prompt the whole text of `references/agent-challenger.md`
-and the list above; inline otherwise, with its answer written out in full before you
+isolated worker where the host can, its prompt the whole text of `references/agent-challenger.md`,
+the "Looking at an image" section of your host notes (the worker has none of its own) and the list
+above; inline otherwise, with its answer written out in full before you
 go on.
 
 ## What it returns

@@ -65,6 +65,7 @@ Python 3.9 or later, the standard library only, offline.
 """
 from __future__ import annotations
 
+import itertools
 import json
 import re
 import sys
@@ -103,14 +104,14 @@ TITLE_TARGET = re.compile(r"\s*(?:(?:the|a|an|your)\s+)?[A-Z][a-z]+"
 # and the clause is the reason. Only these: "to cloud drive in the next tab" and "to save time
 # in the next tab" differ only in the verb, and a label can go on with "only", "or" or
 # "without an account" before its place ("Tap Continue without an account in the next tab").
-NAME_TARGET = re.compile(r"\s*[^\W_]+(?:['’][^\W_]+)?")
+NAME_TARGET = re.compile(r"\s*(?:(?:the|a|an|your)\s+)?[^\W_]+(?:['’][^\W_]+)?")
 PLACE = r"(?:in|on|at|from|of|for|with|into|onto|by|near|under|over|inside|below|above|beside)\b"
 DETERMINER = r"(?:your|our|its|the|a|an|this|that|these|those|my|their)\b"
 CLAUSE_VERB = (r"(?:accept|access|add|adjust|align|allow|animate|annotate|apply|approve|archive|arrange|attach|"
                r"avoid|back|blur|boost|bring|browse|build|bump|calculate|cancel|capture|change|check|choose|clean|"
                r"clear|clip|close|collect|color|combine|comment|compare|compress|confirm|connect|continue|control|"
                r"convert|copy|correct|count|create|crop|cut|darken|decide|delete|deliver|describe|design|detect|"
-               r"disable|discard|display|download|drag|draw|drop|duplicate|edit|email|enable|enhance|enter|erase|"
+               r"disable|discard|display|download|drag|draw|drop|duplicate|edit|email|enable|end|enhance|enter|erase|"
                r"expand|explore|export|extend|extract|fade|fetch|fill|filter|find|finish|fit|fix|flag|flip|follow|"
                r"format|frame|free|gather|generate|get|give|grab|group|guide|handle|hear|help|hide|highlight|hold|"
                r"import|improve|include|increase|insert|inspect|install|invite|join|jump|keep|label|launch|layer|"
@@ -124,10 +125,31 @@ CLAUSE_VERB = (r"(?:accept|access|add|adjust|align|allow|animate|annotate|apply|
                r"snap|sort|speed|split|stabilize|start|stop|store|straighten|stream|submit|subscribe|swap|switch|"
                r"sync|tag|take|test|tidy|time|tint|toggle|track|transcribe|transfer|translate|trim|try|tune|turn|"
                r"type|undo|unlock|update|upload|use|verify|view|watch|wrap|write|zoom)\b")
-CLAUSE_IN_LABEL = re.compile(r"\b(?:to\s+" + CLAUSE_VERB + r"|without\s+(?:any|extra|further|more|much|another))\s+(?:"
-                             + PLACE + r"\s+(?!" + DETERMINER + r")"
-                             r"|(?!" + PLACE + r"|" + CONTROL_NOUN + r"))[a-z][\w'’]*\b"
-                             r"(?:\s+(?!" + CONTROL_NOUN + r")[\w'’]+)*?\s+" + PLACE)
+OBJECT = r"(?:" + PLACE + r"\s+(?!" + DETERMINER + r")|(?!" + PLACE + r"|" + CONTROL_NOUN + r"))[\w'’]+\b"
+CLAUSE_IN_LABEL = re.compile(
+    # "to" and a verb with its object: "to save time", "to share clips before closing the menu", "to upload MP4 files".
+    # Plain words that run straight into a control's noun are the label's own: "Click to add background music button".
+    r"\bto\s+" + CLAUSE_VERB + r"(?!(?:\s+(?!" + PLACE + r"|" + DETERMINER + r")[\w'’]+)+?\s+(?:" + CONTROL_NOUN
+    + r"|(?:toggle|switch|slider)\b))\s+" + OBJECT + r"(?!\s+" + CONTROL_NOUN + r")"
+    # "without" and a phrase that is no label's own, reaching a place: "without quality loss in the tab",
+    # "without any loss in the tab", or a noun the phrase owns: "without a reload of the tab".
+    r"|\bwithout\s+(?!" + DETERMINER + r")[a-z][\w'’]*\s+" + OBJECT + r"(?:\s+(?!" + CONTROL_NOUN + r")[\w'’]+)*?\s+" + PLACE
+    + r"|\bwithout\s+(?:a|an|any)\s+[a-z][\w'’]*\s+of\b"
+    # "or" and what goes wrong otherwise: "or lose work in this tab".
+    r"|\bor\s+(?:lose|miss|risk|break|waste)\s+(?!" + CONTROL_NOUN + r")[\w'’]+")
+# A lower-case clause that reaches a place reads as one after a bare name whatever noun comes before the place
+# ("Tap Click to add music toggle in the menu").
+PLACE_CLAUSE = re.compile(r"\bto\s+" + CLAUSE_VERB + r"\s+(?:" + PLACE + r"\s+(?!" + DETERMINER + r")|(?!" + PLACE + r"|"
+                          + CONTROL_NOUN + r"))[a-z][\w'’]*\b(?:\s+(?!" + CONTROL_NOUN + r")[\w'’]+)*?\s+" + PLACE)
+# A caption line that opens a clause, read in lower case: what a Title-Case label never goes on with.
+CLAUSE_LINE = re.compile(r"\s*(?:to\s+" + CLAUSE_VERB + r"\s+\S|only\s+(?:once|twice|when|if|after|before|until|then)\b"
+                         r"|(?:keeps|stays|saves)\s+\S|instead\s+of\b|never\s+\S)")
+# A clause-like line with no article that ends in a place in the app or in "again" is a label's tail ("Back" /
+# "To Edit Mode", "Keep" / "Never Show Again"), and so is "To ..." after a name that goes somewhere ("Go" / "To Edit Clips").
+# The opt-out checkbox is a label whatever its words: "Never Show This Again", "Never Ask Me Again".
+OPT_OUT = re.compile(r"\s*never\s+(?:show|ask|remind|display|prompt|notify|warn)\b")
+GOES_TO = re.compile(r"\s*(?:back|go|return|switch|jump|skip|move|head)\W*$")
+LABEL_LINE_END = re.compile(r"\b(?:mode|screen|view|tab|page|panel|menu|settings|again)\W*$")
 QUOTED = re.compile(r'\s*(?:(?:the|a|an|your)\s+)?(?:"[^"]*"|“[^”]*”|‘[^’]*’|\'[^\']*\')')
 NEGATION = {'not', 'no', 'never', 'nothing', 'none', 'without', 'cannot'}
 GENERIC_CTA = re.compile(r"^(?:follow|like|subscribe|share|comment|save)\b")
@@ -220,10 +242,27 @@ def review(plan: Dict[str, Any], answers: Dict[str, Any]) -> Dict[str, Any]:
         # The reason is in what follows the click and its target: "Tap Save" names a button, not a why.
         rest = text[click.end():] if click else ''
         target = QUOTED.match(rest) or TARGET.match(rest)
-        if target and not QUOTED.match(rest) and not re.match(r"\s*(?:the|a|an|your)\b", rest) \
-                and CLAUSE_IN_LABEL.search(original[len(original) - len(rest):][:target.end()]):
+        head = original[len(original) - len(rest):][:target.end()] if target else ''
+        if target and not QUOTED.match(rest) and (CLAUSE_IN_LABEL.search(head) or (
+                not re.match(r"\s*(?:the|a|an|your)\b", rest) and PLACE_CLAUSE.search(head))):
             target = NAME_TARGET.match(rest)
-        title = TITLE_TARGET.match(original[len(original) - len(rest):]) if click else None
+        # A Title-Case label ends with the click's line only when that line holds its name and the
+        # next line opens a clause ("Tap Save" / "To Keep Your Work", "Tap the Save" / "Only Once").
+        # Otherwise the lines are one label, however split ("Tap Save" / "To Drive", "Tap the" / "Keep Only").
+        # A label's tail has no article or possessive: "To Edit Mode", "Never Show Again" are labels;
+        # "To Undo The Crop", "Never Lose Your Work Again" are reasons.
+        start = len(original) - len(rest)
+        ends = list(itertools.accumulate(len(w) + 1 for w in b['words']))
+        at = next((k for k, e in enumerate(ends) if e > start), len(ends) - 1)
+        end = ends[at] if ends else len(original)
+        after = b['words'][at + 1].lower() if at + 1 < len(b['words']) else ''
+        name = re.sub(r"^\s*(?:the|a|an|your)\b", '', original[start:end], flags=re.I)
+        tail = not re.search(r"\b" + DETERMINER, after)
+        if not re.match(r"\s*[^\W_]", name) or not CLAUSE_LINE.match(after) \
+                or ((tail or OPT_OUT.match(after)) and LABEL_LINE_END.search(after)) \
+                or (tail and re.match(r"\s*to\b", after) and GOES_TO.match(rest[:end - start])):
+            end = len(original)
+        title = TITLE_TARGET.match(original[start:end]) if click else None
         if title and (target is None or title.end() > target.end()):
             target = title
         if click and not REASON.search(rest[target.end():] if target else rest):

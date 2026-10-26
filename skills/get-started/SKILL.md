@@ -4,6 +4,11 @@ description: Get started with Picsart Video - check that your Picsart account is
 metadata:
   uses: open-picsart-app
   optional: open-picsart-app
+  title: Get started
+  short-description: Connect your account and see what Picsart can do
+  argument-hint: '[what you want to make]'
+  starter-prompt: Show me what Picsart can do.
+argument-hint: '[what you want to make]'
 ---
 
 # Getting started with Picsart Video

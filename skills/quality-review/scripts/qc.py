@@ -110,7 +110,7 @@ def has_sound(scene: Dict[str, Any]) -> bool:
             source_in = trim['in'] if _num(trim.get('in')) else 0.0
             first = source_in + max(0.0, begin - at) * speed
             last = source_in + (stop - at) * speed
-            if _num(trim.get('out')):
+            if _num(trim.get('out')) and not c.get('loop'):
                 last = min(last, trim['out'])
             if last <= first:
                 return False
@@ -127,7 +127,18 @@ def has_sound(scene: Dict[str, Any]) -> bool:
                 return heard({'layers': clips}, assets, seen, first, last)
             inner = asset.get('scene') if kind == 'scene_ref' else None
             if kind == 'composition':
-                inner = {'layers': c.get('layers') or []}
+                inner = c
+            if isinstance(inner, dict) and c.get('loop'):
+                duration = scene_duration(inner)
+                if duration and duration > 0:
+                    source_end = trim.get('out', duration)
+                    cycle = source_end - source_in
+                    if cycle > 0:
+                        if last - first >= cycle:
+                            return heard(inner, assets, seen, source_in, source_end)
+                        a = source_in + (first - source_in) % cycle
+                        b = a + last - first
+                        return heard(inner, assets, seen, a, min(b, source_end)) or (b > source_end and heard(inner, assets, seen, source_in, source_in + b - source_end))
             return isinstance(inner, dict) and heard(inner, assets, seen, first, last)
 
         for layer in s.get('layers') or []:
@@ -147,7 +158,8 @@ def plan_of(data: Dict[str, Any]) -> Dict[str, Any]:
     plan: Dict[str, Any] = {}
     if isinstance(scene, dict):
         comp = scene.get('composition') or {}
-        duration = comp.get('duration') if 'duration' in comp else scene_duration(scene)
+        given = data.get('plan') or {}
+        duration = given.get('duration') if 'duration' in given else comp.get('duration') if 'duration' in comp else scene_duration(scene)
         plan = {'width': comp.get('width'), 'height': comp.get('height'), 'fps': comp.get('fps'), 'duration': duration, 'audio': has_sound(scene)}
     elif scene is not None:
         raise InputError('scene must be the scene document')

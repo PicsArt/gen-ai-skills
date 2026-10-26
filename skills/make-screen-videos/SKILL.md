@@ -5,6 +5,11 @@ metadata:
   uses: screen-recording-analysis, footage-analysis, speech-aware-cutting, screen-recording-layouts, screen-recording-zoom, visual-style, screen-ui-redesign, retention-hooks, scene-building-basics, quality-review, ai-presenter, voice-over-generation, spoken-captions, background-music, motion-design-craft, film-shot-generation
   optional: ai-presenter, voice-over-generation, speech-aware-cutting, spoken-captions, background-music, motion-design-craft, film-shot-generation
   imports: screen-recording-analysis, screen-recording-layouts, screen-recording-zoom, visual-style
+  title: Make screen videos
+  short-description: Turn a screen recording into how-to videos
+  argument-hint: '[screen recording and the video you want]'
+  starter-prompt: Turn my screen recording into short how-to videos.
+argument-hint: '[screen recording and the video you want]'
 ---
 
 # Screen video
@@ -196,7 +201,23 @@ fails.
 An opening the recording does not hold, such as a generated shot, is a SPEND. **The first reply
 about a generated shot offers its key frames and nothing else:** stills at the hook, the turn and
 the payoff, quoted on their own, shown together before any video is priced, and reused to open the
-shot. No video model is read, compiled or priced until the user approves the stills. Draft it first and
+shot. No video model is read, compiled or priced until the user approves the stills. **Pictures the
+user brings, a film's scene pictures included, are references for those stills, never the stills
+themselves**: they are not this short's frame or its beats, so the key frames are still drafted
+from them, quoted and shown first, even when the user says to go ahead. That reply says all four
+to the user, in its own words, beside the quote:
+
+- **Every key point**: a still for each generated beat (a generated hook and payoff are two stills,
+  one batch, one quote), and the recording's own frame at the turn, which is free.
+- **The quote covers those stills alone.** No video price, take or model in it.
+- **They are shown together** as the concept before any video is priced.
+- **Each approved still opens its shot** as its start frame; none is a throwaway preview.
+
+For example: "You'll see the hook and payoff stills together, beside the recording's frame at the
+turn, before any video is priced; each one you approve becomes the first frame of its shot."
+
+An approved plan already names its hook, turn and payoff, so this reply runs no script: take the
+key points from the plan, and never search for a shell or hand the script to another agent. Draft it first and
 quote the draft beside the final, as picsart-video-rules's SPEND says; a crop of the recording is usually
 smaller than the frame, so say so when it is the reference.
 Its draft is key frames, as picsart-video-rules's SPEND rule 8 says: plan them on this plan's beats with the

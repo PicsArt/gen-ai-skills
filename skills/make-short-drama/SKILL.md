@@ -4,6 +4,11 @@ description: Make a vertical drama series, pilot or episode with a recurring cas
 metadata:
   uses: drama-series-writing, film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, retention-hooks, spoken-captions, background-music, scene-building-basics, quality-review, realistic-color-grade
   optional: realistic-color-grade
+  title: Make a short drama
+  short-description: Make a vertical drama series with a recurring cast
+  argument-hint: '[series idea or the next episode]'
+  starter-prompt: Make a short drama series from my idea.
+argument-hint: '[series idea or the next episode]'
 ---
 
 # Make a short drama

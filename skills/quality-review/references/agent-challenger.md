@@ -37,8 +37,7 @@ ask for.
 7. **The brief**, when the user supplied one with the footage: its main message, audience and
    must-shows, quoted.
 
-To look at an image given as a URL, save it to a file in the session's scratch folder with the shell
-(`curl -sL -o <file> "<url>"`), then open the file and look at it.
+To look at an image given as a URL, do as the host notes say under "Looking at an image".
 
 ## What you return
 

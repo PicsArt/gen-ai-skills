@@ -150,8 +150,9 @@ def nest_panel(layer: Layer, src: Size, rec: Dict[str, Any], assets: Dict[str, A
             clip['animations'] = moved
     transform = layer.get('transform', {})
     inner['transform'] = {**transform, 'position': at(transform.get('position', [comp['w'] / 2, comp['h'] / 2])), 'scale': sized(transform.get('scale', [1, 1]))}
-    if content.get('kind') == 'track' and 'anchor' in transform:
-        inner['transform']['anchor'] = clip_at(transform['anchor'])
+    fitted = content.get('kind') == 'media' and content.get('fit') != 'none' and not preserve_bounds
+    if (content.get('kind') == 'track' or fitted) and 'anchor' in transform:
+        inner['transform']['anchor'] = [round(v / k, 4) for v in transform['anchor']] if fitted else clip_at(transform['anchor'])
     animations = layer.get('animations')
     if animations:
         moved = {}
@@ -167,6 +168,8 @@ def nest_panel(layer: Layer, src: Size, rec: Dict[str, Any], assets: Dict[str, A
                 f = {**frame, 'time': frame['time'] - offset}
                 if channel in ('position', 'scale'):
                     f['value'] = at(frame['value']) if channel == 'position' else sized(frame['value'])
+                if channel == 'anchor' and (content.get('kind') == 'track' or fitted):
+                    f['value'] = [round(v / k, 4) for v in frame['value']] if fitted else clip_at(frame['value'])
                 if channel == 'scale':
                     for tangent in ('inTangent', 'outTangent'):
                         if tangent in frame:

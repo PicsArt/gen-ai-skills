@@ -3,6 +3,11 @@ name: generate-media
 description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture - remove or replace its background, enhance or upscale it, or turn it into a vector - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers questions about models, prices, credits and Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files.
 metadata:
   uses: film-shot-generation
+  title: Generate media
+  short-description: Make or edit images, video, voice, sound and music
+  argument-hint: '[what to make or edit]'
+  starter-prompt: Make an image, a video or audio from my prompt.
+argument-hint: '[what to make or edit]'
 ---
 
 # Make or edit an image, a video or audio

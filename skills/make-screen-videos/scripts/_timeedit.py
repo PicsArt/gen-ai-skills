@@ -534,7 +534,7 @@ def fit_steps(m: Moments, steps: List[StepChoice], target: float, options: Optio
             if any(event(m, later['result'])['settle'] < event(m, s['result'])['settle'] - 1e-6
                    for later in steps[i + 1:])}
 
-    def plan(bounded: List[StepChoice], o: Dict[str, Any], recover: Set[int]) -> List[StepEdit]:
+    def plan(bounded: List[StepChoice], o: Dict[str, Any], recover: Set[int], replace: bool) -> List[StepEdit]:
         fit_options = {**options, **o}
         edits = [plan_step(m, s, fit_options) for s in bounded]
         # Reconciliation can trim a result that settles after a later step's result. Keep all
@@ -568,69 +568,177 @@ def fit_steps(m: Moments, steps: List[StepChoice], target: float, options: Optio
             tail = plan_step(m, {**s, 'events': [], 'from': start, 'to': end}, fit_options)
             if not tail['pieces']:
                 continue
-            offset = edit['duration']
-            if edit['pieces']:
-                edit['jumped'] = round(edit['jumped'] + start - edit['pieces'][-1]['srcOut'])
-            edit['pieces'].extend({**p, 'outIn': round(offset + p['outIn'], 3),
-                                   'outOut': round(offset + p['outOut'], 3)} for p in tail['pieces'])
-            edit['duration'] = round(offset + tail['duration'], 3)
-            edit['settle'], edit['bounds'] = tail['settle'], tail['bounds']
-            if end < min(shot['end'], s['to'] if s.get('to') is not None else INF):
-                edit['bounds']['holdEnd'] = 'next_step'
-            _event_aliases(m, bounded[i], edit, guard)
-            result_at = to_output(edit, result['start'])
-            edit['resultAt'] = result_at if result_at is not None else round(offset + tail['resultAt'], 3)
-            edit['settleAt'] = round(offset + tail['settleAt'], 3)
-            for j in dict.fromkeys([*s['events'], s['result']]):
-                at = to_output(edit, event(m, j)['start'])
-                if at is not None:
-                    edit['eventAt'][number(j)] = at
-            if result_at is None:
-                edit['eventAt'][number(s['result'])] = round(offset + tail['resultAt'], 3)
+
+            def appended(edit: StepEdit) -> StepEdit:
+                offset = edit['duration']
+                if edit['pieces']:
+                    edit['jumped'] = round(edit['jumped'] + start - edit['pieces'][-1]['srcOut'])
+                edit['pieces'].extend({**p, 'outIn': round(offset + p['outIn'], 3),
+                                       'outOut': round(offset + p['outOut'], 3)} for p in tail['pieces'])
+                edit['duration'] = round(offset + tail['duration'], 3)
+                edit['settle'], edit['bounds'] = tail['settle'], dict(tail['bounds'])
+                if end < min(shot['end'], s['to'] if s.get('to') is not None else INF):
+                    edit['bounds']['holdEnd'] = 'next_step'
+                _event_aliases(m, bounded[i], edit, guard)
+                result_at = to_output(edit, result['start'])
+                edit['resultAt'] = result_at if result_at is not None else round(offset + tail['resultAt'], 3)
+                edit['settleAt'] = round(offset + tail['settleAt'], 3)
+                for j in dict.fromkeys([*s['events'], s['result']]):
+                    at = to_output(edit, event(m, j)['start'])
+                    if at is not None:
+                        edit['eventAt'][number(j)] = at
+                if result_at is None:
+                    edit['eventAt'][number(s['result'])] = round(offset + tail['resultAt'], 3)
+                return edit
+
+            # The tail replaces footage that only plays this result unfinished: end the step's
+            # own footage after the last piece that plays one of its other events, when that keeps
+            # every event the step plays.
+            others = [event(m, j) for j in s['events'] if j != s['result']]
+            needed = [k for k, p in enumerate(edit['pieces'])
+                      if any(min(p['srcOut'], max(e['settle'], e['start'] + 0.1)) - max(p['srcIn'], e['start']) > 1e-3 for e in others)]
+            cut_at = edit['pieces'][needed[-1]]['srcOut'] if needed else None
+            whole = appended(plan_step(m, bounded[i], fit_options))
+            replaced = None
+            if replace and cut_at is not None and cut_at < edit['pieces'][-1]['srcOut'] - 1e-6:
+                lead = plan_step(m, bounded[i], fit_options)
+                lead['pieces'] = lead['pieces'][:needed[-1] + 1]
+                lead['duration'] = lead['pieces'][-1]['outOut']
+                lead['eventAt'] = {k: v for k, v in lead['eventAt'].items() if v <= lead['duration'] + 1e-6}
+                if lead['pieces'][-1]['srcOut'] <= start + 1e-6:
+                    replaced = appended(lead)
+                    for e in (event(m, j) for j in [*s['events'], s['result']]):
+                        window = (e['start'], max(e['settle'], e['start'] + 0.1))
+                        if (plays(whole, *window) and not plays(replaced, *window) or
+                                any(to_output(whole, e[t]) is not None for t in ('start', 'settle')) and
+                                all(to_output(replaced, e[t]) is None for t in ('start', 'settle'))):
+                            replaced = None
+                            break
+            edits[i] = replaced if replaced is not None else whole
         return edits
 
     def length(edits: List[StepEdit]) -> float:
         return round(total(e['duration'] for e in edits), 3)
 
-    def fit(bounded: List[StepChoice], recover: Set[int]) -> List[StepEdit]:
-        edits = plan(bounded, {}, recover)
+    def fit(bounded: List[StepChoice], recover: Set[int], replace: bool) -> List[StepEdit]:
+        edits = plan(bounded, {}, recover, replace)
         if length(edits) > target:
-            edits = plan(bounded, {'maxSpeed': 0}, recover)
+            edits = plan(bounded, {'maxSpeed': 0}, recover, replace)
         min_hold = options['minHold'] if options.get('minHold') is not None else 1.2
         hold = (options['resultHold'] if options.get('resultHold') is not None else DEFAULT_EDIT['resultHold']) - 0.2
         while length(edits) > target and hold >= min_hold - 1e-9:
-            edits = plan(bounded, {'maxSpeed': 0, 'resultHold': round(hold, 2)}, recover)
+            edits = plan(bounded, {'maxSpeed': 0, 'resultHold': round(hold, 2)}, recover, replace)
             hold -= 0.2
         return edits
 
-    def finish(bounded: List[StepChoice]) -> List[StepEdit]:
+    def finish(bounded: List[StepChoice], replace: bool) -> List[StepEdit]:
         # A reconciliation trim can also stop a result before it settles; recover it the same way.
         late_ = late | {i for i, (s, b) in enumerate(zip(steps, bounded)) if not settles(plan_step(m, b, options), s)}
-        edits = fit(bounded, late_)
+        edits = fit(bounded, late_, replace)
         if late_ and length(edits) > target:
             # The no-recovery fit is the length ceiling when even it exceeds the target.
             # Retry tails individually, retaining earlier steps first. Refit each choice so
             # shortening holds and removing sped-up gaps always precede dropping a result.
-            edits = fit(bounded, set())
+            edits = fit(bounded, set(), replace)
             limit = max(target, length(edits))
             kept: Set[int] = set()
             for i in sorted(late_):
-                candidate = fit(bounded, kept | {i})
+                candidate = fit(bounded, kept | {i}, replace)
                 if length(candidate) <= limit:
                     edits = candidate
                     kept.add(i)
         return edits
 
-    edits = finish(best[1])
-    # A trim can cut a result short while its start still plays. Take a reconciliation that
-    # settles more results only when it keeps everything else the choice plays, within its length.
-    chosen = judged[best[3]]
-    limit = max(target, length(edits))
-    for bounded, empty, twice, settled in judged:
-        if len(settled) > len(chosen[3]) and chosen[3] <= settled and empty <= chosen[1] and twice <= chosen[2] + 1e-6:
-            candidate = finish(bounded)
-            if (sum(settles(e, s) for e, s in zip(candidate, steps)) > sum(settles(e, s) for e, s in zip(edits, steps)) and
-                    keeps(edits, candidate) and length(candidate) <= limit + 1e-6):
-                edits, chosen = candidate, (bounded, empty, twice, settled)
+    def select(replace: bool) -> List[StepEdit]:
+        edits = finish(best[1], replace)
+        # A trim can cut a result short while its start still plays. Take a reconciliation that
+        # settles more results only when it keeps everything else the choice plays, within its length.
+        chosen = judged[best[3]]
+        limit = max(target, length(edits))
+        for bounded, empty, twice, settled in judged:
+            if len(settled) > len(chosen[3]) and chosen[3] <= settled and empty <= chosen[1] and twice <= chosen[2] + 1e-6:
+                candidate = finish(bounded, replace)
+                if (sum(settles(e, s) for e, s in zip(candidate, steps)) > sum(settles(e, s) for e, s in zip(edits, steps)) and
+                        keeps(edits, candidate) and length(candidate) <= limit + 1e-6):
+                    edits, chosen = candidate, (bounded, empty, twice, settled)
+        return edits
+
+    edits = select(False)
+    # A recovered tail can instead replace footage that only plays its result unfinished, so it
+    # fits where an appended one cannot. Take that only when it keeps all else, never runs over
+    # (or further over) the target, and is longer only to settle another result.
+    candidate = select(True)
+    gains = sum(settles(e, s) for e, s in zip(candidate, steps)) > sum(settles(e, s) for e, s in zip(edits, steps))
+    if (candidate != edits and length(candidate) <= max(target, length(edits)) + 1e-6 and
+            (gains or length(candidate) <= length(edits) + 1e-6) and keeps(edits, candidate)):
+        edits = candidate
+
+    # A later hold can cover an earlier result's entire settle window. Transfer a suffix of
+    # that already fitted footage, rather than replan shorter holds and refit the other steps.
+    # Both sides are accepted together, against the finished edit: no visible result or event
+    # may be traded, no overlap added, and not even an under-target cut may become longer.
+    for i, s in enumerate(steps):
+        if settles(edits[i], s) or not edits[i]['pieces']:
+            continue
+        # Preserve an existing guard-frame handoff and the next step's matching resume.
+        if at_guard_end(edits[i]['pieces'][-1]['srcIn']):
+            continue
+        result = event(m, s['result'])
+        shot = shot_at(m, result['settle'], guard)
+        end = min(shot['end'], s['to'] if s.get('to') is not None else INF,
+                  s['holdUntil'] if s.get('holdUntil') is not None else INF)
+        for j in range(i + 1, len(edits)):
+            other = edits[j]
+            if not other['pieces'] or event(m, steps[j]['result'])['settle'] >= result['settle']:
+                continue
+            p = other['pieces'][-1]
+            at = to_output(other, event(m, steps[j]['result'])['settle'])
+            if at is None or p['speed'] <= 0 or p['role'] == 'speedup' or p['srcOut'] > end + 1e-6:
+                continue
+            # Leave the later result at least minHold output seconds after settling, along
+            # with every selected event's progression. The transferred suffix stays in the
+            # earlier result's own shot and hard bounds, and can only jump forward.
+            min_hold = options['minHold'] if options.get('minHold') is not None else 1.2
+            start = max(result['settle'], shot['start'], s.get('from') or 0,
+                        edits[i]['pieces'][-1]['srcOut'], p['srcIn'],
+                        p['srcIn'] + max(0, at + min_hold - p['outIn']) * p['speed'],
+                        *(event(m, k)['settle'] for k in [*steps[j]['events'], steps[j]['result']]))
+            start = math.ceil(start * 1000 - 1e-6) / 1000
+            if start >= min(p['srcOut'], result['settle'] + 0.5) - 1e-3:
+                continue
+            split_at = round(p['outIn'] + (start - p['srcIn']) / p['speed'], 3)
+            saved = round(p['outOut'] - split_at, 3)
+            if saved <= 0 or split_at <= p['outIn']:
+                continue
+            receiver = StepEdit(edits[i])
+            receiver.source_aliases = dict(getattr(edits[i], 'source_aliases', {}))
+            offset = receiver['duration']
+            receiver['pieces'] = [*receiver['pieces'], {**p, 'srcIn': start, 'outIn': offset,
+                                                       'outOut': round(offset + saved, 3), 'role': 'hold'}]
+            receiver['duration'] = round(offset + saved, 3)
+            receiver['jumped'] = round(receiver['jumped'] + start - edits[i]['pieces'][-1]['srcOut'])
+            receiver['settle'] = result['settle']
+            receiver['bounds'] = dict(plan_step(m, s, options)['bounds'])
+            receiver['bounds'].pop('movedBy', None)
+            if p['srcOut'] < end - 1e-6:
+                receiver['bounds']['holdEnd'] = 'next_step'
+            result_at = to_output(receiver, result['start'])
+            settle_at = to_output(receiver, result['settle'])
+            receiver['resultAt'] = offset if result_at is None else result_at
+            receiver['settleAt'] = offset if settle_at is None else settle_at
+            event_at = {k: at for k in dict.fromkeys([*s['events'], s['result']])
+                        if (at := to_output(receiver, event(m, k)['start'])) is not None}
+            event_at.setdefault(s['result'], receiver['resultAt'])
+            receiver['eventAt'] = _object_keys(event_at)
+            donor = StepEdit(other)
+            donor.source_aliases = dict(getattr(other, 'source_aliases', {}))
+            donor['pieces'] = [*other['pieces'][:-1], {**p, 'srcOut': start, 'outOut': split_at}]
+            donor['duration'] = split_at
+            donor['bounds'] = {**other['bounds'], 'holdEnd': 'next_step'}
+            candidate = [*edits]
+            candidate[i], candidate[j] = receiver, donor
+            if settles(receiver, s) and keeps(edits, candidate) and length(candidate) <= length(edits):
+                edits = candidate
+                break
     t = length(edits)
     return {'edits': edits, 'total': t, 'overBy': round(max(0, t - target), 3)}

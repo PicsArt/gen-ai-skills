@@ -89,6 +89,14 @@ def scenes_of(scene: Dict[str, Any], seen: Tuple[int, ...] = (), masks: bool = F
         assets = {a.get('id'): a for a in assets if isinstance(a, dict)}
     for _, layer in local_layers(scene, masks):
         content = layer.get('content') or {}
+        for decoration in (content.get('style') or {}).get('decorations') or []:
+            spec = decoration.get('content') or {}
+            ref = spec.get('sceneRef')
+            if spec.get('kind') == 'scene' and isinstance(ref, str) and ref.startswith('mpscene://'):
+                asset = assets.get(ref[len('mpscene://'):]) or {}
+                inner = asset.get('scene')
+                if isinstance(inner, dict):
+                    yield from scenes_of(inner, seen + (id(scene),), masks)
         if content.get('kind') == 'scene_ref':
             asset = content.get('asset') or assets.get(content.get('assetId')) or {}
             inner = asset.get('scene') if isinstance(asset, dict) else None
@@ -145,7 +153,7 @@ def text_entrances(scene: Dict[str, Any], inherited: Tuple[str, ...] = (), seen:
         for prop in ('opacity', 'position', 'scale'):
             track = (layer.get('animations') or {}).get(prop) or {}
             keys = [k for k in track.get('keyframes') or [] if isinstance(k, dict)]
-            if prop not in moved and any(a.get('value') != b.get('value') for a, b in zip(keys, keys[1:])):
+            if prop not in moved and (track.get('expression') or any(a.get('value') != b.get('value') for a, b in zip(keys, keys[1:]))):
                 moved.append(prop)
         if content.get('kind') == 'text':
             presets = [a['preset'] for a in content.get('animations') or [] if isinstance(a, dict) and a.get('preset')]

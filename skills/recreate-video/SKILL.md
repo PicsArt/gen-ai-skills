@@ -3,6 +3,11 @@ name: recreate-video
 description: Rebuild a reference video as an editable animated scene that moves and looks like it - the same layout, the same timing, the same motion - measured from the video rather than eyeballed, with the user's own photos and text in place of the original's. Use when the user brings a video and wants one like it ("make a video like this one", "recreate this ad", "copy this animation", "rebuild this promo with my product"). Not for editing or trimming the user's own footage, and not for a new video from a description alone.
 metadata:
   uses: reference-fragment-matching, motion-tracking-from-video, scene-building-basics, quality-review
+  title: Recreate a video
+  short-description: Rebuild a reference video with your own photos and text
+  argument-hint: '[reference video, your photos and text]'
+  starter-prompt: Recreate this reference video with my own photos and text.
+argument-hint: '[reference video, your photos and text]'
 ---
 
 # Recreate a video

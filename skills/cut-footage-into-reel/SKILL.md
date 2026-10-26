@@ -4,6 +4,11 @@ description: Cut the user's own footage - a long video, several clips, photos - 
 metadata:
   uses: footage-analysis, speech-aware-cutting, retention-hooks, footage-reframing, spoken-captions, background-music, scene-building-basics, quality-review, photo-slideshow, caption-decorations
   optional: spoken-captions, background-music, photo-slideshow, caption-decorations
+  title: Cut footage into a reel
+  short-description: Cut your footage into a vertical short reel
+  argument-hint: '[your footage and the length you want]'
+  starter-prompt: Cut my footage into a 30-second vertical reel.
+argument-hint: '[your footage and the length you want]'
 ---
 
 # Short reel maker
