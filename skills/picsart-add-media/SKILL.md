@@ -1,6 +1,6 @@
 ---
 name: picsart-add-media
-description: Bring the user's own clips, photos, or files into Picsart.
+description: Bring the user's own clips, photos or audio into Picsart as hosted URLs, through the gen-ai MCP's upload widget or, where a shell can read the file, a direct upload. Use when a Picsart tool needs a URL and the media is on the user's machine or in a chat attachment.
 version: 1.0.0
 author: Picsart
 license: MIT
@@ -31,18 +31,17 @@ else not already a public `https://` link.
 
 ## Prerequisites
 
-A Picsart MCP connector present in the current tool list. This skill calls whichever of these is
-connected:
+The Picsart gen-ai MCP server (`picsart`, declared in this repo's `.mcp.json`) in the
+current tool list. It offers two routes:
 
-- **`picsart_upload_widget`** — on the Picsart MCP connector (tools prefixed `picsart_*`). This
-  variant also offers a "Save to Drive" option and a Drive-browsing tab, because that connector
-  has Drive access.
-- **`mp_upload`** — on the Picsart media-tools connector (tools prefixed `mp_*`). This variant has
-  no Drive integration; its second tab is "Use existing" (picks from `known_urls` you pass in),
-  not a Drive browser.
+- **`picsart_media_upload`** — opens the upload widget. Works on every host, including ones with
+  no shell. The widget also has a "My Drive" tab when the user's Picsart Drive is reachable, and
+  tries to save each upload to their Drive.
+- **`picsart_upload_local_files`** — for a host that can run shell commands and can read the file
+  on disk. It returns one upload command per file; run it, and the printed JSON holds the hosted
+  URL at `response.url`. No widget and no wait for the user. The hosted copy is temporary.
 
-If both are connected, either works — prefer whichever the current tool list actually shows first.
-If neither is connected, say so; don't guess a tool name.
+If the server is not connected, say so; don't guess a tool name.
 
 ## How to Run
 
@@ -60,9 +59,13 @@ _No script to run — this skill is one tool call plus a short wait for the user
 
 ## Procedure
 
+If you have a shell and the file is on disk, use `picsart_upload_local_files` instead: pass each
+file's `name` and `bytes`, run the command it returns with the file's path, and go straight to
+step 3 with the URL it prints. Otherwise:
+
 ### 1. Call the upload tool
 
-Call `picsart_upload_widget` or `mp_upload` (per Prerequisites) with whichever of `purpose`,
+Call `picsart_media_upload` with whichever of `purpose`,
 `accept`, `detected_files`, `known_urls` apply. All arguments are optional — calling with none
 just opens the widget.
 
@@ -100,9 +103,8 @@ whatever tool the user's original request needs (`image_url`, `video_url`, etc.)
   can't fetch. Never reject or second-guess a file the user actually drops based on this list.
 - **Re-asking for a file that's already uploaded.** Check the conversation for a URL you already
   have before opening the widget — pass it via `known_urls` instead of starting over.
-- **Guessing the tool name.** `picsart_upload_widget` and `mp_upload` live on different
-  connectors with a real feature difference (Drive tab vs. "Use existing" tab) — read what's
-  actually connected rather than assuming one is always present.
+- **Guessing the tool name.** The upload tools are `picsart_media_upload` and
+  `picsart_upload_local_files`, both on `picsart`. Read what the tool list actually shows.
 
 ## Verification
 
@@ -113,4 +115,5 @@ whatever tool the user's original request needs (`image_url`, `video_url`, etc.)
 
 ## Related
 
-- [`picsart-api`](../picsart-api/SKILL.md) — the MCP tool catalog this skill feeds URLs into.
+- The `video-prompt-engineer` skill writes the prompt for a video generated from the URLs this
+  skill returns.

@@ -1,9 +1,9 @@
 {
   "$schema": "https://cursor.com/schemas/cursor-plugin/plugin.json",
   "name": "picsart",
-  "displayName": "Picsart Gen-AI",
-  "version": "0.2.1",
-  "description": "Picsart generative-AI skills for Cursor.",
+  "displayName": "Picsart GenAI & Video",
+  "version": "0.4.0",
+  "description": "Picsart AI video skills for Cursor, on the Picsart gen-ai MCP: promos and tutorials from screen recordings, reels from your footage, motion ads from designs, short films from a story.",
   "author": {
     "name": "Picsart",
     "url": "https://picsart.com"
@@ -17,8 +17,13 @@
   "keywords": [
     "picsart",
     "gen-ai",
-    "image-generation",
-    "video-generation"
+    "mcp",
+    "video",
+    "screen-recording",
+    "reels",
+    "motion-design",
+    "short-film",
+    "video-editing"
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json"

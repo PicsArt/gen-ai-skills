@@ -5,6 +5,17 @@ The most common mistake is writing an animation prompt as though it were live ac
 an 85mm lens and shallow depth of field on a flat cel-shaded cartoon fights the style and
 usually produces a photographic hybrid nobody wanted.
 
+## Contents
+
+- Establish the technique first
+- Line and fill
+- Motion, in animation terms
+- Camera in animation
+- Characters across shots
+- What fails
+- Fragments
+- Exclusions
+
 **Drop the optics. Name the drawing.**
 
 ## Establish the technique first

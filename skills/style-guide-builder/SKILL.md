@@ -1,6 +1,6 @@
 ---
 name: style-guide-builder
-description: Build a reusable visual style guide from reference images.
+description: Build a reusable visual style guide from reference images - how the style renders what the references show and what they never show - as markdown files other skills read. Use when the user has reference images or screenshots and wants new images or video to match their look.
 version: 1.0.0
 author: Picsart
 license: MIT
@@ -44,8 +44,8 @@ guide has to answer two different questions:
 The second question is the one that makes a style guide useful rather than decorative, and
 most of the work goes into it. See `references/extrapolation.md`.
 
-If the user asks for a brand system rather than a look derived from references, that is
-`agency-brand-scoping` and the brandkit tooling, not this.
+A brand system designed from scratch, rather than a look derived from references, is not this
+skill's job.
 
 ## Prerequisites
 
@@ -53,7 +53,7 @@ If the user asks for a brand system rather than a look derived from references, 
   honestly that the guide will be thin — consistency cannot be distinguished from coincidence
   in a handful of frames.
 - **A vision-capable model** to do the analysis. Sensible default is your own vision; the
-  alternatives (Picsart gen-ai MCP, `gen-ai` CLI, a named model via MCP) are chosen in
+  alternatives (Picsart gen-ai MCP, a named model via MCP) are chosen in
   stage 0 of the Procedure.
 - **The stage 0 answers** — purpose, audience, exclusions, model — before a single image is
   examined.
@@ -135,8 +135,7 @@ work done by another. Offer the routes that exist:
 | route | how | good for |
 |---|---|---|
 | Host model vision | You look at the images yourself | Fast, no setup, good general description |
-| Picsart gen-ai MCP | `picsart-gen-ai` server at `api.picsart.com/gen-ai/mcp` | Stays inside Picsart, generation and analysis in one place |
-| `gen-ai` CLI | `--model gemini-3-pro-image`, `--model flux-2-pro` | Explicit model choice, batch work |
+| Picsart gen-ai MCP | `picsart` server at `api.picsart.com/gen-ai/mcp` | Stays inside Picsart, generation and analysis in one place |
 | Named model via MCP | ask the MCP for `gemini-3-pro-image` or similar | When the user wants a specific vision model |
 
 Sensible default: **your own vision for analysis, and ask before generation** since that
@@ -333,6 +332,4 @@ duplicating it.
 - **`video-prompt-engineer`** reads this guide for style, palette, lighting and camera, and
   handles duration, camera movement, motion and exclusions. Point it at the slug. When it hits
   an element the guide does not cover, it applies `extrapolation.md` rather than inventing.
-- **`text-to-visual`** and **`product-photo-studio`** can take `fragments.md` directly.
-- If the user asks for a brand system rather than a look derived from references, that is
-  `agency-brand-scoping` and the brandkit tooling, not this.
+- Any image or video generation prompt can take `fragments.md` directly.
