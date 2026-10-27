@@ -37,6 +37,17 @@ Claude Code only. Inside Claude Code:
 
 This pulls the plugin manifest from `.claude-plugin/marketplace.json` and registers the skills declared there.
 
+## Option 3b — Codex plugin
+
+Inside a terminal:
+
+```bash
+codex plugin marketplace add PicsArt/gen-ai-skills
+codex plugin add picsart@picsart
+```
+
+Or open `/plugins` inside Codex and install **picsart** from the Picsart marketplace. This reads `.agents/plugins/marketplace.json` and the `.codex-plugin/plugin.json` manifest, and connects the Picsart MCP server for you.
+
 ## Option 4 — Setup script
 
 Universal fallback. Clones the repo locally and symlinks each skill into the agent's expected directory.
@@ -104,6 +115,7 @@ openclaw skills install @PicsArt/<slug>
 | `npx skills` | re-run `npx skills add PicsArt/gen-ai-skills` |
 | `gh skill install` | `gh skill update PicsArt/gen-ai-skills` |
 | Claude Code marketplace | `/plugin update picsart@picsart` |
+| Codex plugin | `codex plugin marketplace upgrade picsart` |
 | Setup script | `cd gen-ai-skills && git pull && ./setup` |
 | Hermes Agent | `hermes skills update picsart-add-media` |
 | OpenClaw | `openclaw skills update --all` (or `openclaw plugins update picsart`) |

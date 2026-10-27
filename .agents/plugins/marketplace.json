@@ -1,7 +1,7 @@
 {
-  "name": "personal",
+  "name": "picsart",
   "interface": {
-    "displayName": "Personal"
+    "displayName": "Picsart"
   },
   "plugins": [
     {
