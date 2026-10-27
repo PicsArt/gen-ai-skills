@@ -94,10 +94,10 @@ A Figma design or your own images, photos and logos become a motion-designed ad 
 </td>
 <td width="50%" valign="top">
 <p align="center">
-<img src="https://pcdn.picsart.com/cms-uploads/a2f7b9ba-8014-4a40-9f5a-9966a2ad1dd6.webp" width="23%" alt="Reel shot: Paris">
-<img src="https://pcdn.picsart.com/cms-uploads/fe93e265-7ea6-4ed1-bf5d-dd26084802fa.webp" width="23%" alt="Reel shot: beach">
-<img src="https://pcdn.picsart.com/cms-uploads/1a3566ac-b7bf-4369-ae5c-04d1781de03f.webp" width="23%" alt="Reel shot: mountain">
-<img src="https://pcdn.picsart.com/cms-uploads/33e27213-2231-4ad6-a174-31929bde00f2.webp" width="23%" alt="Reel shot: street">
+<img src="https://pcdn.picsart.com/cms-uploads/a2f7b9ba-8014-4a40-9f5a-9966a2ad1dd6.webp" width="21%" alt="Reel shot: Paris">
+<img src="https://pcdn.picsart.com/cms-uploads/fe93e265-7ea6-4ed1-bf5d-dd26084802fa.webp" width="21%" alt="Reel shot: beach">
+<img src="https://pcdn.picsart.com/cms-uploads/1a3566ac-b7bf-4369-ae5c-04d1781de03f.webp" width="21%" alt="Reel shot: mountain">
+<img src="https://pcdn.picsart.com/cms-uploads/33e27213-2231-4ad6-a174-31929bde00f2.webp" width="21%" alt="Reel shot: street">
 </p>
 
 ### Drop footage. Get a reel.
