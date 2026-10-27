@@ -55,9 +55,9 @@ A screen recording of your app or website becomes a step-by-step tutorial or a v
 <tr>
 <td width="50%" valign="top">
 <p align="center">
-<img src="https://pcdn.picsart.com/cms-uploads/9bdc2bbf-e3fd-4105-8c5b-aa28f33714af.webp" height="200" alt="Micro drama, episode still">
-<img src="https://pcdn.picsart.com/cms-uploads/fcafb38a-4bfb-4abb-96fc-0e7e7266950f.webp" height="200" alt="Micro drama, episode 1">
-<img src="https://pcdn.picsart.com/cms-uploads/7b119b1e-5116-4df3-9fa7-ca9f5d3ad34e.webp" height="200" alt="Micro drama, episode 3">
+<img src="https://pcdn.picsart.com/cms-uploads/9bdc2bbf-e3fd-4105-8c5b-aa28f33714af.webp" width="31%" alt="Micro drama, episode still">
+<img src="https://pcdn.picsart.com/cms-uploads/fcafb38a-4bfb-4abb-96fc-0e7e7266950f.webp" width="31%" alt="Micro drama, episode 1">
+<img src="https://pcdn.picsart.com/cms-uploads/7b119b1e-5116-4df3-9fa7-ca9f5d3ad34e.webp" width="31%" alt="Micro drama, episode 3">
 </p>
 
 ### Micro dramas, made to binge
@@ -69,8 +69,8 @@ A vertical drama series, pilot or episode with a recurring cast.
 </td>
 <td width="50%" valign="top">
 <p align="center">
-<img src="https://pcdn.picsart.com/cms-uploads/695e7b7e-79ac-4b66-97c4-8fbec301277b.webp" height="240" alt="Reference edit">
-<img src="https://pcdn.picsart.com/cms-uploads/ce009f3c-5bde-4646-8846-9b84f1394fba.webp" height="240" alt="The same edit with new photos">
+<img src="https://pcdn.picsart.com/cms-uploads/695e7b7e-79ac-4b66-97c4-8fbec301277b.webp" width="40%" alt="Reference edit">
+<img src="https://pcdn.picsart.com/cms-uploads/ce009f3c-5bde-4646-8846-9b84f1394fba.webp" width="40%" alt="The same edit with new photos">
 </p>
 
 ### Same edit. Your footage.
@@ -94,10 +94,10 @@ A Figma design or your own images, photos and logos become a motion-designed ad 
 </td>
 <td width="50%" valign="top">
 <p align="center">
-<img src="https://pcdn.picsart.com/cms-uploads/a2f7b9ba-8014-4a40-9f5a-9966a2ad1dd6.webp" height="160" alt="Reel shot: Paris">
-<img src="https://pcdn.picsart.com/cms-uploads/fe93e265-7ea6-4ed1-bf5d-dd26084802fa.webp" height="160" alt="Reel shot: beach">
-<img src="https://pcdn.picsart.com/cms-uploads/1a3566ac-b7bf-4369-ae5c-04d1781de03f.webp" height="160" alt="Reel shot: mountain">
-<img src="https://pcdn.picsart.com/cms-uploads/33e27213-2231-4ad6-a174-31929bde00f2.webp" height="160" alt="Reel shot: street">
+<img src="https://pcdn.picsart.com/cms-uploads/a2f7b9ba-8014-4a40-9f5a-9966a2ad1dd6.webp" width="23%" alt="Reel shot: Paris">
+<img src="https://pcdn.picsart.com/cms-uploads/fe93e265-7ea6-4ed1-bf5d-dd26084802fa.webp" width="23%" alt="Reel shot: beach">
+<img src="https://pcdn.picsart.com/cms-uploads/1a3566ac-b7bf-4369-ae5c-04d1781de03f.webp" width="23%" alt="Reel shot: mountain">
+<img src="https://pcdn.picsart.com/cms-uploads/33e27213-2231-4ad6-a174-31929bde00f2.webp" width="23%" alt="Reel shot: street">
 </p>
 
 ### Drop footage. Get a reel.
