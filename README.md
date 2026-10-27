@@ -12,10 +12,10 @@
 [![Codex](https://img.shields.io/badge/Codex-plugin-111111)](#codex-cursor-openclaw-and-hermes)
 [![Cursor](https://img.shields.io/badge/Cursor-plugin-555555)](#codex-cursor-openclaw-and-hermes)
 
-<img src="https://pcdn.picsart.com/cms-uploads/cd0a4ff1-93d3-4552-9e36-cf86d9067404.webp" height="150" alt="A rider on a desert road">
-<img src="https://pcdn.picsart.com/cms-uploads/9bdc2bbf-e3fd-4105-8c5b-aa28f33714af.webp" height="150" alt="A micro drama episode">
-<img src="https://pcdn.picsart.com/cms-uploads/c1adcb08-a248-4444-a788-d019a747245d.webp" height="150" alt="An animated cartoon character">
-<img src="https://pcdn.picsart.com/cms-uploads/15fea4c2-5249-4041-b409-129d19f9ba5f.webp" height="150" alt="A photo promo made from a screen recording">
+<img src="https://pcdn.picsart.com/cms-uploads/cd0a4ff1-93d3-4552-9e36-cf86d9067404.webp" height="120" alt="A rider on a desert road">
+<img src="https://pcdn.picsart.com/cms-uploads/9bdc2bbf-e3fd-4105-8c5b-aa28f33714af.webp" height="120" alt="A micro drama episode">
+<img src="https://pcdn.picsart.com/cms-uploads/c1adcb08-a248-4444-a788-d019a747245d.webp" height="120" alt="An animated cartoon character">
+<img src="https://pcdn.picsart.com/cms-uploads/15fea4c2-5249-4041-b409-129d19f9ba5f.webp" height="120" alt="A photo promo made from a screen recording">
 
 [What you can make](#what-you-can-make) · [Get started](#get-started-in-a-minute) · [Start a use case](#start-a-use-case) · [Skills library](#the-skills-library)
 
@@ -94,10 +94,10 @@ A Figma design or your own images, photos and logos become a motion-designed ad 
 </td>
 <td width="50%" valign="top">
 <p align="center">
-<img src="https://pcdn.picsart.com/cms-uploads/a2f7b9ba-8014-4a40-9f5a-9966a2ad1dd6.webp" width="21%" alt="Reel shot: Paris">
 <img src="https://pcdn.picsart.com/cms-uploads/fe93e265-7ea6-4ed1-bf5d-dd26084802fa.webp" width="21%" alt="Reel shot: beach">
 <img src="https://pcdn.picsart.com/cms-uploads/1a3566ac-b7bf-4369-ae5c-04d1781de03f.webp" width="21%" alt="Reel shot: mountain">
 <img src="https://pcdn.picsart.com/cms-uploads/33e27213-2231-4ad6-a174-31929bde00f2.webp" width="21%" alt="Reel shot: street">
+<img src="https://pcdn.picsart.com/cms-uploads/cb0b4ef2-1dc0-43b1-87c6-0ccef9f2b396.webp" width="21%" alt="Reel shot: train">
 </p>
 
 ### Drop footage. Get a reel.
