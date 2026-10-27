@@ -9,7 +9,8 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-8A2BE2)](https://agentskills.io/specification)
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-D97757)](#install-the-plugin)
-[![OpenClaw bundle](https://img.shields.io/badge/OpenClaw-bundle-555555)](#on-other-agents)
+[![Codex plugin](https://img.shields.io/badge/Codex-plugin-111111)](#codex)
+[![Cursor and 75+ agents](https://img.shields.io/badge/Cursor%20%26%2075%2B%20agents-skills-555555)](#cursor-copilot-and-other-agents)
 
 [**Install the plugin**](#install-the-plugin) · [What you can make](#what-you-can-make) · [Start a use case](#start-a-use-case) · [Skills library](#the-skills-library)
 
@@ -33,15 +34,24 @@ Picsart Video gives your AI agent a creative studio. Describe what you want, and
 
 Then ask *"Show me what Picsart can do."*: the plugin signs you in to Picsart and shows your credits.
 
-### On other agents
+### Codex
 
-| Agent | Install |
-|---|---|
-| **OpenClaw** | `openclaw plugins install picsart --marketplace https://github.com/PicsArt/gen-ai-skills`: the skills and the Picsart MCP server as one bundle. |
-| **Codex, Cursor and any agent that reads skills** | `npx skills add PicsArt/gen-ai-skills` (or `gh skill install PicsArt/gen-ai-skills`), then add the MCP server below. |
-| **Hermes** | `hermes skills tap add PicsArt/gen-ai-skills` |
+```bash
+codex plugin marketplace add PicsArt/gen-ai-skills
+codex plugin add picsart@picsart
+```
 
-Every command, the `./setup` script and how to update are in [INSTALL.md](./INSTALL.md).
+Or open `/plugins` inside Codex and install **picsart** from the Picsart marketplace. Like the Claude Code plugin, it brings every skill and connects the Picsart MCP server.
+
+### Cursor, Copilot and other agents
+
+```bash
+npx skills add PicsArt/gen-ai-skills
+```
+
+The `skills` CLI detects your agent (Cursor, GitHub Copilot, OpenCode, Antigravity and over 70 more) and installs every skill. `gh skill install PicsArt/gen-ai-skills` works the same way. Then add the Picsart MCP server below.
+
+Every command (OpenClaw and Hermes included), the `./setup` script and how to update are in [INSTALL.md](./INSTALL.md).
 
 <details>
 <summary><b>Connect the MCP server directly</b> (Claude.ai, ChatGPT, or a skills-only install)</summary>
