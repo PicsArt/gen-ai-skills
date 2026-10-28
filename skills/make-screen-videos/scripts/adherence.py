@@ -92,8 +92,8 @@ def scenes_of(scene: Dict[str, Any], seen: Tuple[int, ...] = (), masks: bool = F
         for decoration in (content.get('style') or {}).get('decorations') or []:
             spec = decoration.get('content') or {}
             ref = spec.get('sceneRef')
-            if spec.get('kind') == 'scene' and isinstance(ref, str) and ref.startswith('mpscene://'):
-                asset = assets.get(ref[len('mpscene://'):]) or {}
+            if spec.get('kind') == 'scene' and isinstance(ref, str) and ref.startswith(('scene://', 'mpscene://')):
+                asset = assets.get(ref.split('://', 1)[1]) or {}
                 inner = asset.get('scene')
                 if isinstance(inner, dict):
                     yield from scenes_of(inner, seen + (id(scene),), masks)

@@ -249,7 +249,7 @@ ambient. The category narrows the vocabulary before you reach for a specific mov
 
 ## 6. Energy = productive vs expressive
 
-The motion **`energy`** register — inferred from the design and locked on the Motion Setup console — is a
+The motion **`energy`** register — inferred from the design and stated to the designer with the ratio and fps — is a
 productive↔expressive dial (Carbon's framework):
 
 - **Productive** (routine, focused) — subtle, efficient, out of the way; short durations, clean

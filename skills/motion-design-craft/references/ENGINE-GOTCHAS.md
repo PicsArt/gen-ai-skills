@@ -29,7 +29,7 @@ Learned in live projects; read before composing the first frame and again when a
 - **To pivot a SHAPE, set the shape GROUP-ITEM's `anchor` — NOT the layer's `transform.anchor`.** A
   layer-level `transform.anchor` on a shape fails at the engine (a shape has no resolution box to
   normalize the anchor against): it is **hard-rejected** (`EngineUnrepresentableError`). The
-  **supported, animatable** pivot is **`MpShapeGroupItem.anchor`** ("Pivot for rotation/scale,
+  **supported, animatable** pivot is **`ShapeGroupItem.anchor`** ("Pivot for rotation/scale,
   content-local px, default `[0,0]`") — wrap the geometry in a group and set that group's `anchor`
   (+ `position`). *(Verified in the render engine, not just the validator.)*
 - **`text` also rejects a layer `transform.anchor`** — the validator flags it

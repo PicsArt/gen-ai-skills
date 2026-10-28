@@ -59,7 +59,7 @@ which forfeits every per-element move Stage 3 exists for. The full kind-triage l
   cross-dissolve. A header present in frames 1–4 is *one* layer with four transform
   states, not four separate headers.
 - **Duration is derived by default; an explicit target is opt-in and soft.** By default
-  (`duration.mode: "derived"` — the console's checked box) the total is `$sum` of the
+  (`duration.mode: "derived"`) the total is `$sum` of the
   holds, each grown to fit its own motion (a 1.2s type-on needs a hold ≥ 1.2s), so it
   *grows as motion is added*. A designer may instead set `duration.mode: "target"` with a
   length — a **soft budget**: holds scale toward it where there is slack, but never below

@@ -171,10 +171,9 @@ Two families on this plugin's `picsart` connector, and they are wired differentl
   and returns the designer's verdict + edit-request comments; **pass it the document as `sceneUrl`
   whenever you have one, otherwise as `scene`, never video/media**). It is a *review* surface — motion is authored by you through
   `picsart_scene_patch`, not picked per-layer inside the panel. `picsart_scene_editor`
-  **replaces the old scene inspector** and its motion-suggestion drafts, which no longer exist. The other panel is
-  **`picsart_scene_setup`** — the Motion Setup console, opened once at the start, prefilled
-  from the frames, to lock the video format (ratio/fps/energy, hold and seam defaults); it replies
-  `motion_setup_feedback` (see `design-layer-import` *Set the format*). Full contract of the editor:
+  **replaces the old scene inspector** and its motion-suggestion drafts, which no longer exist. There is
+  no setup panel: the video format (ratio and fps) is asked in chat once at the start (see
+  `design-layer-import` *Set the format*). Full contract of the editor:
   `docs/widget-specs/scene-editor.md`.
 
 **Show the motion in the scene editor — don't re-export a video each time.** After authoring
@@ -363,7 +362,7 @@ exists to prevent.
 > If you catch yourself reaching for a whole-frame or whole-group screenshot "to save time" or "to
 > fix CSP," stop — that is the exact shortcut that produces a slideshow instead of motion design.
 
-Do **not** bind frames to `mpscene://montage` — that treats a frame as one flat clip and
+Do **not** bind frames to `scene://montage` — that treats a frame as one flat clip and
 throws away every element. Instead **rebuild each frame as a composition of scene
 layers**: one scene layer per imported design layer, positioned by its `transform`
 (x, y, w, h, rotation, opacity, z-order). Author this with `picsart_scene_patch`
