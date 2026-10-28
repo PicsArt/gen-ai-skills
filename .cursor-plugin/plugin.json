@@ -3,7 +3,7 @@
   "name": "picsart",
   "displayName": "Picsart GenAI & Video",
   "version": "0.5.0",
-  "description": "Picsart AI video skills for Cursor, on the Picsart gen-ai MCP: promos and tutorials from screen recordings, reels from your footage, motion ads from designs, short films from a story.",
+  "description": "The official Picsart plugin: generate and edit images, video and audio with Picsart AI, and turn your recordings, designs and ideas into finished short videos you review before export.",
   "author": {
     "name": "Picsart",
     "url": "https://picsart.com"
