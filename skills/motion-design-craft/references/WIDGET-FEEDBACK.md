@@ -52,37 +52,6 @@ the pair-review surface; **we always open it on a scene document — by `sceneUr
   Drive from this reply. Export with `picsart_scene_export` only when the designer wants a file.
   (`generalComment` is legacy and typically absent — read the comment arrays.)
 
-## `motion_setup_feedback` (v1)
-
-The `picsart_scene_setup` console (the Motion Setup panel) sets the video-wide format once, at
-the start of a project — how to open it prefilled is in `design-layer-import` *Set the format*. While
-the designer adjusts it, the panel publishes the current pick as silent context; **nothing is
-decided until they lock it** — never store a target from that in-progress context. The lock
-arrives as:
-
-```json
-{
-  "type": "motion_setup_feedback", "version": 1,
-  "selections": {
-    "ratio": "9:16", "fps": 30, "energy": "standard",
-    "hold": 2, "transition": "slide", "transitionDuration": 0.5,
-    "duration": { "mode": "derived" }
-  },
-  "summary": "…",
-  "verdict": "locked"
-}
-```
-
-- **Store `selections` into `motion.json.target`**: `ratio` → width/height, `fps`; `hold`,
-  `transition` (`""` = a hard cut) and `transitionDuration` are the project's hold and seam
-  defaults; `energy` is the register (`MOTION-PRINCIPLES.md` §6).
-- **Quote `summary` verbatim** — don't reassemble it from the fields.
-- **`duration.mode: "derived"`** (the default) = total is the sum of the holds, each grown to fit
-  its motion. **`"target"`** (with `seconds`) is a **soft** budget: never clip a hold below its
-  motion-minimum, so a too-short target lengthens the video rather than cutting an animation.
-- A designer who wants a new format later says so; reopen the console with the locked
-  `selections` as `current`.
-
 **When any panel's attached context conflicts with the designer's typed message, the MESSAGE wins.**
 The typed instruction is the current intent (a panel's state can lag a click or a send); **act on
 the message, note the discrepancy in one line, and move on** — don't stall asking them to re-click.
@@ -101,10 +70,8 @@ whole-reel video); reordering stays designer-initiated only.
 The editor has a tier-1 fallback so the flow never stalls: when `picsart_scene_editor` errors
 (a 503, a transport failure, or an exception), export the scene with `picsart_scene_export` and
 show the **result video** so the motion is still visible — dropping to contact-sheet frames +
-questions only if the export ALSO fails; the storyboard stays a markdown table. When
-`picsart_scene_setup` is not in your list or errors, decide the format directly instead —
-infer ratio/fps/energy from the frames, state them in one line, and let the designer adjust in
-plain conversation (`design-layer-import` *Set the format*). Write the same `motion.json` either way.
+questions only if the export ALSO fails; the storyboard stays a markdown table. The format has
+no panel: it is asked in chat (`design-layer-import` *Set the format*).
 
 **The editor fallback is a degraded last resort, not the intended experience.** The real review
 surface is the **Cascade-styled panel** (`picsart_scene_editor`, live on the gen-ai server); a

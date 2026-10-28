@@ -105,7 +105,7 @@ A caption decoration `scene_ref` accepts `sceneRef` and optional `parameters`. D
         "decorations": [{
           "target": "highlighted",
           "place": "above",
-          "content": {"kind": "scene_ref", "sceneRef": "mpscene://sparkle_badge"},
+          "content": {"kind": "scene_ref", "sceneRef": "scene://sparkle_badge"},
           "size": 0.7,
           "gap": 0.15
         }]

@@ -46,7 +46,6 @@ do not guess a name for it.
 | `query_layout` | `picsart_scene_query_layout` |
 | `get_recipe`, `recipe` | `picsart_scene_recipe` |
 | `resolve_looks` | `picsart_scene_resolve_looks` |
-| `motion_setup`, `setup` | `picsart_scene_setup` |
 | `list_scene_templates`, `templates` | `picsart_scene_templates` |
 | `translate`, `translate_scene` | `picsart_scene_translate` |
 | `validate`, `validate_scene` | `picsart_scene_validate` |
@@ -106,18 +105,17 @@ below are its tool-by-tool summary.
    **First** create this design's own Drive folder — `picsart_drive_create_folder` with
    `path: "Motion Projects/<Figma design name>"` (idempotent) — and pass its `folderUid` on
    **every** upload for this project. One design = one folder; nothing lands loose in the root.
-9. **Set the format on `picsart_scene_setup`.** Open the Motion Setup console once, prefilled:
-   the frames in order, the ratio from their aspect (1080×1920 → 9:16) and the energy from the
-   design in `suggested.selections`, never a total duration; its lock replies
-   `motion_setup_feedback`. Without the console, infer the same, state it to the designer and let
-   them adjust in plain conversation. Surface output scale as a plain ASK only
+9. **Set the format in chat.** Ask the ratio (9:16, 16:9, 1:1, 4:3, 3:4) and fps (24, 30, 60)
+   once, prefilled with your pick: the ratio from the frames' aspect (1080×1920 → 9:16), fps 30.
+   State the energy read from the design in the same message; never ask a total duration. The
+   designer adjusts later in plain conversation. Surface output scale as a plain ASK only
    when it's genuinely open. (See `design-layer-import` *Set the format*.)
 
 **Phase 2 — create the scene (compose):**
 10. Build each frame as a **composition of scene layers** — one scene layer per imported
     design layer, placed by its `transform` — via `picsart_scene_patch` (`add` ops,
     id-keyed layers + assets), or a compose recipe/template if the server offers one.
-    **Never** bind frames to `mpscene://montage` (that flattens them → slideshow). A
+    **Never** bind frames to `scene://montage` (that flattens them → slideshow). A
     matched element is **one continuous layer** with per-frame transform states.
 11. Font check against the `list_fonts` result — a missing font is **surfaced**, never
     silently swapped.

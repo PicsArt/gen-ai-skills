@@ -67,7 +67,7 @@ and 1):
   calm transition, `crossfade`, as the default, and spend a directional one (`slide`) on the seam
   that should read as "next". The rendered example's `slide` `direction: "left"` visibly moves
   through its window.
-- **All seams the same?** `mpscene://montage` (`picsart_scene_capabilities`, section `template:mpscene://montage`) binds a clip list
+- **All seams the same?** `scene://montage` (`picsart_scene_capabilities`, section `template:scene://montage`) binds a clip list
   plus one `transition` id and `transitionDuration` for every seam. Author the track by hand as
   above when seams differ or a transition takes params.
 

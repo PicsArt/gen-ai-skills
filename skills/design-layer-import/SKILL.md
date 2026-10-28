@@ -244,43 +244,31 @@ Reordering is **optional and designer-initiated**: it happens on the storyboard 
 says "swap 2 and 3." Absent that, Figma order stands, silently. Never open an
 ASK to confirm the running order.
 
-## Set the format — the Motion Setup console
+## Set the format — ask the ratio and fps
 
-Open **`picsart_scene_setup` once, at the start**, prefilled so it opens on the design rather
-than a blank form (it is free and read-only):
+Ask the designer **once, at the start**, in one ASK with two choices, each prefilled with your
+pick from the material so they confirm in one reply:
 
-- **`frames`** — the design frames in running order (Figma's own, above), each with its `id`, a
-  **Picsart-hosted** `url` (a `figma.com` export is saved with `picsart_drive_upload` first) and its
-  `w`/`h`.
-- **`suggested.selections`** — always the **ratio** from the frames' own aspect (1080×1920 →
-  9:16) and the **energy** read from the design (see below), as one of the console's own values:
-  `calm`, `standard` or `energetic` (any other value is dropped); fps 30 unless the design says
-  otherwise. **Never prefill a total duration** — it derives from the motion.
-- **`current`** — only when reopening a setup the designer already locked.
+- **ratio** — one of **9:16, 16:9, 1:1, 4:3, 3:4**. Suggest the frames' own aspect (1080×1920 →
+  9:16 at 1080×1920).
+- **fps** — one of **24, 30, 60**. Suggest 30 unless the design says otherwise.
 
-Do not ask the designer for the running order (take the design's own) or for a total
-duration (it derives from the motion). Opening it is the whole turn; wait for the lock. Its reply, `motion_setup_feedback`, is read as
-the motion-design-craft skill's `references/WIDGET-FEEDBACK.md` says: store `selections` as the target
-and the hold/seam defaults, and quote `summary` verbatim.
+Do not ask anything else here: not the running order (take the design's own), not a total
+duration (it derives from the motion), not the energy. Read the **energy** from the design (see
+below), as `calm`, `standard` or `energetic`, and state it in the same message so the designer can
+overrule it. Store the answers as the project's output target (ratio → width/height, fps) and
+use the default hold and seam.
 
-**When `picsart_scene_setup` is not in your list or errors**, decide the format yourself from
-the material — **infer it, state it, and proceed**:
+Also:
 
-- **ratio / resolution** — from the frames' own aspect (1080×1920 → 9:16 at 1080×1920). Take what
-  the design already is.
-- **fps** — 30 by default.
-- **energy** — read from the design (see below); pick the register the ad calls for.
-
-Either way:
-
-- **output scale/sizes** — the console does not carry it, so default to a single size, but
+- **output scale/sizes** — not part of that ASK, so default to a single size, but
   **surface the question when it's genuinely open**: will this ship at one size or several (multiple ratios/resolutions, or a later up-scale)?
   The answer decides raster-vs-vector for every layer above, and "multiple sizes" makes vector the
   norm — cheap to settle now, expensive to discover at export. When it isn't obvious, a plain
   an ASK is the right surface; otherwise state the single-size default and move on.
 
-Without the console, state the chosen ratio/fps/energy to the designer in one line and let them
-adjust in plain conversation ("make it square", "60fps", "more energetic") — a normal message.
+Once set, the designer can still adjust the format
+in plain conversation ("make it square", "60fps", "more energetic") — a normal message.
 
 **`energy` is a productive↔expressive dial**, not just "fast vs slow": *productive* =
 subtle, efficient motion for routine beats; *expressive* = vibrant, highly-visible motion for
@@ -289,7 +277,7 @@ and easing register downstream — see
 `references/MOTION-PRINCIPLES.md` in the motion-design-craft skill §6.
 
 Two things are never asked: **order** (taken from Figma silently, above) and **total duration**
-(derived from the motion by default; a soft target is the designer's own pick on the console, and
+(derived from the motion by default; a soft target is the designer's own pick, and
 a designer who wants it tighter says "punchier").
 
 ## Output → `motion.json`
@@ -341,7 +329,7 @@ shortcut** — the whole pipeline's value is here.
   guessing `center`, or losing the fixed-width-clip box so the line soft-wraps to two downstream.
   Read `textAlignHorizontal` and the box sizing from Figma; don't infer them from position.
 - **Not settling output scale up front** — discovering "it ships at three sizes" after baking
-  single-scale PNGs means a re-import; ask it on the setup panel in the first five minutes.
+  single-scale PNGs means a re-import; ask it with the ratio and fps in the first five minutes.
 - Binding a Figma link or local path directly — unfetchable; lift to a Picsart-hosted URL first
   (a `figma.com` SVG is CSP-blocked in preview just like any figma.com asset).
 - Nagging about the Figma connector after the designer already chose the flat path.

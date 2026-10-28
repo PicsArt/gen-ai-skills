@@ -35,7 +35,7 @@ the user trims them; past a cut is the next shot's picture, and past the run's e
 
 ## Assembly
 
-Build the cut with `picsart_scene_apply_template`: `uri: "mpscene://montage"`,
+Build the cut with `picsart_scene_apply_template`: `uri: "scene://montage"`,
 `mode: "bootstrap"`, and `parameters`:
 
 - `clips`: one per shot, in playback order. Each is a full clip: `duration` (the window's length)
