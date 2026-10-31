@@ -68,6 +68,7 @@ Only a row without a `jobId` is matched by the `label` you gave it.
 |---|---|
 | `done[]` | `{ label, model, url, jobId }` per finished job, with `urls` too when it made several. Save them into the call's folder with one `picsart_drive_upload` (picsart-video-rules's SPEND rule 4), log each, look at it, and put it up for the user's verdict in this turn |
 | `failed[]` | `{ label, model, error, jobId }`. Regenerate only these, each under a SPEND of its own, after reading the error |
+| `unchecked[]` | `{ label, model, job, jobId }`: jobs the card couldn't check, which may have finished. Follow SPEND rule 4 of the `picsart-video-rules` skill for them, never regenerate them |
 
 ## Footage: the scene editor
 
