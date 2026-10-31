@@ -20,7 +20,7 @@ request, to check a result, to pick a hook, to name a stage.
 | `picsart_media_video_stills` | one image of tiled stills at the times you name, optionally cropped | each time you need to see a moment |
 | `picsart_media_screen_stages` | the moments that look least like each other, with their novelty | a long working session with no waits to cut |
 
-Whether a call charges is picsart-video-rules's SPEND; the use case asks before the read. All three take the recording's URL as a Picsart tool returned it (see
+All three take the recording's URL as a Picsart tool returned it (see
 picsart-video-rules's Asset URLs).
 
 ## The moments

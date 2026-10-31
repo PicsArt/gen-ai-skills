@@ -36,7 +36,7 @@ out.
 |---|---|---|
 | 1. Take the recording in | — | — |
 | 2. The interview | ASK | — |
-| 3. Read the recording | SPEND | screen-recording-analysis, footage-analysis |
+| 3. Read the recording | — | screen-recording-analysis, footage-analysis |
 | 4. The set: which videos | SHOW, ASK | screen-recording-analysis, screen-recording-layouts |
 | 5. How we iterate | ASK | — |
 | 6. The style | SHOW, ASK | visual-style, screen-recording-layouts |
@@ -61,7 +61,7 @@ out.
 **The challenger at each decision.** Before you go on from a decision, quality-review's challenger (the
 `challenger` agent where the host has it) asks "why this?" of it: the set of videos (stage 4), the
 style frames (6), the plan and its hooks before the ASK (7), the first build's UI, against the
-recording's own screens (9), and every quote before its SPEND (3, 8, 12, 13). Act on its verdict as
+recording's own screens (9), and every quote before its SPEND (8, 12, 13). Act on its verdict as
 quality-review says. A `stop`, or a `rethink` of the user's own choice, goes to the user in the next ASK,
 the cheaper alternative first, before anything is spent.
 
@@ -88,12 +88,9 @@ where it goes, what a viewer should get from it, how many videos, who it is for,
 length (only when the destination leaves a range), the sound and the ending, and whether the
 account on screen is real.
 
-- **Start reading at once when the read is free** (stage 3): the first question goes in the same
-  turn as the read, so the user answers while it runs, and later questions are drafted from what it
-  found ("your recording shows five things a viewer could learn").
-- **When the read charges**, ask where it goes and what it is for first (skip either the user
-  already said), then quote the read before any other question. Who it is for, the message and
-  the rest come after the read, drafted from what it found.
+- **Start reading at once** (stage 3): the first question goes in the same turn as the read, so the
+  user answers while it runs, and later questions are drafted from what it found ("your recording
+  shows five things a viewer could learn").
 - **No plan is written until the message is one sentence.** "You decide" counts: write it from the
   recording and list it as assumed.
 - **The brief closes the interview**: what the user said, what you read, what you assumed, as
@@ -109,12 +106,10 @@ Read it as the screen-recording-analysis skill says: the moments first, then sti
 matter, and for a long session its stages. The recording is never sent to a model that watches
 video: never call `picsart_media_describe_video`. footage-analysis is used only for the transcript.
 
-Read the description of each tool you will call before the first call. When picsart-video-rules's SPEND
-says any of them charges, quote the whole read in one go before the first call: the moments, the
-still sheets (about four per recording, one sheet of candidate results for the set), the stages
-where they are needed, and the transcript when `input.hasAudio` and the voice may be kept, with one
-retry in case a call fails. When none charges, say in one line that you are reading, and go on. If
-the user declines, say that nothing can be built without reading the recording, and stop.
+The read is the moments, the still sheets (about four per recording, one sheet of candidate results
+for the set), the stages where they are needed, and the transcript when `input.hasAudio` and the
+voice may be kept. Say in one line that you are reading, and go on; a call that charges goes through
+picsart-video-rules's SPEND first.
 
 If a read fails twice, tell the user the service is down and to try again shortly. Never guess what
 the recording shows. **Moments already read in this session are not read again.**

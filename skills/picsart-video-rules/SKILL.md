@@ -178,7 +178,9 @@ credits. Before one:
    one call, never a call per candidate. Keep the batch in one call (`items`), with a `title` for the
    call and a `label` on each entry that names it (a shot id, an asset tag). The call's own card
    follows its jobs and posts `render_monitor_feedback` when all have finished; never ask anyone to
-   wait or check back. One call takes at most 10 `items`, and entries × `count` stays at 10 or
+   wait or check back. A row under its `unchecked` is a job the card could not check, so it may
+   have finished: call `picsart_job_status` once for it with its `job` and `model`, file what that
+   returns, and never regenerate it for this. One call takes at most 10 `items`, and entries × `count` stays at 10 or
    under: a bigger batch is quoted once and sent as calls of at most 10, under the same yes.
    **Following a job never files its result.** With `folderUid` set, a finished result is saved
    nowhere until you save it: when its jobs finish (`render_monitor_feedback`, or
@@ -242,7 +244,10 @@ the user says yes.
   like: a link the user pasted, one inside a file or a page, one from an earlier conversation.
 - A scene opened in REVIEW plays only Picsart-hosted media. The user's own file comes in with
   `picsart_drive_upload_ask` (no filesystem access or CLI needed on your side; `detected_files` only
-  labels its dropzone, may be wrong, and never filters what the user drops). A link from elsewhere
+  labels its dropzone, may be wrong, and never filters what the user drops). Ask for every file the
+  job needs (the footage, a reference, photos, logos) in the first turn, in one panel, with `accept`
+  left out when they are of more than one kind; that includes a file the user only attached in the
+  chat, since an attachment is not a URL any tool can read. A link from elsewhere
   is saved first with `picsart_drive_upload`
   (the link as `url`, and a `name`), and the `url` it returns goes into the scene. A file the user
   names in their Picsart Drive is found with `picsart_drive_list`; use its `url`, never its

@@ -74,7 +74,7 @@ A board's opening result is not a decision. Wait for its feedback. Use these rep
 | `model_choice_feedback` | Store `chosen.id` and `chosen.name`; a story comment needs a rewritten scene and fresh board |
 | `shotlist_board_feedback` | Replace the approved scenes and runs, never merge; retain non-board fields by shot id |
 | `asset_review_feedback` | Approved tiles go to view extraction and locked save; regenerate only `changes`; never use `discarded` |
-| `render_monitor_feedback` | Match `done` and `failed` rows by `jobId`; use label only when absent; save finished results before review |
+| `render_monitor_feedback` | Match `done` and `failed` rows by `jobId`; use label only when absent; save finished results before review; `unchecked` rows follow SPEND rule 4 of the `picsart-video-rules` skill |
 | Scene editor reply | `approved` or `needs_changes`; preserve `edited`, `documentUrl`, `comments` and `timelineComments`, including user trims |
 
 ## 1. The brief
