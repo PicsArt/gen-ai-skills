@@ -64,6 +64,6 @@ something else is an ordinary re-roll.
 - **Each is its own quote and its own yes.**
 - Each is compiled and verified on its own literal arguments.
 - An edit that fails twice is not tried a third time the same way: re-roll, or simplify the shot.
-- The result is split at its real cuts and put back into the review timeline. An edit replaces its
-  piece of the run; an extend appends one. Keep every superseded file in the record with its call,
+- The result's cuts are checked like a take's, and it goes back into the review timeline whole, as
+  one clip: an edit's result replaces the clip it edits; an extend's comes in as its own clip after it. Keep every superseded file in the record with its call,
   its prompt version, the change and the verdict.

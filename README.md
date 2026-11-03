@@ -201,16 +201,20 @@ Use cases, the entry points a user asks for:
 | [`make-short-drama`](./skills/make-short-drama) | Make a vertical drama series, pilot or episode with a recurring cast. |
 | [`movie-producer`](./skills/movie-producer) | Make a short narrative film from a story. |
 | [`recreate-video`](./skills/recreate-video) | Rebuild a reference video as an editable animated scene that moves and looks like it. |
+| [`remix-reel-structure`](./skills/remix-reel-structure) | Remix a reference reel, a talking head or a skit included. |
 
 Skills the use cases load:
 
 | Skill | Description |
 |---|---|
 | [`ai-presenter`](./skills/ai-presenter) | Put a generated presenter on screen and keep them honest. |
+| [`app-ui-animation`](./skills/app-ui-animation) | Build a phone or web UI in a scene with scrolling, carousels, button feedback, cursor paths and clicks, context menus, drag-and-drop, synchronized controls, bottom sheets and frosted-glass panels. |
 | [`background-music`](./skills/background-music) | Draft, generate and lay an instrumental music bed under a finished video's speech. |
 | [`caption-decorations`](./skills/caption-decorations) | Author and validate scene caption decorations, choosing between measured procedural decoration presets and arbitrary scene artwork. |
+| [`custom-transitions`](./skills/custom-transitions) | How to write a new scene transition as an inline JSON definition. |
 | [`design-layer-import`](./skills/design-layer-import) | Bring a design or static assets into a scene as LAYERS, not flat frames, whenever they are going to move. |
 | [`drama-series-writing`](./skills/drama-series-writing) | Write a drama series' bible, season arc and episode cliffhangers, from templates or the user's idea. |
+| [`figma-storyboard-animation`](./skills/figma-storyboard-animation) | Turn a Figma storyboard of static frames into an animated scene. |
 | [`film-cast-design`](./skills/film-cast-design) | Make a film's people, props and places consistent on pictures. |
 | [`film-cutting`](./skills/film-cutting) | Cut a film's accepted takes into one scene. |
 | [`film-finishing`](./skills/film-finishing) | Finish a film after picture lock. |
@@ -218,21 +222,32 @@ Skills the use cases load:
 | [`film-story-writing`](./skills/film-story-writing) | Write a short film's story and break it down. |
 | [`footage-analysis`](./skills/footage-analysis) | Watch the user's own talking footage and turn it into facts you can build on. |
 | [`footage-reframing`](./skills/footage-reframing) | Put the user's own footage in a frame of another shape. |
+| [`large-scene-assembly`](./skills/large-scene-assembly) | Build large editable scenes by decomposing a timeline into bounded scenes and reusable components, defining timing and asset contracts, then assembling and safely consolidating them. |
+| [`linked-element-motion`](./skills/linked-element-motion) | Keep related scene elements aligned and moving together, including container resizing, shared fades, content reveals and sibling reflow. |
 | [`motion-design-craft`](./skills/motion-design-craft) | The craft of adding motion to any scene, whatever the video. |
+| [`motion-intent`](./skills/motion-intent) | Choose and diagnose scene motion from communication intent before selecting presets or keyframes. |
+| [`motion-pattern-library`](./skills/motion-pattern-library) | Worked scene motion patterns for entrances, exits, stagger, directional nudges, emphasis, ambient life, springs, arcs, layered beats, parenting, parallax, focus, wipes, and drawn strokes. |
+| [`motion-scene-continuity`](./skills/motion-scene-continuity) | Plan and diagnose continuity across scene beats and scene boundaries—semantic handoffs, dominant direction, shared visual carriers, causal action/reaction, intentional resets, and seam verification. |
 | [`motion-tracking-from-video`](./skills/motion-tracking-from-video) | Measure what objects visibly do in a video. |
 | [`open-picsart-app`](./skills/open-picsart-app) | Open Picsart beside the conversation. |
 | [`photo-slideshow`](./skills/photo-slideshow) | Build a photo promo or slideshow in a scene. |
 | [`picsart-video-rules`](./skills/picsart-video-rules) | The rules every Picsart Video use case follows. |
 | [`quality-review`](./skills/quality-review) | Check work before the user sees it. |
+| [`quick-merge-and-export`](./skills/quick-merge-and-export) | The shortest path from media URLs to a rendered file. |
 | [`realistic-color-grade`](./skills/realistic-color-grade) | Make a video's colours look more realistic and natural with the ai_realism look. |
+| [`reel-structure`](./skills/reel-structure) | Copy a reference reel's structure, never its content. |
 | [`reference-fragment-matching`](./skills/reference-fragment-matching) | Rebuild a reference video as a scene one fragment at a time. |
 | [`resting-frame-rules`](./skills/resting-frame-rules) | Keep every element whole or gone whenever motion stops. |
 | [`retention-hooks`](./skills/retention-hooks) | Keep a short video watched to the end with open loops. |
+| [`scene-animation-reference`](./skills/scene-animation-reference) | How a scene expresses motion. |
 | [`scene-building-basics`](./skills/scene-building-basics) | Build and edit a scene with the scene tools. |
+| [`scene-template-remix`](./skills/scene-template-remix) | Select, reuse and customize scene catalog items. |
 | [`screen-recording-analysis`](./skills/screen-recording-analysis) | Read a screen recording from its pixels. |
 | [`screen-recording-layouts`](./skills/screen-recording-layouts) | Lay a screen recording out in a 1080x1920 vertical frame or a 1920x1080 landscape one. |
 | [`screen-recording-zoom`](./skills/screen-recording-zoom) | The house zoom for screen footage in a panel. |
 | [`screen-ui-redesign`](./skills/screen-ui-redesign) | Recreate the screens of a recording as designed motion UI. |
+| [`sd2-pe`](./skills/sd2-pe) | Use only for a Seedance 2.0 model (model ids seedance-2.0*): optimizes user prompts for Seedance 2.0 multi-modal video generation. |
+| [`sd25-pe`](./skills/sd25-pe) | Use only for a Seedance 2.5 model (model ids seedance-2.5*): optimizes text, stories, or optional multimodal references for Seedance 2.5 text-to-video, multi-reference generation, keyframes, storyboards, blockouts, video editing, audio editing, or extension. |
 | [`speech-aware-cutting`](./skills/speech-aware-cutting) | Choose the moments of talking footage worth keeping and cut them so no one is clipped mid-sentence. |
 | [`spoken-captions`](./skills/spoken-captions) | Put spoken words on screen from the transcript. |
 | [`visual-style`](./skills/visual-style) | A video's style, chosen by eye and kept. |

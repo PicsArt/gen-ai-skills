@@ -5,7 +5,7 @@ stays exactly as it is while the pair is diagnosed and candidates are compared.
 
 ## Evidence
 
-Resolve the exact source files and current windows of both sides. Look at real frames around the
+Resolve the exact source files of both sides and any trims the user made. Look at real frames around the
 boundary: take them with `picsart_scene_contact_sheet` and open them (picsart-video-rules, Asset URLs),
 with enough of the action either side to follow the exchange, and say what you observed, with
 source times:
@@ -25,8 +25,8 @@ a defect.
 
 Offer only what the evidence supports, smallest first:
 
-1. **Trim or move the cut**, for overlap, dead time or a bad cut point. Keep whole words and needed
-   action.
+1. **Trim or move the cut**, for overlap, dead time or a bad cut point, applied once the user picks
+   it. Keep whole words and needed action.
 2. **A J or L cut of the existing sound**, for a gap or an abrupt answer, where the speaker's
    visibility, the lip-sync and the meaning allow. Never duplicate or invent a line.
 3. **A crop or reframe**, only if the resolution and framing allow and the subject stays in frame.
@@ -43,7 +43,7 @@ spend.**
 
 ## Designing an insert
 
-Write a short join note: both sides' files and windows, what is wrong, the chosen repair, what must
+Write a short join note: both sides' files and trims, what is wrong, the chosen repair, what must
 stay untouched, and the beats outgoing → connecting → incoming. For a new shot, define both of its
 edges first: where people are and what they look at, what moves, how the emotion carries, the exact
 line with its speaker and who they speak to, and what motivates the next cut.
@@ -56,7 +56,7 @@ says.
 
 ## Comparing
 
-Keep every original file, window and the accepted timeline intact, and store each candidate apart,
+Keep every original file, trim and the accepted timeline intact, and store each candidate apart,
 with its source versions and settings. Compare A → B against A → candidate → B, with sound and the
 lead-in and lead-out, on the real boundary frames. Never show a bridge on its own.
 

@@ -3,7 +3,7 @@ name: animate-design
 description: Turn static material into a real motion-designed video — a Figma design's LAYERS, or the user's own uploaded assets (photos, logos, screenshots, clips), become a composed, animated ad/reel where elements slide, scroll, type on, parallax, and smart-animate, tuned by eye, then rendered — or add designed motion to a video that already exists. The user can describe the motion they want, or let the skill analyze the assets and propose a concept. Use when the user wants to animate a design or assets, "make an ad/reel/video from these images/frames/screens", add motion to a Figma flow, bring static material to life, or add an animated intro, title card, transition, morph, callout or logo reveal to a tutorial, walkthrough, promo or reel. Not for cutting the user's footage into an edit, and not for generating footage from a pure text idea (that's generate-media); the motion inside such a video still comes here.
 metadata:
   owner: motion-designer
-  uses: design-layer-import, motion-design-craft, resting-frame-rules
+  uses: design-layer-import, motion-design-craft, resting-frame-rules, figma-storyboard-animation, motion-intent, motion-pattern-library, scene-animation-reference, custom-transitions, app-ui-animation, photo-slideshow, quick-merge-and-export, scene-template-remix, large-scene-assembly, linked-element-motion, motion-scene-continuity
   title: Animate a design
   short-description: Turn a design or your assets into a motion video
   argument-hint: '[Figma link, design or assets]'
@@ -32,7 +32,7 @@ zero-credit list (verified against live billing), so for all of that: **never te
 action will cost credits, and never hesitate to render for cost reasons — there is no cost.** The
 **sole exception** is **generating video** (`picsart_generate` and the generative tools), which spends
 credits — and it **never runs without the designer's explicit, informed consent**: show the balance,
-quote the exact cost, get a yes (full gate in *Video generation* below). No other part of this
+quote the exact cost and SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) (full gate in *Video generation* below). No other part of this
 pipeline charges.
 
 **Ignore the "charged"-looking badge on `export` / `contact_sheet`.** Both dispatch a real GPU
@@ -129,7 +129,7 @@ inventing a concept is the *job* — but you still **offer 2–3 options and get
 never run off and build one unasked. Both postures meet at one rule: **a concrete plan is agreed
 before motion is authored** — a matching plan in fidelity mode, a chosen concept in proposal mode.
 
-**If the page holds SEVERAL distinct sequences/storyboards, list them and ask which to animate
+**If the page holds SEVERAL distinct sequences/storyboards, list them and ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which to animate
 first.** A Figma page routinely carries multiple reels side by side; don't silently start on the first
 cluster. Group the frames into their sequences (by spacing/section/naming) from the cheap frame index,
 name what you found, and let the designer pick the running order before composing anything
@@ -194,7 +194,7 @@ reel end to end, **not** just the current pair's A→B window) with `picsart_sce
 pair-by-pair flow once the panel recovers. Exporting a preview render is free
 (`picsart_scene_export` is 0-credit), so this costs nothing. The panel itself already falls
 back to a video on a render error; this is the same move at the tool level. The
-contact-sheet + ASK path is the **last resort** — reach for it only if the
+contact-sheet + ask path is the **last resort** — reach for it only if the
 export also fails, and never stall because of a panel error.
 
 **What you SHOW is always the whole reel — even while authoring one pair.** Pair scope is an
@@ -290,6 +290,9 @@ them rather than hardcoding:
 - The authoring skills, **read before hand-authoring:** **`figma-storyboard-animation`** (the
   canonical Figma→scene flow), **`motion-intent`** / **`motion-pattern-library`** /
   **`scene-animation-reference`** (craft) and **`custom-transitions`**.
+- At their stages: **`scene-template-remix`** before `apply_scene_template`; **`large-scene-assembly`**
+  in Stage 2 when the reel runs to many frames; **`linked-element-motion`** and
+  **`motion-scene-continuity`** in Stage 3, for elements that move together and for each seam between pairs.
 
 **This skill orchestrates; the authoring skill supplies the steps.** When one of them and this
 skill disagree on a *step*, the authoring skill wins; the gates, the motion vocabulary, and the panel
@@ -323,6 +326,17 @@ You may write your own message in the same style if it fits better, e.g. naming 
 | 3 · Motion (interactive) | author real motion **one pair at a time** — per-element animation + matched-element smart-animate for frames A→B | `motion-design-craft`, `resting-frame-rules` | **every pair** approved on a moving preview, not a still |
 | 4 · Preview | filmstrip across each pair and the whole cut | this skill | motion reviewed on real frames before the deliverable is rendered |
 | 5 · Deliver | from the scene: `export → mp4` for the final video (free); the scene itself stays the editable source | this skill | mp4 exported and verified once |
+
+The same stages as a flow, with the interaction each one opens and every skill it loads:
+
+| Stage | Gate | Skills |
+|---|---|---|
+| 0. Triage | ASK | photo-slideshow, app-ui-animation, motion-intent |
+| 1. Import | — | design-layer-import, figma-storyboard-animation |
+| 2. Compose | — | figma-storyboard-animation, scene-template-remix, large-scene-assembly |
+| 3. Motion | REVIEW | motion-design-craft, resting-frame-rules, motion-intent, motion-pattern-library, scene-animation-reference, custom-transitions, linked-element-motion, motion-scene-continuity |
+| 4. Preview | REVIEW | — |
+| 5. Deliver | DELIVER | quick-merge-and-export |
 
 **Gates are the product.** The expensive mistake is exporting motion the designer never
 watched — a still hides everything. A gate passes only on evidence (a tool result, a
@@ -422,7 +436,7 @@ never report that a preview "needs your go-ahead", and **never tell the designer
 "change the easing"), not in control tokens. The compose/motion/preview loop is free, so it never
 gates on cost. The actions that **do** require an explicit ask are **saving to Drive** and
 **generating video** — the latter behind the full cost-consent gate (show credits → preflight cost →
-explicit yes; see *Video generation*). Those two aside, act on free calls without asking.
+explicit yes, or a spend limit the designer stated that covers it; see *Video generation*). Those two aside, act on free calls without asking.
 
 **Open with frame 1's entrance, before pair 1→2.** The reel starts with motion, not a frozen
 frame — author frame 1's own elements animating **in** at `t=0` (entrances by role, staggered by
@@ -487,8 +501,8 @@ credit-spending path, so it is **always gated on the designer's explicit, inform
 only when the design genuinely needs it or the designer asks — never on your own initiative to "fill"
 something. Run this flow **in order, and never skip the gate**:
 the eight steps in `references/video-generation.md`, in order — balance, model pick, params,
-`picsart_preflight` cost, explicit yes, generate, monitor, place. **No preflight cost shown and no
-explicit yes means no generation.**
+`picsart_preflight` cost, explicit yes (or a spend limit the designer stated that covers it), generate,
+monitor, place. **No preflight cost shown and no explicit yes or covering spend limit means no generation.**
 
 ## The state — `motion.json`
 

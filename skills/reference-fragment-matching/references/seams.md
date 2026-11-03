@@ -61,4 +61,7 @@ A fragment that matches on its own says nothing about the joined clip. Over the 
   them;
 - `picsart_media_track_motion_diff` on each shared motion;
 - `picsart_media_inventory_diff` at 3–5 moments per fragment;
-- stills 0.2 s either side of every seam, looked at.
+- stills 0.2 s either side of every seam, looked at;
+- when the reference's soundtrack is laid under the clip, each seam's time against the reference's:
+  say which cuts moved off the music's beats and by how much ("the second card lands 0.1 s after
+  the drum hit").

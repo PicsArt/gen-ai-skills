@@ -28,7 +28,7 @@ by shot.
 ## Handoff package
 
 When a colourist or a sound team takes over: the clean cut, each shot's source file at final
-quality, the shot order and windows from the record, the look (tone and colour), the sound
+quality, the clip order and the user's trims from the record, the look (tone and colour), the sound
 references, and the takes' audio as it is. It is already in the project folder; the package is the
 list.
 
@@ -41,7 +41,7 @@ is not a guarantee that a file stays available, so keep the record current:
 - the final prompts, every prompt version and their tokens, and the generation log;
 - the asset rows: descriptors, voice lines, sheets and views;
 - the story, the shot list and the look;
-- the cut: shot order, windows and transitions per scene;
+- the cut: clip order, the user's trims and any transitions they asked for, per scene;
 - every select at final resolution, and the masters;
 - the rights notes: voices, the music's licence status, the disclosure text.
 

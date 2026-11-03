@@ -63,7 +63,7 @@ that has no single tool — it is judged, then confirmed by the user on the **mo
   a dropped element (a hole where the design has content). The design is the answer key.
 - **Assets + a brief → brief-contract.** No reference image, so **the brief is the spec.** Before
   authoring, restate what you heard as a concrete checklist — "3 photos, 9:16, each slides up with a
-  0.1s stagger, title types on over photo 1, 4s" — and get a yes on *that*. Then validate the render
+  0.1s stagger, title types on over photo 1, 4s" — and ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) on *that*. Then validate the render
   against that written contract, element by element.
 - **Assets, no brief → chosen-concept.** The ground truth is the **concept the user picked** from the
   2–3 you offered (see *Propose mode*). Validate the render against that concept's stated moves.

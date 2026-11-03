@@ -1,8 +1,8 @@
 ---
 name: generate-media
-description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture - remove or replace its background, enhance or upscale it, or turn it into a vector - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers questions about models, prices, credits and Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files.
+description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture - remove or replace its background, enhance or upscale it, or turn it into a vector - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers questions about models, prices, credits and Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files. Load it first, before any tool, when they say not to ask, to work unattended, or set a spend limit. Load it before calling any Picsart model, generation or image tool.
 metadata:
-  uses: film-shot-generation
+  uses: film-shot-generation, sd25-pe, sd2-pe
   title: Generate media
   short-description: Make or edit images, video, voice, sound and music
   argument-hint: '[what to make or edit]'
@@ -21,7 +21,7 @@ animated design, start that use case instead.
 |---|---|---|
 | 1. What to make, and from what | ASK | — |
 | 2. The user's files, as URLs | — | — |
-| 3. The model and its settings | ASK | film-shot-generation |
+| 3. The model and its settings | ASK | film-shot-generation, sd2-pe, sd25-pe |
 | 4. The quote | SPEND | — |
 | 5. Run it | — | film-shot-generation |
 | 6. Show it | SHOW | — |
@@ -34,7 +34,7 @@ nothing.
 
 Read the request before you ask (picsart-video-rules's Asking). Most say all of it: the medium, the
 subject, and any picture or clip to start from. Say back what follows from it in one line ("a 9:16
-image for a story"). ASK only for what is open and changes the result: the medium when it is not
+image for a story"). ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) only for what is open and changes the result: the medium when it is not
 said, the frame when the destination does not set it, a voice or a song when "audio" is not said.
 
 An edit names its tool by what it does to the picture:
@@ -74,8 +74,9 @@ get a URL as above and call again.
 
 An edit skips this stage. For `picsart_generate`:
 
-1. **The model.** When the user named one, use it. When they want to pick, ASK with
-   `picsart_model_choose`: three candidates from `picsart_model_catalog` (`concise: false`), each with what it is best
+1. **The model.** When the user named one, use it. When they want to pick,
+   ASK with `picsart_model_choose` where the host draws it, otherwise in text as the host notes
+   say: three candidates from `picsart_model_catalog` (`concise: false`), each with what it is best
    for here, one marked recommended. When they want to look through all of them, open
    `picsart_model_show` with the `mode` and `purpose: "generate"`. Otherwise choose it yourself:
    - an image: `flux-2-pro`;
@@ -88,16 +89,19 @@ An edit skips this stage. For `picsart_generate`:
 2. **Its settings.** For anything beyond `prompt`, read `picsart_model_params` for that model,
    and set only the settings it lists, with values it allows. A model's own settings, such as a
    start frame or a voice, go in `extra`. Correct a value whose meaning is clear without asking
-   (`"1920x1080"` is `aspectRatio: "16:9"`); ASK when two readings give different results.
+   (`"1920x1080"` is `aspectRatio: "16:9"`); ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) when two readings give different results.
    Never take a setting from a model with a similar name. A start or end frame goes first in
-   `imageUrls`, and the prompt names it: "IMAGE 1 - START FRAME".
+   `imageUrls`, and the prompt names it: "IMAGE 1 - START FRAME". On a Seedance model (`seedance-…`), read
+   the film-shot-generation skill's Seedance reference first: it says when a frame may use the
+   model's own start frame field instead, and how its edit and extend prompts are written. Then
+   write the prompt with the `sd25-pe` skill (Seedance 2.5) or `sd2-pe` (Seedance 2.0).
 3. **A video** is drafted and prompted as picsart-video-rules's SPEND says (rules 5, 8 and 9): its key
    frames first, as stills, and every prompt compiled and verified, as the film-shot-generation skill says
    under Key frames and Compile and verify.
 
 ## 4. The quote
 
-Every generation and every edit charges credits. Quote it and get a yes, as picsart-video-rules's SPEND
+Every generation and every edit charges credits. Quote it, then SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), as picsart-video-rules's SPEND
 says. `picsart_preflight` takes the model and the planned `picsart_generate` inputs as `params`,
 `prompt` included: it checks them against the model and estimates the price. Fix everything it
 reports before you quote. `credits: null` means the price is not known, never that it is free. The

@@ -76,7 +76,7 @@ makes the interface *move* rather than cut. A plain seam transition is used only
      the highlighted element(s) get a subtle pop/scale/glow (staggered if several), the rest
      holds still. A transition here would read as a page change when nothing changed.
    - **The frames are genuinely unrelated** — two frames are never identical, so here a
-     seam transition **is the appropriate move**: `slide`, `crossfade`, `push`, or another
+     seam transition **is the appropriate move**: `slide`, `crossfade`, `diagonal_slide`, or another
      from the set below, chosen to match the cut's direction and energy. When the layers
      are available, **elevate it** with per-element motion on top — A's elements *exit*
      (staggered, by role) and B's elements *enter* (staggered, by role) over the
@@ -125,7 +125,7 @@ moving the world under a fixed viewport:
 Set `transition` and `transitionDuration` where the montage fallback applies; `""` is a
 hard cut.
 
-The scene engine ships **17** transitions; resolve the live set + params from `get_capabilities`.
+The scene engine's transitions change between releases; resolve the live set + params from `get_capabilities`.
 The everyday ones:
 
 | id | What it does | Window |
@@ -133,18 +133,17 @@ The everyday ones:
 | `""` (hard cut) | no blend — legitimate for fast-cut energy | n/a |
 | `crossfade` | linear opacity blend | 0.3–0.6s |
 | `blur_dissolve` | crossfade through a blur | 0.5–0.8s |
-| `slide` (`direction`) | source slides out, destination enters from the opposite edge | 0.3–0.6s |
-| `push` (`variant`) | both move in one clean shove | 0.3–0.6s |
+| `slide` (`direction`) | source slides out, destination enters from the opposite edge — both move, a push | 0.3–0.6s |
 | `diagonal_slide` | slide along a diagonal | 0.3–0.6s |
 | `zoom_through` | punch toward the viewer, destination grows in — punchy | 0.3–0.5s |
 | `iris` | circular wipe open/closed | 0.4–0.7s |
 | `shape_reveal` | destination revealed through a shape mask | 0.4–0.7s |
 | `page_curl` / `card_flip` | page/card turns to the next screen | 0.4–0.8s |
 
-Stylized / high-energy (use sparingly, for a deliberate beat): `bubble`, `cubes`, `free_fall`,
-`kaleida`, `manga_page`, `splatter`, `movement_camera`.
+Stylized / high-energy (use sparingly, for a deliberate beat): `manga_page`, `light_leak_burst`,
+`glitch_cut`, `flash_cut`.
 
-For a UI-walkthrough ad, `crossfade`/`blur_dissolve` (subtle) and `slide`/`push`/`diagonal_slide`
+For a UI-walkthrough ad, `crossfade`/`blur_dissolve` (subtle) and `slide`/`diagonal_slide`
 (directional, matching a scroll or navigation) cover almost everything the fallback needs.
 Reserve the punchy `zoom_through` and the stylized set for a genuine emphasis beat.
 

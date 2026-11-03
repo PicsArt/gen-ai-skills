@@ -112,6 +112,7 @@ def _visible_layer(layer: Dict[str, Any], start: float, zero: float, end: float,
     """Place the layer on the outer clock; duration inference never reads opacity."""
     out = _Placed(layer)
     out.rate = rate
+    out.placed_start, out.placed_zero = start, zero
     if math.isfinite(end):
         out['duration'] = end - start
     own = shown(out, start, zero) if opacity else [(start, end)]

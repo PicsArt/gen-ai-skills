@@ -91,44 +91,51 @@ Traps.
 - [ ] Each scene picture shows the opening shot's cast only, as designed.
 - [ ] Every picture was quoted and bought on a yes, looked at, and approved on one board.
 - [ ] Every tag of every scene in a run has a locked row, read back from `picsart_film_list_assets`.
-- [ ] The locked cast passed film-cast-design's stills, quoted and bought on a yes of their own.
+- [ ] The cast's faces were checked on the scene pictures, and what you saw was said in their
+      review; no separate still test was bought.
 
 Common mistakes: reading coverage from memory; a scene picture that stages the dramatic centre
 instead of the opening; clean pictures of a place a later run has already wrecked.
 
 ## 7. Shooting
 
-**Goal:** every run accepted, split at its real cuts, every shot final.
+**Goal:** every take landed as a draft and checked by you; none accepted yet.
 
-- [ ] A forecast was given once, before the first video, and called an estimate.
-- [ ] The first run went alone, and its recipe is recorded.
+- [ ] A forecast was given once, before the first video, at the draft rate with the finish beside
+      it, and called an estimate.
+- [ ] Every independent run went out in one batch as a draft (the model's draft setting or lowest
+      resolution): no test run first, and the finish was not bought with it.
 - [ ] Every charged dispatch was compiled, verified on its literal arguments, quoted, and bought on
       a yes, and its job handle is in the record.
-- [ ] Every take that landed was split at the cuts it actually made and reviewed inside the whole
-      film.
-- [ ] Every shot is `final`, with one prompt version per run and the take's verdict logged.
+- [ ] Every take that landed had the cuts it actually made checked; the film so far was never
+      assembled or shown while takes ran.
+- [ ] Every run has one prompt version and your check's notes logged.
 
-Common mistakes: dispatching on the forecast; sending the first run with others. The shooting
+Common mistakes: dispatching on the forecast; a test run first; the first batch at the finish
+settings; a review per take. The shooting
 traps are film-shot-generation'.
 
 ## 8. The cut
 
 **Goal:** the cut the user calls final.
 
-- [ ] The selects are assembled in story order, one clip per shot, windows over the run files.
+- [ ] The cut was assembled once, when the last take landed: every candidate in story order, one clip per generation, exactly as generated: no
+      automatic split, trim, transition, padding or freeze frame.
 - [ ] quality-review passed, or its weak points were said.
-- [ ] The user reviewed the whole cut and called it final.
+- [ ] The user reviewed the whole cut and called it final; that accepted every take in it, and
+      every shot is `final`.
 - [ ] Every trim the user made is recorded as theirs.
 
-Common mistakes: waiting until every run is shot to start cutting, and finding the holes late;
+Common mistakes: cutting or showing the film before the last take lands;
 buying footage for a seam before the pair was diagnosed; a separate review per clip.
 
 ## 9. Finishing
 
 **Goal:** the final pixels, one look across the film, the sound decided.
 
-- [ ] The final-resolution pass was quoted as its own SPEND, called a fresh roll, and re-assembled
-      at the finish settings.
+- [ ] The approved draft cut was finished as its own SPEND after the approval: from each draft's
+      `finalizeDraft` handle where it had one, otherwise an upscale or a fresh roll called so; then
+      re-assembled at the finish size with the user's trims.
 - [ ] Neighbouring shots match within each scene; the chosen look is applied.
 - [ ] Music was offered once, after the cut was final, and the answer recorded; a bed was
       reviewed under the dialogue before it stayed.

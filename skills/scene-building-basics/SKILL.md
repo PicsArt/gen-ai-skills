@@ -48,6 +48,12 @@ Korean …), prefer a face whose name names that script, or search by the name o
 it. Then prove it on the first frame that carries the rarest characters; if any is missing, pick
 another face, build again, and tell the user which face you used.
 
+## Overlays
+
+**An overlay never blinks.** When a caption, a title or a sticker follows another in the same
+place, start it where the last one ends, and never let an overlay's opacity drop to 0 for a frame
+or two: a gap that short reads as a blink.
+
 ## Transitions
 
 When a panel replaces the one before it, a hard cut is fine and keeps the energy; a soft seam

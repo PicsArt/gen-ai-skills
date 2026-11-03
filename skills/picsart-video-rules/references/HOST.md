@@ -7,7 +7,7 @@ How this host performs the five interactions in `picsart-video-rules`.
 | **ASK** | The host's own question tool, so the options show as buttons the user taps: `AskUserQuestion` in Claude Code, and in the Claude apps (claude.ai, the desktop and mobile apps, Cowork) the tool they offer for tappable options. Never type options as a list in chat where the tool exists. One question per call unless picsart-video-rules allows two; 2–4 options each, the recommended one first with " (Recommended)" at the end of its label, and each option's `description` saying what it changes. `header` is at most 12 characters. A choice of several items (which shorts, which steps) uses `multiSelect: true`; more than four go as two questions in one call, or a numbered list in text. The tool adds an "Other" answer itself. A question for words (a message, a hook in the user's own words) is plain text, not the tool. Only when the host offers no such tool: one message with numbered options |
 | **REVIEW** | The scene editor board the use case names. Where the app draws it, the user reviews there. The decision and the fallback are below |
 | **SHOW** | The URL as a Markdown link, with one line on what it is |
-| **SPEND** | The quote in text, then ASK with "Yes, go ahead" and "No" |
+| **SPEND** | The quote in one line, then `AskUserQuestion` with "Yes, go ahead", "Yes, up to N credits for this task" and "No". Never as a typed question ("Should I go ahead?"). Within a spend limit the user stated, no question: quote in one line, call, then say what it spent and what remains (picsart-video-rules, SPEND rule 3) |
 | **DELIVER** | `picsart_scene_export`, then the link |
 
 ## What a board sends back
@@ -45,8 +45,10 @@ A preview exported here is a draft. Export the approved version again to DELIVER
 ## Looking at an image
 
 Save the image to a file in the session's scratch directory with the `Bash` tool
-(`curl -sL -o <file> "<url>"`), then open the file with the `Read` tool, which shows it to you.
-One file per image. Open only images this way, never a video or audio file.
+(`curl -sL -o <file> --url '<url>'`), then open the file with the `Read` tool, which shows it to you.
+The URL goes in single quotes, never in double quotes or bare, so the shell runs nothing inside it;
+write any `'` in it as `%27` first. One file per image. Open only images this way, never a video or
+audio file.
 
 ## Running a skill's script
 

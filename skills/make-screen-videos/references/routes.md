@@ -74,7 +74,7 @@ runs as long as its stages and its result take. The recording decides the shape 
 **The questions only a promo has**, each in its own turn after the interview's:
 
 - **An edited video** (`tier: "recut"`, `input.edited`): say in one line that it is already edited,
-  so you'd re-cut its screen shots under new text, then ASK "Re-cut it, muted" / "Re-cut it, and
+  so you'd re-cut its screen shots under new text, then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) "Re-cut it, muted" / "Re-cut it, and
   keep the sound where a shot plays untouched" (only with `input.hasAudio`) / "Stop here". On
   "Stop here", say a raw recording gives the other shapes, and stop.
 - **The recording's own sound**, when `input.hasAudio` and the sound chosen was not a generated
@@ -115,7 +115,7 @@ are not, say a presenter is not available here, and go on without one.
 
 - **Their own photo**: open `picsart_drive_upload_ask({ accept: 'image', purpose: 'a portrait photo of you' })`,
   and check it as the ai-presenter skill says before any quote. When it fails, say what fails and
-  ASK "Another photo" / "Generate a presenter".
+  ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) "Another photo" / "Generate a presenter".
 - **The SPEND** covers everything once: a generated portrait (one call for four candidates), one
   voice line per script line in one voice, a take for the hook, and one on the step narration if the
   presenter is in the steps. Quote each with `picsart_preflight`; a take that cannot be priced

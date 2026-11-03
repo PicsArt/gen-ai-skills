@@ -9,7 +9,7 @@ user-invocable: false
 Picsart opens beside the conversation: the user's recent files, their Picsart Drive, the AI tools,
 and where to start a film or a motion design video. It shows nothing until they say yes.
 
-ASK: "1. Open Picsart" / "2. Not now".
+ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says): "1. Open Picsart" / "2. Not now".
 
 - **On 1:** call `picsart_workspace_open` with `{}`. It takes no input and charges nothing. Say in
   one line what they can do there.
