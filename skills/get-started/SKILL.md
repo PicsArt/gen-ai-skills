@@ -19,6 +19,8 @@ Picsart open if they want it, and knows what to ask for next. Nothing here charg
 If the user installed Picsart Video in the middle of a task, do stage 1, then go back to that task
 in the same conversation. Offer the rest in one line at the end instead.
 
+Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
+
 | Stage | Gate | Skills |
 |---|---|---|
 | 1. The account and the credits | — | — |

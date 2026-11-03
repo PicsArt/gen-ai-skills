@@ -17,6 +17,8 @@ and gets it with no failed call and no surprise charge. A whole video project is
 when the user wants their footage cut, a screen recording turned into a video, a film or an
 animated design, start that use case instead.
 
+Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
+
 | Stage | Gate | Skills |
 |---|---|---|
 | 1. What to make, and from what | ASK | — |

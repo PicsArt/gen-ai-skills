@@ -1,6 +1,6 @@
 ---
 name: recreate-video
-description: Rebuild a reference video as an editable animated scene that moves and looks like it - the same layout, the same timing, the same motion - measured from the video rather than eyeballed, with the user's own photos and text in place of the original's. Use when the user brings a video and wants one like it ("make a video like this one", "recreate this ad", "copy this animation", "rebuild this promo with my product"). Not for editing or trimming the user's own footage, and not for a new video from a description alone.
+description: Rebuild a reference video as an editable animated scene that moves and looks like it - the same layout, the same timing, the same motion - measured from the video rather than eyeballed, with the user's own photos and text in place of the original's. Use when the user brings a video and wants one like it ("make a video like this one", "recreate this ad", "copy this animation", "rebuild this promo with my product"), or carries on a recreation already under way. Not for editing or trimming the user's own footage, and not for a new video from a description alone.
 metadata:
   uses: reference-fragment-matching, motion-tracking-from-video, scene-building-basics, quality-review, background-music
   optional: background-music
@@ -20,6 +20,8 @@ result reproduces what the viewer sees, not the original project.
 Read picsart-video-rules first. One job: a reference video in, an editable scene that matches it out.
 Measuring and checking go as reference-fragment-matching says, with no SPEND gate; the SPENDs here
 are artwork or music you choose to generate.
+
+Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
 
 | Stage | Gate | Skills |
 |---|---|---|

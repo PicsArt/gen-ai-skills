@@ -1,6 +1,6 @@
 ---
 name: reference-fragment-matching
-description: Rebuild a reference video as a scene one fragment at a time - split the reference into spans where one arrangement holds, take a census of each, measure every beat, build it, then check it against the reference on motion and on appearance until it matches - and join the fragments without tearing their seams. Use when a scene must reproduce a reference clip, or when one part of a recreation does not match its reference.
+description: Rebuild a reference video as a scene one fragment at a time - split the reference into spans where one arrangement holds, take a census of each, measure every beat, build it, then check it against the reference on motion and on appearance until it matches - and join the fragments without tearing their seams. Use when a scene must reproduce a reference clip, or when one part of a recreation does not match its reference. A whole recreation starts in recreate-video.
 user-invocable: false
 ---
 

@@ -22,6 +22,8 @@ first video is bought.
 Read picsart-video-rules first. One job: a story in, a short film out, with recurring people and places
 and one look.
 
+Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
+
 | Stage | Gate | Skills |
 |---|---|---|
 | 1. The idea | — | — |

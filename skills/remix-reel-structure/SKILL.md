@@ -20,6 +20,8 @@ the reference reaches the result.
 Read picsart-video-rules first. The method (the read, the sheet, the mapping and the report) is
 the reel-structure skill's; this use case decides, asks and builds.
 
+Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
+
 | Stage | Gate | Skills |
 |---|---|---|
 | 1. Take in the reference, the script or topic, and the house style | ASK | — |

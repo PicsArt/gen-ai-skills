@@ -17,6 +17,8 @@ Read picsart-video-rules first. Keep one visual world, one series Library and on
 ledger. Decide on text and stills before buying video. A generated episode is a candidate until
 the user accepts it.
 
+Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
+
 | Stage | Gate | Skills |
 |---|---|---|
 | 1. The brief | ASK | — |

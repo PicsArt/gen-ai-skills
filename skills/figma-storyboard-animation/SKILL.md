@@ -1,6 +1,6 @@
 ---
 name: figma-storyboard-animation
-description: Turn a Figma storyboard of static frames into an animated scene — read the frame tree, recover the motion the designer already encoded, then build scene by scene, agreeing each transition before moving on; or build a single frame as a still scene. Use when converting a Figma design or storyboard into video/animation, when a designer hands over frames to "make move", or when the user mentions Figma frames, storyboard, motion design from design, design-to-animation, animating scene to scene, or turning a mockup into a scene.
+description: Turn a Figma storyboard of static frames into an animated scene — read the frame tree, recover the motion the designer already encoded, then build scene by scene, agreeing each transition before moving on; or build a single frame as a still scene. Use when converting a Figma design or storyboard into video/animation, when a designer hands over frames to "make move", or when the user mentions Figma frames, storyboard, motion design from design, design-to-animation, animating scene to scene, or turning a mockup into a scene. A Figma design made into a finished video starts in animate-design.
 metadata:
   version: '1.3'
 user-invocable: false
