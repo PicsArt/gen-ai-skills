@@ -16,9 +16,11 @@ from a tracking result.
 
 ## Cost and receipts
 
-The tool replies with a job receipt by default: follow it as picsart-video-rules says, and start every
-tracking job a step needs before you follow any. Whether it charges credits is in its description;
-when it does, it is a SPEND, as picsart-video-rules says. `picsart_media_track_motion_diff` is the same.
+Neither `picsart_media_track_motion` nor `picsart_media_track_motion_diff` is a SPEND unless its
+description says it charges (picsart-video-rules), so track as often as a beat needs. Each replies
+with a job receipt by default: follow it as picsart-video-rules says. Targets that share a tracking window go in one call, as many as
+its `targets` schema allows: one `t0`/`t1` holds for every target, and each must be fully visible at
+`t0`. A target that enters later, or is covered before `t1`, gets a call with its own window.
 
 ## The method
 
@@ -30,12 +32,31 @@ when it does, it is a SPEND, as picsart-video-rules says. `picsart_media_track_m
    seconds, and `targets`: each one `bbox` (`[x, y, w, h]` at `t0`, in video pixels), `points`, or
    `auto`. Set `tolerance` for the source (below).
 3. **Read the result before you trust it.** Per target it returns `animations` (the fitted
-   keyframes, or a Lua expression), `static` (the channels that did not move), `meta` with each
+   keyframes with their easing, or an expression), `static` (the channels that did not move), `meta` with each
    channel's `maxError`, and `notes` on anything that weakened the track. `maxError` is the honest
    reconstruction error: a fit with a large one is an approximation, and you say so.
 4. **Place it on a layer** (below), as keyframes with `timeMode: "layer"`.
 5. **Check it.** Export your render of the same window, track it with the same targets, and compare
    the two with `picsart_media_track_motion_diff` (below).
+
+## What the tracker cannot see
+
+It measures where texture goes, frame to frame. Some changes have no texture to follow:
+
+| Change | What to do instead |
+|---|---|
+| a reveal: a wipe, a mask growing | cropped stills of the box, one per frame of the reveal, for its edge; track whatever drives the reveal |
+| a fade or a twinkle | stills either side and through it; the tracker has no alpha (below) |
+| non-rigid motion: a flap, a bend, a wobble | track the centre only, and build the shape change as a loop |
+| a small idle loop: bobbing, swaying, breathing | track over several cycles, at least one and a half: a sway in rotation comes back as a `sine` expression; build any other loop from the cycles you measured |
+| motion blur on a fast move | track the rests either side; the smeared frames between them are not measurements |
+
+## Illustrated templates
+
+Stickers, doodles and cut-out shapes over a photo or a flat background:
+
+- **A sticker with a white border tracks best with `"estimator": "segmentation"`**: the border is a
+  clean silhouette, where its flat fill gives features little to hold.
 
 ## Tolerance, per channel and per unit
 
@@ -89,11 +110,16 @@ Too tight on a compressed source and the keyframes chase codec noise.
   reports as +12° is `-12` in the scene. Flip the sign of every rotation value you place.
 - **Scale comes as `[s, s]`**, because a scene's scale is 2-D.
 - **Keyframe times count from `t0`** unless the call set `normalizeTime: "absolute"`.
-- **Easing is one of four presets** (`linear`, `ease_in`, `ease_out`, `ease_in_out`), chosen per
-  segment as the closest fit. A motion with a sharp snap or a long settle reads close, not exact:
-  its `maxError` says how close.
-- **An orbit expression** instead of keyframes means the path fit a circle within tolerance. On a
-  compressed reference real paths often are not pure circles, and the keyframes it falls back to
+- **Easing is a preset or a fitted curve**, chosen per segment. The closest of the four presets
+  (`linear`, `ease_in`, `ease_out`, `ease_in_out`) comes first. When none of them fits within
+  `tolerance`, the segment moves and it has enough samples, it gets a fitted curve instead:
+  `{"kind": "cubic_bezier", "control": [x1, y1, x2, y2]}`, the scene's own parametric easing, with
+  a y outside 0–1 for an overshoot. Copy either form into the keyframe as it came. A short segment
+  keeps its closest preset, so a sharp snap or a long settle there reads close, not exact: its
+  `maxError` says how close; track it denser to give it a curve.
+- **An expression** instead of keyframes means the channel fit one within tolerance: `orbit` (the
+  path is a circle) or `sine` (a rotation that sways back and forth, `meta`'s `kind` says which). On
+  a compressed reference real paths often are not pure circles, and the keyframes it falls back to
   are the honest answer, not a failure.
 - **The tracker has no alpha.** It cannot tell a fade from a move. Judge a fade on stills either side
   of it, and never invent one to cover a jump in pose.
@@ -111,9 +137,10 @@ The result is in the reference's frame and time. A layer needs its own:
   starting scale times the tracked value.
 - **Easing**: keep each keyframe's easing where it is; it shapes the segment that starts at it.
 
-An orbit expression is in the reference's pixels and time and cannot be moved by these rules: when
-the scene differs from the reference in size, track that object again as keyframes, or place it at
-the reference's size inside a composition sized like the reference.
+An expression is in the reference's time, and an orbit also in its pixels, so these rules cannot
+move it: when the scene differs from the reference in size or timing, track that object again as
+keyframes, or place it at the reference's size and time inside a composition sized like the
+reference.
 
 ## Checking a render against the reference
 

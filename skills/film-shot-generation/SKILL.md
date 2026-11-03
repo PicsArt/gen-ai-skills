@@ -8,7 +8,8 @@ user-invocable: false
 
 Author every shot on its own; generate them together. The unit of generation is the **run**: as
 much of the film as fits one generation at the model's ceiling, scenes included. The model makes
-the cuts inside it, and the take is split back into shots at the cuts it actually made. Read these
+the cuts inside it. The cuts it actually made are found and checked against the plan, and the
+take goes into the cut whole, as generated (film-cutting). Read these
 before the step:
 
 | File | Read it before you… |
@@ -18,8 +19,9 @@ before the step:
 | `references/realism.md` | write a shot's action, sound and what persists through a run |
 | `references/scene-pictures.md` | make a scene's wide, scene picture or room map |
 | `references/references.md` | put a run's reference images together |
-| `references/takes.md` | split a take, or judge one |
+| `references/takes.md` | check a take's cuts, or judge one |
 | `references/repairs.md` | act on a note about a take |
+| `references/seedance.md` | compile, repair or extend anything on a Seedance model (`seedance-…`); then load the `sd25-pe` skill for Seedance 2.5 or `sd2-pe` for Seedance 2.0 |
 
 ## The model
 
@@ -31,7 +33,8 @@ before the shots are planned.
    extends and upscalers are out.
 2. Read `picsart_model_params` on each model that survives. Keep only those that hold
    **several cuts inside one generation** at the finish resolution and take enough reference
-   images for a run.
+   images for a run. Note each one's draft setting (Seedance 2.5's `draft`) or, without one, its
+   lowest resolution: the first batch is shot at it.
 3. For each one kept, find its edit and extend siblings: the `picsart_model_catalog` rows (`concise: false`) from the
    same provider with `purpose: "edit"` that edit or extend a clip. Repairs use them.
 
@@ -43,9 +46,10 @@ close-up or a hunch that a shot works better alone is not a reason to start a ru
 runs that fit together, and say which you merged.
 
 **Durations.** A shot's `sec` is its length in the cut. A run's generation length is the sum of its
-shots' `sec`, plus one handle at each end of the run (not between its shots), snapped up to a
-duration the model accepts. That is the run's `genSec`. Inside a run, the
-silence after a line and a designed tail hold are the only trim room at a shot boundary.
+shots' `sec`, snapped up to a duration the model accepts. That is the run's `genSec`. The take
+plays whole in the cut and nothing trims it unless the user does, so the prompt describes the
+action from the first frame to the last: no calm beat padded at either end. Inside a run, the
+silence after a line and a designed tail hold play as screen time.
 
 - The ceiling is a packing limit, not a shot length. Never merge several short actions into one
   long shot to fill a run.
@@ -95,11 +99,14 @@ renders worse. This holds for one shot made for another use case too, such as a 
 generated opening: it goes through these steps like a run.
 
 1. **Compile** with `picsart_film_compile_prompt`: `kind` (`run` for a video, `still` or
-   `scene-picture` for a picture, `map`, `edit`), the world's `look` ids (with `look.scheme` and
-   `look.hue` when the setup has them), and what only you can write:
+   `scene-picture` for a picture, `map`, `edit`), the `model` the prompt is for (its compiler
+   wording follows some models, as `references/seedance.md` says for Seedance), the world's `look`
+   ids (with `look.scheme` and `look.hue` when the setup has them), and what only you can write.
+   On a Seedance model, load the `sd25-pe` skill (Seedance 2.5) or `sd2-pe` (Seedance 2.0) before
+   the first compile of the film and write these inputs by it:
    - `scene`, `geography` (one line, identical in every prompt of the scene), and `space`:
      foreground, midground and background, all three named;
-   - `cast`, each with a `tell` and the saved `voice`; and `castPresence` whenever someone in
+   - `cast`, each with a `tell`, the saved `voice` and its `language`; and `castPresence` whenever someone in
      `cast` is not in the opening frame: where they are and when and how they enter ("Tobin is
      outside; he walks in through the garage door, frame-left, in shot 3"). The prompt counts
      every cast member from the first frame, and only this line keeps a latecomer out of it;
@@ -109,6 +116,13 @@ generated opening: it goes through these steps like a run.
      peak rule sets, `gaze` on a named target); the shot's own `speech`, beside `performances`
      rather than inside one (`name`, `line`, `delivery`); and the pair's cut rule in its `extra`;
    - anything more in `extra` or `filmConstraints`, in your own words.
+   - `model`: the id the run will generate with, so a prompt longer than that model takes is
+     refused here, before the plan, not when it runs. The draft and the finish share it: a draft is
+     the same model at its draft setting, and a finish sends the model either no prompt (a draft's
+     `finalizeDraft` handle, an upscale) or this same one again.
+
+   A preset slot you leave empty compiles to a neutral default (a light's direction, the second
+   person from the cast) and `notes` names it: read the notes, and pass the slot only to change it.
 
    **Pin what the model would re-infer.** It guesses every unstated fact frame by frame, and the
    glitches come from those guesses. In `extra` and the performances:
@@ -126,9 +140,16 @@ generated opening: it goes through these steps like a run.
    as `aperture` instead; pass it as it came. A light writes a line only when the user changed it, and then every
    shot of its scene carries the scene's colour temperature and dark side in its `extra`, as
    film-story-writing sets them; a palette other than `auto` always does.
-2. **Verify** with `picsart_film_verify_prompt` on the **literal arguments** you are about to send: the
-   prompt, the images, the model settings, the audio flag, and the `promptToken`. Its table checks
-   what is string matching and arithmetic. It does not judge the writing: read every character's
+2. **Verify: compile with `verifyWith`, then read the result's `check`.** `check` is
+   `picsart_film_verify_prompt` already run on that prompt and its `blocks`, against what you pass
+   in `verifyWith`: `approved` from the approved board (its lines, never the ones you typed into
+   `speech`), `request` with the other arguments you will send to picsart_generate (`generateAudio`,
+   `imageUrls`), `film` with the saved assets and their views, and `limits` from
+   `picsart_model_params`. Never retype the prompt into verify. A failed check is fixed in the
+   inputs and compiled again; a check whose `skipped` names the board, the lines or the reference
+   budget has not checked them, so compile again with them before anything is paid. Call
+   `picsart_film_verify_prompt` yourself only for a prompt changed after compiling. The
+   checks cover what is string matching and arithmetic. It does not judge the writing: read every character's
    action, emotion and gaze, the entrances and exits, the props, the cut motivation and the joins
    yourself.
    - `kind` decides which house lines are required and which are forbidden (a still with a shutter
@@ -173,23 +194,39 @@ prompt.
   `picsart_model_params` names them. **Every reference
   travels in `imageUrls`**, and no other image parameter is set: a frame travels as picture 1 of
   `imageUrls`.
-- **Runs are shot as drafts**: the lowest `resolution`, or the draft switch, that
-  `picsart_model_params` offers for the model, never its finish settings. A run keeps its `genSec`.
-  The finish settings are bought once, in film-finishing's final-resolution pass, after the user
-  calls the cut final. A model with no setting below its finish has no draft: say so in the
-  forecast, and its takes are final.
+- **Runs are shot as drafts, all in one batch**: at the model's draft setting as
+  `picsart_model_params` names it (Seedance 2.5's `draft: true`, 480p), or else its lowest
+  resolution. The user sees the whole cut quickly, for a fraction of the finish. There is no test
+  run before the others. A run keeps its `genSec`, its compiled prompt and its references: the
+  finish uses them. A repair made while the draft cut is reviewed (an edit, an extend, a re-roll)
+  is shot as a draft too, and finished with the rest. A model with neither a draft setting nor a
+  lower resolution shoots at its finish settings, and its takes need no finish.
+- **The quote is the draft batch, with the finish beside it as an estimate.** One yes buys the
+  drafts. **The finish is a second spend with its own yes, after the user approves the draft cut**,
+  as film-finishing says: a draft that returned `finalizeDraft` is finished from it (the same take
+  at the finish settings, not a new roll; an edit or extend draft finishes on its base model, as
+  the handle says); otherwise an upscale, or the approved runs generated again at the finish
+  settings with their saved prompts. A draft can be finished from its handle for 7 days; an older
+  one is generated again.
 - The batch's own card follows its jobs and reports back, as picsart-video-rules says. Label each run's
   entry with the run's shots.
 - **A dropped or timed-out call is not a failed generation.** The job is usually still running and
   charging. Check it with `picsart_job_status` on its handle as picsart-video-rules says, passing the
   `folderUid` again; never submit it again. Once it is COMPLETED, save the take into the Shots
-  folder with `picsart_drive_upload`: polling never files it.
+  folder with `picsart_drive_upload`: polling never files it. A Seedance draft is the one
+  exception: its render already saved it into `folderUid`, so it is never uploaded again.
 - A job still running at the end of a turn: say what is running and that you will pick it up. A
-  batch that lands is split, judged and put up for review in that turn (`references/takes.md`).
+  batch that lands is checked and judged in that turn (`references/takes.md`); the user reviews the
+  takes inside the cut, when the use case says.
 
 ## Traps
 
-- A run sent at the finish settings before the user calls the cut final.
+- A run shot as a test before the others, unasked: it is bought twice.
+- The first batch shot at the finish settings when the model has a draft setting or a lower
+  resolution: the user pays the full price before seeing the cut.
+- Finishing a take before the user approved the draft cut, or on the draft batch's yes.
+- A Seedance draft generated again at the finish settings while its handle is still valid: it is
+  finished from the handle.
 - Shooting shot by shot, or splitting runs for emphasis when the same shots fit fewer runs.
 - Treating the model's ceiling as a reason to make one long shot.
 - A prompt typed by hand, or a compiled one edited without compiling again.

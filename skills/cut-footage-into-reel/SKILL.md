@@ -1,9 +1,9 @@
 ---
 name: cut-footage-into-reel
-description: Cut the user's own footage - a long video, several clips, photos - into a vertical short for TikTok, Reels or Shorts - the best moments in order, nobody clipped mid-sentence, the speaker in frame, with highlight lines and music if wanted. Use when the user has a talk, interview, podcast, vlog, webinar or other footage of people speaking and wants a reel, a short, a clip or highlights from it ("make a reel from this", "cut a 30-second short", "find the best moments"). Not for a screen recording, a video from a text idea, or resizing a still.
+description: Cut the user's own footage - a long video, several clips, photos - into a vertical short for TikTok, Reels or Shorts - the best moments in order, nobody clipped mid-sentence, the speaker in frame, with highlight lines and music if wanted. Use when the user has a talk, interview, podcast, vlog, webinar or other footage of people speaking and wants a reel, a short, podcast clips, a highlight reel, a montage or a photo slideshow from it ("make a reel from this", "cut a 30-second short", "find the best moments"). Not for a screen recording, a video from a text idea, or resizing a still.
 metadata:
-  uses: footage-analysis, speech-aware-cutting, retention-hooks, footage-reframing, spoken-captions, background-music, scene-building-basics, quality-review, photo-slideshow, caption-decorations
-  optional: spoken-captions, background-music, photo-slideshow, caption-decorations
+  uses: footage-analysis, speech-aware-cutting, retention-hooks, footage-reframing, spoken-captions, background-music, scene-building-basics, quality-review, photo-slideshow, caption-decorations, quick-merge-and-export, screen-recording-layouts
+  optional: spoken-captions, background-music, photo-slideshow, caption-decorations, quick-merge-and-export
   title: Cut footage into a reel
   short-description: Cut your footage into a vertical short reel
   argument-hint: '[your footage and the length you want]'
@@ -31,10 +31,10 @@ cut, and every question in it is one the footage cannot answer.
 | 4. Pick the moments | ASK | speech-aware-cutting, retention-hooks |
 | 5. Agree the passes | ASK | — |
 | 6. Plan the cut | — | speech-aware-cutting |
-| 7. Build the takes | — | footage-reframing, scene-building-basics, photo-slideshow |
-| 8. Check it | — | quality-review |
+| 7. Build the takes | — | footage-reframing, scene-building-basics, photo-slideshow, quick-merge-and-export |
+| 8. Check it | ASK | quality-review |
 | 9. The cut | REVIEW | — |
-| 10. Highlights, when wanted | ASK, REVIEW | spoken-captions, caption-decorations |
+| 10. Highlights, when wanted | ASK, REVIEW | spoken-captions, caption-decorations, screen-recording-layouts |
 | 11. Music, when wanted | ASK, SPEND, REVIEW | background-music |
 | 12. Deliver | DELIVER | — |
 
@@ -69,14 +69,16 @@ Keep the project record as picsart-video-rules says, named `cut-footage-into-ree
 - **Read the user's brief first.** Every file in the material that is not media, read in full
   before the first question, as picsart-video-rules's The user's own brief says. A brief sets the message, the
   audience and the must-shows.
-- **No footage yet → open the upload in your first reply.** When the message carries no file, no
-  link and no Drive file named, call `picsart_drive_upload_ask({ purpose: 'the footage for your
-  short' })` in that same turn, with one line on what happens once it is in. Leave `accept` out:
-  videos and photos are both welcome. If the host cannot show the upload, follow picsart-video-rules's host
-  notes.
+- **No footage yet → find it, or ask for it, in your first reply.** When the message carries no
+  file, no link and no Drive file named: where the host can search the user's own library (its
+  host notes say how) and they said where or when the footage is from — a trip, a holiday, a
+  dated event — run that search, and ask for the footage only when it finds nothing. Otherwise call
+  `picsart_drive_upload_ask({ purpose: 'the footage for your short' })` in that same turn, with
+  one line on what happens once it is in. Leave `accept` out: videos and photos are both welcome.
+  If the host cannot show the upload, follow picsart-video-rules's host notes.
 - A link the user pasted, or a file in their Picsart Drive: bring it in as picsart-video-rules's Asset URLs
   say. Every tool below reads the footage by the URL that comes back.
-- "My clips" without naming them: ASK which files, never guess. With several files and no hint of
+- "My clips" without naming them: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which files, never guess. With several files and no hint of
   an order, ask nothing: the order is yours to choose.
 
 Sort the sources as they come in: each video is talking footage or not, and each photo is a beat.
@@ -131,7 +133,7 @@ cut waits.
 ## 4. Pick the moments
 
 Make one pool of moments across every source, as the speech-aware-cutting skill says, snapped to whole
-thoughts and ranked for the brief's goal, audience and message. Then ASK which to build from, as a
+thoughts and ranked for the brief's goal, audience and message. Then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which to build from, as a
 multi-select. Header "Moments".
 
 - Each option is one moment: what is said in a few words, its length, and why it earns a place
@@ -148,7 +150,7 @@ fewer than three moments worth offering, skip the question, say which you will u
 Before the first build, set how the work will go, as picsart-video-rules's Asking says. Say it in two
 lines: the passes (the cut, then the highlights and the music when wanted, then the export), what
 the user judges at each (the order, the edges and the framing; then the words on screen; then the
-sound), and that everything is free except the music bed. Then ASK the one thing open about it.
+sound), and that everything is free except the music bed. Then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) the one thing open about it.
 Header "First draft".
 
 - "The strongest take, played (Recommended)": the cut built and opened in the editor; the other
@@ -188,6 +190,9 @@ A slideshow short, with no talking footage, is built as the photo-slideshow skil
 among your skills: the photos as a track of clips, a blurred fill behind each one off the reel's
 shape. Without it, `reel_cut.py` holds each photo as a beat.
 
+A plain join, where the user asked only to merge their clips in a given order with no cut, is built
+as the quick-merge-and-export skill says when it is among your skills; there is nothing to pick.
+
 ## 8. Check it
 
 Check every take as the quality-review skill says, with the footage-reframing skill's moments: each seam and each
@@ -196,7 +201,7 @@ the plan or the clip and build again; building is free.
 
 Then run quality-review's critic panel (the six `critic-*` agents where the host has them) on the take the
 first draft named, with the transcript's lines as the words and a still of each clip in its source
-as the source stills. Make its must-fixes in the plan and build again. ASK its `choices` before the
+as the source stills. Make its must-fixes in the plan and build again. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) its `choices` before the
 cut's REVIEW, never applied silently.
 
 ## 9. The cut
@@ -213,7 +218,7 @@ to nothing.
 
 ## 10. Highlights, when wanted
 
-With the cut approved, ASK which words go on screen, with the phrases already drafted. Header
+With the cut approved, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which words go on screen, with the phrases already drafted. Header
 "Highlights".
 
 - "<n> lines (Recommended)": each drafted phrase quoted with the moment it lands.
@@ -235,7 +240,7 @@ caption-decorations skill says.
 ## 11. Music, when wanted
 
 **Offer it once the picture is settled**: the cut approved, and the highlights too when there are
-any. Never offer it bare. ASK with two briefs drafted as the background-music skill says, each in one line
+any. Never offer it bare. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with two briefs drafted as the background-music skill says, each in one line
 that says what it sounds like under these voices, and that differ in feel. Header "Music".
 
 - "<brief one> (Recommended)": the one that fits the transcript's tone.

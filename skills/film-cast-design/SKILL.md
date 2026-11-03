@@ -69,8 +69,11 @@ instead, as film-shot-generation says.
    shots compile to the film's hue. It returns the prompt, the
    `negativePrompt`, the `aspectRatio` and a `promptToken`. Send all of them as returned; never
    type or retype a template.
-3. Check each with `picsart_film_verify_prompt` on the literal arguments, with its token. A failure is
-   fixed in the inputs and compiled again.
+3. Compile with `verifyWith` (`request` with the `imageUrls` you will send, `film` with the saved
+   assets and their views, `limits` from `picsart_model_params`) and read each result's `check`:
+   `picsart_film_verify_prompt` already run on that prompt. A failure is fixed in the inputs and
+   compiled again; a `skipped` reference budget or view check has not run. Never retype a compiled
+   prompt into verify.
 4. Sheets are generated at the model's highest resolution, so every panel has pixels to spare.
 5. Every independent picture goes in the same batch. A failed one blocks only what depends on it.
 
@@ -94,14 +97,16 @@ Every tile comes back approved, changed or discarded.
   spot-check and it ran; a battery with failures blocks the lock until fixed or noted in `waived`.
 - **Discarded** siblings are never used.
 
-## Test the cast on pictures before any video
+## Check the cast on the scene pictures
 
-A face locked on one good picture drifts on real shots. Before the first run, put the locked cast
-through a few cheap stills, generated as one batch: each person at the angles, sizes and light their
-scenes ask for, and **beside the people they share a frame with**, since someone who holds up alone
-often breaks in a two-shot. A lead who does not come back recognisable every time has an
-under-written descriptor: tighten the lines the stills got wrong, and test again. A still is a
-fraction of a run's cost, and a defect found here never reaches one.
+No separate still test is bought. A face locked on one good picture can drift on real shots, and
+the scene pictures (film-shot-generation) are where the cast first appears in its rooms, light and
+company: check every face you can read there against its locked views, as you would a take, and
+**beside the people they share a frame with**, since someone who holds up alone often breaks in a
+two-shot. A person who drifts has an under-written descriptor: tighten the lines the picture got
+wrong, record them on the row, and they go into every later prompt. Say what you saw in the
+pictures' review; a new sheet or picture is generated only when the user asks for the change,
+quoted on its own.
 
 ## The gate into a run
 

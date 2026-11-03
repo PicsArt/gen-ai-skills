@@ -104,6 +104,22 @@ the renderer refuses, and the error names it rarely. Find it before changing any
    the screen-recording-layouts skill's nested panel). Never reshape the
    whole scene to guess past it.
 
+**Before a film's cut is reviewed.** From this skill's folder, run
+`python3 scripts/cut_check.py <file>` on `{ scene, allowed?, shots?, places? }`: the cut's scene,
+its allowed spans (the screen clips placed in it, as film-cutting says), and from the project record
+the shot each clip shows (keyed by clip id, with its size and angle when the shot list has them) and
+the place each shows. From the scene alone it finds the joins, moves and overlays a viewer reads
+as a glitch: two takes of one shot, or two shots of one size and angle, cut together
+(`same-scene-cut`), or a cut hidden under a quick move (`hidden-take-change`); different shots of
+one place are coverage and pass, a short dissolve between takes (`ghost`), a move of the picture, or of a layer covering 40% of the frame or more, that starts or stops in
+one frame (`pop-move`), an overlay gone for a frame or two (`blink`), a zoom over a still picture
+(`zoom-idle`), and a screen held still inside its span (`screen-still`). Nothing inside a span is
+flagged except `screen-still`. It prints `{ ok, errors, warnings, unchecked, skipped }`: fix each error as
+film-cutting says and run it again, say each warning in the review, and check what it lists as
+`unchecked` on the frames of step 5, never calling it checked. On an animatic of held stills, add
+`--slides`: its stills hold on purpose, so the motion rules move to `skipped` and run on the cut,
+and the joins, overlays and screens are still checked.
+
 **Before you hand over an export.** An export can differ from its scene: another size, a dropped
 frame rate, a missing sound track, a silent last second. Probe the file with
 `picsart_media_probe`, which is free, and from this skill's folder run

@@ -1,16 +1,17 @@
-# Takes: split, judge, accept
+# Takes: check, judge, accept
 
-## Split at the real cuts
+## Find the real cuts
 
 Probe every take with `picsart_media_probe` first: its real duration, not the one asked for,
-bounds its last shot. Split every take at the cuts **it actually made**, not the planned times. Look around each planned
+bounds its last shot. Find the cuts every take **actually made**, not the planned times. Look around each planned
 cut on `picsart_scene_contact_sheet` frames (`cut − 1/fps`, `cut`, `cut + 1/fps`, and a second
-either side when the cut is not there), and set each split where the picture changes. Record the
+either side when the cut is not there), and note each where the picture changes. Record the
 actual times on the run. **A take whose cut count differs from the plan has failed**, before
 anything else is judged.
 
-Each shot becomes a clip bounded by its real cuts, a window over the run's own file. No trim is
-applied before the user has seen it.
+These times are a check and a record, never edit points. The take goes into the cut whole, as one
+clip exactly as generated (film-cutting): it is not split at its cuts, and nothing trims it unless
+the user does.
 
 ## Judge it before the user does
 
@@ -28,15 +29,15 @@ its first (picsart-video-rules, Asset URLs). Then check:
 Acting, lines, lip-sync and voice are judged by the user in review, and by you listening where the
 host lets you. Say that the words were not checked against the script by a tool.
 
-Say what you observed, then open the review. Never report that a take passed.
+Keep what you observed for the review. Never report that a take passed.
 
 ## Review
 
-The review holds the **whole film so far** in story order: every accepted take and the new one in
-its place, each shot its own clip. A retake replaces its candidate in the timeline; two versions of
-one shot never play end to end, and the earlier one stays in the record, restorable. Trims and
-splits the user makes there are theirs: record them, and never open a separate review for the
-pieces.
+The user reviews takes inside the cut, never one by one: once the takes the cut needs have landed
+(the use case says when), every take in story order, each one clip, as generated, and what you
+observed in each said there. A retake replaces its candidate in the timeline; two versions of one
+shot never play end to end, and the earlier one stays in the record, restorable. Trims and splits
+the user makes there are theirs: record them, and never open a separate review for the pieces.
 
 ## Keep a frame
 
@@ -47,4 +48,4 @@ movement.
 ## Accept
 
 On acceptance: the run's take and its actual cut times go into the record, its final prompt and
-token stay beside it, its clips go into the selects, and every shot in the run is `final`.
+token stay beside it, the take goes into the selects as one clip, and every shot in the run is `final`.

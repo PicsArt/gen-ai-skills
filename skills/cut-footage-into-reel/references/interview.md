@@ -31,7 +31,7 @@ gets the frame its user names, and is said back the same way.
 **4. The message**, what the viewer should leave with. Header "Message". This is an idea, so it is
 asked with words, never generic options: draft two or three sentences that differ, each one the
 transcript can carry, with the line it rests on: "Quitting without a plan worked because she had saved a year of
-rent", from 06:12. ASK with those drafts as the options; the user picks one or writes their own.
+rent", from 06:12. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with those drafts as the options; the user picks one or writes their own.
 With too little speech to draft from, ask it in words, with that example as the anchor.
 
 **5. How long**, only when the destination leaves a range and the user named none. Header

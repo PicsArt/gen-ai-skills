@@ -242,7 +242,7 @@ already knows into a user choice."*
 Reordering is **optional and designer-initiated**: it happens on the storyboard board
 (shown for a glance and a drag, never a mandatory confirm) or when the designer explicitly
 says "swap 2 and 3." Absent that, Figma order stands, silently. Never open an
-ASK to confirm the running order.
+ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) to confirm the running order.
 
 ## Set the format — ask the ratio and fps
 

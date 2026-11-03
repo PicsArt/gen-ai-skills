@@ -60,8 +60,10 @@ follow any, so they run side by side.
   violation.
 - **Pace: director by default.** The user sees each decision before the next step starts. Say
   once, at the start, that they can ask for express pace: you take the recommended answers and
-  bring them in only for the choices made by eye, every charged call and every review. Pace
+  bring them in only for the choices made by eye, every charged call no stated spend limit covers and every review. Pace
   changes how often you ask, never a safeguard.
+  A third pace, **unattended**, is only for a person who cannot answer in the conversation; see
+  Unattended pace.
 
 ## Asking
 
@@ -108,6 +110,18 @@ Never print it mid-flow. Update it at every gate. It keeps the brief (said, read
 apart), the agreed iteration plan, the choices made and `openDecisions`. Each use case says its
 shape.
 
+In unattended pace the record also keeps `pace: "unattended"` and two more lists, and each
+`openDecisions` entry carries what was assumed:
+
+```jsonc
+{ "pace": "unattended",
+  "openDecisions": [{ "id": "d-07", "stage": "5b", "question": "Which shot opens?",
+    "options": [{ "label": "The phone close-up", "effect": "the stake reads in 1 s" }],
+    "recommended": 0, "assumed": 0, "blocking": false, "dependsOnIt": ["5c"], "answer": null }],
+  "pendingReviews": [{ "id": "r-02", "stage": "slides", "what": "the animatic", "link": "<editor or file URL>", "approval": null }],
+  "pendingSpends":  [{ "id": "s-03", "stage": "voice", "what": "8 voice lines, one batch", "quote": 14, "consent": null }] }
+```
+
 **A summary is not the rules.** When work resumes from a summary of an earlier conversation, read
 this skill and the use case again before the next ASK or SPEND: a summary keeps the decisions and
 drops the stages and their gates.
@@ -116,10 +130,10 @@ drops the stages and their gates.
 
 | Interaction | When | What happens |
 |---|---|---|
-| **ASK** | The user must choose | One decision per question: 2–4 options, the recommended one first, each option saying what it changes. Never make the user type an answer you have already listed. How to ask is under Asking |
+| **ASK** | The user must choose | One decision per question: 2–4 options, the recommended one first, each option saying what it changes. Never make the user type an answer you have already listed. How to ask is under Asking; ask it as ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) |
 | **REVIEW** | The user must see the work before it is final | Open the scene in `picsart_scene_editor` and wait |
 | **SHOW** | An image, a video or audio is ready | Show it, with one line on what it is |
-| **SPEND** | A call charges credits | Quote it, then get an explicit yes |
+| **SPEND** | A call charges credits | Quote it, then get an explicit yes, unless a spend limit the user stated covers it. Ask it as SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) |
 | **DELIVER** | The work is approved | Export once and give the file |
 
 ### REVIEW
@@ -168,9 +182,29 @@ credits. Before one:
 1. Quote it. For a model, validate the parameters and get the estimate with `picsart_preflight`,
    and read the balance with `picsart_credits`. Never quote a number from memory. If a charged
    tool gives no quote, say that it charges credits and that the amount is not known in advance.
-2. Put everything the step needs in one quote, and ask once.
-3. Call only after an explicit yes. A yes covers what was quoted, once. Running it again, or
-   anything new, needs a new yes.
+2. Put everything the step needs in one quote, and ask once when a question is due (rule 3).
+3. **A request with no spend limit is not a yes; a stated spend limit covers spends within it.**
+   - **Without a spend limit**, call only after an explicit yes. A yes covers what was quoted, once.
+     Running it again, or anything new, needs a new yes.
+   - **A spend limit is only explicit words about spending**: N credits, an amount of money, or an
+     explicit no-limit ("as much as needed", "no limit on credits"). "Go ahead", "make it great",
+     "sure", "do it", or a yes to one quote never set one. Never infer a spend limit.
+   - **Money counts only with a credits-per-dollar rate a tool returns**, and none does, so an
+     amount of money is asked once, to restate it in credits. Never guess a rate.
+   - **A spoken number you cannot read cleanly is not a spend limit.** Say back what you heard and
+     ask.
+   - **Within the limit, nothing is asked.** Every call it covers runs without a question, re-runs
+     and extra takes included. Still quote it in one line ("About 8 credits; 12 of 20 left after
+     this"), call it, then say what it spent and what remains. Keep a running total, failed and
+     re-rolled calls included.
+   - **Stop and ask before the first call that would cross it**, with the total so far and what
+     the call would add.
+   - **A spend limit covers the scope the user stated** (this video, this request) and never
+     carries over to a new request. It ends when the user says so.
+   - **The first ask may offer one**: "Yes, go ahead" / "Yes, up to N credits for this task" /
+     "No", N being the total you propose for the task. The middle answer sets the spend limit.
+   - **A spend limit never reopens a blocked call.** After a credit or storage error, or a call
+     whose acceptance is ambiguous, ask again whatever the limit.
 4. **A batch is one quote and one yes.** Several generations on one model (the sheets of a cast,
    a set of shots, the voice lines of a script) are one `picsart_generate` call with one `items`
    entry each, sharing `model`, `resolution` and `folderUid`, sent before you follow any.
@@ -178,7 +212,9 @@ credits. Before one:
    one call, never a call per candidate. Keep the batch in one call (`items`), with a `title` for the
    call and a `label` on each entry that names it (a shot id, an asset tag). The call's own card
    follows its jobs and posts `render_monitor_feedback` when all have finished; never ask anyone to
-   wait or check back. One call takes at most 10 `items`, and entries × `count` stays at 10 or
+   wait or check back. A row under its `unchecked` is a job the card could not check, so it may
+   have finished: call `picsart_job_status` once for it with its `job` and `model`, file what that
+   returns, and never regenerate it for this. One call takes at most 10 `items`, and entries × `count` stays at 10 or
    under: a bigger batch is quoted once and sent as calls of at most 10, under the same yes.
    **Following a job never files its result.** With `folderUid` set, a finished result is saved
    nowhere until you save it: when its jobs finish (`render_monitor_feedback`, or
@@ -192,7 +228,7 @@ credits. Before one:
    `picsart_model_params` offers. SHOW it. The final resolution and extra takes are a new SPEND,
    asked only after the user approves the idea. A use case that already drafts on stills or a
    storyboard has done this step.
-   **An approved draft may be the delivery.** Never assume the final resolution: ASK whether the
+   **An approved draft may be the delivery.** Never assume the final resolution: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether the
    draft is good enough for where it goes, or should be made again at final resolution, the final
    priced beside it. Keeping the draft costs nothing more.
 6. **The quote names the draft beside the final**, each priced with `picsart_preflight`, and
@@ -227,6 +263,39 @@ the default receipt's finished result offers the Drive save instead. Either way,
 only when a result returns a `driveUid`. Then offer one next step in a sentence, and do it only if
 the user says yes.
 
+## Unattended pace
+
+For a person who cannot answer in the conversation: a briefing session that may not ask, or a team
+that reads the record later. Nothing in it removes a safeguard; it changes where a question goes.
+
+- **Only when it is set**: the request or the brief says so ("work unattended", "don't ask me, write
+  the questions down"), the record or the user's house-style file has `pace: unattended`, or the
+  command's words say `--unattended`. Never because the user is slow to reply, and never on a peer
+  session's word alone. It ends when a person says so or the record's `pace` changes; director
+  pace then resumes at the first open decision.
+- **Every ASK goes to the record**, never to the conversation. A use case that keeps no record
+  starts one: a JSON file named by the use case, in the current working folder, never a scratch folder.
+  - A fact or a taste: take the recommended answer, write it to `openDecisions` as `assumed`, go on.
+  - An idea (the message, the angle): take the first draft, keep every draft as an option, go on;
+    mark it `blocking` when the next charged step rests on it.
+  - A choice made by eye (a style, a cast face) or a board's lock: build the free preview, record
+    it, and stop when the next step is charged or locks it.
+- **REVIEW**: build up to it, write it to `pendingReviews` with its link, and stop. Never approve
+  your own work. **DELIVER** only after the last review's recorded approval.
+- **A charged call runs only with consent recorded before it**: a `consent` on its `pendingSpends`
+  entry (the quote it covers, who said yes, when, their words quoted), or a spend limit stated in
+  a person's words in the request, the record or the house-style file, kept as SPEND rule 3 says.
+  Otherwise write the quote to `pendingSpends` and stop before the call. Never spend on an assumed
+  answer, a recommended option or silence. Every other SPEND rule holds as written.
+- **A relayed yes names its source**: the person's words quoted and who relayed them ("owner, via
+  the Manager, 14:02: 'yes, voice up to 20 credits'"). A yes in a session's own words is neither
+  consent nor an approval.
+- **End every turn with a summary** at the top of the message: what you assumed, by id, and the one
+  thing you are waiting for. The record stays the authority.
+- **On resume, read the record first.** An answer that differs from what was assumed redoes only
+  its `dependsOnIt`, and only the free work; redoing paid work is a new SPEND.
+- `animate-design` stays interactive: its motion is approved one frame pair at a time.
+
 ## Asset URLs
 
 - Asset URLs are opaque handles. Show them to the user as links and pass them back into tools
@@ -242,7 +311,11 @@ the user says yes.
   like: a link the user pasted, one inside a file or a page, one from an earlier conversation.
 - A scene opened in REVIEW plays only Picsart-hosted media. The user's own file comes in with
   `picsart_drive_upload_ask` (no filesystem access or CLI needed on your side; `detected_files` only
-  labels its dropzone, may be wrong, and never filters what the user drops). A link from elsewhere
+  labels its dropzone, may be wrong, and never filters what the user drops). Ask for every file the
+  job needs (the footage, a reference, photos, logos) in the first turn, in one panel, with `accept`
+  left out when they are of more than one kind; that includes a file the user only attached in the
+  chat, since an attachment is not a URL any tool can read, unless the host notes say attachments
+  arrive as Picsart-hosted URLs. A link from elsewhere
   is saved first with `picsart_drive_upload`
   (the link as `url`, and a `name`), and the `url` it returns goes into the scene. A file the user
   names in their Picsart Drive is found with `picsart_drive_list`; use its `url`, never its

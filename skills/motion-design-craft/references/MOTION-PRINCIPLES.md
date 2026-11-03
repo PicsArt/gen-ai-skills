@@ -86,7 +86,7 @@ Figma won't animate that layer at all."*) Do it from tool-read facts:
 3. **The rule:** animate only the changed classes; **leave `unchanged` layers still.** Not
    animating is a decision — a frame where everything moves reads as noise (see §4).
 
-4. **First ask if the whole pair is ONE camera move — the uniform-transform test.** Before you
+4. **First check whether the whole pair is ONE camera move — the uniform-transform test.** Before you
    author shared layers as N independent smart-animates, check whether a **single uniform
    (scale + translate) about one pivot** explains *all* their deltas. It often does, and then the
    pair is a **viewport/camera change**, not per-element motion. `diff_layouts`' `relationship`

@@ -62,13 +62,28 @@ at the origin, and scaled by one factor `k`:
   re-cut; never ship a strip.
 - `k` above 1 satisfies the floor and sharpens nothing. Ship it so the run is not blocked, and say
   the sheet was too small.
+- **The ratio, too.** A video model refuses a picture outside its input ratio before it makes
+  anything: width over height from 0.4 to 2.5 on Seedance, unless the model's own limits say
+  otherwise. `picsart_preflight` measures the sides, not the ratio, so check it here. Pad a view
+  outside it in a **second export whose only media is the cut view file** (`w` × `h`, probed),
+  never the sheet: a wider frame over the sheet shows the next panels, not a margin. One layer,
+  `fit: "none"`, `bounds` and the asset's size `[w, h]`, `anchor: [0, 0]`, `scale: [1, 1]`, and
+  `composition.background` the sheet's own backdrop colour (`"#e9e6e1"`, read from the pixels
+  beside the panel):
+  - **Too tall** (under 0.4, a full-body view): width `ceil(0.45 × h)`, height `h`, `position`
+    `[(width − w) / 2, 0]`.
+  - **Too wide** (over 2.5): width `w`, height `ceil(w / 2.5)`, `position` `[0, (height − h) / 2]`.
+
+  The padded file becomes the view. The margin is plain; the person is never stretched, cropped
+  or redrawn.
 
 ## Check every cut
 
 1. Probe it: its width and height equal the box times `k`, or the anchor or the scale was wrong.
 2. Read the **smaller** of the two numbers against the floor. A tall, narrow view fails on its
    width.
-3. Look at it: exactly one full view, nothing of the next panel, no
+3. Divide width by height: from 0.4 to 2.5, or pad it as "The ratio, too" says.
+4. Look at it: exactly one full view, nothing of the next panel, no
    gutter stripe.
 
 A wrong cut is a re-cut with a corrected box, never a regenerated sheet. Record each view's box in

@@ -1,9 +1,9 @@
 ---
 name: make-short-drama
-description: Make a vertical drama series, pilot or episode with a recurring cast. Use for a short drama, microdrama, web series or its next episode. Not for a one-off film (movie-producer).
+description: Make a vertical drama series, pilot or episode with a recurring cast. Use for a short drama, a story reel, microdrama, web series or its next episode. Not for a one-off film (movie-producer).
 metadata:
-  uses: drama-series-writing, film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, retention-hooks, spoken-captions, background-music, scene-building-basics, quality-review, realistic-color-grade
-  optional: realistic-color-grade
+  uses: drama-series-writing, film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, retention-hooks, spoken-captions, background-music, scene-building-basics, quality-review, realistic-color-grade, voice-over-generation
+  optional: realistic-color-grade, voice-over-generation
   title: Make a short drama
   short-description: Make a vertical drama series with a recurring cast
   argument-hint: '[series idea or the next episode]'
@@ -26,10 +26,10 @@ the user accepts it.
 | 5a. Episode outline, script and model | ASK | drama-series-writing, film-story-writing, retention-hooks, film-shot-generation |
 | 5b. The shot list | ASK | film-story-writing, film-shot-generation |
 | 5c. Scene pictures | SPEND, ASK | film-shot-generation, film-cast-design |
-| 5d. Shooting | SPEND, REVIEW | film-shot-generation, scene-building-basics, quality-review |
-| 5e. The cut | REVIEW | film-cutting, scene-building-basics, quality-review |
-| 5f. Finishing | SPEND, ASK, REVIEW | film-finishing, spoken-captions, background-music, realistic-color-grade |
-| 6. Verdict | REVIEW | quality-review |
+| 5d. Shooting | SPEND | voice-over-generation, film-shot-generation |
+| 5e. The cut, once the last take lands | REVIEW | film-cutting, scene-building-basics, quality-review |
+| 5f. Finishing, once per series | ASK, SPEND | spoken-captions, background-music, realistic-color-grade |
+| 6. Verdict | — | quality-review |
 | 7. Deliver and accept | ASK, DELIVER | film-finishing |
 
 | File | Read it before you… |
@@ -41,7 +41,7 @@ the user accepts it.
 | Request | Route |
 |---|---|
 | One-off short film | movie-producer |
-| One clip | Offer one generation via `picsart_model_choose`, then SPEND and `picsart_generate` |
+| One clip | Offer one generation via `picsart_model_choose`, then SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) and `picsart_generate` |
 | Series, pilot, sitcom or drama episode | This use case |
 | Series record present | Read it, call `picsart_film_list_assets` with its `projectFolderUid`, say where the series stands, continue at the next episode |
 
@@ -55,12 +55,15 @@ record's cast manifest is only its copy. Do this even for an outline-only reques
 
 ## Gates and interaction
 
-Use ASK, SPEND, REVIEW and DELIVER as picsart-video-rules defines them. Director pace is the
+Use ASK, SHOW, SPEND, REVIEW and DELIVER as picsart-video-rules defines them. Director pace is the
 default. Express pace still keeps boards, bible/look/asset locks, each charged call and any change
 beyond a quote. Ask one decision at a time; keep the others in `openDecisions`.
+Where the host notes give a drama its own route, follow it: it replaces the stages it names,
+and every other gate here holds.
 
 The exit checklist at each stage is binding. Before calling a stage done, mark each item ✓ or ✗
-with evidence: a returned status, a user's answer or a conscious override and reason. A ✗ keeps
+with evidence: a returned status, a user's answer, an approval already in the series record, or a
+conscious override and reason. A ✗ keeps
 the gate closed. Record overrides; never choose to spend against a closed gate yourself.
 Run quality-review's challenger at the brief, bible, look, script, shot list, selected assets and
 every quote before SPEND. A stop or rethink of the user's choice goes to the next ASK with the
@@ -74,8 +77,43 @@ A board's opening result is not a decision. Wait for its feedback. Use these rep
 | `model_choice_feedback` | Store `chosen.id` and `chosen.name`; a story comment needs a rewritten scene and fresh board |
 | `shotlist_board_feedback` | Replace the approved scenes and runs, never merge; retain non-board fields by shot id |
 | `asset_review_feedback` | Approved tiles go to view extraction and locked save; regenerate only `changes`; never use `discarded` |
-| `render_monitor_feedback` | Match `done` and `failed` rows by `jobId`; use label only when absent; save finished results before review |
+| `render_monitor_feedback` | Match `done` and `failed` rows by `jobId`; use label only when absent; save finished results before review; `unchecked` rows follow SPEND rule 4 of the `picsart-video-rules` skill |
 | Scene editor reply | `approved` or `needs_changes`; preserve `edited`, `documentUrl`, `comments` and `timelineComments`, including user trims |
+
+## Build in stages: slides, voice, video
+
+When the user asks for one stage of an episode by name (`slides`, `voice` or `video`, as the
+`story` command passes it), build only that stage and stop at its REVIEW. Each stage opens only once
+the user approved the one before it. A stage asked for early says, in one line, which approval is
+missing, and offers to show that stage again. Take as fact whatever the series record or the user
+already gives as approved: the brief, the bible, the look (its `stylePrefix` and `selections`), the
+cast, the script, the model, the shot list and the voices. Mark that stage's exit ✓ with "approved in
+the record" and never open its board again; a stage asks, or opens its board, only for what is still
+missing. A supplied cast or picture is not in the Library until it is saved: when the record has no
+`drive`, create the project as stage 4 says, then save each approved person, place and prop with
+`picsart_film_save_asset` (`status: "locked"`, `projectFolderUid`, `sheetVersion`; it is free), read
+`locked` in each result and write it to the cast manifest, before 5c.
+
+| Stage | What it builds | Paid |
+|---|---|---|
+| `slides` | stages 1 to 5c, then an animatic: one scene picture per line of the script, held for the line's time, with its on-screen text, and no sound | the pictures |
+| `voice` | each line spoken in the cast's locked voice, as the voice-over-generation skill says, laid on the approved animatic, the stills re-timed to the real lines | the voice lines |
+| `video` | stages 5d to 5f, each take with its line's approved voice as reference audio where the model takes it, cut to the approved timing | the takes |
+
+- `slides`: build the animatic as a scene, as the scene-building-basics skill says. Then REVIEW it,
+  titled "<Episode> - slides". The on-screen text follows the house style the user gave (font, plate,
+  safe area); without one, as the spoken-captions skill says. 5c's SPEND bought the pictures it
+  quoted. A line with no picture yet, or a picture made again, is new: SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the extras as one
+  batch before you make them, never under 5c's yes. The animatic is a timing draft, so its stills
+  hold on purpose: never add a move to a still only to pass a motion check. Check its joins,
+  overlays, text and screens; the motion checks (a held still, an idle hold, a zoom over a still)
+  run on the cut, in 5e.
+- `voice`: SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the episode's lines as one batch, then REVIEW the voiced animatic. A line's
+  real length moves its still, never the words.
+- `video`: forecast and buy as 5d says. The voiced animatic is the cut's timing reference in 5e.
+
+Record the stage and each approval in the series record, so a later request resumes at the next
+stage. Without a named stage, the episode runs straight through as below.
 
 ## 1. The brief
 
@@ -91,7 +129,7 @@ fixed facts are recorded. Do not spend while these decisions are missing.
 ## 2. The series bible
 
 Use drama-series-writing for Story DNA, relationships, knowledge tiers, reveal bank, sets and the
-season arc. ASK on the proposed bible. Scope a long commission as drama-series-writing's season arc says. Test another
+season arc. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) on the proposed bible. Scope a long commission as drama-series-writing's season arc says. Test another
 pairing and action before extrapolating the pilot to the season.
 
 **Exit:** the user locked the bible and arc, with successor flags, planned ending rotation and
@@ -123,7 +161,7 @@ on `picsart_film_review_assets` (at most 12 tiles per board). On approval, cut v
 asset in the project's Library. Read `locked` in the result; `saved` alone does not establish a lock.
 A changed tile gets its own SPEND and a fresh board with `assets[].version` and `assets[].previousUrl`. Approved
 tiles never reappear on a board. A supplied person's photo is theirs, not a redesign invitation.
-Raise film-cast-design's photo or era flags in one short ASK with its named options.
+Raise film-cast-design's photo or era flags in one short ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with its named options.
 
 Later episodes call `picsart_film_list_assets` with `projectFolderUid` and reuse locked rows.
 Never re-design a locked person or reopen their review merely because an episode changed.
@@ -159,86 +197,118 @@ once with every scene of this episode, the model and setup defaults. The board a
 and seconds; story changes return to the paragraph first. Replace its list and runs from feedback;
 keep references, prompt versions and trims by id. Rebuild joins on newly grouped runs and split
 any run over the ceiling. Keep a long single shot only if the user chooses it over recommended
-coverage. A kinetic move on a large face gets one short ASK with film-shot-generation's safer
+coverage. A kinetic move on a large face gets one short ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with film-shot-generation's safer
 options before compilation. After a long stretch, offer once to reopen the board; honor a no.
 
 **Exit:** approved cards, valid runs, joins and asset tags all match the accepted script.
 
 ### 5c. Scene pictures
 
-Use film-shot-generation for wide, scene picture and room map where needed. SPEND on the episode's
+Use film-shot-generation for wide, scene picture and room map where needed. SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the episode's
 picture batch, then ASK through asset review. Batch generation follows picsart-video-rules;
 review boards hold at most 12 tiles. Reuse suitable locked plates rather than recreating sets.
-Run film-cast-design's still test under its own batch SPEND before the first video. A failure
-returns only the affected asset through stage 4, with a new version and fresh review.
+Check the cast's faces on these pictures as film-cast-design says; there is no separate still
+test. Only a change the user asks for returns an asset through stage 4, under its own SPEND, with a
+new version and fresh review.
 
-**Exit:** every scene a run spans has approved pictures, every needed asset is locked and the cast
-passed its stills. Missing evidence stops shooting.
+**Exit:** every scene a run spans has approved pictures and every needed asset is locked. Missing
+evidence stops shooting.
 
 ### 5d. Shooting
 
 Use film-shot-generation. Raise its palette conflict flag through one ASK before quoting.
-Forecast once: runs × two takes × seconds at the draft rate from `picsart_preflight`, repairs
-margin, and the final-resolution pass beside it. The forecast is an estimate, not a quote.
-SPEND first on one risky run with dialogue and cuts; say a re-roll costs again. Shoot as drafts.
-Use its result to improve the recipe before buying the remaining independent runs as a batch.
-Before the first paid run, declare decisive evidence as quality-review's readiness verdict says.
-Compile, verify, generate and monitor as the skill says. Every edit, extend or re-roll has its
-own SPEND; a yes to the original run never buys a repair. Ask once about an ambiguous note.
+**Shoot every run as a draft,** as film-shot-generation says: the model's draft setting (Seedance
+2.5's `draft`) or its lowest resolution, so the user sees the episode quickly and cheaply; the
+finish comes after the cut is approved (5f). Forecast once: runs × two takes × seconds at the draft
+rate from `picsart_preflight`, plus a repairs margin, with the finish beside it; the forecast is an
+estimate, not a quote. Every independent run goes in one batch, on one quote and one SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), the
+finish shown on that quote as an estimate and not bought with it; never a test run before the
+others unless the user asks for one (film-shot-generation, Traps). Say
+a re-roll costs again. Before the quote, check every picture a run passes against the model's
+input limits, its sides and its ratio, as film-cast-design's views say, and fix any outside them
+for free; the user never approves a batch the model will refuse. Before the paid batch, declare
+decisive evidence as quality-review's readiness verdict says. Compile, verify, generate and
+monitor as the skill says. Every edit, extend or re-roll has
+its own SPEND and is shot as a draft like the takes; a yes to the original run never buys a repair. Ask once about an ambiguous note.
 
-Every landed take opens REVIEW that turn. Split it at actual cuts, assemble every accepted take
-plus the new one in story order with film-cutting, check with quality-review and open the whole
-episode so far in `picsart_scene_editor`. A new take alone cannot prove a join. Judge dialogue by
-ear and say when no tool checked its words against the script.
+**No partial episode.** While the episode's takes are still running, **never assemble, cut, open
+or show the episode so far**: a landed take waits for the others. As each take lands, find
+its actual cuts and judge it as film-shot-generation's takes reference says ("Judge it before the
+user does"). That is your technical check, not acceptance: every landed take stays a candidate
+until the user approves the cut (5e). So a run that film-shot-generation makes wait for an earlier
+take waits here for that take to land and pass your check. There is no question between the
+takes and the cut.
 
-**Exit:** each run accepted and split, shots final, prompts, quotes, handles and actual cuts saved.
+**Exit:** every take landed, its actual cuts found and checked by you; what the check observed,
+prompts, quotes, handles and actual cuts saved. No take is accepted yet.
 
-### 5e. The cut
+### 5e. The cut, once the last take lands
 
-Use film-cutting and scene-building-basics to assemble selects. REVIEW the whole episode with
-quality-review until the user calls the cut final. Diagnose seam notes before buying footage;
-a bridge or other generated repair needs its own SPEND and review. Preserve user trims and
-splits. After picture lock, change picture only when asked.
+When the last take of the episode lands, use film-cutting and scene-building-basics to assemble
+the episode once: every candidate take (5d) in story order with hard cuts, as film-cutting says,
+each one clip exactly as generated (never split at its internal cuts, never trimmed), dialogue
+on its own layer, the series' look and captions (5f) and, when chosen, its music. Add nothing
+else the user did not ask for: no transitions, padding, freeze frames, stills played as video,
+titles or template looks.
+Check it with quality-review and run the verdict (6), then REVIEW the whole episode: this is the
+episode's one review: say there what your check observed in each take. At episode 1 the review
+also offers music once (5f). Judge dialogue by ear and say when no tool checked its words against
+the script.
 
-**Exit:** final cut approved, join checks recorded, user edits preserved.
+Change requests come in this review. A note on the cut ("tighten the opening") is applied and the
+cut REVIEWed again. A take to redo ("redo the hallway take") is a repair with its own SPEND; when
+it lands, the episode is re-cut once and REVIEWed again. Diagnose seam notes before buying
+footage; a bridge or other generated repair needs its own SPEND. Preserve user trims and splits.
+After the cut is approved, change picture only when asked.
 
-### 5f. Finishing
+The user's approval of the cut is the acceptance of every take in it: record each as
+film-shot-generation's takes reference says under "Accept". Never record a take as accepted
+before that approval.
 
-Use film-finishing in order: final-resolution pass, colour, sound. Ask whether drafts are good
-enough to keep before quoting the pass on its own SPEND. ASK with three or four looks from
-`picsart_scene_capabilities`, `sections: ["looksCompact"]`; applying a look is free. Offer
-realistic-color-grade when available and useful for glossy footage.
+**Exit:** the cut approved and its takes accepted, join checks recorded, user edits preserved.
 
-Offer music once after picture lock. ASK with the background-music brief and generate/change/skip
-exits. A yes is a SPEND. Use the series theme; a new track needs a new brief and SPEND. REVIEW
-how it sits under dialogue. Offer film-finishing's sound-team handoff once where relevant.
-Use spoken-captions for the locked language and caption style. Verify caption timing, line splits,
-script shaping and face clearance on the pilot before repeating it. Review the finished episode.
+### 5f. Finishing, once per series
 
-**Exit:** finishing choices settled, captions and sound checked, master available and evidence saved.
+The series' look (stage 3) and captions are set once and carried into every cut without asking
+again: spoken-captions in the locked language and caption style, with caption timing, line
+splits, script shaping and face clearance verified on episode 1. Ask for the caption style only
+if episode 1 is the first time it comes up. Applying a look is free; offer realistic-color-grade
+only when the user asks for a grade.
+
+Music is offered once per series, in episode 1's review (5e). A yes drafts the
+brief with background-music and is a SPEND; the series theme then goes under every later episode
+without asking. A no holds for the series unless the user brings music up.
+
+**The finish, once the episode's cut is approved:** finish its draft takes as film-finishing says,
+from each draft's `finalizeDraft` handle where it has one, otherwise an upscale or the approved run
+generated again at the finish settings. It is its own SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), never bought with the drafts:
+film-finishing's one question for the episode, finish the approved takes or keep the drafts.
+Re-assemble the approved cut at the finish size with the user's trims, before the verdict (6).
+
+**Exit:** look, captions and the music choice recorded for the series; the episode's finish
+quoted, and bought or declined.
 
 ## 6. Verdict
 
-Apply quality-review's readiness verdict to existing evidence, with the series checks beside the media
-checks: continuity from the accepted ledger, cast versions, knowledge transfer, thread accounting,
-ending rotation and terminal closure where applicable. Never describe an unaccepted candidate as
-an accepted episode. Use one headline: Needs revision, Not yet
-verified, or Reviewed candidate. A playable export or a successful job is not proof of readiness.
-User acceptance is separate. Keep every required check after a repair and inspect affected scope.
+Run quality-review's readiness verdict yourself on each cut before its review, with the series
+checks beside the media checks: continuity from the accepted ledger, cast versions, knowledge
+transfer, thread accounting, ending rotation and terminal closure where applicable. Say it in one
+line with the cut; it is never a step for the user. Fix what it finds that needs no spend before
+the review. Never describe an unaccepted candidate as an accepted episode.
 
-**Exit:** one supported verdict, material issues or unknowns and the next action are recorded.
-An unresolved candidate may be shown as such, never described as a finished accepted episode.
+**Exit:** one supported verdict recorded with the cut.
 
 ## 7. Deliver and accept
 
-DELIVER the actual HTTPS master once with its verdict, as picsart-video-rules says. Confirm any
-additional master with one ASK before its first export. Use film-finishing for archive and model
-disclosure; record the disclosure and the music licence check the user owns.
+The user's approval of the cut accepts the episode. Only when the user accepts this episode
+version: DELIVER the actual HTTPS master once with its verdict, as picsart-video-rules says,
+commit its proposed story delta to the series record, mark it accepted and advance the next
+episode. Then offer once to post it. Use film-finishing for archive and model disclosure; record
+the disclosure and the music licence check the user owns. Confirm any additional master with one
+ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) before its first export.
 
-Only when the user accepts this episode version, commit its proposed story delta to the series
-record, mark it accepted and advance the next episode. Preserve rejected proposals separately.
-Review approval of a take or cut is not episode acceptance. Persist production milestones as they
-happen without committing their story deltas. Say where the series stands at session end.
+Preserve rejected proposals separately. Persist production milestones as they happen without
+committing their story deltas. Say where the series stands at session end.
 
 **Exit:** delivery URL and disclosure saved; acceptance, or the still-proposed status, is explicit.
 
@@ -248,6 +318,8 @@ Out of credits: zero retries. Read `picsart_credits`, say the paused step, keep 
 and wait for the user's notice that credits are there. Never poll the balance. A dropped call is
 followed by its job handle through film-shot-generation, never submitted twice. Fix an invalid
 board value and resend; an unavailable board uses the host fallback with the gate intact.
-Other blocking calls get one identical retry, then record what failed and what is needed. An
+A run the model refuses, or that fails, is said at once in plain words, with whether it was
+charged and the fix; never wait for the user to ask. Other blocking calls get one identical retry,
+then record what failed and what is needed. An
 outage is status: continue free work and keep the blocked item for the next turn. Never replace
 a locked person's consistency to work around an outage.

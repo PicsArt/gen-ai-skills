@@ -64,30 +64,30 @@ Entrance (play once, per character/word/line): `typewriter`, `fade_in_chars`, `s
 Ambient (caption decoration only): `hop`. Selectors support `basedOn` character/word/line, start/end
 windows, `randomizeOrder`.
 
-## Transitions — 17 (seam `transition` + `transitionDuration`)
-`crossfade`, `blur_dissolve`, `slide`, `push`, `zoom_through`, `page_curl`, `card_flip`, `iris`,
-`shape_reveal`, `diagonal_slide`, `bubble`, `cubes`, `free_fall`, `kaleida`, `manga_page`,
-`splatter`, `movement_camera`. (Remember: for shared-layer pairs, prefer **matched smart-animate**
+## Transitions (seam `transition` + `transitionDuration`)
+`crossfade`, `blur_dissolve`, `slide`, `zoom_through`, `page_curl`, `card_flip`, `iris`,
+`shape_reveal`, `diagonal_slide`, `manga_page`, `light_leak_burst`, `glitch_cut`, `flash_cut`.
+(Remember: for shared-layer pairs, prefer **matched smart-animate**
 over any of these — see [`TRANSITIONS.md`](./TRANSITIONS.md).)
 
-## Looks — 19 (via `apply_preset`, `look:<id>`) + effects — 137 (via `apply_preset`, `effect:<id>`)
+## Looks (via `apply_preset`, `look:<id>`) + effects (via `apply_preset`, `effect:<id>`)
 Looks (style/treatment bundles): `shimmer`, `light_leak`, `duotone`, `photo_frame`, `social_frame`,
-`social_post`, `tilt_3d`, `tilt_reflection`, `reflection`, `reveal`, `vintage_bw`, `rounded_corners`,
-`blur_fill`, `clip_path`, `chat_bubble`, `chat_input`, `play_badge`, `selection_chrome`, `vcr`.
-Effects (137): color grades / LUTs / blur / stylize / retouch — e.g. `drop_shadow`, `gaussian_blur`,
+`tilt_3d`, `tilt_reflection`, `reflection`, `reveal`, `vintage_bw`, `rounded_corners`,
+`blur_fill`, `chat_bubble`, `chat_input`, `play_badge`, `selection_chrome`, `vcr`.
+Effects: color grades / LUTs / blur / stylize / retouch — e.g. `drop_shadow`, `gaussian_blur`,
 `film_grain`, `glitch`, `golden_hour`, `neon_cyberpunk`… Resolve the full list from `get_capabilities`.
 
 **Reproduce the design's static treatment from this catalogue — don't fake it or bake it into a PNG.**
 A mockup's rounded image corners, drop shadow, blurred backdrop, reflection or colour grade is almost
 always a **look or effect that already exists here** — match it by *enumerating* `get_capabilities`
-(19 looks + 137 effects), not by assuming it's unsupported and flattening it into the asset. Common
+(looks + effects), not by assuming it's unsupported and flattening it into the asset. Common
 intent → catalogue entry:
 
 | Design shows… | Author it as |
 |---|---|
 | rounded image/card corners | `rounded_corners` (look) |
 | soft/blurred fill behind a subject | `blur_fill` (look) |
-| masked to a shape | `clip_path` (look) |
+| masked to a shape | a layer `mask` whose shape content holds a `path` item and a `fill`; a border is a second shape layer above it with the same path and a `stroke` item |
 | drop shadow / elevation | `drop_shadow` (effect) |
 | glow / neon edge | a glow effect — resolve the id from `get_capabilities` |
 | colour grade / filmic tone | the matching colour-grade effect (`golden_hour`, LUTs…) |

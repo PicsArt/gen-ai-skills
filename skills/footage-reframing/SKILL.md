@@ -1,6 +1,6 @@
 ---
 name: footage-reframing
-description: Put the user's own footage in a frame of another shape - landscape to a vertical reel, say - with the camera following the person, measured once per source, and cut it into a reel of clips back to back with scripts/reel_cut.py, so any re-cut is free. Covers which clips follow the subject and which show the whole frame, photos held as beats, a camera that swings between two people, and hard cuts. Use when a reel or short is cut from the user's own videos and photos, or when a vertical crop loses the subject.
+description: Put the user's own footage in a frame of another shape - landscape to a vertical reel, say - with the camera following the person, measured once per source, and cut it into a reel of clips back to back with scripts/reel_cut.py, so any re-cut is free. Covers which clips follow the subject and which show the whole frame, photos held as beats, a camera that swings between two people, and hard cuts. Use when a reel or short is cut from the user's own videos and photos, when a landscape video is reposted as a vertical one, or when a vertical crop loses the subject.
 user-invocable: false
 ---
 

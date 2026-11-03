@@ -66,5 +66,6 @@ check them on the take.
 A short video between two runs is an experiment, not a seam softener. It needs a story purpose.
 Return its cost for the use case to quote. film-cutting's join repair says how it is judged.
 
-At an edge, expect to trim both the outgoing tail and the incoming head in the edit. No crossfade,
-no fade to black. An ambience bed can carry sound across an edge; it cannot fix a face.
+At an edge, both the outgoing tail and the incoming head play in the cut: nothing trims them unless
+the user does. Each run starts in the action and ends where its last shot ends, with no padded
+calm beat. No crossfade, no fade to black. An ambience bed can carry sound across an edge; it cannot fix a face.

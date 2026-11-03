@@ -85,7 +85,7 @@ remembered: "locked" is true when the asset's row says so, not when you recall s
   which side of frame they went out. Wardrobe and damage are never here: a changed state is its own
   tag with its own view.
 - `runs[]` is top level because a run spans scenes. `cutTimes` are the plan; `cutTimesActual` are
-  where the take really cut, and every trim hangs off those. `refs` are the ordered `imageUrls`,
+  where the take really cut: a check, never an edit point. `refs` are the ordered `imageUrls`,
   `refRoles` what the prompt called each one, and each shot's `refs` are indices into them.
 - `pieces[]` are the files a run's picture comes from: the take, then any edit or extend that
   replaced or added seconds. A shot's `trim` is in its piece's seconds.
