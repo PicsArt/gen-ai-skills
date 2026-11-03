@@ -23,6 +23,8 @@ It also has to be the short the user meant. A podcast clip made to grow an audie
 to sell a course pick different moments and end differently, so the interview comes before the
 cut, and every question in it is one the footage cannot answer.
 
+Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
+
 | Stage | Gate | Skills |
 |---|---|---|
 | 1. Take the footage in | ASK | — |

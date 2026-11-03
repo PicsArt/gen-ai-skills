@@ -32,6 +32,8 @@ Read picsart-video-rules first: how to talk and how to ask are there, and every 
 Asking rules. One job: one or more screen recordings in; one video, or a set of standalone videos,
 out.
 
+Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
+
 | Stage | Gate | Skills |
 |---|---|---|
 | 1. Take the recording in | — | — |

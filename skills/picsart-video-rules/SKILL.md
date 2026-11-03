@@ -10,6 +10,10 @@ Every use case reads this first. It says how to talk to the user and how to spen
 How this host performs each interaction is in `references/HOST.md`: read it before the first
 interaction.
 
+A use case's stage table names the skills each stage loads. Before you act on a stage, load the
+skills in its row that apply to this job (a row may list alternatives, such as one per model),
+also when the work resumes at that stage.
+
 ## Tools
 
 Tools are named here by their server names, such as `picsart_scene_export`. The host may show
