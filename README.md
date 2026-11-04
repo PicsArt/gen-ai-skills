@@ -260,6 +260,7 @@ Skills the use cases load:
 | Skill | Description |
 |---|---|
 | [`picsart-add-media`](./skills/picsart-add-media) | Turn the user's own files into hosted URLs with the gen-ai MCP's upload tools. |
+| [`reel-hook`](./skills/reel-hook) | Analyze Reel hooks and retention, write scripts and video prompts, and plan varied product-led content. |
 | [`style-guide-builder`](./skills/style-guide-builder) | Build a reusable visual style guide from reference images. |
 | [`video-prompt-engineer`](./skills/video-prompt-engineer) | Write and fix prompts for AI video generation. |
 

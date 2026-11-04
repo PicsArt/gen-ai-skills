@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reel Hook"
+  short_description: "Reel scripts, visual hooks, prompts, and catalog plans"
+  default_prompt: "Use $reel-hook to improve this Reel or develop a product-led script with a clear hook, payoff, and video prompts."
