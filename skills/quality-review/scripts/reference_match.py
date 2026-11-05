@@ -159,10 +159,12 @@ def pieces(track: Json, width: float, height: float, assets: Json) -> List[Tuple
 
 def pictures(scene: Json, width: float, height: float) -> List[List[Tuple[float, float, Optional[Tuple[float, float]]]]]:
     """Every picture source as its pieces: each track, and each media layer placed on its own."""
-    out = [pieces(t, width, height, _assets(scene)) for t in tracks(scene)]
+    assets = _assets(scene)
+    out = [pieces(t, width, height, assets) for t in tracks(scene)]
     for layer in media_layers(scene):
         start = num(layer.get('start')) or 0.0
-        out.append([(start, start + (num(layer.get('duration')) or 0.0), panel(layer, width, height))])
+        # like a track clip, a layer without its own duration plays its trim or its asset
+        out.append([(start, start + (_clip_length(layer, assets) or 0.0), panel(layer, width, height))])
     return out
 
 
