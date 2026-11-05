@@ -1,17 +1,24 @@
----
-name: cut-footage-into-reel
-description: Cut the user's own footage - a long video, several clips, photos - into a vertical short for TikTok, Reels or Shorts - the best moments in order, nobody clipped mid-sentence, the speaker in frame, with highlight lines and music if wanted. Use when the user has a talk, interview, podcast, vlog, webinar or other footage of people speaking and wants a reel, a short, podcast clips, a highlight reel, a montage or a photo slideshow from it ("make a reel from this", "cut a 30-second short", "find the best moments"). Not for a screen recording, a video from a text idea, or resizing a still.
-metadata:
-  uses: footage-analysis, speech-aware-cutting, retention-hooks, footage-reframing, spoken-captions, background-music, scene-building-basics, quality-review, photo-slideshow, caption-decorations, quick-merge-and-export, screen-recording-layouts
-  optional: spoken-captions, background-music, photo-slideshow, caption-decorations, quick-merge-and-export
-  title: Cut footage into a reel
-  short-description: Cut your footage into a vertical short reel
-  argument-hint: '[your footage and the length you want]'
-  starter-prompt: Cut my footage into a 30-second vertical reel.
-argument-hint: '[your footage and the length you want]'
----
+# The reel jobs: reel, highlight, podcast-clips, split, montage, slideshow, lesson
 
-# Short reel maker
+Read this whole file when the job is one of these seven (SKILL.md, The jobs). Its steps are the
+reel steps of SKILL.md's flow table, in this order.
+
+## Contents
+
+- The record
+- 1. Take the footage in
+- 2. The interview
+- 3. Read the footage
+- 4. Pick the moments
+- 5. Agree the passes
+- 6. Plan the cut
+- 7. Build the takes
+- 8. Check it
+- 9. The cut
+- 10. Highlights, when wanted
+- 11. Music, when wanted
+- 12. Deliver
+- When something fails
 
 A short cut from talking footage lives on its words. The framing can be perfect and the short is
 still unwatchable when it opens on half a sentence. So this works transcript first: what is
@@ -28,13 +35,13 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | Stage | Gate | Skills |
 |---|---|---|
 | 1. Take the footage in | ASK | — |
-| 2. The interview | ASK | retention-hooks |
+| 2. The interview | ASK | retention-hooks, reel-structure |
 | 3. Read the footage | SPEND | footage-analysis, footage-reframing |
 | 4. Pick the moments | ASK | speech-aware-cutting, retention-hooks |
 | 5. Agree the passes | ASK | — |
 | 6. Plan the cut | — | speech-aware-cutting |
-| 7. Build the takes | — | footage-reframing, scene-building-basics, photo-slideshow, quick-merge-and-export |
-| 8. Check it | ASK | quality-review |
+| 7. Build the takes | — | footage-reframing, scene-building-basics, spoken-captions, edit-on-your-computer, photo-slideshow, quick-merge-and-export, face-hiding |
+| 8. Check it: the framing, the QC inspector, the critics | ASK | footage-reframing, quality-review |
 | 9. The cut | REVIEW | — |
 | 10. Highlights, when wanted | ASK, REVIEW | spoken-captions, caption-decorations, screen-recording-layouts |
 | 11. Music, when wanted | ASK, SPEND, REVIEW | background-music |
@@ -42,9 +49,10 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 
 | Read this | Before you |
 |---|---|
-| `references/record.md` | start or update the project record |
-| `references/interview.md` | ask the first question, and at every question of stage 2 |
-| `references/platforms.md` | state the frame and the length, and place any words |
+| `references/reel-jobs.md` | pick the job, and at every question of stage 2 |
+| `references/reel-record.md` | start or update the project record |
+| `references/reel-interview.md` | ask the first question, and at every question of stage 2 |
+| `references/reel-platforms.md` | state the frame and the length, and place any words |
 
 Every question here is asked as picsart-video-rules's Asking says: one per turn, the recommended answer
 first, each option saying what it changes. The stage names are your bookkeeping, never the
@@ -63,8 +71,8 @@ not an approved reel. A stage the user declined has no gate.
 
 ## The record
 
-Keep the project record as picsart-video-rules says, named `cut-footage-into-reel.json`. Its fields are in
-`references/record.md`.
+Keep the project record as SKILL.md's The record says, named `edit-footage.json`. The keys only these
+jobs keep are in `references/reel-record.md`.
 
 ## 1. Take the footage in
 
@@ -85,7 +93,11 @@ Keep the project record as picsart-video-rules says, named `cut-footage-into-ree
 
 Sort the sources as they come in: each video is talking footage or not, and each photo is a beat.
 **A photo-only request is a slideshow short**: say so in one line, build it from the pictures
-(stage 7), and offer music as its sound.
+(stage 7), with a music bed as its sound, as the `slideshow` job says.
+
+**Pick the job** from `references/reel-jobs.md` (a reel, podcast clips, a highlight, a montage, a
+slideshow or a lesson), say it back in one line, and keep it in the record's `job`. Ask only
+when two jobs fit equally.
 
 **Start the free reads at once**, before the first question: every video's probe and transcript,
 as the footage-analysis skill says, and every photo's probe. They charge nothing, and the interview's
@@ -98,8 +110,8 @@ again for any of it; say it back in one line instead. The questions below go in 
 per turn, and each is skipped when the user's words or the footage already answer it. "You
 decide" or "just make it" ends the interview as picsart-video-rules's Asking says.
 
-The questions, in this order with their options and headers, are in `references/interview.md`:
-read it before the first question.
+The questions, in this order with their options and headers, are in `references/reel-interview.md`:
+read it before the first question. The job asks or skips each one, as `references/reel-jobs.md` says.
 
 ### The brief
 
@@ -110,6 +122,13 @@ would repeat moments." Save it to the record.
 
 The brief has no yes-or-no of its own: it ends on the next real decision, the watch's SPEND
 (stage 3).
+
+### The reference
+
+When the user gave a reference reel or names their own channel's shorts, learn it now, before
+the watch, as SKILL.md's step 2 says: the sheet, the format, and what the footage can match. A
+podcast's own channel is the spec: its layout, captions, hook and end card are reproduced. Its
+moments are then picked and cut to that format.
 
 ## 3. Read the footage
 
@@ -122,8 +141,10 @@ brief's goal and audience in it:
 
 - every video's watch;
 - every video's measurement for the reel's frame, as the footage-reframing skill says, when the frame
-  differs from the source's. It needs only the source and the shape, so it never waits for the
+  differs from the source's; that skill also checks it and corrects what the tool gets wrong. It needs only the source and the shape, so it never waits for the
   plan; when its tool charges, it goes in the same quote.
+- for `split`, no measurement: the shots, one still per kind of shot, and the crops checked
+  against the faces, as the footage-reframing skill's split layout says.
 
 **The cut waits for every video's reads.** Each needs a transcript (or a clear "no speech") and a
 watch. If one file of several cannot be read, say which, and ASK whether to cut from the rest: that
@@ -184,26 +205,33 @@ short, with two or three openers as the options. Build once that is settled.
 
 ## 7. Build the takes
 
-Build each take with the footage-reframing skill's `scripts/reel_cut.py`, from the plan file speech-aware-cutting
-wrote, and the saved measurements. The footage-reframing skill says which clips follow their speaker, which
+Build each take with the footage-reframing skill's `scripts/reel_cut.py`, from the plan speech-aware-cutting
+wrote and the measurements kept in the record. Where you cannot run commands, stop here as
+picsart-video-rules says for a script that builds the scene. The footage-reframing skill says which clips follow their speaker, which
 show the whole frame, and how the seams are cut.
+
+A `split` short is built as the footage-reframing skill's split layout says, then its word cards
+on the seam and its hook card with the spoken-captions skill, all from the record's `format`.
+Its full-frame moments come from the locked map, never from the picture. Where you run commands
+and the episode is long, upload one window per short, as edit-on-your-computer says.
 
 A slideshow short, with no talking footage, is built as the photo-slideshow skill says when it is
 among your skills: the photos as a track of clips, a blurred fill behind each one off the reel's
-shape. Without it, `reel_cut.py` holds each photo as a beat.
+shape. Without it, each photo is held as a beat, as `reel_cut.py` does.
 
 A plain join, where the user asked only to merge their clips in a given order with no cut, is built
 as the quick-merge-and-export skill says when it is among your skills; there is nothing to pick.
 
 ## 8. Check it
 
-Check every take as the quality-review skill says, with the footage-reframing skill's moments: each seam and each
-clip's middle. At each, the speaker is in frame and the picture is the clip the plan names. Fix
-the plan or the clip and build again; building is free.
+Check each take's framing as the footage-reframing skill says. Then check it as the quality-review skill says: at
+each seam and each clip's middle, the picture is the clip the plan names. Fix the plan, the clip or the
+framing and build again; building is free.
 
-Then run quality-review's critic panel (the six `critic-*` agents where the host has them) on the take the
+Then run the QC inspector on the take's free draft, as SKILL.md's step 9 says, and fix what it
+finds. Then run quality-review's critic panel (the six `critic-*` agents where the host has them) on the take the
 first draft named, with the transcript's lines as the words and a still of each clip in its source
-as the source stills. Make its must-fixes in the plan and build again. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) its `choices` before the
+as the source stills, the reference stills beside them when a format was read. Make its must-fixes in the plan and build again. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) its `choices` before the
 cut's REVIEW, never applied silently.
 
 ## 9. The cut
@@ -231,7 +259,7 @@ The phrases are verbatim, so a reworded one is a different line from the transcr
 A skip is settled for the session.
 
 On a yes, place them as the spoken-captions skill says, on the approved scene (the user's, if they edited
-it), in the band `references/platforms.md` gives. Check a frame at each phrase, then REVIEW, titled
+it), in the band `references/reel-platforms.md` gives. Check a frame at each phrase, then REVIEW, titled
 "<Topic> short — highlights". Running captions are a different job: offer them only when the user
 asks for captions, and then in their own band.
 
@@ -240,6 +268,9 @@ decoration that does not show or lands at the wrong time, is authored as the
 caption-decorations skill says.
 
 ## 11. Music, when wanted
+
+For a music-first job (`references/reel-jobs.md`), the bed was chosen and generated before stage 4;
+here it is only laid under the approved scene and reviewed.
 
 **Offer it once the picture is settled**: the cut approved, and the highlights too when there are
 any. Never offer it bare. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with two briefs drafted as the background-music skill says, each in one line
@@ -262,7 +293,9 @@ If the bed fails or is declined, say so in one line and go on with the approved 
 
 ## 12. Deliver
 
-DELIVER the scene the last stage approved: the music's if there was music, else the highlights',
+Only after the check, the critics and the cut's REVIEW (SKILL.md's step 13). Never skip one on
+your own; a user who asks to skip one is told its risk in one line, and a skip they confirm is
+recorded as the edit-pipeline skill says. Then DELIVER the scene the last stage approved: the music's if there was music, else the highlights',
 else the cut's. Say in one line what the short is and what it sounds like: the speakers' own
 voices, with a bed under them when there is one, and the background-music skill's licence caveat with it.
 With more reels to go, the next one starts at its first pass. Then offer one next step: another

@@ -76,8 +76,9 @@ are here: look at the skills you have, not at this list. Today they can include:
 - `animate-design`: a design or the user's own images and clips become an animated ad or reel;
 - `movie-producer`: a story becomes a short film with recurring characters, one look and several
   scenes;
-- `cut-footage-into-reel`: the user's own footage of people talking becomes a tight vertical short, the
-  best moments in order, with captions and music if they want them.
+- `edit-footage`: the user's own footage becomes a tight vertical short, podcast clips or a finished
+  edit, the best moments in order, with captions and music if they want them;
+- `make-comics`: a photo of a person becomes a short ComicMe comic book with them as the hero.
 
 ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with 2–4 of them, plus "Just explore". On a use case, start it by its name, from its first
 stage. On "Just explore", invite them to ask for anything from stage 3, and end the turn.

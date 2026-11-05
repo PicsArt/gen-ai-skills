@@ -194,14 +194,15 @@ Use cases, the entry points a user asks for:
 | Skill | Description |
 |---|---|
 | [`animate-design`](./skills/animate-design) | Turn static material into a real motion-designed video. |
-| [`cut-footage-into-reel`](./skills/cut-footage-into-reel) | Cut the user's own footage. |
-| [`generate-media`](./skills/generate-media) | Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture. |
+| [`browse-assets`](./skills/browse-assets) | Open the Picsart Assets panel on what the user made with Picsart. |
+| [`edit-footage`](./skills/edit-footage) | Make videos from the user's own footage, or copy a reel's structure onto their script. |
+| [`generate-media`](./skills/generate-media) | Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo. |
 | [`get-started`](./skills/get-started) | Get started with Picsart Video. |
-| [`make-screen-videos`](./skills/make-screen-videos) | Turn a screen recording of an app or website into finished videos. |
+| [`make-comics`](./skills/make-comics) | Turn a photo into a short ComicMe comic book. |
+| [`make-screen-videos`](./skills/make-screen-videos) | Turn a screen recording of an app or site into videos. |
 | [`make-short-drama`](./skills/make-short-drama) | Make a vertical drama series, pilot or episode with a recurring cast. |
 | [`movie-producer`](./skills/movie-producer) | Make a short narrative film from a story. |
 | [`recreate-video`](./skills/recreate-video) | Rebuild a reference video as an editable animated scene that moves and looks like it. |
-| [`remix-reel-structure`](./skills/remix-reel-structure) | Remix a reference reel, a talking head or a skit included. |
 
 Skills the use cases load:
 
@@ -209,12 +210,18 @@ Skills the use cases load:
 |---|---|
 | [`ai-presenter`](./skills/ai-presenter) | Put a generated presenter on screen and keep them honest. |
 | [`app-ui-animation`](./skills/app-ui-animation) | Build a phone or web UI in a scene with scrolling, carousels, button feedback, cursor paths and clicks, context menus, drag-and-drop, synchronized controls, bottom sheets and frosted-glass panels. |
+| [`asset-audit`](./skills/asset-audit) | Audit media assets BEFORE they enter scene cards, boxes or looks. |
 | [`background-music`](./skills/background-music) | Draft, generate and lay an instrumental music bed under a finished video's speech. |
 | [`caption-decorations`](./skills/caption-decorations) | Author and validate scene caption decorations, choosing between measured procedural decoration presets and arbitrary scene artwork. |
+| [`character-rigging`](./skills/character-rigging) | Build and animate a 2D cartoon character in a scene. |
 | [`custom-transitions`](./skills/custom-transitions) | How to write a new scene transition as an inline JSON definition. |
 | [`design-layer-import`](./skills/design-layer-import) | Bring a design or static assets into a scene as LAYERS, not flat frames, whenever they are going to move. |
 | [`drama-series-writing`](./skills/drama-series-writing) | Write a drama series' bible, season arc and episode cliffhangers, from templates or the user's idea. |
+| [`edit-on-your-computer`](./skills/edit-on-your-computer) | Edit footage on the user's own computer. |
+| [`edit-pipeline`](./skills/edit-pipeline) | Run an edit of the user's footage as fixed stages, with a project record (standing decisions, approvals, the pace, a locked meaning map, every version), resume from the first stage not done, and the gate rules every check follows. |
+| [`face-hiding`](./skills/face-hiding) | Hide the faces in a video or photo by blurring or pixelating them. |
 | [`figma-storyboard-animation`](./skills/figma-storyboard-animation) | Turn a Figma storyboard of static frames into an animated scene. |
+| [`film-animatic`](./skills/film-animatic) | Draft a film or drama episode as a voiced storyboard animatic before any video is bought. |
 | [`film-cast-design`](./skills/film-cast-design) | Make a film's people, props and places consistent on pictures. |
 | [`film-cutting`](./skills/film-cutting) | Cut a film's accepted takes into one scene. |
 | [`film-finishing`](./skills/film-finishing) | Finish a film after picture lock. |
@@ -227,6 +234,7 @@ Skills the use cases load:
 | [`motion-design-craft`](./skills/motion-design-craft) | The craft of adding motion to any scene, whatever the video. |
 | [`motion-intent`](./skills/motion-intent) | Choose and diagnose scene motion from communication intent before selecting presets or keyframes. |
 | [`motion-pattern-library`](./skills/motion-pattern-library) | Worked scene motion patterns for entrances, exits, stagger, directional nudges, emphasis, ambient life, springs, arcs, layered beats, parenting, parallax, focus, wipes, and drawn strokes. |
+| [`motion-review`](./skills/motion-review) | Review an existing scene for motion that is confusing, mistimed, distracting, broken at a seam, or unnecessarily expensive. |
 | [`motion-scene-continuity`](./skills/motion-scene-continuity) | Plan and diagnose continuity across scene beats and scene boundaries—semantic handoffs, dominant direction, shared visual carriers, causal action/reaction, intentional resets, and seam verification. |
 | [`motion-tracking-from-video`](./skills/motion-tracking-from-video) | Measure what objects visibly do in a video. |
 | [`open-picsart-app`](./skills/open-picsart-app) | Open Picsart beside the conversation. |
@@ -235,10 +243,11 @@ Skills the use cases load:
 | [`quality-review`](./skills/quality-review) | Check work before the user sees it. |
 | [`quick-merge-and-export`](./skills/quick-merge-and-export) | The shortest path from media URLs to a rendered file. |
 | [`realistic-color-grade`](./skills/realistic-color-grade) | Make a video's colours look more realistic and natural with the ai_realism look. |
-| [`reel-structure`](./skills/reel-structure) | Copy a reference reel's structure, never its content. |
+| [`reel-structure`](./skills/reel-structure) | Read a reference reel's structure and format, never its content. |
 | [`reference-fragment-matching`](./skills/reference-fragment-matching) | Rebuild a reference video as a scene one fragment at a time. |
 | [`resting-frame-rules`](./skills/resting-frame-rules) | Keep every element whole or gone whenever motion stops. |
 | [`retention-hooks`](./skills/retention-hooks) | Keep a short video watched to the end with open loops. |
+| [`scene-3d-authoring`](./skills/scene-3d-authoring) | Build a 3D scene (a composition whose space is 3d). |
 | [`scene-animation-reference`](./skills/scene-animation-reference) | How a scene expresses motion. |
 | [`scene-building-basics`](./skills/scene-building-basics) | Build and edit a scene with the scene tools. |
 | [`scene-template-remix`](./skills/scene-template-remix) | Select, reuse and customize scene catalog items. |

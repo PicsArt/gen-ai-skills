@@ -3,6 +3,11 @@
 One record per film. Write it whole at every milestone, never as a diff. It is read back, never
 remembered: "locked" is true when the asset's row says so, not when you recall saving it.
 
+## Contents
+
+- The record (below)
+- Why the awkward fields
+
 ```json
 {
   "film": "the-garage",
@@ -46,6 +51,7 @@ remembered: "locked" is true when the asset's row says so, not when you recall s
     { "id": "sc01", "slug": "INT. GARAGE — NIGHT", "status": "selects-complete",
       "geography": "<the one line pasted into every prompt of the scene>",
       "pictures": { "wide": "<url>", "scene": "<url>", "map": "<url>" },
+      "panels": { "1A": "<url>", "1B": "<url>" }, "voice": { "1A": [{ "url": "<url>", "sec": 1.9 }] },
       "shots": [
         { "id": "1A", "status": "final", "run": "r1", "values": { }, "refs": [1, 2, 3],
           "trim": { "in": 0.4, "out": 5.1 }, "trimSource": "user" }
@@ -66,6 +72,8 @@ remembered: "locked" is true when the asset's row says so, not when you recall s
   "openDecisions": [],
   "blockedOn": null,
   "attempts": {},
+  "animatic": { "scene": "<the last animatic document>", "approved": false, "rounds": [{ "notes": "…", "changed": ["2C panel", "2C line"] }],
+                "toVideo": ["1A", "2C"], "keptAsPanel": ["2D"] },
   "cut": { "scene": "<the last scene document the user approved>", "final": false },
   "disclosure": null
 }
@@ -92,6 +100,9 @@ remembered: "locked" is true when the asset's row says so, not when you recall s
 - `trimSource` is `user` or absent. Nothing automatic writes a trim.
 - `spend[]` keeps every quote beside the yes and the job handle it bought, so a dropped call is
   checked on its handle and never paid twice.
+- `animatic` is stage 6's draft: the scene the user last saw, each round's notes and what they
+  changed, and the user's pick of shots for video. `panels` and `voice` are per scene, by shot id;
+  an approved panel is that shot's key frame.
 - `attempts` counts per tool and failure, so a one-retry rule is kept by bookkeeping, not memory.
 
 Statuses: assets `draft → review → locked`; shots `planned → drafting → iterating → final`; a shot

@@ -120,9 +120,11 @@ These two are independent and weigh the same: ask them together, two questions i
 
 ## Real or demo data
 
-Only when the first sheets show an account's data: names, emails, an inbox, a customer list, a
-key, a dashboard. A blank canvas or a public page skips it, and the brief says "no account data
-on screen".
+Only when the sheets show other people's data at length: an inbox, a customer list, a dashboard
+of records. Never in the first turn, and never for one stray email or name (one typed into an
+invite, the account's own): cover it, and the brief says "I'll cover the email typed at 0:36". A
+key, a token or a card is covered either way. A blank canvas or a public page skips it, and the
+brief says "no account data on screen".
 
 - Question: "Is this a real account, or a demo one?" · Header: `Data`
 - Options:

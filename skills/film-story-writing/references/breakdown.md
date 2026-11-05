@@ -17,6 +17,9 @@ fill them from the story before it opens.
 | Line | **Verbatim from the story**, or empty. No line is information: it changes the shot's length |
 | Feels | One or two words per visible face: what the character feels, held in, except the peak shot's face, unguarded, with what shows ("@teo relief, unguarded: the tears come"), on that one card only (`references/story.md`) |
 | Blocking | Where each person is **relative to the camera** (frame-left, foreground), never relative to another person |
+| Mode | The camera's relation, one for the film unless a shot shows the switch: `lens` (spoken to the viewer), `observed` (the viewer is a witness), `pov` (through someone's eyes) or `voice-over` |
+| Eyeline | Who or what the person on screen looks at or speaks to: the lens, a person by tag, a thing in frame. A viewer who cannot tell who is spoken to is lost |
+| Cause | On a shot where someone decides: the earlier shot that shows why, so the decision has a cause and a beat to take it |
 | Seconds | By film-shot-generation' duration rule |
 | Size | Distance only: extreme close-up to wide |
 | Arrangement | Single, two-shot, dirty single, over-the-shoulder, point of view, insert, group |

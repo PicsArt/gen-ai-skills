@@ -1,9 +1,9 @@
 ---
 name: recreate-video
-description: Rebuild a reference video as an editable animated scene that moves and looks like it - the same layout, the same timing, the same motion - measured from the video rather than eyeballed, with the user's own photos and text in place of the original's. Use when the user brings a video and wants one like it ("make a video like this one", "recreate this ad", "copy this animation", "rebuild this promo with my product"), or carries on a recreation already under way. Not for editing or trimming the user's own footage, and not for a new video from a description alone.
+description: Rebuild a reference video as an editable animated scene that moves and looks like it - the same layout, the same timing, the same motion - measured from the video rather than eyeballed, with the user's own photos and text in place of the original's. Use when the user brings a video and wants one like it ("make a video like this one", "recreate this ad", "reuse my own ad", "copy this animation", "rebuild this promo with my product"), or carries on a recreation already under way. Not for editing or trimming the user's own footage, and not for a new video from a description alone.
 metadata:
-  uses: reference-fragment-matching, motion-tracking-from-video, scene-building-basics, quality-review, background-music
-  optional: background-music
+  uses: reference-fragment-matching, motion-tracking-from-video, asset-audit, motion-review, scene-building-basics, quality-review, background-music
+  optional: asset-audit, motion-review, background-music
   title: Recreate a video
   short-description: Rebuild a reference video with your own photos and text
   argument-hint: '[reference video, your photos and text]'
@@ -31,8 +31,8 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 2. Read it and check the scope | — | reference-fragment-matching |
 | 3. The fragment plan | ASK | reference-fragment-matching |
 | 4. Measure each fragment | — | reference-fragment-matching, motion-tracking-from-video |
-| 5. Build each fragment | — | reference-fragment-matching, scene-building-basics |
-| 6. Check each fragment | — | reference-fragment-matching, motion-tracking-from-video, quality-review |
+| 5. Build each fragment | — | reference-fragment-matching, asset-audit, scene-building-basics |
+| 6. Check each fragment | — | reference-fragment-matching, motion-tracking-from-video, motion-review, quality-review |
 | 7. Join the fragments and lay the sound | — | reference-fragment-matching, scene-building-basics, background-music |
 | 8. The user reviews | REVIEW | — |
 | 9. Deliver | DELIVER | — |

@@ -60,7 +60,10 @@ Each critic gets the same six things and nothing else:
   moments. For a screen recording, the recording's own stills at each step, as the screen-recording-analysis
   skill takes them; for the user's footage, a still of each clip in its source; for a film, the
   locked cast sheets and scene pictures. Without them no critic can see that the draft drifted
-  from what it shows, so take them before the panel runs;
+  from what it shows, so take them before the panel runs. When the record holds a reference's
+  `format`, its reference stills (the format's `evidence`) and the format itself go with them:
+  a drift from the format is marked `fidelity`, so it is a must-fix unless the user approved it
+  (`format:<element>`), and a push away from an own-brand format is a choice, never a fix;
 - the words timeline;
 - the goal in one line (the message, as the user said it);
 - the destination (where it is posted, and its length);

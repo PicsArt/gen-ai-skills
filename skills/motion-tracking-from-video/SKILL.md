@@ -1,6 +1,8 @@
 ---
 name: motion-tracking-from-video
 description: Measure what objects visibly do in a video - where each one moves, turns and grows, frame by frame - with picsart_media_track_motion, and turn the measurement into scene keyframes; then measure your own render the same way and compare the two with picsart_media_track_motion_diff. Covers choosing targets and estimators, tolerances, reading the result honestly, and placing tracked motion on a layer. Use when a scene must reproduce motion seen in a reference video, or when a render's motion must be checked against one.
+metadata:
+  ported-from: motion-extraction unversioned at 55.75.0
 user-invocable: false
 ---
 
@@ -91,6 +93,13 @@ Too tight on a compressed source and the keyframes chase codec noise.
   are biased. Start once it is fully on screen.
 - **Clip the window, not the keyframes.** A fit over frozen samples emits false keyframes at the
   tail. Track again with an earlier `t1`; never prune the keyframes by hand.
+- **A track that is covered, then reacquired.** After the confidence collapses, the later samples can
+  be a valid track of the object that replaced it (a card becoming a chip). Check them against a
+  still before discarding them.
+- **One object, two stretches that need different estimators** (a video inside a card, then siblings
+  touching it): track each stretch on its own, with one overlapping frame. The two estimators'
+  reference points differ by about 2 px: measure that offset on the overlap frame and subtract it
+  when you join them, and multiply the second stretch's scale by the overlap frame's scale.
 
 | Content | `mode` | `estimator` |
 |---|---|---|
@@ -154,3 +163,10 @@ It returns `maxDev`, `meanDev` and `worstT`, the time where the two differ most.
   a mismatch.
 - **What the deviation says.** A constant offset is geometry: a position or a size. A deviation
   that grows and shrinks along a move is easing. One that peaks at a beat's start or end is timing.
+
+## Measuring for a seam
+
+When a seam decision depends on a reference's velocity, path or overlap, the measurement feeds
+`motion-scene-continuity` (fetch with `picsart_scene_recipe`). Tracking answers what moved, where
+and when; continuity judges what that movement communicates and whether the scene should preserve,
+replace, interrupt or reset it. A close numeric fit does not by itself prove a readable handoff.

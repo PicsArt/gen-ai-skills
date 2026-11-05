@@ -49,7 +49,8 @@ COVER = 0.5
 
 def read_script(value: Any) -> List[Json]:
     """Script rows with id, start, end, beat, voice, on_screen and fixed."""
-    if isinstance(value, str):
+    markdown = isinstance(value, str)
+    if markdown:
         rows, _, _ = sheets.read_rows(value)
     elif isinstance(value, dict) and isinstance(value.get("rows"), list):
         rows = value["rows"]
@@ -62,6 +63,17 @@ def read_script(value: Any) -> List[Json]:
         if (not isinstance(row, dict) or not sheets.finite(row.get("start"))
                 or not sheets.finite(row.get("end")) or not 0 <= row["start"] < row["end"]):
             raise sheets.InputError(f"script row {n} needs numeric 0 <= start < end")
+        if markdown and row.get("picture"):
+            picture = sheets.plain(row["picture"])
+            voice, screen = ("?", "?") if sheets.unknown(picture) else sheets.split_quotes(picture)
+            if "voice" not in row:
+                row["voice"] = voice
+            if not row.get("on_screen"):
+                row["on_screen"] = screen
+        if markdown and row.get("voice"):
+            row["voice"] = re.sub(r"<br\s*/?>", " ", row["voice"], flags=re.I)
+        if markdown and row.get("on_screen"):
+            row["on_screen"] = re.sub(r"<br\s*/?>", "\n", row["on_screen"], flags=re.I)
         out.append({"id": str(row.get("id") or n), "start": float(row["start"]), "end": float(row["end"]),
                     "beat": sheets.plain(str(row.get("beat") or "")),
                     "voice": str(row.get("voice") or ""), "on_screen": str(row.get("on_screen") or ""),
@@ -100,7 +112,7 @@ def covered(beat: Json, span) -> bool:
 
 def assign(rows: List[Json], beats: List[Json], ident: Optional[str]) -> None:
     own = tuple(sorted({r for b in beats for r in b["roles"] if r not in sheets.ROLES}))
-    pointer = 0
+    pointer, claimed = 0, -1
     for n, row in enumerate(rows):
         row["beats"] = []
         if n == 0 and "hook" in beats[0]["roles"]:
@@ -109,7 +121,24 @@ def assign(rows: List[Json], beats: List[Json], ident: Optional[str]) -> None:
         span = reference_range(row["beat"], ident)
         named = [j for j in range(pointer, len(beats)) if set(beats[j]["roles"]) & set(names)]
         # A time range tells repeated names apart: the first beat of the name that it covers.
-        first = next((j for j in named if span and covered(beats[j], span)), named[0] if named else None)
+        complete = next((j for j in named if set(names) <= set(beats[j]["roles"])), None)
+        fresh = [j for j in named if j > claimed]
+        # A row that continues the beat it is on stays there, e.g. a split reveal, rather
+        # than jumping over an unclaimed beat to a later one with the same name.
+        continues = (claimed in named and set(names) <= set(beats[claimed]["roles"])
+                     and bool(fresh) and fresh[0] > claimed + 1)
+        if fresh and not continues:
+            # An earlier contiguous run of unclaimed beats that holds every name comes
+            # before a later superset.
+            run = set(beats[fresh[0]]["roles"])
+            for j in range(fresh[0] + 1, len(beats)):
+                if not set(beats[j]["roles"]) & (set(names) - set(beats[fresh[0]]["roles"])):
+                    break
+                run |= set(beats[j]["roles"])
+            if set(names) <= run:
+                complete = fresh[0]
+        first = next((j for j in named if span and covered(beats[j], span)),
+                     complete if complete is not None else (named[0] if named else None))
         if first is None and span:
             first = next((j for j in range(pointer, len(beats)) if covered(beats[j], span)), None)
         if row["beats"]:
@@ -126,8 +155,8 @@ def assign(rows: List[Json], beats: List[Json], ident: Optional[str]) -> None:
             else:
                 break
         row["beats"] = chosen
-        pointer = chosen[-1]
-    if not any(r["beats"] for r in rows[1:]) and not any(r["beat"] for r in rows):
+        pointer = claimed = chosen[-1]
+    if not any(r["beats"] for r in rows[1:]) and not any(r["beat"] and not sheets.unknown(r["beat"]) for r in rows):
         # Nothing is named: each row takes the beat its middle falls in, on a scaled clock.
         scale = (rows[-1]["end"] - rows[0]["start"]) / (beats[-1]["end"] - beats[0]["start"])
         for row in rows[1:] if rows[0]["beats"] else rows:

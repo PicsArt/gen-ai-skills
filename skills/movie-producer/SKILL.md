@@ -1,8 +1,8 @@
 ---
 name: movie-producer
-description: Make a short narrative film from a story - several scenes, recurring characters, one locked look - staged and approved step by step. Use when the user wants a short film, a movie or a multi-scene story ("I have a script"), or carries on a film already under way here (its shot list, a change to one shot, or the next step). Load it first for any work on such a film; it brings in the film skills each step needs. Not for a drama series or its episodes (make-short-drama), a single clip, or footage the user already has.
+description: Make a short narrative film from a story - several scenes, recurring characters, one locked look - staged and approved step by step, drafted as an animatic before video. Use when the user wants a short film, a movie or a multi-scene story ("I have a script"), or carries on a film already under way here (its shot list, a change to one shot, or the next step). Load it first for any work on such a film; it brings in the film skills each step needs. Not for a drama series or its episodes (make-short-drama), a single clip, or footage the user already has.
 metadata:
-  uses: film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, background-music, scene-building-basics, quality-review, realistic-color-grade, sd25-pe, sd2-pe
+  uses: film-story-writing, film-cast-design, film-shot-generation, film-animatic, voice-over-generation, film-cutting, film-finishing, footage-reframing, background-music, scene-building-basics, quality-review, realistic-color-grade, sd25-pe, sd2-pe
   optional: realistic-color-grade
   title: Produce a short film
   short-description: Make a short film from your story, scene by scene
@@ -16,8 +16,8 @@ argument-hint: '[story idea or script]'
 A film is not a long video. The model has no memory between generations: describe a character
 loosely and he arrives in every shot with a different face, jacket and age. Everything here exists
 to beat that one problem, consistency, and it runs on one economic law: **stills are cheap, video
-is expensive.** Every decision that can be made on text or pictures is made there, before the
-first video is bought.
+is expensive.** Every decision that can be made on text, pictures and sound is made there: the
+user watches the film as a voiced animatic, and says yes to it, before the first video is bought.
 
 Read picsart-video-rules first. One job: a story in, a short film out, with recurring people and places
 and one look.
@@ -31,11 +31,11 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 3. The story and the model | ASK | film-story-writing, film-shot-generation, sd2-pe, sd25-pe |
 | 4. The shot list | ASK | film-story-writing, film-shot-generation |
 | 5. Cast, places and props | SPEND, ASK | film-cast-design |
-| 6. Scene pictures | SPEND, ASK | film-shot-generation, film-cast-design |
+| 6. Storyboard and animatic | SPEND, ASK, REVIEW | film-animatic, film-shot-generation, film-cast-design, voice-over-generation, scene-building-basics, quality-review |
 | 7. Shooting | SPEND, ASK | film-shot-generation |
 | 8. The cut | ASK, REVIEW | film-cutting, scene-building-basics, quality-review |
 | 9. Finishing | SPEND, ASK, REVIEW | film-finishing, background-music, realistic-color-grade |
-| 10. Deliver | ASK, DELIVER | film-finishing |
+| 10. Deliver | ASK, DELIVER | film-finishing, footage-reframing |
 
 Read these before you need them:
 
@@ -57,7 +57,7 @@ Read these before you need them:
 | A film already under way (a project record) | Resume: read the record, say where the film stands, continue at its stage |
 
 **Pace: director by default**, as picsart-video-rules says. In express pace the user comes in only for the
-boards, the three locks (the look, the story with its model, the assets), every charged call no stated spend limit covers and
+boards, the three locks (the look, the story with its model, the assets), the animatic's review, every charged call no stated spend limit covers and
 anything beyond a quote.
 
 ## How you talk to the user
@@ -101,7 +101,7 @@ trading quality for money: the user's.
 
 **The challenger at each decision.** Before you go on from a decision, quality-review's challenger (the
 `challenger` agent where the host has it) asks "why this?" of it: the idea (stage 1), the look and
-the story (2, 3), the shot list (4), each sheet, plate and scene picture picked and why (5, 6), and
+the story (2, 3), the shot list (4), each sheet, plate, scene picture and panel picked and why (5, 6), and
 every quote before its SPEND (5, 6, 7, 9, and a repair in 8 that needs a generation). Act on its
 verdict as quality-review says. A `stop`, or a `rethink` of the user's own choice, goes to the user in the
 next ASK, the cheaper alternative first, before anything is spent.
@@ -139,10 +139,25 @@ each card's own palette has to fit.
 **The story.** film-story-writing writes it, for the locked genre. State the identity budget you inferred ("two
 faces and one garage") rather than asking for it.
 
-**The model, in the same turn.** film-shot-generation narrows the video models to the few that can shoot
-this film. Then open `picsart_model_choose` under the story: 3 candidates (2 is fine; a 4th becomes a suggestion), exactly one
-`candidates[].recommended`, each `candidates[].bestFor` line written as this film's trade ("one continuous 30 s take, tops
-out at 720p").
+**The model, in the same turn.** The candidates are the current models, in this order:
+
+| Model | Frame | Length per run | Reference images | Draft |
+|---|---|---|---|---|
+| `seedance-2.5` | 16:9, 9:16, 1:1, 4:3, 3:4, 21:9 | 4–30 s | 30 | `draft: true` |
+| `kling-v4-omni` | 16:9, 9:16, 1:1, 21:9 | 3–30 s | 8 | none: `720p` |
+| `wan-3.0-video` | 16:9, 9:16, 1:1, 4:3, 3:4 | 2–30 s | 10 | none: `480P` |
+| `veo-3.1` | 16:9, 9:16 | 4, 6 or 8 s | 3 | none: `720p` |
+
+Read each one's `picsart_model_params` before the board (film-shot-generation's model steps 2 and
+3); the table is a guide, the params decide. Drop a candidate only when its params cannot hold the
+film's frame or its runs (Veo 3.1 holds no 1:1 and no run over 8 s). Never offer an older model
+(Seedance 2.0, its Fast and Mini, Kling V3, Hailuo, Wan 2.7) unless the user names it. The user's
+balance and the cheapest-first rule set the draft resolution, never the model: they never put an
+older model on the board or make one `recommended`.
+
+Open `picsart_model_choose` under the story with the candidates that survive, in that order, the
+first one `candidates[].recommended`, each `candidates[].bestFor` line written as this film's trade
+("one continuous 30 s take, tops out at 720p").
 
 - The pick is the story's yes unless the user sends a note with it. A note about what happens is
   answered as film-story-writing says, and the rewritten paragraph is shown again with the model board.
@@ -186,7 +201,9 @@ show it. Never call a filed file permanent.
 
 Then film-cast-design's conveyor, in one pass:
 
-1. Draft every descriptor as film-cast-design says. No separate approval round.
+1. Draft every descriptor as film-cast-design says, then offer the cast board once
+   (film-cast-design, *The starting point*). It is the one stop here and costs nothing; a reply that
+   ignores it keeps the story's descriptors. There is no other approval round.
 2. Compile each picture with `picsart_film_compile_prompt` (a reference `kind`) and read its
    `check`, then **one SPEND for the whole batch**: every sheet and plate on one
    quote.
@@ -203,21 +220,41 @@ film-cast-design flags what it cannot settle on its own, about a photo the user 
 film's era. Raise each flag once, as one short ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with the options film-cast-design names. Anything
 generated is its own SPEND.
 
-## 6. Scene pictures
+## 6. Storyboard and animatic
 
-Every scene gets its pictures before its first run: the wide, the scene picture cut from it, and a
-room map where the scene cuts between walls, as film-shot-generation says. **One SPEND for every scene's
-pictures**, batched as picsart-video-rules says (at most 10 a call), and `picsart_film_review_assets` for all of them, 12 tiles a board. The scene picture is the
-opening frame of the scene's first run; the wide and the map are its place.
+The film is drafted on stills and sound, and the user watches it before any video is bought. Load
+film-animatic before you say what this stage needs or ask anything in it. Its yes is the gate into
+shooting.
 
-**No still test.** The scene pictures are where the cast is checked, as film-cast-design says: say
-in their review what you saw in each face. Nothing is bought again unless the user asks for a
-change; a change goes back through stage 5's conveyor alone, under its own SPEND, on a fresh board.
+1. **Scene pictures.** Every scene gets its pictures: the wide, the scene picture cut from it,
+   and a room map where the scene cuts between walls, as film-shot-generation says. The scene
+   picture is the scene's opening panel and the opening frame of its first run.
+2. **One panel per shot**, compiled from its card and checked against its scene picture, as
+   film-animatic says. A real app's screen in a shot is built as a scene layer from the user's
+   own screenshots or recording, never generated. **One SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) for every scene picture and
+   panel**, batched as picsart-video-rules says (at most 10 a call), and
+   `picsart_film_review_assets` for all of them, 12 tiles a board.
+3. **The sound**: every line in its person's voice, a bed per scene and the card's effects, as
+   film-animatic says, on one SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), each voice line's real length probed before anything is
+   timed to it.
+4. **The animatic**: built, validated, cut-checked and looked at as film-animatic says, then
+   REVIEWed in the scene editor, with its sound. Notes route as film-animatic says: a story note
+   goes back to stage 3's paragraph, a shot note to that panel or line alone, each change made
+   again under its own SPEND. Loop until the user says yes.
 
-**The gate into shooting:** film-cast-design's gate into a run holds for every run, and every scene
-it spans has approved pictures. A missing one is a stop.
+**No still test.** The scene pictures are where the cast is checked, as film-cast-design says, and
+so are the panels: say in their review what you saw in each face. A change to a person or a prop goes back
+through stage 5's conveyor alone, under its own SPEND, on a fresh board.
+
+**The gate into shooting:** the animatic approved, film-cast-design's gate into a run held for every
+run, and every scene it spans with approved pictures. A user who wants to shoot without the
+animatic may, as a recorded override; never skip it yourself.
 
 ## 7. Shooting
+
+**Which shots go to video is the user's.** ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, all shots recommended unless the
+animatic showed a held panel works as it is; a shot kept as a panel stays in the cut as approved.
+Quote only the picked shots, each opening on its approved panel, as film-animatic says.
 
 Before any run is quoted, a shot that film-shot-generation flags for a palette arguing with the film's
 scheme gets one short ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with its options.
@@ -281,7 +318,8 @@ In this order, as film-finishing says: the finish of the draft takes, then colou
 ## 10. Deliver
 
 DELIVER the final cut once, as picsart-video-rules says. Any further master from film-finishing's delivery
-list is confirmed with one ASK before the first is exported.
+list is confirmed with one ASK before the first is exported. A master in another shape is reframed as the
+footage-reframing skill says.
 Then film-finishing's archive and disclosure: give the user the disclosure text (every model used,
 per stage) and record it, and say generated music's licence is theirs to check before a festival or
 a commercial use.

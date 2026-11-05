@@ -4,6 +4,7 @@ description: Keep related scene elements aligned and moving together, including 
 metadata:
   category: authoring
   version: '1.7'
+  ported-from: layout-choreography 1.7 at 55.75.0
 user-invocable: false
 ---
 

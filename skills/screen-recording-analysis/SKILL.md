@@ -61,7 +61,9 @@ seconds from step to step.
 When every step a recording shows counts, not only its results (a click-through taught step by
 step), group its events into actions with the script. Write the moments, exactly as
 `picsart_media_screen_moments` returned them, to a file, and from this skill's folder run
-`python3 scripts/actions.py <file>`. Never group the events yourself.
+`python3 scripts/actions.py <file>`. Never group the events yourself. Where you cannot run
+commands, never hunt for a shell: leave the actions to the use case's build, which stops as
+picsart-video-rules says for a script that builds the scene.
 
 - **An action is what a viewer would name**: open a menu, type a title, open a page. It comes from
   the events, not from the proposed steps. A step opens only at a page-wide change, so a menu or a

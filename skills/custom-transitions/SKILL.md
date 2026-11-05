@@ -4,6 +4,7 @@ description: How to write a new scene transition as an inline JSON definition �
 metadata:
   category: authoring
   version: '1.0'
+  ported-from: transition-authoring 1.0 at 55.75.0
 user-invocable: false
 ---
 
@@ -83,13 +84,13 @@ or inside an expression as `{"$eval": "width / 2"}`.
 | The selected variant's row | `scene.variants.table.<row>` | `{"$eval":"sweep"}` |
 
 `{"$eval": "..."}` computes over all three. The grammar is small on purpose — it
-admits **`min`, `max`, `abs`, `floor`, `ceil`, `round`, `sqrt`** and nothing
-else. There is no `hypot` and no ternary; `and`/`or`/`not` exist for `$when` gates.
+admits **`min`, `max`, `abs`, `floor`, `ceil`, `round`, `sqrt`, `sin`, `cos`,
+`atan2(y, x)`** (angles in radians) and nothing else. There is no `hypot` and no ternary; `and`/`or`/`not` exist for `$when` gates.
 The frame diagonal is `sqrt(width * width + height * height)`, so a circle that
 must cover the frame from its centre needs a diameter of exactly that.
 
 Names that are refused rather than shadowed: the grammar's own
-(`min max abs floor ceil round sqrt and or not true false`), the firing-supplied
+(`min max abs floor ceil round sqrt sin cos atan2 and or not true false`), the firing-supplied
 three, and a variant row's own selector. The check covers EVERY row, not the
 selected one — a clean row does not excuse a broken sibling.
 
@@ -159,9 +160,15 @@ the SAME progression every time — 0% / ~5% / 66% / 100% across the window. Cir
 star and bar read 1.1 / 26.9 / 97.0, 1.8 / 45.5 / 100, 1.0 / 26.5 / 100 at
 t = 2.7 / 3.0 / 3.3 through a 1s window.
 
-`shape_reveal` is the larger worked example: sixteen choreographies, with the
+`shape_reveal` is the larger worked example: twenty-one choreographies, with the
 geometry written as fractions of `width`/`height` so a circle stays a circle at
-every aspect. Each variant's row declares its shape tree ONCE, and three layers
+every aspect. Its five `wipe_*` rows are the exception: an edge at any `angle`
+is drawn in units of the frame diagonal inside a group that rotates by `angle`
+and scales by `diagonal / 100`, so it covers every aspect at every angle. Those
+rows also supply `lineShape` and `panelShape` for the `accent` layers (a divider
+stroke drawn over the blur band, a colour panel under the destination); every
+other row supplies them empty, because a body may only read a row key every row
+carries. Each variant's row declares its shape tree ONCE, and three layers
 draw it with `"items": {"$eval": "shape"}` (the sharp mask, the blur band, and
 the band's lagged cut). The lagged copy is that same tree on a later clock:
 `"start": {"$eval": "0.22 * duration"}, "timeMode": "layer"`. A later `start`
@@ -174,6 +181,15 @@ One more friction it measured:
   short windows (0.4s). Its blurred band then cleared in one frame. Keying both
   copies to land by `0.9 * duration` left the last frames clean at 0.4s, 1s and 2s,
   and at 24 fps.
+
+**Repeat a mask piece with `$each` over a number.** In a definition, `$each`
+may name a whole number N (a parameter or a row field) and makes N copies whose
+item is the copy's index. `tile_mosaic` nests `{"$each": "rows", "as": "r"}`
+and `{"$each": "columns", "as": "c"}` inside the mask's shape `items`, one
+group per tile, each with its own `opacity` keyframes timed from `r` and `c`.
+The variant picks the order through numeric row weights (`byRow`,
+`byDiagonal`, `byRandom`): a row field is filled at the definition's top scope,
+so it cannot read `r` or `c` itself. A fraction or a negative count is refused with `invalid_each`.
 
 The shape vocabulary is `ellipse`, `rect`, `polystar`, `path`, `fill`, `stroke`,
 `gradientFill`, `gradientStroke`, `group`, `trim`, `repeater`, `roundCorners`,

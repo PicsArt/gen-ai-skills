@@ -1,6 +1,6 @@
 # Where the reel is going
 
-Written 2026-10-02; lengths rechecked 2026-10-21 (Shorts and most Reels accounts take up to 3 min). The lengths come from the platform notes Short Reel Maker used, with YouTube's
+Written 2026-10-02; lengths rechecked 2026-10-21 (Shorts and most Reels accounts take up to 3 min). The lengths come from the platforms' own notes, with YouTube's
 longer Shorts added. The safe band is our working rule for a 1080×1920 frame, not a platform's published spec:
 the platforms move their buttons, so when the user says text sits under one, believe them and move
 it.
