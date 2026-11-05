@@ -4,6 +4,7 @@ description: Build large editable scenes by decomposing a timeline into bounded 
 metadata:
   category: workflow
   version: '1.1'
+  ported-from: large-scene-authoring 1.1 at 55.75.0
 user-invocable: false
 ---
 

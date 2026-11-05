@@ -2,7 +2,7 @@
 name: movie-producer
 description: Make a short narrative film from a story - several scenes, recurring characters, one locked look - staged and approved step by step. Use when the user wants a short film, a movie or a multi-scene story ("I have a script"), or carries on a film already under way here (its shot list, a change to one shot, or the next step). Load it first for any work on such a film; it brings in the film skills each step needs. Not for a drama series or its episodes (make-short-drama), a single clip, or footage the user already has.
 metadata:
-  uses: film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, background-music, scene-building-basics, quality-review, realistic-color-grade, sd25-pe, sd2-pe
+  uses: film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, footage-reframing, background-music, scene-building-basics, quality-review, realistic-color-grade, sd25-pe, sd2-pe
   optional: realistic-color-grade
   title: Produce a short film
   short-description: Make a short film from your story, scene by scene
@@ -35,7 +35,7 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 7. Shooting | SPEND, ASK | film-shot-generation |
 | 8. The cut | ASK, REVIEW | film-cutting, scene-building-basics, quality-review |
 | 9. Finishing | SPEND, ASK, REVIEW | film-finishing, background-music, realistic-color-grade |
-| 10. Deliver | ASK, DELIVER | film-finishing |
+| 10. Deliver | ASK, DELIVER | film-finishing, footage-reframing |
 
 Read these before you need them:
 
@@ -281,7 +281,8 @@ In this order, as film-finishing says: the finish of the draft takes, then colou
 ## 10. Deliver
 
 DELIVER the final cut once, as picsart-video-rules says. Any further master from film-finishing's delivery
-list is confirmed with one ASK before the first is exported.
+list is confirmed with one ASK before the first is exported. A master in another shape is reframed as the
+footage-reframing skill says.
 Then film-finishing's archive and disclosure: give the user the disclosure text (every model used,
 per stage) and record it, and say generated music's licence is theirs to check before a festival or
 a commercial use.

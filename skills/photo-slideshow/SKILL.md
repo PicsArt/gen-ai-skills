@@ -4,6 +4,7 @@ description: Build a photo promo or slideshow in a scene — probe the photos, s
 metadata:
   category: authoring
   version: '1'
+  ported-from: photo-promo 1 at 55.75.0
 user-invocable: false
 ---
 
@@ -111,6 +112,13 @@ A text layer above the track. Keep the entrance editable as a preset reference i
   and the first seam's window opens at 2.7s (0.6s centred on 3.0). Rendered at 2.65: no title
   and no scrim. To keep a title up for the whole promo, give it and its scrim the reel's window
   instead. The scrim then has to hold over every photo, including the brightest (section 5).
+- **`drop_shadow` and `stroke` are layer styles, drawn last.** Wherever they sit in `effects[]`,
+  they are drawn from the layer after its other effects and its mask, as After Effects orders
+  them. So a shadow follows what the effects left. In
+  `"effects": [ { "id": "drop_shadow", "params": { "offset": [0, 6], "blur": 24, "color": "#000000b3" } }, { "id": "gaussian_blur", "params": { "blur": 6 } } ]`
+  the title is blurred first, then casts a soft shadow from the blurred shape: listing the shadow
+  first changes nothing. Likewise a stroke traces the edge the effects left, and a word a mask
+  cuts casts no shadow where it is cut.
 - **Wrap at a column you declare.** `wrapWidth: 900` wraps a long title inside the 900px
   between 90px side gutters. Without `wrapWidth` a line wraps at the composition's full width,
   so it can run edge to edge. "OUR WINTER" at 132px `gilroy-bold` draws 776px of ink, one

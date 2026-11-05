@@ -9,7 +9,7 @@ The questions of stage 2, in order. Ask them as the use case's *2. The interview
 - "Instagram Reels": up to 90 s when the story holds.
 - "YouTube Shorts": under 60 s; it takes up to 3 min, but only when the user asks for it.
 
-Then **state, never ask**, what follows from it, from `references/platforms.md`: "9:16 at
+Then **state, never ask**, what follows from it, from `references/reel-platforms.md`: "9:16 at
 1080×1920 and 30 fps, words kept clear of the platform's buttons." A destination outside that file
 gets the frame its user names, and is said back the same way.
 

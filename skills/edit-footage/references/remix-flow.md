@@ -1,16 +1,22 @@
----
-name: remix-reel-structure
-description: Remix a reference reel, a talking head or a skit included - copy the reel's structure (beats and timing, shots, caption pattern, pace, sound bed) onto the user's own script or topic, never its words, faces, frames, audio or music; build it as slides, voice and video, and report what matched and what changed. Use for "copy this reel's structure" or "remix this reel with my script", from the video or a written breakdown. Not for rebuilding a reference's animation with the user's photos (recreate-video).
-metadata:
-  uses: reel-structure, footage-analysis, retention-hooks, film-cast-design, film-shot-generation, film-cutting, ai-presenter, voice-over-generation, spoken-captions, screen-recording-layouts, screen-recording-zoom, photo-slideshow, film-finishing, background-music, quality-review, scene-building-basics
-  title: Remix a reel's structure
-  short-description: Copy a reference reel's structure onto your own script
-  argument-hint: '[reference] [script.md or topic]'
-  starter-prompt: Copy this reel's structure onto my script, and show me what matched.
-argument-hint: '[reference] [script.md or topic]'
----
+# The remix job: a reference's structure on the user's own script
 
-# Remix a reel's structure
+Read this whole file when the job is `remix` (SKILL.md, The jobs). Its steps are the remix
+steps of SKILL.md's flow table, in this order.
+
+## Contents
+
+- Not recreate-video
+- The record
+- Content rules
+- 1. Take it in
+- 2. Read the structure
+- 3. The structure sheet
+- 4. Map the script
+- 5. Route by format
+- Build in stages: slides, voice, video
+- 10. Report and deliver
+- When something fails
+
 
 A reference reel lends its **structure**; the user's video keeps its own **content**. The
 structure and length come from the reference, the channel's look from the user's house style,
@@ -18,7 +24,7 @@ and the words, people and screens from the user's script. Nothing the viewer can
 the reference reaches the result.
 
 Read picsart-video-rules first. The method (the read, the sheet, the mapping and the report) is
-the reel-structure skill's; this use case decides, asks and builds.
+the reel-structure skill's; this job decides, asks and builds.
 
 Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
 
@@ -52,7 +58,7 @@ their own content goes to recreate-video.
 
 ## The record
 
-Keep the project record as picsart-video-rules says, named `remix-reel-structure.json`. It holds
+Keep the project record as SKILL.md's The record says, named `edit-footage.json`. For this job it also holds
 the reference (its URL or the breakdown's path), the house style's path, the script's path, the
 sheet, the mapping and the report, the route, each stage's approval, the locked cast and voices,
 `allowed-spans.json` once the screen clips are placed, and `openDecisions`. A later request
@@ -101,9 +107,11 @@ SPEND (quote it in one line, then get the yes with your host's own question tool
 
 Show the sheet as a table, with one still per beat from the reference when it was read (for the
 user only), and the content rules above. REVIEW it: the user corrects a beat, a time or a name,
-and the sheet is fixed before anything is mapped.
+and the sheet is fixed before anything is mapped. Read its format with it, as reel-structure's
+step 3 says: the layout, the captions' position, the hook and the end card, and what the user's
+material can match, each answer in the record's `format`.
 
-**Exit:** the user approved the sheet as the structure to copy.
+**Exit:** the user approved the sheet as the structure to copy, and no format element is open.
 
 ## 4. Map the script
 
@@ -165,8 +173,9 @@ A line's real length moves its still, never the words. REVIEW the voiced slides.
 
 Build the route's shots as its skills say, every paid call quoted first under SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says). Cut them on
 the beats as film-cutting says. Place the user's screen clips first, write `allowed-spans.json` from
-where each lands, and never cut, re-time or zoom inside one. Check the cut with quality-review, then
-REVIEW it.
+where each lands, and never cut, re-time or zoom inside one. Check the cut with quality-review: the
+QC inspector with the reference match, then the critic panel once with the reference stills, as
+SKILL.md's steps 9 and 10 say. Then REVIEW it.
 
 ### 9. Finish
 

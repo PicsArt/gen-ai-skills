@@ -3,7 +3,8 @@ name: animate-design
 description: Turn static material into a real motion-designed video — a Figma design's LAYERS, or the user's own uploaded assets (photos, logos, screenshots, clips), become a composed, animated ad/reel where elements slide, scroll, type on, parallax, and smart-animate, tuned by eye, then rendered — or add designed motion to a video that already exists. The user can describe the motion they want, or let the skill analyze the assets and propose a concept. Use when the user wants to animate a design or assets, "make an ad/reel/video from these images/frames/screens", add motion to a Figma flow, bring static material to life, or add an animated intro, title card, transition, morph, callout or logo reveal to a tutorial, walkthrough, promo or reel. Not for cutting the user's footage into an edit, and not for generating footage from a pure text idea (that's generate-media); the motion inside such a video still comes here.
 metadata:
   owner: motion-designer
-  uses: design-layer-import, motion-design-craft, resting-frame-rules, figma-storyboard-animation, motion-intent, motion-pattern-library, scene-animation-reference, custom-transitions, app-ui-animation, photo-slideshow, quick-merge-and-export, scene-template-remix, large-scene-assembly, linked-element-motion, motion-scene-continuity
+  uses: design-layer-import, motion-design-craft, resting-frame-rules, character-rigging, figma-storyboard-animation, motion-intent, motion-pattern-library, scene-animation-reference, scene-3d-authoring, custom-transitions, app-ui-animation, photo-slideshow, asset-audit, motion-review, quick-merge-and-export, scene-template-remix, large-scene-assembly, linked-element-motion, motion-scene-continuity
+  optional: character-rigging, scene-3d-authoring, asset-audit, motion-review
   title: Animate a design
   short-description: Turn a design or your assets into a motion video
   argument-hint: '[Figma link, design or assets]'
@@ -289,7 +290,12 @@ them rather than hardcoding:
 - `picsart_scene_recipe` with `name: "quick-merge-and-export"` — the on-ramp for common jobs.
 - The authoring skills, **read before hand-authoring:** **`figma-storyboard-animation`** (the
   canonical Figma→scene flow), **`motion-intent`** / **`motion-pattern-library`** /
-  **`scene-animation-reference`** (craft) and **`custom-transitions`**.
+  **`scene-animation-reference`** (craft), **`custom-transitions`**, and the `character-rigging` skill for a
+  cartoon character or mascot that walks, waves, acts or talks, and for outline morphs.
+- `scene-3d-authoring` for a real 3D scene (models, lighting, a product or toy showcase, a turntable,
+  a build-up of parts); flat cards in depth stay 2D (`scene-animation-reference`).
+- `asset-audit` before a new picture or video goes into a card, box or look (padding, size, aspect),
+  and `motion-review` to critique the finished motion before the user sees it.
 - At their stages: **`scene-template-remix`** before `apply_scene_template`; **`large-scene-assembly`**
   in Stage 2 when the reel runs to many frames; **`linked-element-motion`** and
   **`motion-scene-continuity`** in Stage 3, for elements that move together and for each seam between pairs.

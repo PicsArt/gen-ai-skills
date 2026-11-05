@@ -4,6 +4,7 @@ description: Plan and diagnose continuity across scene beats and scene boundarie
 metadata:
   category: authoring
   version: '1.1'
+  ported-from: motion-continuity 1.1 at 55.75.0
 user-invocable: false
 ---
 
@@ -74,6 +75,11 @@ layer or author the motion inside a composition that remains alive.
 Two copies of an apparently shared element can be appropriate when they are not semantically the
 same object, or when independent content constraints prevent one layer from spanning the interval.
 Do not duplicate only to avoid planning the layer lifetime.
+
+Two areas of one set need no cut. Lay them out in one timeline and travel the composition camera
+between them: the next subject stands off-frame by construction (check every earlier frame), keeps
+an idle while unseen, and is revealed by the move, with its first line landing as the camera settles.
+A pull-back to a wide two-shot lets one character's reaction read during the other's line.
 
 Only hand a custom transition to `custom-transitions` after the semantic relationship, vector
 or reset, and any visual carrier are decided and the shipped catalog has been checked. The custom

@@ -1,6 +1,6 @@
 ---
 name: film-cutting
-description: Cut a film's accepted takes into one scene - every generation one clip as generated, never split or trimmed, the montage bootstrap with hard cuts, separate dialogue and ambience, cleanup of named glitches, and diagnosing a bad join before choosing the smallest repair. Use when a film's takes are assembled into a cut, a cut is changed or fixed from notes, or a join between two shots is repaired.
+description: Cut a film's accepted takes into one scene - every generation one clip as generated, never split or trimmed, the montage bootstrap with hard cuts, separate dialogue and ambience, cleanup of named glitches, and diagnosing a bad join before choosing the smallest repair. Use when a film's takes are assembled into a cut, a cut is changed or fixed from notes ("fix my film"), or a join between two shots is repaired.
 user-invocable: false
 ---
 

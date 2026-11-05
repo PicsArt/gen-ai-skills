@@ -13,8 +13,8 @@ anything is built.
 
 ## Read the footage
 
-Read every source as the footage-analysis skill says for talking footage: a transcript saved as
-`transcript-<source id>.json`, which sets every boundary, and a watch, which picks the moments. A photo has no speech
+Read every source as the footage-analysis skill says for talking footage: a transcript kept as the
+tool returned it (`transcript-<source id>.json` where you run commands), which sets every boundary, and a watch, which picks the moments. A photo has no speech
 at all: it is a beat, not a backbone.
 
 ## Plan the cut
@@ -30,9 +30,15 @@ at all: it is a beat, not a backbone.
    conflict, the sentence wins and the length moves.** Never cut a word out of a sentence to save time: the ear hears the
    splice at once, where the eye would forgive a picture cut.
 4. **Place photos at sentence edges**, never inside one, each held long enough to read.
+5. **Keep what the user saw work.** A recut or a fix starts from the last version the user saw,
+   never from zero. Every moment they liked stays, with the picture it had; a fix for a constraint
+   (a clipped word, a pause, the length) moves an edge, never swaps the moment for another. A
+   moment dropped, moved or given a new picture gets one line in the message to the user. Where
+   the use case keeps the edit-pipeline record, its keepers ledger and `scripts/meaning_diff.py`
+   do this, as the edit-pipeline skill says.
 
 Write the plan as the reel's clip list, the one the footage-reframing skill's `scripts/reel_cut.py` reads,
-with each spoken source's `transcript` path beside its other fields.
+with each spoken source's `transcript` beside its other fields (its file path, where you run commands).
 
 ## Review it as heard
 

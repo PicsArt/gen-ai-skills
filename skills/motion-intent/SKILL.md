@@ -4,6 +4,7 @@ description: Choose and diagnose scene motion from communication intent before s
 metadata:
   category: authoring
   version: '1.2'
+  ported-from: motion-intent 1.2 at 55.75.0
 user-invocable: false
 ---
 

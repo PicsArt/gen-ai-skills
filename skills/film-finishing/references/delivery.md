@@ -22,8 +22,8 @@ final take, fixed as a text layer or a sound fix, or accepted by the user in wri
 | Archive master (a mastering codec at full resolution) | No. The final-resolution takes filed in the project's Drive folder are its sources |
 | Cinema package, surround mix, stems | No. Hand off to a post house |
 
-Each master is a separate export. A reframe is a composition of its own: check its framing shot
-by shot.
+Each master is a separate export. A reframe is a composition of its own: reframe, check and
+correct it shot by shot as the footage-reframing skill says.
 
 ## Handoff package
 

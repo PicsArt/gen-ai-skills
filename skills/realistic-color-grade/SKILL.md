@@ -3,7 +3,8 @@ name: realistic-color-grade
 description: Make a video's colours look more realistic and natural with the ai_realism look — take the over-processed, plastic, AI-generated look off footage with a gentle grade, a shine correction on skin and light colour grain, and choose its values per video. Use when asked to make video colors more realistic, natural or camera-like, to make AI-generated footage look real, to take the glossy or plastic look off skin, or to add subtle grain for realism.
 metadata:
   category: authoring
-  version: '1'
+  version: '1.1'
+  ported-from: color-realism 1.1 at 55.75.0
 user-invocable: false
 ---
 
@@ -22,6 +23,11 @@ AI-generated video:
 3. **Light colour grain over the whole frame**, as a camera sensor's.
 
 Every pass is subtle on purpose. If the change is visible at a glance, it is too strong.
+
+The footage decides the grain, not the wording: a request that names only the colours still gets
+grain when the footage is perfectly smooth, as AI renders are, and none when it is already noisy
+or the user asks for none. Say in your reply how much grain you added and why, and offer to remove
+it.
 
 ## When it fits
 
@@ -78,6 +84,7 @@ softened). For control over those, see the last section.
   `scene_ref`, its source is drawn as a nested composition, which is never segmented, so the shine
   correction is skipped. Keep the host's own `effects` empty, and put any other effect on an
   adjustment layer above it.
+- **Some targets skip the skin pass.** The grade and the grain still render there.
 - **It is a static look.** In a layer's `looks`, list it before any look that moves or pads its
   subject, or validation refuses the order.
 

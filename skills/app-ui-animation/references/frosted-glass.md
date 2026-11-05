@@ -21,8 +21,9 @@
 - **Rules:** it is the last of the layer's `looks` (`look_backdrop_not_last`) and takes no motion
   look beside it (`look_order_static_after_motion`): animate the layer itself instead. The layer carries
   no `mask` or non-normal `blendMode` (`look_backdrop_host_isolated`), no `anchor`
-  (`look_backdrop_host_anchor`) and no `opacity` expression
-  (`look_backdrop_host_opacity_expression`).
+  (`look_backdrop_host_anchor`), no `opacity` expression
+  (`look_backdrop_host_opacity_expression`) and no `min` / `max` on its `opacity` track
+  (`look_backdrop_host_opacity_limit`).
 
 ## By hand
 

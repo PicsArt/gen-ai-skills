@@ -4,6 +4,7 @@ description: Select, reuse and customize scene catalog items. Use when remixing 
 metadata:
   category: workflow
   version: '1.6'
+  ported-from: template-customization 1.6 at 55.75.0
 user-invocable: false
 ---
 
@@ -42,7 +43,8 @@ scaffold or a live reusable reference. Use `bootstrap` for a new editable scene 
 `inline` for an existing host; reference mode (including the default) is refused.
 Zero parameters means edit the expanded layers, not invent bindings. Once copied,
 the scene is yours to edit, save, and reference locally like any other scene.
-For effects on existing layers, discover the relevant presets with `picsart_scene_capabilities`.
+For effects on existing layers, list them with `picsart_scene_capabilities({sections:["effects"]})`, then read
+the chosen one with `effect:<id>`.
 The list tool uses metadata filters, not semantic search. If nothing fits, state the missing
 behavior before authoring it; a similarly named scene is not necessarily a suitable effect.
 
@@ -124,8 +126,9 @@ limitation from separate rendered-ink evidence. Rebase the examples after custom
 For circulating photos/video cards, fetch the
 [closed carousel worked validation](references/closed-media-carousel.md):
 `picsart_scene_recipe({name:"scene-template-remix",reference:"references/closed-media-carousel.md"})`.
-It covers variable card boxes, a shared phase clock, cycle seams, fixed paint order,
-and executable geometry/motion/pixel checks. It is not a 3D orbit or arbitrary path.
+It covers variable card boxes, a shared phase clock, cycle seams, cards placed in depth
+(far-to-near draw order), and executable geometry/motion/pixel checks. It is not an
+arbitrary path.
 
 For editable open curves and independent phase/media clocks, fetch
 [open-path carousel worked validation](references/open-path-media-carousel.md):

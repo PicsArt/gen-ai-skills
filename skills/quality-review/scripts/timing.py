@@ -187,6 +187,7 @@ def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], 
     scope = object()
     if _num(comp.get('duration')):
         until = min(until, offset + float(comp['duration']) * rate)
+    seen_3d = comp.get('space') == '3d'
     if cameras and isinstance(comp.get('camera'), dict):
         camera = {**{k: v for k, v in comp['camera'].items() if not isinstance(v, dict)}, 'content': {'kind': 'camera'},
                   'animations': {**{k: v for k, v in comp['camera'].items() if isinstance(v, dict) and k != 'animations'},
@@ -195,6 +196,7 @@ def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], 
                               for l in scene.get('layers') or [] if isinstance(l, dict))
         seen_camera = _visible_layer(camera, offset, offset, until, visible, rate, opacity)
         seen_camera.scope = scope
+        seen_camera.space_3d = seen_3d
         yield seen_camera, offset, offset, until
 
     def visit(layer: Dict[str, Any], start: float, bound: float,
@@ -211,6 +213,8 @@ def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], 
                                     opacity and (not words_only or kind in ('text', 'captions', 'composition', 'scene_ref', 'track')))
         seen_layer.assets = assets
         seen_layer.scope = scope
+        seen_layer.space_3d = seen_3d
+        seen_layer.siblings = authored
         seen_layer.containers = owners
         yield seen_layer, start, offset, end
         content = layer.get('content') or {}
@@ -223,7 +227,7 @@ def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], 
                 if length is None or at >= end - 1e-6:
                     break
                 # A clip's keyframe times are its own seconds, from where it starts.
-                placed_clip = {**clip, 'id': clip.get('id', f"{layer.get('id', '')}.clips[{i}]"), 'timeMode': 'layer'}
+                placed_clip = {**clip, 'id': clip.get('id', f"{layer.get('id', '')}.clips[{i}]"), 'timeMode': clip.get('timeMode', 'layer')}
                 yield from visit(placed_clip, at, end, seen_layer.spans, owners + (seen_layer,))
                 at += length * rate
         if content.get('kind') == 'composition' and id(content) not in seen:
@@ -245,6 +249,14 @@ def _visits(scene: Dict[str, Any], offset: float, until: float, seen: Set[int], 
                 end = min(end, child_zero + trim_out * child_rate)
             yield from _visits(inner, child_zero, end, seen, seen_layer.spans, cameras, child_rate, opacity=opacity, containers=owners + (seen_layer,), words_only=words_only)
 
+    # Every authored layer of this scene, seen or not: a parent lends its transform, not its lifetime.
+    authored: Dict[str, _Placed] = {}
+    for layer in scene.get('layers') or []:
+        if isinstance(layer, dict) and layer.get('id') is not None:
+            sibling = _Placed(layer)
+            sibling.rate, sibling.scope, sibling.placed_zero, sibling.assets = rate, scope, offset, assets
+            sibling.placed_start = offset + (float(layer['start']) if _num(layer.get('start')) else 0.0) * rate
+            authored.setdefault(str(layer['id']), sibling)
     for layer in scene.get('layers') or []:
         if isinstance(layer, dict):
             start = offset + (float(layer['start']) if _num(layer.get('start')) else 0.0) * rate

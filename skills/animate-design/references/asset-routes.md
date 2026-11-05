@@ -9,7 +9,8 @@ place where inventing is the job — but it stays disciplined: analyze, offer a 
    sensible motion for material you have not seen.
 2. **Classify what you have.** Photos? a logo / brand mark? app screenshots? a product shot? a video
    clip? text? The class drives the concept: photos → a promo/reel (recipe `photo-slideshow`); screens → a
-   UI walkthrough (`app-ui-animation`); a logo → a brand sting; mixed → a title + montage.
+   UI walkthrough (`app-ui-animation`); a character drawing → a character that moves
+   (the `character-rigging` skill); a logo → a brand sting; mixed → a title + montage.
 3. **Offer 2–3 concrete concepts — not one, and never a blank "how do you want it?"** Each concept is a
    short, specific pitch the user can choose between, differing in *approach* (e.g. calm/premium vs
    punchy/ad vs playful), and each naming: the **format** (ratio/fps), the **layout** (how the assets

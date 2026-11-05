@@ -19,6 +19,12 @@ sheet's header; an indented line continues the one above it. Length, cut rate an
 their number, and the line as written as `<key>_note`. A document may hold several sheets
 (`parse --all`): each table with a Time column, with the header lines since the table before it.
 
+The format, when the sheet records it: a `- Layout:` header line (single, split-v, stacked, pip
+or full, and who sits where: `split-v (top host, bottom guest)`), and two optional columns after
+Sound, `Frame` (the beat's layout or who fills it: `split-v`, `full: guest`) and `Caption
+position` (`seam`, `top`, `centre`, `lower third`). The reel-structure skill's `ref_format.py`
+reads them into the record's `format`.
+
 `?` is unknown, never a value and never malformed: a `?` time is a beat with null start and end,
 a `?` cell (or "? (a note)") is kept as written and read as no words, and `?` in the header is
 null. Mapping needs every beat timed and named, and says which are not.
@@ -53,13 +59,19 @@ COLUMNS = (("Time (s)", "time"), ("Beat", "beat"), ("What happens (picture)", "p
            ("Voice", "voice"), ("On screen", "on_screen"), ("Shot", "shot"), ("Move", "move"),
            ("Caption", "caption"), ("Sound", "sound"))
 TEXT_FIELDS = ("picture", "voice", "on_screen", "shot", "move", "caption", "sound")
+# The format's columns: how each beat is framed (the layout and who fills it) and where its caption
+# sits. Optional: a sheet without them writes the nine columns above, and they read as unknown.
+FORMAT_COLUMNS = (("Frame", "frame"), ("Caption position", "caption_position"))
+FORMAT_FIELDS = tuple(key for _, key in FORMAT_COLUMNS)
 # Header labels a breakdown may use for each column, compared lower-case without markup.
 ALIASES = {
     "time": "time", "time (s)": "time", "#": "id", "row": "id",
     "beat": "beat", "what happens (picture)": "picture", "what happens": "picture",
     "picture": "picture", "visual": "picture",
-    "voice": "voice", "says": "voice",
-    "on screen": "on_screen", "shot": "shot", "move": "move", "caption": "caption", "sound": "sound",
+    "voice": "voice", "voice line": "voice", "says": "voice",
+    "on screen": "on_screen", "on-screen text": "on_screen", "shot": "shot", "move": "move", "caption": "caption", "sound": "sound",
+    "frame": "frame", "layout": "frame", "caption position": "caption_position",
+    "caption pos": "caption_position",
 }
 # The beat vocabulary: the channel's names and the retention-hooks skill's. Phrases map to one role.
 ROLES = ("hook", "stake", "twist", "joke run", "feeling", "reveal", "turn", "payoff", "cta",
@@ -68,7 +80,8 @@ ROLE_ALIASES = {"call to action": "cta", "re-hook": "rehook"}
 HEADER_KEYS = {
     "format": "format", "total length": "total_length", "length": "total_length",
     "cut rate": "cut_rate", "caption style": "caption_style", "captions": "caption_style",
-    "bed": "bed", "sound bed": "bed", "loudness": "loudness", "source": "source",
+    "bed": "bed", "sound bed": "bed", "loudness": "loudness", "source": "source", "id": "id",
+    "layout": "layout",
 }
 # A beat's edges are checked within this many seconds; a soft beat within the wider one.
 TOLERANCE = 0.5
@@ -108,6 +121,7 @@ def split_cells(line: str) -> List[str]:
 
 def plain(text: str) -> str:
     """Cell text without bold or italic markers, with whitespace collapsed."""
+    text = re.sub(r"<br\s*/?>", " ", text, flags=re.I)
     return " ".join(re.sub(r"(\*\*|__|(?<!\w)[*_]|[*_](?!\w))", "", text).split())
 
 
@@ -271,10 +285,35 @@ def split_quotes(picture: str) -> Tuple[str, str]:
     voice, screen, last = [], [], 0
     for match in QUOTED.finditer(picture):
         quote = match.group(1) or match.group(2)
-        before = re.split(r"[;.!?]\s|\)\s*", picture[last:match.start()])[-1]
-        (screen if ON_SCREEN_CUE.search(before) else voice).append(quote.strip())
+        # Keep parentheses as boundaries, but exclude their shot notes from cue detection.
+        depth, context = 0, []
+        for char in picture[last:match.start()]:
+            if char == "(":
+                depth += 1
+                context.append(char)
+            elif char == ")" and depth:
+                depth -= 1
+                context.append(char)
+            else:
+                context.append(" " if depth else char)
+        before = re.split(r"[;.!?]\s", "".join(context))[-1]
+        if ")" in before and before.rsplit(")", 1)[-1].strip(" :\t"):
+            before = before.rsplit(")", 1)[-1]  # words after a parenthetical note belong to the speech
+        before = re.sub(r"\(\s*\)", " ", before)  # a note between 'says' and the quote: 'says (white, top) "…"'
+        cues =list(ON_SCREEN_CUE.finditer(before))
+        spoken = list(re.finditer(r"\b(?:says|said|speaks|asks|replies)\b", before, re.I))
+        speech = re.search(r"\b(?:says|said)\s*:?\s*$", before, re.I)
+        clause = re.split(r"[.;,]|\b(?:and|then|while)\b", before[:speech.start()], flags=re.I)[-1] if speech else ""
+        visual_says = re.match(
+            r"\s*(?:(?:a|an|the)\s+)?"
+            r"(?:(?!(?:a|an|the|on|in|at|by|of|to|from|with|for|under|over|behind|near|beside|above|below|through|across|against|between|among|she|he|they|it)\b)[a-z][a-z-]*\s+){0,3}"
+            r"(?:card|title|sign|screen|caption|banner|poster|board|label|text|subtitle|overlay)s?\b",
+            clause, re.I)
+        if visual_says and re.search(r"\bwho\s+(?:(?:[a-z]+ly|now|then|also|just|still|again|very|really|always|often|suddenly)\s+)*$", clause[visual_says.end():], re.I):
+            visual_says = None  # 'a sign stands behind a woman who says': the woman speaks
+        (screen if visual_says or (cues and (not spoken or cues[-1].start() > spoken[-1].start())) else voice).append(quote.strip())
         last = match.end()
-    return " ".join(voice), " ".join(screen)
+    return " ".join(voice), "\n".join(screen)
 
 
 # Header values that hold a number: the number is kept, and the line as written is its note.
@@ -337,15 +376,21 @@ def build_sheet(rows: List[Json], warnings: List[str], above: List[str], inherit
         beat: Json = {"start": row["start"], "end": row["end"], "beat": plain(label),
                       "roles": roles, "soft": soft}
         for field in TEXT_FIELDS:
-            beat[field] = plain(row.get(field, ""))
-        if "voice" not in row and beat["picture"] and unknown(beat["picture"]):
+            beat[field] = ("\n".join(plain(part) for part in re.split(r"<br\s*/?>", row.get(field, ""), flags=re.I))
+                           if field == "on_screen" else plain(row.get(field, "")))
+        for field in FORMAT_FIELDS:
+            if field in row:
+                beat[field] = plain(row[field])
+        if beat["picture"] and unknown(beat["picture"]):
             # A picture nobody has seen says nothing of its words: they stay unread, never empty.
-            beat["voice"] = "?"
+            if "voice" not in row:
+                beat["voice"] = "?"
             if not beat["on_screen"]:
                 beat["on_screen"] = "?"
-        elif "voice" not in row and beat["picture"]:
+        elif beat["picture"]:
             voice, screen = split_quotes(beat["picture"])
-            beat["voice"] = voice
+            if "voice" not in row:
+                beat["voice"] = voice
             if not beat["on_screen"]:
                 beat["on_screen"] = screen
         beat["pace"] = pace("" if unknown(beat["voice"]) else beat["voice"], beat["start"], beat["end"])
@@ -402,7 +447,7 @@ def validate(sheet: Any) -> List[str]:
     if not isinstance(beats, list) or not beats:
         return ["the sheet has no beats; it needs one row per beat"]
     problems = []
-    for key in ("format", "caption_style", "bed", "title", "id", "source") + tuple(k + "_note" for k in NUMERIC_HEADERS):
+    for key in ("format", "caption_style", "bed", "title", "id", "source", "layout") + tuple(k + "_note" for k in NUMERIC_HEADERS):
         if key in sheet and not isinstance(sheet[key], (str, int, float)):
             problems.append(f"header {key} must be text or a number")
     for key in ("cut_rate", "loudness"):
@@ -428,8 +473,8 @@ def validate(sheet: Any) -> List[str]:
             problems.append(f"{where}{when}: roles must be a list of beat names (empty when `?`)")
         if "soft" in beat and not isinstance(beat["soft"], bool):
             problems.append(f"{where}: soft must be true or false")
-        for field in TEXT_FIELDS + ("beat",):
-            if field in beat and not isinstance(beat[field], str):
+        for field in TEXT_FIELDS + FORMAT_FIELDS + ("beat",):
+            if field in beat and not isinstance(beat[field], str) and not (field in ("voice", "on_screen") and beat[field] is None):
                 problems.append(f"{where}: {field} must be text")
         if beat.get("pace") is not None and (not finite(beat["pace"]) or beat["pace"] < 0):
             problems.append(f"{where}: pace must be words a second")
@@ -458,11 +503,19 @@ def timed(sheet: Json) -> Json:
     if missing:
         raise InputError(f"beats {', '.join(map(str, missing))} have no time (?); "
                          "time them from the reference before mapping onto it")
-    unnamed = [n for n, b in enumerate(sheet["beats"], 1) if not b["roles"]]
+    # Derive roles and soft from edited JSON labels as parse_markdown does, without changing the caller's sheet.
+    beats = []
+    for beat in sheet["beats"]:
+        roles, soft = name_beat(beat.get("beat") or "")
+        copy = dict(beat, roles=list(beat["roles"]) or roles)
+        if soft and not copy.get("soft"):
+            copy["soft"] = True
+        beats.append(copy)
+    unnamed = [n for n, b in enumerate(beats, 1) if not b["roles"]]
     if unnamed:
         raise InputError(f"beats {', '.join(map(str, unnamed))} have no beat name (?); "
                          "name each, e.g. hook or payoff, before mapping onto it")
-    return sheet
+    return dict(sheet, beats=beats)
 
 
 def compare(expected: Json, actual: Json) -> List[Json]:
@@ -502,8 +555,9 @@ def markdown(sheet: Json) -> str:
     lines = []
     if sheet.get("title"):
         lines += [f"## {sheet['title']}", ""]
-    header = [("Format", "format"), ("Length", "total_length"), ("Cut rate", "cut_rate"),
-              ("Caption style", "caption_style"), ("Bed", "bed"), ("Loudness", "loudness"), ("Source", "source")]
+    header = [("ID", "id"), ("Format", "format"), ("Length", "total_length"), ("Cut rate", "cut_rate"),
+              ("Caption style", "caption_style"), ("Layout", "layout"), ("Bed", "bed"), ("Loudness", "loudness"),
+              ("Source", "source")]
     shown = []
     for label, key in header:
         value = sheet.get(key + "_note", sheet.get(key))
@@ -516,15 +570,21 @@ def markdown(sheet: Json) -> str:
         if value not in (None, ""):
             shown.append(f"- {label}: {value}")
     lines += shown + ([""] if shown else [])
-    lines.append("| " + " | ".join(label for label, _ in COLUMNS) + " |")
-    lines.append("|" + "---|" * len(COLUMNS))
+    extra = [(label, key) for label, key in FORMAT_COLUMNS if any(key in b for b in sheet["beats"])]
+    lines.append("| " + " | ".join(label for label, _ in COLUMNS + tuple(extra)) + " |")
+    lines.append("|" + "---|" * (len(COLUMNS) + len(extra)))
     for beat in sheet["beats"]:
         name = beat.get("beat") or " + ".join(beat.get("roles") or []) or "?"
         if beat.get("soft") and not phrase_in("soft", name.lower()):
             name += " (soft)"
         time = "?" if beat.get("start") is None else f"{seconds(beat['start'])}–{seconds(beat['end'])}"
-        cells = [time, name] + [beat.get(field, "") for field in TEXT_FIELDS]
-        lines.append("| " + " | ".join(escape(c) for c in cells) + " |")
+        cells = [time, name] + [(beat.get(field) if beat.get(field) is not None else "?")
+                                if field in ("voice", "on_screen") else beat.get(field, "")
+                                for field in TEXT_FIELDS] + [beat.get(key, "?") for _, key in extra]
+        cells[2 + TEXT_FIELDS.index("on_screen")] = "<br>".join(
+            escape(part) for part in cells[2 + TEXT_FIELDS.index("on_screen")].splitlines())
+        lines.append("| " + " | ".join(c if i == 2 + TEXT_FIELDS.index("on_screen") else escape(c)
+                                         for i, c in enumerate(cells)) + " |")
     return "\n".join(lines) + "\n"
 
 
@@ -550,7 +610,7 @@ def read_fragments(shots: Any) -> List[Json]:
     return sorted(out, key=lambda f: f["t0"])
 
 
-def read_words(transcript: Any) -> List[Json]:
+def read_words(transcript: Any, mark_segments: bool = False) -> List[Json]:
     """Timed words or phrases from picsart_media_transcribe's result, or from a list of {start, end, text}."""
     transcript = unwrap(transcript, "transcript")
     if isinstance(transcript, dict) and isinstance(transcript.get("transcript"), dict):
@@ -562,11 +622,14 @@ def read_words(transcript: Any) -> List[Json]:
                 raise InputError("transcript segments must be objects")
             tokens = str(seg.get("text") or "").split()
             timed = seg.get("words") or []
-            if timed and len(timed) == len(tokens):
+            if (timed and len(timed) == len(tokens)
+                    and all(isinstance(w, dict) and finite(w.get("start")) and finite(w.get("end"))
+                            and 0 <= w["start"] <= w["end"] for w in timed)):
                 entries += [{"start": w.get("start"), "end": w.get("end"), "text": t}
                             for t, w in zip(tokens, timed)]
             elif tokens:
-                entries.append({"start": seg.get("start"), "end": seg.get("end"), "text": " ".join(tokens)})
+                entries.append({"start": seg.get("start"), "end": seg.get("end"), "text": " ".join(tokens),
+                                "unaligned": True})
     elif isinstance(transcript, list):
         entries = transcript
     else:
@@ -578,8 +641,11 @@ def read_words(transcript: Any) -> List[Json]:
                 or not 0 <= entry["start"] <= entry["end"]):
             raise InputError("transcript entries need numeric 0 <= start <= end and string text")
         if entry["text"].strip():
-            words.append({"start": float(entry["start"]), "end": float(entry["end"]),
-                          "text": " ".join(entry["text"].split())})
+            word = {"start": float(entry["start"]), "end": float(entry["end"]),
+                    "text": " ".join(entry["text"].split())}
+            if mark_segments and entry.get("unaligned"):
+                word["unaligned"] = True
+            words.append(word)
     return sorted(words, key=lambda w: w["start"])
 
 
@@ -614,14 +680,17 @@ def shots_from(fragments: List[Json], duration: float) -> List[Tuple[float, floa
 def draft(shots: Any, transcript: Any = None, describe: Any = None, audio: Any = None,
           probe: Any = None) -> Json:
     fragments = read_fragments(shots)
-    words = read_words(transcript) if transcript is not None else []
+    words = read_words(transcript, mark_segments=True) if transcript is not None else []
     duration = fragments[-1]["t1"]
     probe = unwrap(probe, "durationSeconds")
     if isinstance(probe, dict) and finite(probe.get("durationSeconds")):
         duration = min(duration, float(probe["durationSeconds"])) if duration > fragments[0]["t0"] else duration
     groups = sentences(words)
     beats = []
-    for shot, (start, end, moves) in enumerate(shots_from(fragments, duration), 1):
+    shots = shots_from(fragments, duration)
+    spanning = [w for w in words if w.get("unaligned") and
+                sum(w["start"] < end and w["end"] > start for start, end, _ in shots) > 1]
+    for shot, (start, end, moves) in enumerate(shots, 1):
         breaks: List[float] = []
         if end - start > LONG_SHOT_SECONDS:
             spoken = [g for g in groups if any(start <= w["start"] < end for w in g)]
@@ -632,11 +701,21 @@ def draft(shots: Any, transcript: Any = None, describe: Any = None, audio: Any =
         for left, right in zip(edges, edges[1:]):
             voice = " ".join(w["text"] for w in words if left <= w["start"] < right
                              or w["start"] == w["end"] == right == duration)
+            if any(w["start"] < right and w["end"] > left for w in spanning):
+                voice = "?"
             beats.append({"start": round(left, 3), "end": round(right, 3), "beat": "?", "roles": [],
-                          "soft": False, "picture": "?", "voice": voice, "on_screen": "?",
+                          "soft": False, "picture": "?", "voice": voice if transcript is not None else "?", "on_screen": "?",
                           "shot": f"S{shot}", "move": "move" if moves else "static",
-                          "caption": "?", "sound": "?", "pace": pace(voice, left, right)})
+                          "caption": "?", "sound": "?", "frame": "?", "caption_position": "?",
+                          "pace": pace(voice, left, right)})
     described = unwrap(describe, "shots")
+    if isinstance(described, dict) and "shots" not in described and "answer" in described:
+        described = described["answer"]
+        if isinstance(described, str):
+            try:
+                described = json.loads(described)
+            except ValueError:
+                described = None
     for d in (described.get("shots") or []) if isinstance(described, dict) else []:
         if not isinstance(d, dict) or not finite(d.get("start")) or not finite(d.get("end")):
             continue
@@ -649,7 +728,7 @@ def draft(shots: Any, transcript: Any = None, describe: Any = None, audio: Any =
     sheet: Json = {"format": "?", "total_length": round(duration, 3),
                    "cut_rate": round((shot_count - 1) * 60 / length) if length > 0 else None,
                    "cut_rate_note": f"{(shot_count - 1) * 60 / length:.0f} cuts/min" if length > 0 else "?",
-                   "caption_style": "?", "bed": "?", "beats": beats}
+                   "caption_style": "?", "layout": "?", "bed": "?", "beats": beats}
     analysis = unwrap(audio, "tempo")
     tempo = analysis.get("tempo") if isinstance(analysis, dict) else None
     if isinstance(tempo, dict) and finite(tempo.get("bpm")):
