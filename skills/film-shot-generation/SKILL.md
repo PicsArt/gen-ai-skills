@@ -29,8 +29,12 @@ One video model shoots the whole film, and the runs are packed against its ceili
 before the shots are planned.
 
 1. Narrow the video models with `picsart_model_catalog`: `mode: "video"`, `purpose: "generate"`,
-   `acceptsImage: true`, `concise: false`. Keep the rows whose `supportedAspectRatios` hold the film's ratio. Edits,
-   extends and upscalers are out.
+   `concise: false`. Keep the rows whose `supportedAspectRatios` hold the film's ratio. Edits,
+   extends and upscalers are out. Never filter on `acceptsImage`: the catalog marks models that
+   take reference images as text-to-video (every Seedance), so the filter hides them. A model
+   takes the cast's views when `picsart_model_params` lists `imageUrls` or `startFrame`. A use case
+   or host that names its candidates or the film's model replaces this narrowing; steps 2 and 3
+   still run on what it names.
 2. Read `picsart_model_params` on each model that survives. Keep only those that hold
    **several cuts inside one generation** at the finish resolution and take enough reference
    images for a run. Note each one's draft setting (Seedance 2.5's `draft`) or, without one, its

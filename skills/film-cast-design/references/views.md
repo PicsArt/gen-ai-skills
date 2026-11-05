@@ -63,15 +63,20 @@ at the origin, and scaled by one factor `k`:
 - `k` above 1 satisfies the floor and sharpens nothing. Ship it so the run is not blocked, and say
   the sheet was too small.
 - **The ratio, too.** A video model refuses a picture outside its input ratio before it makes
-  anything: width over height from 0.4 to 2.5 on Seedance, unless the model's own limits say
-  otherwise. `picsart_preflight` measures the sides, not the ratio, so check it here. Pad a view
+  anything: width over height from 0.4 to 2.5 on Seedance and MiniMax H3, unless the model's own
+  limits say otherwise. `picsart_preflight` measures the sides, not the ratio, and
+  `picsart_model_params` does not list it, so check it here, when the view is cut, never after a
+  run is refused. A full-body panel is tall by design: on the four-panel sheet (4:3) each one is
+  about 0.42 before the inset, so the cut lands under 0.4. **A full-body view under 0.45 is
+  padded when it is cut**, to 0.45 as below, so the wardrobe view any run passes is already inside
+  the range with a margin. Pad a view
   outside it in a **second export whose only media is the cut view file** (`w` × `h`, probed),
   never the sheet: a wider frame over the sheet shows the next panels, not a margin. One layer,
   `fit: "none"`, `bounds` and the asset's size `[w, h]`, `anchor: [0, 0]`, `scale: [1, 1]`, and
   `composition.background` the sheet's own backdrop colour (`"#e9e6e1"`, read from the pixels
   beside the panel):
-  - **Too tall** (under 0.4, a full-body view): width `ceil(0.45 × h)`, height `h`, `position`
-    `[(width − w) / 2, 0]`.
+  - **Too tall** (a full-body view under 0.45, any other under 0.4): width `ceil(0.45 × h)`,
+    height `h`, `position` `[(width − w) / 2, 0]`.
   - **Too wide** (over 2.5): width `w`, height `ceil(w / 2.5)`, `position` `[0, (height − h) / 2]`.
 
   The padded file becomes the view. The margin is plain; the person is never stretched, cropped
@@ -82,7 +87,8 @@ at the origin, and scaled by one factor `k`:
 1. Probe it: its width and height equal the box times `k`, or the anchor or the scale was wrong.
 2. Read the **smaller** of the two numbers against the floor. A tall, narrow view fails on its
    width.
-3. Divide width by height: from 0.4 to 2.5, or pad it as "The ratio, too" says.
+3. Divide width by height: from 0.4 to 2.5, and a full-body view at least 0.45, or pad it as
+   "The ratio, too" says.
 4. Look at it: exactly one full view, nothing of the next panel, no
    gutter stripe.
 

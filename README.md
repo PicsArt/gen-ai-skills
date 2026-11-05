@@ -198,6 +198,7 @@ Use cases, the entry points a user asks for:
 | [`edit-footage`](./skills/edit-footage) | Make videos from the user's own footage, or copy a reel's structure onto their script. |
 | [`generate-media`](./skills/generate-media) | Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo. |
 | [`get-started`](./skills/get-started) | Get started with Picsart Video. |
+| [`make-comics`](./skills/make-comics) | Turn a photo into a short ComicMe comic book. |
 | [`make-screen-videos`](./skills/make-screen-videos) | Turn a screen recording of an app or site into videos. |
 | [`make-short-drama`](./skills/make-short-drama) | Make a vertical drama series, pilot or episode with a recurring cast. |
 | [`movie-producer`](./skills/movie-producer) | Make a short narrative film from a story. |
@@ -220,6 +221,7 @@ Skills the use cases load:
 | [`edit-pipeline`](./skills/edit-pipeline) | Run an edit of the user's footage as fixed stages, with a project record (standing decisions, approvals, the pace, a locked meaning map, every version), resume from the first stage not done, and the gate rules every check follows. |
 | [`face-hiding`](./skills/face-hiding) | Hide the faces in a video or photo by blurring or pixelating them. |
 | [`figma-storyboard-animation`](./skills/figma-storyboard-animation) | Turn a Figma storyboard of static frames into an animated scene. |
+| [`film-animatic`](./skills/film-animatic) | Draft a film or drama episode as a voiced storyboard animatic before any video is bought. |
 | [`film-cast-design`](./skills/film-cast-design) | Make a film's people, props and places consistent on pictures. |
 | [`film-cutting`](./skills/film-cutting) | Cut a film's accepted takes into one scene. |
 | [`film-finishing`](./skills/film-finishing) | Finish a film after picture lock. |

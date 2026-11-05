@@ -10,7 +10,7 @@ stage is done. A ✗ line is what you say next: which line, and what closes it.
 3. The story and the model
 4. The shot list
 5. Cast, places and props
-6. Scene pictures
+6. Storyboard and animatic
 7. Shooting
 8. The cut
 9. Finishing
@@ -82,25 +82,35 @@ board and never shown as text.
 Common mistakes: putting a picture on a board before looking at it; the rest are film-cast-design's
 Traps.
 
-## 6. Scene pictures
+## 6. Storyboard and animatic
 
-**Goal:** every scene's place, pictured and approved, before its first run.
+**Goal:** the film as a voiced animatic the user has watched and said yes to, before any video.
 
 - [ ] Every scene has an approved wide and a scene picture cut from it, and a room map where the
       scene cuts between walls.
 - [ ] Each scene picture shows the opening shot's cast only, as designed.
-- [ ] Every picture was quoted and bought on a yes, looked at, and approved on one board.
+- [ ] Every card has its mode, eyeline and, where someone decides, its cause, and
+      `animatic_plan.py` reported no error (or the check was done by hand and said so).
+- [ ] Every shot has an approved panel, checked against its scene picture; every app screen is a
+      built layer, none generated.
+- [ ] Every picture and sound was quoted and bought on a yes, looked at or listened to, and every
+      picture approved on a board.
+- [ ] Every line is voiced in its person's voice, its real length probed, and the shots re-timed to it.
 - [ ] Every tag of every scene in a run has a locked row, read back from `picsart_film_list_assets`.
-- [ ] The cast's faces were checked on the scene pictures, and what you saw was said in their
-      review; no separate still test was bought.
+- [ ] The cast's faces were checked on the scene pictures and panels, and what you saw was said in
+      their review; no separate still test was bought.
+- [ ] The animatic validated, `cut_check.py --slides` run, and the user approved it in the scene
+      editor (or a recorded override to shoot without it).
 
 Common mistakes: reading coverage from memory; a scene picture that stages the dramatic centre
-instead of the opening; clean pictures of a place a later run has already wrecked.
+instead of the opening; clean pictures of a place a later run has already wrecked; a silent
+animatic called reviewed; a quote for video before the animatic's yes.
 
 ## 7. Shooting
 
 **Goal:** every take landed as a draft and checked by you; none accepted yet.
 
+- [ ] The user picked which shots go to video; a shot kept as a panel is recorded as theirs.
 - [ ] A forecast was given once, before the first video, at the draft rate with the finish beside
       it, and called an estimate.
 - [ ] Every independent run went out in one batch as a draft (the model's draft setting or lowest
