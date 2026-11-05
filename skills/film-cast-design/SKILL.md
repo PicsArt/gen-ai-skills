@@ -32,6 +32,29 @@ A state (wet, bloodied, coat off) is **a panel on the person's sheet with its ow
 most of the film may earn a sheet of its own; that is a craft call. A place at night, or after a
 fire, is a scene with its own pictures, never a state.
 
+## The starting point
+
+Draft every descriptor first, as below. Then OFFER the cast board once: `picsart_film_choose_cast`
+with the whole cast (at most 12 a board), each character's descriptor lines as `story`. Every card
+opens on those lines, so a board sent untouched changes nothing. It is an offer, not a gate: it
+spends nothing, and a reply that ignores it keeps every character as the story has them.
+
+Its answer, `film_cast_chooser_feedback`, has one entry per @tag:
+
+- **`story`** — keep your descriptor.
+- **`preset`** or **`person`** — the answer carries the look as `reference`: pass it unchanged as
+  that character's `reference` on `picsart_film_compile_prompt`. It holds who they are, how they
+  look (an animal's species and coat, the face, the build) and what they wear and hold. Add from
+  your descriptor only the paths `fromStory` names: `identity.<field>` for what the preset leaves
+  open — no preset names an origin, and a Person pick names no hair — and `outfit` when nothing was
+  picked to wear. A field you add replaces the preset's. Presets carry no voice: the voice line
+  stays yours. The descriptor you save is that `reference` in your own line keys, plus the voice.
+- **`describe`** — rewrite the descriptor from the user's words. Keep your voice line and every line
+  the words leave unsaid.
+
+A person the user photographed is not on the board: the photo is the asset. Then carry on: one plan,
+every sheet together.
+
 ## Descriptors
 
 Draft every descriptor in one turn, from the story, the cards and the references; mark what you
