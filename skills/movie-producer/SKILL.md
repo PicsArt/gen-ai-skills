@@ -201,7 +201,9 @@ show it. Never call a filed file permanent.
 
 Then film-cast-design's conveyor, in one pass:
 
-1. Draft every descriptor as film-cast-design says. No separate approval round.
+1. Draft every descriptor as film-cast-design says, then offer the cast board once
+   (film-cast-design, *The starting point*). It is the one stop here and costs nothing; a reply that
+   ignores it keeps the story's descriptors. There is no other approval round.
 2. Compile each picture with `picsart_film_compile_prompt` (a reference `kind`) and read its
    `check`, then **one SPEND for the whole batch**: every sheet and plate on one
    quote.
