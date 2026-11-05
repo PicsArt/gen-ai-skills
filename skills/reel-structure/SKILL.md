@@ -1,6 +1,6 @@
 ---
 name: reel-structure
-description: Copy a reference reel's structure, never its content - read its beats, shots, caption pattern, pace and sound bed into a structure sheet (or parse a written beat-by-beat breakdown for free), fit the user's own script to those beats, and report each beat as matched, changed, dropped or added, with the content rules checked. Use when a short should be built the way a reference reel is built, or when a script must be checked against a reference's beats.
+description: Read a reference reel's structure and format, never its content - its beats, shots, caption pattern, pace and bed into a structure sheet (or parse a written breakdown for free), its layout, captions, hook and end card into the record's format, with what the footage can match; fit the user's script to the beats, and report each beat as matched, changed, dropped or added, with the content rules checked. Use when a short should be built the way a reference reel is built or looks, including the user's own channel.
 metadata:
   source: channel team breakdowns and tools/reuse_guard.py, commit 3f064f0
 user-invocable: false
@@ -13,8 +13,13 @@ work, how fast it talks, what sits under the voice. Its **content** stays its ow
 viewer can see or hear of the reference reaches the user's video: no words, no frames, no audio
 or music. Only its pattern is copied.
 
-The method has four steps: read the structure into a sheet, check the sheet with the user, map
-the user's script onto it, and report what matched and what changed.
+The method has five steps: read the structure into a sheet, check the sheet with the user, read
+the format and what the footage can match of it, map the user's script onto the beats, and report
+what matched and what changed. A job with no script (cutting footage to a reference) stops after
+the format.
+
+**The user's own channel is different**: its format is the spec to reproduce, and its logo, end
+card, fonts and copy are theirs (own-brand mode, `references/format.md`).
 
 ## 1. Read the structure
 
@@ -39,7 +44,7 @@ and follow each job receipt as picsart-video-rules says.
 | `picsart_media_analyze_audio` | the bed: tempo and loudness |
 | `picsart_media_video_stills` | one still per beat, **for the user to look at only**, never an input to a generation |
 
-Save each result as it came back, then draft the sheet from them. No video is decoded here:
+Keep each result as it came back (as files, where you run commands), then draft the sheet from them. No video is decoded here:
 
 ```
 python3 scripts/sheet.py draft --shots shots.json --transcript transcript.json \
@@ -73,7 +78,11 @@ One row per beat, or several rows for a long one, in this table:
 - **`?` is unknown**, never a value and never an error: a `?` time, a `?` cell, or `?` with a
   note. Never guess one. The map step needs every beat timed and named, and says which are not.
 - A header above the table, as `- Key: value` lines: Format (talking head, POV skit, screen
-  tutorial, list, reaction), Length, Cut rate, Caption style, Bed, Loudness and Source. Length,
+  tutorial, list, reaction), Length, Cut rate, Caption style, Layout, Bed, Loudness and Source.
+  **Layout** names the mode and who sits where: `split-v (top host, bottom guest)`.
+- Two more columns after Sound when the reference has a format to keep: **Frame** (the beat's
+  layout, or who fills it: `split-v`, `full: guest`) and **Caption position** (`seam`, `top`,
+  `centre`, `lower third`). Length,
   cut rate and loudness keep their number and the line as written (`- Cut rate: ~19 cuts/min
   (21 picture changes…)`). A file with several sheets parses with `parse --all`.
 
@@ -90,7 +99,25 @@ python3 scripts/sheet.py markdown sheet.json --out sheet.md
 Show the user the sheet with the stills, and fix what they correct. Then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether the sheet
 is the structure to copy, before anything is mapped onto it.
 
-## 3. Map the script
+## 3. The format, and what the footage can match
+
+Read how the reference looks into the record's `format`, as `references/format.md` says: the
+layout and who sits where, the emphasis, the captions' style and **position**, the hook, the end
+card and, for the user's own channel, the brand files. Draft it from the sheet, then fill it from
+the stills:
+
+```
+python3 scripts/ref_format.py from-sheet sheet.json --source own-brand --out format.json
+python3 scripts/ref_format.py check format.json
+```
+
+Then answer each element against the user's footage: reproduced, approximated (say how) or
+impossible. Anything not reproduced: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered mock (one free frame of their
+footage in the format) beside the reference still, and keep the answer in the block.
+`ref_format.py feasibility format.json` refuses while an element is open. The reference stage is
+done only with a sheet that passes `sheet.py validate` and no open feasibility row.
+
+## 4. Map the script
 
 The user's script is a table with a Time column, and a Beat column where the writer said which
 reference beat a row copies. Fit it to the sheet:
@@ -111,12 +138,15 @@ python3 scripts/map_structure.py sheet.json script.md --spans allowed-spans.json
   clip keeps its length.
 - A beat no row takes is **dropped**, and the report says so. **No row is ever dropped.**
 
-## 4. Report
+## 5. Report
 
 ```
 python3 scripts/structure_report.py sheet.json mapping.json --transcript transcript.json \
   --media media.json
 ```
+
+Add `--own-brand` for the user's own channel, with its logo, end card and fonts listed under
+`brand` in the media list: they and its on-screen copy are reported "own brand, allowed".
 
 The report has one line per reference beat (its time, the user's rows, matched / changed /
 dropped, the reason), then one per added row. Below it, the content rules, each passed, failed
@@ -129,7 +159,7 @@ or not checked:
 | pictures | no still or clip of the reference is a generation input |
 | sound | no audio or music of the reference is in the cut |
 
-`media.json` lists the reference's URL and every still or clip made from it, the URLs given to
+The media list (`media.json` where you run commands, else kept in the record) lists the reference's URL and every still or clip made from it, the URLs given to
 each generation, and the audio in the cut; an empty list says none was used, and a missing list is
 not checked. Without it, pictures and sound are not checked, and the report says so; never call
 them passed. Likewise words and captions are not checked while the reference's Voice or On screen

@@ -38,6 +38,9 @@ The input is one JSON object:
   - `full` takes `background`: `blur` (the default, a blurred copy fills the margins; `dim`
     darkens it) or `black`.
 - `transition` is optional and plays on every seam. Without it, every seam is a hard cut.
+- `endCard` is optional: the channel's own end card, reused as given, never remade:
+  `{"url", "type": "video" | "image", "width", "height", "duration"}`. It closes the reel, filling
+  the frame, muted, its length snapped to the fps grid (3.767 s at 30 fps holds 113 frames).
 
 It prints one JSON line, `{scene, duration, clips, notes}`. `duration` is the clips' lengths added
 up, a transition included: its window overlaps the two clips it joins and adds no time. The scene's
@@ -56,6 +59,9 @@ import math
 import os
 import sys
 from typing import Any, Dict, List, Optional, Tuple
+
+import split_layout
+from split_layout import SPLITS
 
 USAGE = 'usage: reel_cut.py [input.json]; with no file, the input is read from stdin'
 
@@ -178,6 +184,8 @@ def read_reframe(source_id: str, reframe: Json) -> Json:
         'uri': asset.get('uri'),
         'position': axes['position'],
         'scale': axes['scale'],
+        # reframe_fix.py's result: its cuts between people are meant, so no swing is noted.
+        'corrected': isinstance(reframe.get('corrected'), dict),
     }
 
 
@@ -315,7 +323,7 @@ def crop_clip(source: Json, clip: Json, width: float, height: float, notes: List
     centres = [camera_centre(evaluate(tracks['position'], f['time']), evaluate(tracks['scale'], f['time']),
                              path['size'], width, height)[0] for f in tracks['position']]
     spread = max(centres) - min(centres)
-    if spread > SWING_SPREAD:
+    if spread > SWING_SPREAD and not path['corrected']:
         middle = sorted(centres)[len(centres) // 2]
         notes.append(f'clips[{i}]: the camera crosses {round(spread * 100)}% of the source, so it may be '
                      f'following two people; to hold one, cut it again with "hold": {round(middle, 3)}')
@@ -346,6 +354,31 @@ def full_clip(source: Json, clip: Json, i: int) -> Json:
     else:
         raise InputError(f'clips[{i}] background is "blur" or "black"')
     return out
+
+
+END_ID = 'endcard'
+
+
+def end_card(raw: Any, fps: float) -> Optional[Tuple[Json, Json]]:
+    """The channel's own end card, as given: its clip (muted, filling the frame, its length snapped
+    to the frame grid) and its asset."""
+    if raw is None:
+        return None
+    if not isinstance(raw, dict) or not isinstance(raw.get('url'), str) or not raw['url']:
+        raise InputError('endCard needs the url of the end card file, as given')
+    kind = raw.get('type', 'video')
+    if kind not in ('video', 'image'):
+        raise InputError('endCard type is "video" or "image"')
+    size = (number(raw.get('width'), 'endCard width'), number(raw.get('height'), 'endCard height'))
+    length = number(raw.get('duration'), 'endCard duration')
+    frames = max(1, round(length * fps))
+    snapped = round(frames / fps, 6)
+    content: Json = {'kind': 'media', 'assetId': END_ID, 'fit': 'cover'}
+    if kind == 'video':
+        content.update(trim={'in': 0, 'out': snapped}, muted=True)
+    source = {'id': END_ID, 'type': kind, 'url': raw['url'], 'size': size,
+              'duration': length if kind == 'video' else None}
+    return {'duration': snapped, 'content': content}, source
 
 
 # --- The reel -------------------------------------------------------------------------------
@@ -386,6 +419,9 @@ def cut(data: Any, base: str = '.') -> Json:
         raise InputError('clips must be a list with at least one clip')
 
     notes: List[str] = []
+    mode = read_layout(data)
+    if mode in SPLITS:
+        return cut_split(data, sources, raw_clips, width, height, fps, notes)
     clips = []
     used: List[str] = []
     for i, raw in enumerate(raw_clips):
@@ -402,6 +438,14 @@ def cut(data: Any, base: str = '.') -> Json:
         if source['id'] not in used:
             used.append(source['id'])
 
+    end = end_card(data.get('endCard'), fps)
+    if end is not None:
+        if END_ID in sources:
+            raise InputError(f'a source is named "{END_ID}"; rename it, that id is the end card\'s')
+        clips.append(end[0])
+        sources[END_ID] = end[1]
+        used.append(END_ID)
+
     track: Json = {'kind': 'track', 'clips': clips}
     transition = data.get('transition')
     if transition is not None:
@@ -413,6 +457,12 @@ def cut(data: Any, base: str = '.') -> Json:
                                     for g in range(len(clips) - 1)]
 
     duration = round(sum(c['duration'] for c in clips), 3)
+    return {'scene': scene_of(sources, used, width, height, fps, [{'id': 'reel', 'content': track}]),
+            'duration': duration, 'clips': len(clips), 'notes': notes}
+
+
+def scene_of(sources: Dict[str, Json], used: List[str], width: float, height: float, fps: float,
+             layers: List[Json]) -> Json:
     assets = []
     for sid in used:
         s = sources[sid]
@@ -420,15 +470,53 @@ def cut(data: Any, base: str = '.') -> Json:
         if s['duration'] is not None:
             asset['duration'] = s['duration']
         assets.append(asset)
-    scene = {
+    return {
         'version': '1.0',
         # No `duration`: the composition then lasts as long as the track, so a clip trimmed or
         # deleted later shortens the reel instead of leaving its old end behind.
         'composition': {'width': int(width), 'height': int(height), 'fps': fps, 'background': BACKGROUND},
         'assets': assets,
-        'layers': [{'id': 'reel', 'content': track}],
+        'layers': layers,
     }
-    return {'scene': scene, 'duration': duration, 'clips': len(clips), 'notes': notes}
+
+
+def read_layout(data: Json) -> str:
+    """The layout to build: `layout.mode`, else a single frame. A `format` given beside it (the
+    record's) must agree, so a cut never leaves the reference's layout by accident."""
+    layout = data.get('layout')
+    if layout is not None and (not isinstance(layout, dict) or layout.get('mode') not in SPLITS + ('single',)):
+        raise InputError(f'layout mode is one of {", ".join(SPLITS + ("single",))}')
+    mode = layout['mode'] if layout else 'single'
+    fmt = data.get('format')
+    if isinstance(fmt, dict) and isinstance(fmt.get('layout'), dict):
+        want = fmt['layout'].get('mode')
+        if want in SPLITS + ('single',) and want != mode:
+            raise InputError(f'the format is {want} and this cut is {mode}; build it {want}, or, once the user '
+                             'approved another layout (format:layout), cut without the format')
+    return mode
+
+
+def cut_split(data: Json, sources: Dict[str, Json], raw_clips: List[Any], width: float, height: float, fps: float,
+              notes: List[str]) -> Json:
+    clips = [read_clip(raw, i, sources) for i, raw in enumerate(raw_clips)]
+    if data.get('transition') is not None:
+        raise InputError('a split cuts hard: its two tracks must stay in lockstep, so it takes no transition')
+    bottom, top, used = split_layout.build(data, sources, clips, width, height, number, InputError)
+    end = end_card(data.get('endCard'), fps)
+    if end is not None:
+        if END_ID in sources:
+            raise InputError(f'a source is named "{END_ID}"; rename it, that id is the end card\'s')
+        clip = dict(end[0], content=dict(end[0]['content'], bounds=[width, height]),
+                    transform={'position': [width / 2, height / 2]})
+        top.append(clip)
+        bottom.append({'duration': clip['duration'], 'content': {'kind': 'color', 'color': split_layout.BLACK}})
+        sources[END_ID] = end[1]
+        used.append(END_ID)
+    duration = round(sum(c['duration'] for c in top), 3)
+    layers = [{'id': 'bottom', 'content': {'kind': 'track', 'clips': bottom}},
+              {'id': 'top', 'content': {'kind': 'track', 'clips': top}}]
+    return {'scene': scene_of(sources, used, width, height, fps, layers), 'duration': duration,
+            'clips': len(clips), 'pieces': len(top), 'notes': notes}
 
 
 def main(argv: List[str]) -> int:

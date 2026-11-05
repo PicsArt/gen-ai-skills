@@ -4,6 +4,7 @@ description: Worked scene motion patterns for entrances, exits, stagger, directi
 metadata:
   category: authoring
   version: '1.5'
+  ported-from: motion-patterns 1.5 at 55.75.0
 user-invocable: false
 ---
 
@@ -124,6 +125,9 @@ When one overshoot is not enough — a damped oscillation as a single expression
 The exponential damps the amplitude; the cosine controls oscillation frequency. Check extrema and
 the settled tail, not only endpoints. Confirm the expression's clock when the layer starts late.
 
+A part that lags ANOTHER part's motion (hair behind a turning head) is not this: apply the
+`follow_through` preset to a parameter (`picsart_scene_recipe scene-animation-reference`, "Secondary motion and characters").
+
 ## Ambient life
 
 Background motion that keeps looping while the beat lasts:
@@ -139,6 +143,29 @@ period explicitly if the intended number of cycles must stay fixed, then recheck
 
 For text, inspect the available ambient text-animation presets; caption decorations and ordinary
 text layers have different authoring entry points (`scene-animation-reference`).
+
+## Confetti, sparks and snow
+
+Many small copies of one thing, thrown and falling, are one layer with `particles`, not hand-copied
+layers. The layer's `content` is the particle; its `transform.position` places the emitter:
+
+```json
+{ "id": "confetti", "transform": { "position": [540, 1080] },
+  "content": { "kind": "shape", "items": [{ "type": "rect", "size": [22, 12] }, { "type": "fill", "color": "#ff3b6b" }] },
+  "particles": { "seed": 1, "emit": { "bursts": [{ "time": 0, "count": 120 }] },
+    "life": [2, 3.2], "direction": -90, "spread": 40, "speed": [1100, 2300], "gravity": [0, 1500],
+    "spin": [-450, 450], "opacityOverLife": [1, 0.3] } }
+```
+
+Every particle draws the layer's content, so several colours are several such layers, each with its
+own colour and `seed`. Each burst releases `count` particles at its `time`; a stream is
+`"emit": { "rate": 40 }`, which emits until the layer ends (or for its `"duration"`), and a negative
+`start` has it already running at the layer's first frame. Snow streams from a wide
+`"origin": { "shape": "line", "size": [1400, 1] }` on a layer placed above the frame, with
+`"direction": 90`, a small `"spread": 30` and little `gravity`: a directed throw needs a small spread,
+since the default 360 throws every way. Two layers with different particle sizes, speeds and
+opacities read as depth. Change `seed` for another throw of the same effect; the same seed always
+draws the same frames.
 
 ## An arc instead of a straight line
 
@@ -456,3 +483,7 @@ twin is a progress bar (the twin is a second layer with no trim — the track, d
 fill lands on top). `ease_in_out` reads hand-drawn; `linear` reads mechanical, right for a progress
 bar. This lives at the shape-`items` level, which layer presets don't reach, so it is a pattern rather
 than a preset. Preview the start, partial stroke and completion; verify the intended path direction.
+
+An ink line that writes on — a signature, a doodle, a character's outline — is the same trim track with a
+tapered stroke (`character-rigging`, "Ink lines"). The taper is laid along the drawn part, so the moving
+end keeps its point as it writes on.

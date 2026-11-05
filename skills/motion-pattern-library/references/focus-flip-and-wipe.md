@@ -2,7 +2,8 @@
 
 ## Focus pull and card flip
 
-These beats are effects rather than transforms, so they compose with motion instead of competing:
+A focus pull is an effect and a flip is a turn in depth (`rotationY` under the composition camera), so
+both compose with motion instead of competing:
 
 ```json
 { "scene": …, "layerId": "hero", "preset": "motionPreset:blur_in",  "params": { "duration": 0.6, "amount": 28 } }
@@ -29,7 +30,8 @@ The same beats as named looks, for an editor to show and swap:
 
 An entrance and an exit are two looks in two role slots, each wrapping the layer in its own
 `gaussian_blur`, so they never contend for one radius. `amount` tops out at 32. `flip` turns about
-`axis: "y"` by default; `"x"` tips it toward the viewer.
+`axis: "y"` by default; `"x"` tips it toward the viewer. A flip turns the layer itself in depth, so
+an orbit, dolly or push-in moves it with the rest of the scene and a child (`parentId`) turns with it.
 
 A fade can quietly introduce content; a focus pull or flip can draw more attention. Choose according
 to the beat's hierarchy, and inspect whether supporting motion competes with the leader.

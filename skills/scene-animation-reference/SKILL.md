@@ -1,9 +1,10 @@
 ---
 name: scene-animation-reference
-description: How a scene expresses motion — preset catalogs, layer animations and transform stacks, easing and spatial tangents, Lua expressions, shared path phase, text on a curved or closed path, depth and the composition camera, motion blur, and transition firing. Use when motion needs authoring or validation, objects need editable path offsets, text must follow a baseline, a scene validates but renders wrong, or a preset is rejected for the content kind.
+description: How a scene expresses motion — preset catalogs, layer animations and transform stacks, easing and spatial tangents, Lua expressions, shared path phase, text on a curved or closed path, named actions mixed on a placed scene, depth and the composition camera (2.5D, cards that flip or fan out in depth under an orbit, a 2D film camera's pan, push-in and parallax), motion blur, held drawings (animation on twos), transition firing, and parameter drivers that keep a character alive on their own (eyes looking around, blinks, breathing, hair and ears that follow through, a tail that settles, whiskers that wiggle), with a pointer to the walk, wave and jump cycles of a cartoon rig. Use when motion needs authoring or validation, a character or object should glance, blink, breathe or sway by itself, objects need editable path offsets, text must follow a baseline, a scene validates but renders wrong, or a preset is rejected for the content kind.
 metadata:
   category: authoring
-  version: '1.9'
+  version: '1.18'
+  ported-from: motion-mechanics 1.18 at 55.91.0
 user-invocable: false
 ---
 
@@ -16,16 +17,28 @@ wrong one. For the relationship across beats or the choice of seam mechanism, de
 growth and sibling reflow, first use `picsart_scene_recipe linked-element-motion`. A common placement owner
 does not imply automatic layout. The constructions below need verification in the actual scene.
 
+## Named actions on a placed scene
+
+When a placed scene declares fixed motions in its root `actions` map (imported bone timelines,
+parameter motions, authored cut-out poses), its `scene_ref` layer plays and mixes them through
+`content.animation`: a list of entries with `action`, `trim`, `speed`, `loop`, `weight`, `start`,
+`duration`, `fade`, `mode` (`replace` or `aggregate`) and `tier`. A catalog rig's motion presets
+write `scene_ref.parameters` bindings instead; those are live controls, not actions. Layer
+`animations` move the whole rig. Mixing, tiers, crossfades without a rest dip, step channels,
+`blending: "pass_through"`, a complete walk→idle scene and every refusal are in
+[named-actions.md](references/named-actions.md); the schema is `picsart_scene_capabilities` with
+`sections: ["schema:ActionAnimation"]`.
+
 ## Two catalogs, two ways in
 
 They look alike and are applied differently. Getting this wrong is the commonest first failure.
 
 | | Motion looks | Motion presets | Text animations |
 |---|---|---|---|
-| What | entrance/exit (`role: in`/`out`) `fade`, `slide`, `zoom`, `spin`, `wipe`, `blur`, `flip`; entrance `pop`, `flash`; loops `float`, `sway`, `shake`, `pulse`, `glow_pulse`, `blink`, `rotate`, `clockwork`, `ken_burns` | entrances `fade_in`, `slide_in`, `zoom_in`, `scale_pop`, `spring`, `rotate_in`, `blur_in`, `flip_in`, `reveal_in`; exits `fade_out`, `slide_out`, `zoom_out`, `rotate_out`, `blur_out`, `reveal_out`; emphasis `tap_pulse`, `glow_pulse`, `shake`; atmosphere `ken_burns`, `breathe`, `float`, `sway` | `typewriter`, `fade_in_chars`, `slide_up_lines`, `flicker_chars` (+ ambient ones, below) |
+| What | entrance/exit (`role: in`/`out`) `fade`, `slide`, `zoom`, `spin`, `wipe`, `blur`, `flip`; entrance `pop`, `flash`; loops `float`, `sway`, `shake`, `pulse`, `glow_pulse`, `blink`, `rotate`, `clockwork`, `ken_burns` | entrances `fade_in`, `slide_in`, `zoom_in`, `scale_pop`, `spring`, `rotate_in`, `blur_in`, `flip_in`, `reveal_in`; exits `fade_out`, `slide_out`, `zoom_out`, `rotate_out`, `blur_out`, `reveal_out`; emphasis `tap_pulse`, `glow_pulse`, `shake`; atmosphere `ken_burns`, `breathe`, `float`, `sway`; paging `step_slide`; secondary motion `settle`, `wiggle` (also on a shape group with `item`); parameter drivers `follow_through`, `random_pulse`, `random_hold`, `cycle` (write a parameter, below) | `typewriter`, `fade_in_chars` (`grow` makes each letter grow in too), `slide_up_lines`, `flicker_chars` (+ ambient ones, below) |
 | Applied with | `picsart_scene_apply_preset` with `look:<id>` (iOS `applyLook`) and `params` (`role`, `length`, …); a window `start`/`duration` is set on the `looks[]` entry with `picsart_scene_patch` | `picsart_scene_apply_preset` with `motionPreset:<id>` (iOS `applyMotionPreset`) | name it in `content.animations[]`, or bake an entrance with `picsart_scene_apply_preset` and `textAnimation:<name>` |
-| Lands in | the layer's `looks[]` | the layer's `animations` / `transforms[]` / `effects` | the text content's `content.animations[]` |
-| Named in the document? | yes — `{ "look": "fade", "params": { "role": "in" } }`, so an editor shows and swaps it | no — the tool expands it into ordinary keyframes | yes — `{ "preset": "typewriter", "params": {} }` |
+| Lands in | the layer's `looks[]` | the layer's `animations` / `transforms[]` / `effects`, or `constraints` for layer follow-through | the text content's `content.animations[]` |
+| Named in the document? | yes — `{ "look": "fade", "params": { "role": "in" } }`, so an editor shows and swaps it | no — the tool expands it into ordinary tracks or layer constraints | yes — `{ "preset": "typewriter", "params": {} }` |
 
 **A preset or a look.** A motion preset is a starting point: it writes ordinary keyframes (and
 effects) that the agent or the editor user then owns and edits keyframe by keyframe. A look stays a
@@ -95,9 +108,12 @@ carrying an entrance and a breathe that can no longer be told apart.
 
 Positions follow After Effects: `transform.position` places the layer's `transform.anchor` in its
 parent's space (the parent layer's own pixels with `parentId`, otherwise composition pixels from the
-top-left). An omitted component `anchor` is that anchor **where it currently sits**, following a
-`position` animation and parenting, so a component scale or rotation turns the layer in place even
-while it moves:
+top-left). An omitted `transform.position` is the composition's centre, for a child too: a child
+with no `transform` sits half a composition into its parent's pixels, so give every child one
+(`[0, 0]` is the parent's origin, the pivot of an `empty` or a shape drawn about `[0, 0]`). An
+omitted component `anchor` is that anchor **where it currently sits**, following a `position`
+animation and parenting, so a component scale or rotation turns the layer in place even while it
+moves:
 
 ```json
 "transform": { "position": [300, 300] },
@@ -132,6 +148,19 @@ render the peak in the scene before deciding whether it suits the intended motio
 **A keyframe with no `easing` is `linear`.** Use it deliberately for constant-rate travel or progress;
 use an eased curve when acceleration or settling serves the beat. Easing belongs on the segment's
 starting keyframe; the terminal keyframe has no following segment to ease.
+
+**Each component on its own.** On a vec2, vec3 or rect value, `easing` may be a list with one easing
+per component, in the value's order: a scale whose width snaps out while its height lags is one
+track, not two nested layers.
+
+```json
+"scale": { "keyframes": [
+  { "time": 0, "value": [0, 0], "easing": ["ease_out", "ease_in"] },
+  { "time": 0.6, "value": [1, 1] } ] }
+```
+
+The list has exactly one entry per component, and `step` is never an entry (a hold keeps the whole
+value). A number or a colour takes one easing.
 
 ## Path, separately from timing
 
@@ -204,6 +233,9 @@ schema for available getters; there is no arbitrary live shape-size or text-metr
 Unlike `$eval`, this is a per-frame dependency. Validate and query the actual delayed/nested instance;
 local `time` formulas on separately started layers need clock mapping even when their text matches.
 
+A value that follows a parameter through drawn poses is a `by` track (see `character-rigging`, "Poses keyed to a dial"),
+not an expression that reads the parameter and interpolates by hand.
+
 Two compact time-expression uses:
 
 **Ambient motion that continues looping** for the beat's duration:
@@ -241,7 +273,39 @@ hand-rolling the trigonometry. Call them directly as `picsart.<name>(...)`; an a
   every `halfPeriod` seconds. A vec2 property takes one call per component inside `Vec.v2`.
 - `picsart.jitter(value, time, ampX, ampY, step)` — deterministic shimmer around the layer's own base
   `value`, resampled every `step` seconds. Not random: same inputs, same frame.
-- `picsart.wiggle(value, time, freq, amp)` — AE's `wiggle`, fractal noise at `freq` wiggles/sec.
+- `picsart.wiggle(value, time, freq, amp [, octaves=1, ampMult=0.5, seed=0])` — AE's `wiggle`, fractal
+  noise at `freq` wiggles/sec, per component on a `Vec`.
+- `ctx:loopOut(mode)` — repeats the track's keyed range past its last key. Key ONE cycle, loop it:
+  `"cycle"` restarts every range (a breath, a foot's roll), `"pingpong"` plays every other range
+  backwards (a wave), `"offset"` restarts each range shifted by its last-minus-first value (anything
+  that travels: a stride, a walking body), `"continue"` extends along the slope at the end it leaves.
+  `{"keyframes": [...], "expression": "return ctx:loopOut('cycle')"}`. Before the first key the
+  track holds that key.
+- `picsart.cycle(time, waveform, from, to, period, phase [, variation, seed])` — a `"sine"`,
+  `"triangle"`, `"saw"` or `"square"` wave: `picsart.cycle(time, "sine", 0, 1, 3.5, 0)`.
+- `picsart.randomPulse(time, from, to, minInterval, maxInterval, attack, hold, release, burstChance, seed)`
+  — seeded random events, each eased `from` -> `to` and back: a blink.
+- `picsart.randomHold(time, from, to, minInterval, maxInterval, transition, seed, channel [, centerBias, half])`
+  — a seeded random value held, then eased to the next on `picsart.randomPulse`'s timing; `half`
+  `"both"`, `"positive"` or `"negative"`: a glance.
+- `picsart.follow(time, read, frequency, damping, amount, segment)` — a damped spring trailing `read(t)`:
+  lag, overshoot, settle (hair, tails, a dangling arm). It follows PARAMETERS; see
+  [Secondary motion](#secondary-motion-and-characters) for `segments`, one value per piece
+  of a chain of any length.
+- `picsart.clamp(v, low, high)`, `picsart.linear|ease|easeIn|easeOut(t, tMin, tMax, v1, v2)` — AE's
+  interpolation set, held outside `[tMin, tMax]`; `v1`/`v2` a number or same-arity `Vec`:
+  `picsart.ease(time, 0, 0.4, 0, 1)`.
+- The four `picsart.cycle` / `picsart.randomPulse` / `picsart.randomHold` / `picsart.follow` calls are what the
+  `cycle`, `random_pulse`, `random_hold` and `follow_through` presets write
+  ([Parameter drivers](#parameter-drivers)). Apply the preset rather than writing the call.
+
+**Reading another value at a time.** `ctx.composition:getParameters():<name>([t])` is a parameter
+at `t`, seconds on the reader's clock (default now): `p:headTurn(time - 0.25)` trails a quarter
+second. `ctx.composition:getLayer(id):getPlacement():position([t])` / `rotation([t])` is that
+layer's placement at `t`, seconds on the reader's clock with the layer's own clock applied:
+`position(time - 0.2)` trails it by 0.2 s. The layer is one of the same composition; a timed read
+of a layer that plays on another composition's clock fails the frame. Without `t` it reads this
+same instant (see "Bind a supported property instead of copying its track").
 
 **In a DEFINITION** (a look, a transition, a decoration) `{param}` splices the definition's own
 scope into the expression text, so the shape stays parametric:
@@ -254,6 +318,86 @@ scope into the expression text, so the shape stays parametric:
 source, so surrounding arithmetic is Lua's. (Everywhere OUTSIDE an `expression`, `{name}` is the
 typed scope lookup instead.) `picsart_scene_capabilities` lists the full stdlib.
 
+## Parameter drivers
+
+Four presets write a number parameter's `default`, applied with `picsart_scene_apply_preset`
+(`motionPreset:<id>` and `"parameter": "<name>"`); the layers read the parameter, so one value drives
+every part that shares it.
+
+On a cartoon rig (a `scene_ref` layer drawing `scene://rig-humanoid` or `rig-face`), pass the rig
+layer as `layerId` and its control as `parameter` (`random_pulse` on `blink`, `cycle` on `breath`):
+the track is bound on that layer, so each instance moves on its own. The rigs and `walk_cycle` are in
+`character-rigging`.
+
+| Preset | The value | Typical uses |
+|---|---|---|
+| `follow_through` | the swing of a damped spring trailing other parameters | hair, ears, tails, antennae, a dangling sign |
+| `random_pulse` | brief eased events at seeded random intervals (`minInterval`, `intervalSpread`, `attack`/`hold`/`release`, `burstChance`) | blinks (`eyeOpen` from 1 to 0), lamp flicker, twinkling stars, glitch hits |
+| `random_hold` | a seeded random value held, then a quick eased jump (`transition`) to the next, `minInterval` + `intervalSpread` apart; one `seed` shares the jump times, `channel` picks the value stream, `half` keeps its `positive` or `negative` side, `centerBias` gathers values mid-range | eyes looking around (`lookLeft`/`lookRight`/`lookUp`/`lookDown`), random pose or colour picks, a jittering needle |
+| `cycle` | a repeating `sine`/`triangle`/`saw`/`square` wave every `period` seconds | breathing (`breath`, sine ~3.5 s), bobbing, a pulsing glow, UI pulses, beacons |
+
+Drive eyelids or the eyes' y-scale from `eyeOpen`; drive chest or shoulder scale and a small head
+bob from `breath`. A different `seed` per character keeps two characters from blinking together.
+
+Eyes that look around: give each eye a `composition` layer holding its white and its pupil. Mask the
+pupil with a clip that repeats the white's own `transform` and shape: a clip keeps its own transform,
+so inside the eye it lands exactly on the white and the pupil never leaves it. A clip on the eye layer
+itself does not sit on the white, and the eye draws nothing. The gaze is four one-sided 0..1 parameters,
+the standard expression names `lookLeft`, `lookRight`, `lookUp`, `lookDown`. The pupil's position reads
+them, `value + Vec.v2((p:lookRight() - p:lookLeft()) * r, (p:lookDown() - p:lookUp()) * r)` with
+`p = ctx.composition:getParameters()` and `r` the room the white leaves. Apply `random_hold` to all four
+with one `seed` and `centerBias` about 0.5: `lookRight` channel 0 `half: "positive"`, `lookLeft`
+channel 0 `half: "negative"`, `lookUp` channel 1 `positive`, `lookDown` channel 1 `negative`. The eye
+never looks left and right at once, and both axes jump at the same moments, as a glance does.
+
+## Secondary motion and characters
+
+Pick by what moves the part: a rig control (a head turn drives the hair) is parameter-mode
+`follow_through`; a parent layer's world motion, under gravity or wind too, is layer-mode
+`follow_through` (`layerId`, a layer constraint); a keyed part that should carry on past its own stop
+is `settle`; a part that never holds still is `wiggle`; a slow regular loop is `sway`; an impact is
+`shake`. Layer-mode springs, their ranges and starting values per part, a worked five-link hair chain,
+nested clocks, seeking cost and pitfalls are in [secondary-motion.md](references/secondary-motion.md).
+`settle` and `wiggle` on a layer or, with `item`, on one named group of a `shape` layer (a drawn tail,
+antennae, whiskers) are in [settle-and-wiggle.md](references/settle-and-wiggle.md).
+
+Hair, ears, a tail or an antenna that lag a turning head are one parameter following others through a
+damped spring: apply `follow_through` to the PARAMETER (`"follow"` lists the driving parameters with
+their weights; `frequency` and `damping` set the lag), never write the spring yourself. Its value is
+the swing, 0 while the drivers hold still. A chain of any length takes one value per piece through
+`segments`. The full recipe, with the parameter wiring and the units, is in `character-rigging`
+(fetch with `picsart_scene_recipe`, name `character-rigging`).
+
+A character that walks, waves or jumps from a few looped keys, a shape's outline that morphs, bends or
+is swapped (`vertices` tracks, `deformers`, outline expressions), bent limbs and two-bone `ik` foot
+targets are all in `character-rigging` as well. Pose the catalog rig (`rig-humanoid`, `rig-face`) when it
+fits; build by hand only when it does not. Within a shape's `items`, and a group's `contents`, the
+first item paints on top, as After Effects stacks layers: list a face's mouth and eyes before the head
+they sit on.
+
+## Held drawings: animating on twos
+
+A nested composition (an inline `composition` or a `scene_ref` body) whose `composition.fps` is
+LOWER than its host's rate draws on its own frame grid: every host frame shows the start of the
+nested frame it falls in. `"fps": 12` inside a 24 fps scene is animation on twos, the stepped look of
+hand-drawn animation, without duplicating a keyframe. The hold covers the whole composition:
+keyframes, expressions (their `time` is the held one, so a wobble boils on twos), media, Lottie and
+nested playback, which of its layers are live and reads between its own layers. A held frame keeps the
+motion blur of its own instant. An effect's rolling seed follows the host clock (the grain is the
+film, not the drawing), and sound is not held: audio inside plays on the host clock.
+
+```json
+{"id": "character", "content": {"kind": "composition",
+  "composition": {"width": 1080, "height": 1080, "fps": 12},
+  "layers": [{"id": "ball", "content": {"kind": "shape", "items": ["..."]},
+    "animations": {"position": {"keyframes": [{"time": 0, "value": [100, 500]}, {"time": 1, "value": [900, 500]}]}}}]}}
+```
+
+An equal or higher rate, or none, holds nothing. A rate that does not divide the host's holds
+unevenly (24 in 30 is a pulldown), so pick a divisor of the output rate. Put whatever must stay
+smooth, such as a camera move, outside the held composition. Measure the result per frame: the ink
+centroid moves only on the nested frames.
+
 ## Depth and the camera
 
 Every composition is seen through one perspective camera, `composition.camera`. Omitted, it is the
@@ -264,7 +408,7 @@ the `z = 0` plane that draws exactly the flat composition, so depth costs nothin
 |---|---|
 | layer `transform.z` | depth in composition px, **positive toward the viewer** |
 | layer `transform.rotationX` / `rotationY` | tilt in degrees, the `perspective_3d` effect's signs: +X tips the top edge away, +Y turns the right edge away; `rotation` stays the clockwise roll |
-| `camera.position` | the pivot the eye looks at; zoom, roll and orbit turn about it |
+| `camera.position` | the pivot that zoom, roll and orbit turn about. The camera does **not pan**: moving only the pivot leaves every `z = 0` layer where it is, so pan with a parent layer ([film-camera.md](references/film-camera.md)) |
 | `camera.zoom` | image scale about the pivot — perspective unchanged |
 | `camera.distance` | eye-to-pivot px, > 0; the `z = 0` plane keeps its size at any distance, so animating it is a **dolly zoom** (nearer layers grow, farther ones shrink) — a push-in is `zoom` |
 | `camera.rotationX` / `rotationY` | orbit of the eye: the view is the inverse of a layer rotation of the same values (eye right = world turned left) — +X raises the eye, +Y moves it right |
@@ -279,7 +423,9 @@ every frame; equal depth keeps document order. `cameraExempt: true` on a root ke
 and in place (a HUD). A mask follows its host's plane and carries no depth of its own. A nested
 composition, `scene_ref` or track has its own camera and is drawn as ONE flat card at its layer's
 `z` and tilt — put layers that must interleave in depth in the same composition. A look (such as
-`rounded_corners`) keeps its layer's depth, tilt and draw order.
+`rounded_corners`) keeps its layer's depth, tilt and draw order. A look that turns its layer
+(`flip`, `tilt_3d`, `tilt_reflection`, tagged `2.5d`) adds that turn to the layer itself as a
+`look:<id>` motion component, so the composition camera draws it and it moves with an orbit.
 
 Camera moves ship as motion presets: `orbit`, `dolly` and `push_in`, each `appliesTo: ["camera"]`.
 `picsart_scene_apply_preset` with `motionPreset:<id>` and no `layerId` keys them onto the root composition's camera as editable
@@ -302,6 +448,9 @@ Three laws for a scene in depth:
    project LOWER on screen; the classic exploded diagram, front plane highest, is `rotationX < 0`
    (measured: a four-plane stack at `distance` 2400 under ±42°). Render one frame at the held orbit
    before building on it.
+
+A 2D film camera (a pan on an empty `world` parent, a push-in on `camera.zoom`, parallax by depth,
+a sky kept still with `cameraExempt`) is in [film-camera.md](references/film-camera.md).
 
 ## Motion blur
 

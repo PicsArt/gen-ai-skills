@@ -1,6 +1,6 @@
 ---
 name: make-screen-videos
-description: Turn a screen recording of an app or website into finished videos - several standalone how-to shorts for Reels, TikTok or Shorts that each teach one easy thing, a feature explainer, a promo with each request typed over its result, a timelapse of a long session, or a step-by-step 16:9 tutorial with chapters - in a style the user picks by eye, with a voice-over and captions if they want them. Use when the user has a screen recording and wants a tutorial, a how-to, a reel, a short, a promo, a walkthrough or a demo video from it, or carries on with videos already planned from one, including adding a generated shot to them.
+description: Turn a screen recording of an app or site into videos - standalone how-to shorts for Reels, TikTok or Shorts each teaching one easy thing, a feature explainer, a promo with each request typed over its result, a long session's timelapse, or a step-by-step 16:9 tutorial with chapters - in a style picked by eye, with a voice-over and captions if wanted. Use when the user has a screen recording and wants a tutorial video (for a help center too), a how-to, a reel, a short, a promo, a walkthrough or a demo video from it, or carries on with videos already planned from one, including a generated shot. Not for camera footage or a text-only article.
 metadata:
   uses: screen-recording-analysis, footage-analysis, speech-aware-cutting, screen-recording-layouts, screen-recording-zoom, visual-style, screen-ui-redesign, retention-hooks, scene-building-basics, quality-review, ai-presenter, voice-over-generation, spoken-captions, background-music, motion-design-craft, film-shot-generation
   optional: ai-presenter, voice-over-generation, speech-aware-cutting, spoken-captions, background-music, motion-design-craft, film-shot-generation
@@ -93,6 +93,9 @@ account on screen is real.
 - **Start reading at once** (stage 3): the first question goes in the same turn as the read, so the
   user answers while it runs, and later questions are drafted from what it found ("your recording
   shows five things a viewer could learn").
+- **One question in a turn, never a list.** The only pair is the sound and the ending, as
+  `references/interview.md` marks it. The rest wait for their turn; never preview them. What you
+  settle without asking is said in one line as assumed, so the user can change it.
 - **No plan is written until the message is one sentence.** "You decide" counts: write it from the
   recording and list it as assumed.
 - **The brief closes the interview**: what the user said, what you read, what you assumed, as
@@ -110,7 +113,9 @@ video: never call `picsart_media_describe_video`. footage-analysis is used only 
 
 The read is the moments, the still sheets (about four per recording, one sheet of candidate results
 for the set), the stages where they are needed, and the transcript when `input.hasAudio` and the
-voice may be kept. Say in one line that you are reading, and go on; a call that charges goes through
+voice may be kept. It runs no command: `scripts/actions.py` waits for the outline (stage 7). Where
+you cannot run commands, never look for a shell or another way to run a script; read with the
+tools alone, and the build stops as stage 9 says. Say in one line that you are reading, and go on; a call that charges goes through
 picsart-video-rules's SPEND first.
 
 If a read fails twice, tell the user the service is down and to try again shortly. Never guess what
@@ -234,7 +239,7 @@ The sound was chosen in the interview. Make it as `references/routes.md` says:
   probe each line's real length, and transcribe each for its captions, as the voice-over-generation and
   spoken-captions skills say. The line sets the beat's length; the picture holds.
 - **The user's own voice** (`input.hasAudio`, a transcript that is not thin): kept whole, never cut
-  mid-sentence, captioned from the saved transcript.
+  mid-sentence, captioned from its transcript as `picsart_media_transcribe` returned it.
 - **A presenter on camera**: the promo route only, never the default, as `references/routes.md`
   says.
 - **Captions and music, or text only**: nothing to generate here.
@@ -255,8 +260,9 @@ yourself.
 3. If it exits with an error instead, its one line names the field it cannot build from. Fix that
    field and run it again.
 
-Building is free and calls no tool. **Where you cannot run Python**, say that the video cannot be
-built here, and stop.
+Building is free and calls no tool. **Where you cannot run Python**, the build stops as
+picsart-video-rules says for a script that builds the scene: say this video needs the scene builder,
+offer to carry on on the desktop or in the Picsart app from the record, and stop. Never hand-build it.
 
 A timelapse omits stages with no usable footage inside their source bounds and cut guards.
 

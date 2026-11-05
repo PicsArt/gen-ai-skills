@@ -17,7 +17,7 @@ Write its input to a file, as one JSON object `{ spec, moments, transcript?, lin
 
 - `spec`: the object below;
 - `moments`: the result of `picsart_media_screen_moments` for this recording, exactly as returned;
-- `transcript`: with `narration: "own"` only, the `picsart_media_transcribe` result, as saved;
+- `transcript`: with `narration: "own"` only, the `picsart_media_transcribe` result, as returned;
 - `lines`: with `narration: "voice-over"` only, one `{ step, url, duration }` per step: the step's
   id, the voice line's URL as a Picsart tool returned it, and its length as
   `picsart_media_probe` measured it.
@@ -107,7 +107,7 @@ The script holds these; they are here so you can say why a step lasts as long as
 | Rule | Value | Source |
 |---|---|---|
 | An action's hold | its voice line's length, the picture held until the line ends; with no line, 1.8 s after the response settles | the line: the tutorial's design; the 1.8 s is the screen-recording-zoom skill's hold |
-| A step's spoken length | 3–6 s, 8–15 words | Screen Tutor's tutorial skill |
+| A step's spoken length | 3–6 s, 8–15 words | a working rule for a spoken step |
 | Speech rate | as the voice-over-generation skill measures it; each line's real length is probed once it is generated | the voice-over-generation skill |
 | Waits | cut; a wait marked `wait` plays as a sped beat under 1 s, its real length said by the voice | shorts never wait over about 1 s; saying the real wait teaches what to expect |
 | Typing | 2× unless `typed` | the speed map of the screen tools' time edit |
@@ -115,7 +115,7 @@ The script holds these; they are here so you can say why a step lasts as long as
 | Zoom in | starts as the screen-recording-zoom skill starts a push on a click, on its ramp and curve | the screen-recording-zoom skill |
 | Zoom out | after the hold, 1.5 s, back to the whole screen, slower than in | the screen-recording-zoom skill's ramp out |
 | Peak | until the response's text reads at 30 px, never cropping the box | text meant to be read is at least 30 px |
-| Chapter card | 2 s, its title as short as the screen-recording-layouts skill's landscape reference holds it | **a starting number with no source**; the first dogfood sets it |
+| Chapter card | 2 s, its title as short as the screen-recording-layouts skill's landscape reference holds it | **a starting number with no source**, not yet measured |
 | The opening | the finished result, the first 5 s | the main message in the first 5 s |
 
 ## What comes back

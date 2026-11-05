@@ -1,6 +1,6 @@
 ---
 name: generate-media
-description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture - remove or replace its background, enhance or upscale it, or turn it into a vector - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers questions about models, prices, credits and Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files. Load it first, before any tool, when they say not to ask, to work unattended, or set a spend limit. Load it before calling any Picsart model, generation or image tool.
+description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo - remove or replace its background, enhance or upscale it, or turn it into a vector - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers questions about models, prices, credits and Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files. Load it first, before any tool, when they say not to ask, to work unattended, or set a spend limit. Load it before calling any Picsart model, generation or image tool.
 metadata:
   uses: film-shot-generation, sd25-pe, sd2-pe
   title: Generate media
@@ -121,7 +121,7 @@ When the result carries a link to top up, give it exactly as returned.
   are `items` on one call (picsart-video-rules's SPEND, rule 4). Never loop calls: each call draws its own
   progress card.
 - A generation answers with a job. Follow it with `picsart_job_status`, passing the job and the
-  `model` (picsart-video-rules's Tools). With `count` or `items` the top-level `job` is only the first: pass
+  `model`, and wait on it as picsart-video-rules's Tools says. With `count` or `items` the top-level `job` is only the first: pass
   each handle in `jobs` (an `items` entry's are in its own `jobs`) as `job`, one call each. Where
   the host draws widgets, the generation's card follows its jobs and posts the results back, so
   never ask the user to wait. Never send a generation again because it seems slow or the host

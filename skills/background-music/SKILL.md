@@ -62,12 +62,16 @@ Run `python3 scripts/music_bed.py bed.json` on the final scene:
 }
 ```
 
-`transcripts` names every spoken source's saved transcript by its asset id: a clip of the reel, a
+`transcripts` names every spoken source's transcript (its file, where you run commands) by its asset id: a clip of the reel, a
 voice-over layer or a presenter's take alike, nested panels and bubbles included (the scene's
 own id for the source, not the nest's `rec`); footage-analysis says how a source gets one.
 `duration` is the bed's length, as the generation or `picsart_media_probe` reports it. The script adds the bed as one `audio` layer: faded in over 1 s and out over 2 s, at
 volume 30 between lines and 15 under speech, dipping just before each spoken stretch and coming
-back over 0.6 s after it. It prints the scene and the stretches it ducked under.
+back over 0.6 s after it. It prints the scene and the stretches it ducked under. Where you cannot
+run commands, add that same `audio` layer with `picsart_scene_patch`, at those levels, from the
+transcripts' spoken stretches. That one layer, with every level given here, is an edit to a built
+scene, not a scene worked out by hand, so picsart-video-rules's stop for a script that builds the
+scene does not apply to it.
 
 - **The speech stays on top.** When the bed competes, lower `level` and `duck` together; never
   raise the speech.

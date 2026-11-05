@@ -4,8 +4,11 @@ Use `scene://closed-media-carousel` for any number of media cards circulating on
 circle, ellipse or tilted ellipse. This independently authored adaptation draws on
 Hyperframes carousel-circle 1–5, not their HTML, assets or exact AE timing. The
 128-chord path approximates arc-length travel; shared speed pulses keep all cards
-in phase. Depth is 2D scale, not a 3D camera or depth sorting. Open paths, spherical
-orbits and text-circle transitions are different capabilities.
+in phase. Each card sits at the depth (`z`) whose perspective draws it at its
+`nearScale`..`farScale` size, so the composition camera sizes it, overlapping cards
+draw far to near, and an orbit, dolly or push-in moves the ring in depth; the
+background stays flat (`cameraExempt`). Open paths, spherical orbits and text-circle
+transitions are different capabilities.
 
 Describe the template before binding parameters. Reference is reusable; bootstrap
 and inline produce editable copies. Each `cards` record requires `content`, `width`
@@ -17,9 +20,11 @@ Clip-level audio, transforms and looks are not forwarded. Wrap looked content in
 composition or edit the expanded surface. Empty produces only the background;
 one card still travels. The count is not fixed to the source's twelve cards.
 
-All cards use the same phase owner; depth scale and optional heading derive from
-actual position. Preserve that ownership when editing. Do not duplicate position,
-scale and heading tracks independently. `rotationFollow:0` avoids tangent queries;
+All cards use the same phase owner; depth (the `depth` motion component's `z` and
+its compensating `translation`) and optional heading derive from actual position.
+Preserve that ownership when editing. Do not duplicate position, depth and heading
+tracks independently. The depth formula assumes the default camera
+(`width × 50 / 36`); an authored camera distance changes the drawn sizes. `rotationFollow:0` avoids tangent queries;
 `1` follows travel. `period` controls mean travel, `pulsePeriod`/`pulseStrength`
 control speed variation, and `phase`/`spacing` control initial slots. Center/radii
 do not auto-fit a new canvas. Entry completes at the larger of `duration*entryFraction`
@@ -27,10 +32,9 @@ and `1/(120*(1-staggerShare))` seconds, retaining at least one 1/120-second keyf
 per fade. Very short entries may occupy only a few output frames. Motion
 continues until the hard cut. Changing period alone does not change media speed.
 
-Later cards paint over earlier cards throughout the loop, even when visually
-smaller. This differs from the source's first-card-on-top ordering; neither sorts
-by depth. Change list order deliberately and inspect overlaps. Use another design
-if the brief requires physically correct occlusion.
+Overlapping cards draw far to near: the larger (nearer) card covers the smaller
+one wherever they meet, re-sorted every frame. Cards at one depth (equal scale, or
+`nearScale` equal to `farScale`) keep list order, later on top.
 
 Apply this controlled request with `picsart_scene_apply_template`. Its colors make the
 checks reproducible without external media:
@@ -43,7 +47,9 @@ Retain the returned scene. Run strict `picsart_scene_validate`, then `picsart_sc
 at 0, 0.06, 1, 2 and 4 seconds. The carriers are `card_0`/`card_1`; entry opacity is
 on their children `card_0__surface_0`/`card_1__surface_0`, not the carrier itself.
 After nesting/inline edits get actual IDs and root-time windows from queries.
-Inline insertion and detaching retain an editable composition when expressions
+Detaching a reference (`picsart_scene_expand_ref`) is refused: the cards sit in depth
+under the template's own camera; insert it inline or bootstrap it instead.
+Inline insertion retains an editable composition when expressions
 depend on `ctx`: this preserves sibling lookups and the shared clock. Do not
 flatten that scope or rename its children without repairing their relationships.
 
@@ -67,8 +73,8 @@ This illustrative pixel record expects red paint at one second, with background 
 
 Prove the checks catch mistakes: shift `centerX` by 40 (geometry must fail), set
 `reverse:true` (direction must fail), then change the first card to the background
-color `#ededef` (missing red ink must fail). Restore the original and rerun unchanged assertions. For paint order,
-set `spacing:0`: the last blue card should cover red. This overlap is intentional,
+color `#ededef` (missing red ink must fail). Restore the original and rerun unchanged assertions. For draw order,
+set `spacing:0`: every card is at one depth, so the last blue card should cover red. This overlap is intentional,
 not a blanket exemption for other lint findings.
 
 Rebase IDs, times, bounds, regions and colors after customization. Use

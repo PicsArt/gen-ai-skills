@@ -6,11 +6,11 @@
 The reference is the reference's words in any of these forms:
 - picsart_media_transcribe's result (or its `transcript`);
 - a JSON list of {start, end, text} entries;
-- a structure sheet, JSON or Markdown: its Voice, On screen and Caption cells;
+- a structure sheet, JSON or Markdown: its Voice and On screen cells;
 - plain text.
-The script is Markdown or plain text, read whole: every table cell, with wrapped lines kept
-consecutive. Quotes are straightened, case and punctuation dropped and whitespace collapsed
-before comparing. Each shared run is reported once, at its longest, with the script line it
+The script is Markdown or plain text. Table content columns are matched as separate streams,
+with source line numbers retained. Quotes are straightened, case and punctuation dropped, and
+whitespace collapsed before comparing. Each shared run is reported once, at its longest, with the script line it
 starts on.
 
 Exits 1 for any shared run, 0 for none, 2 for bad input. Standard library only.
@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import unicodedata
 from collections import defaultdict
@@ -125,10 +126,18 @@ def genre(hit: Dict[str, Any]) -> bool:
 def allowed(hit: Dict[str, Any], phrases: List[str]) -> bool:
     """A hit that lies inside a phrase the user allowed (a genre's ritual line, say), word for word.
 
-    A hit that runs across script lines is allowed when its part on each line is: two rows that
-    each show an allowed phrase make one run, and each is still allowed."""
-    wanted = [f" {normalise(p)} " for p in phrases if normalise(p)]
-    return all(any(f" {piece} " in p for p in wanted) for piece in hit.get("pieces") or [hit["text"]])
+    A whole hit may lie inside one allowed phrase, or consist of complete allowed phrases."""
+    wanted = [normalise(p).split() for p in phrases if normalise(p)]
+    words = hit["text"].split()
+    # A partial phrase may be used only when the complete hit fits that same phrase.
+    if any(" " + hit["text"] + " " in " " + " ".join(p) + " " for p in wanted):
+        return True
+    # Multiple complete allowed phrases can follow one another across rows.
+    reachable = {0}
+    for i in range(len(words)):
+        if i in reachable:
+            reachable.update(i + len(p) for p in wanted if words[i:i + len(p)] == p)
+    return len(words) in reachable
 
 
 def positive_int(value: str) -> int:
@@ -148,7 +157,35 @@ def main(argv: Optional[List[str]] = None) -> int:
         reference = read_reference(args.reference)
         with open(args.script, encoding="utf-8-sig") as handle:
             script = handle.read()
-        hits = find_hits(reference, script, args.n)
+        tables = sheets.tables(script)
+        streams = []
+        continuations = []
+        lines = script.splitlines()
+        prose = list(lines)
+        for start, header, body in tables:
+            keys = [sheets.column_key(h) for h in header]
+            if not any(f in keys for f in ("voice", "on_screen", "caption", "picture")):
+                continue  # no content column: its rows stay in the prose stream, read whole
+            prose[start:start + 2 + len(body)] = [""] * (2 + len(body))
+            for index in range(len(header)):  # every column is its own stream, so none is dropped
+                stream = [""] * len(lines)
+                for offset, row in enumerate(body):
+                    if index < len(row):
+                        stream[start + 2 + offset] = re.sub(r"<br\s*/?>", " ", row[index], flags=re.I)
+                streams.append("\n".join(stream))
+                # Continue this column into the prose before the next table, without
+                # mixing in other table cells or reporting prose-only hits twice.
+                end = start + 2 + len(body)
+                next_table = next((t[0] for t in tables if t[0] >= end), len(lines))
+                stream[end:next_table] = lines[end:next_table]
+                continuations.append(("\n".join(stream), end))
+        if streams:
+            streams.append("\n".join(prose))
+        hits = [hit for stream in (streams or [script]) for hit in find_hits(reference, stream, args.n)]
+        for stream, end in continuations:
+            hits.extend(hit for hit in find_hits(reference, stream, args.n)
+                        if hit["line"] <= end < hit["end_line"])
+        hits.sort(key=lambda hit: (hit["line"], hit["text"]))
     except (OSError, ValueError) as exc:
         print("error: " + " ".join(str(exc).splitlines()), file=sys.stderr)
         return 2

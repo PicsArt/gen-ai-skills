@@ -23,14 +23,23 @@ nor a model unless they asked about models. Say what you are doing: "watching yo
 If a tool named here or in a use case is not in your list, say that this part is not available
 here and stop that part. Never substitute another tool.
 
+**A skill's script** (`python3 scripts/<name>.py`) checks what the skill's text already says.
+Where you cannot run commands, do that step by hand as the text describes it; a measurement only
+the script makes is `open`, never a pass. A script that builds the scene is the exception: never
+work a scene out by hand. Say the step needs the scene builder, which runs where commands do, on
+the desktop or in the Picsart app; offer to carry on there from the project record, and stop that
+step. Never leave the user at "cannot".
+
 Before your first scene tool call, read `references/scene-tools.md`: `picsart_scene_capabilities`
 takes exact section names only, and a scene can travel between tools by URL.
 
 **A tool that replies with a job receipt** has not finished. Pass the receipt's `job` verbatim to
-the tool its `tools.jobStatus` names (`picsart_job_status`) every few seconds until it reports the result; that
-result is what the tool returns with `async: false`. A `picsart_generate` job is checked the same
+the tool its `tools.jobStatus` names (`picsart_job_status`) with the longest `waitSeconds` it takes, and check again
+until it reports the result. Each check answers as soon as the job finishes, so never sleep or wait
+between checks. That result is what the tool returns with `async: false`. A `picsart_generate` job is checked the same
 way, and its check also needs the `model` the job was submitted with. Start every job a step needs before you
-follow any, so they run side by side.
+follow any, so they run side by side. `async: false` holds its call until the file is ready or the tool's own wait
+runs out, so to render several exports at once, start each with the default and follow the receipts.
 
 ## How you talk to the user
 
@@ -261,11 +270,18 @@ scene editor are free.
 
 ### DELIVER
 
-Export the approved scene once with `picsart_scene_export`, and give the link with one line on
-what it is. Only an `async: false` export saves the file to the user's Picsart Drive by itself;
-the default receipt's finished result offers the Drive save instead. Either way, say it was saved
+Export the approved scene once with `picsart_scene_export`, follow its receipt as Tools says, and
+give the link with one line on what it is. The finished result names the Drive save as a
+`picsart_drive_upload` call with its arguments; make that call to save the file to the user's
+Picsart Drive. Only an `async: false` export saves it there by itself. Either way, say it was saved
 only when a result returns a `driveUid`. Then offer one next step in a sentence, and do it only if
 the user says yes.
+
+To keep the scene itself for reuse (a template, a rig or a plain scene), save it with
+`picsart_drive_upload` and `scene` (inline or by https URL). Its assets on expiring storage are
+saved too; a local one is refused by name. The returned `url` works as any scene tool's `scene`
+and as a `scene` asset's `uri` in another document. When `durability` is `expiring`, tell the user
+the link stops working when that storage expires.
 
 ## Unattended pace
 

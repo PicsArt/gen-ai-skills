@@ -6,6 +6,10 @@ user-invocable: false
 
 # Fragment matching
 
+**This skill is a stage of the recreate-video use case.** Before you act on a recreation, new or
+carried on at any stage, load recreate-video if it is not loaded: its flow says which stage you are
+at, what the user has agreed, and what to ask next. Then come back here for the stage's work.
+
 Two laws:
 
 1. **Measure, don't guess.** Every invented motion or timing has been wrong on its first render.

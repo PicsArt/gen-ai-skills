@@ -78,16 +78,29 @@ the art director (the look). Each sees only frames every 0.5 s, the source still
 footage the video depicts), the words, the goal and the destination, and returns a verdict, problems with their times, and fixes. `scripts/critics.py`
 picks the frames and lays the notes side by side. Where critics agree it is a must-fix, weighed
 against the first-principles critic's core sentence; a new concept goes to the user as a choice,
-never applied silently. A draft that looks different from its source is a must-fix.
+never applied silently. So does a shot a critic would swap in an edit of the user's footage: it
+is a proposal, shown to the user as a rendered A/B, never a silent change to the plan. A draft that looks different from its source is a must-fix.
 
 **The challenger.** A seventh critic who does not wait for the draft. At each decision the use case
 names (the idea, the plan, the key frames and each image picked, the UI, and every SPEND before
 its quote) it asks "why this?" and tries to show that the direction is wrong before more work is
 spent on it. It returns `keep`, `rethink` or `stop`, with the reason and the cheaper alternative.
 It also gets the source stills, so a design that drifts from the real app is caught as it is made.
+Its `rethink` of a shot the user saw and kept is a proposal too: an A/B, never a silent swap.
+
+**The QC inspector.** An edit of the user's own footage is checked from its render by an
+inspector who did not make it and never sees why it was made that way: camera steadiness on every
+used range, lips against the voice, each cut against its word, shot lengths, legible text,
+captions, repeated or clipped lines, the locked meaning map, and every keeper of a version the
+user saw: one dropped with no line the user will read fails the draft, and, when a reference's
+format is in the record, the reference match (`scripts/reference_match.py` reads it from the
+scene). It reports only critical and
+major findings, each with its method and confidence, and marks what it could not see or hear as
+open, never as a pass. `scripts/inspection.py` reads its report back.
 
 | Read this | Before you |
 |---|---|
+| `references/qc-inspector.md` | check a draft of an edit of the user's footage, or a fix to one |
 | `references/viewer-panel.md` | run the viewer panel on a hook or a draft |
 | `references/critic-panel.md` | run the critic panel on a draft |
 | `references/challenger.md` | go on from a decision the use case names, or show a quote |

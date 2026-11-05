@@ -36,6 +36,19 @@ The input is one JSON object:
   `highlightStyle` (passed through as given) or, without one, big white text on a dark pill that
   the renderer fits to the measured words.
 
+- `cards` asks for word cards (PI-11892), one `captions` layer `captions` over the talk:
+  `{"words": 3, "seam": 960, "style": { a caption style }}`. A card closes at `words` words (1 to 3)
+  or on a word ending in `. , ? !`; the words are kept as spoken, only shifted onto the reel's
+  clock. Each card holds toward the next, so they never blink: its end becomes
+  `max(end, min(next start, max(end + 0.8, start + 0.5)))`. With `seam`, the style's `offset` puts
+  the cards on it. A split reel's words come from its audio-carrying track (the unmuted one).
+- `hook` asks for the hook card, as the format sets it: `{"lines": ["HE'S PARALYZED.", ...],
+  "box": "#C8161D", "color": "#FFFFFF", "font": "bebas-neue-regular", "size": 96, "lineHeight": 100,
+  "seam": 960, "gap": 70, "length": 3.2}`. Two layers from 0, `hook-box` (a colour box that hugs
+  the text) and `hook-text`, centred, the box's bottom edge `gap` px above the seam (or, with no
+  seam, at a third of the height). The lines are the ones the map approved, never written here;
+  a line over 22 characters, or more than three lines, is a note.
+
 A phrase shows from its first word to half a second after its last, at least 1.5 s and at most
 3 s, and never past its clip's end or into the next phrase. It prints one JSON line,
 `{scene, layers, highlights, notes}`: the scene with the new layers on top, their ids, each
@@ -117,14 +130,51 @@ def timed_words(transcript: Json) -> List[Word]:
     return sorted(words, key=lambda w: w[1])
 
 
+def spoken(transcript: Json) -> List[Tuple[str, float, float, bool]]:
+    """What a word card can show: every timed word, and each segment without word times as one
+    block over its own start and end (text, start, end, is_block), in spoken order."""
+    out: List[Tuple[str, float, float, bool]] = []
+    for seg in transcript['segments']:
+        tokens = (seg.get('text') or '').split()
+        timed = seg.get('words') or []
+        if tokens and len(timed) == len(tokens):
+            out += [(t, float(w['start']), float(w['end']), False) for t, w in zip(tokens, timed)]
+        elif tokens and seg.get('start') is not None and seg.get('end') is not None:
+            out.append((' '.join(tokens), float(seg['start']), float(seg['end']), True))
+    return sorted(out, key=lambda w: w[1])
+
+
+def heard_runs(clips: List[Json], assets: Any) -> List[Json]:
+    """The heard clips, with pieces that play one source straight on (a split cuts its footage at
+    every shot and emphasis edge) joined into one run, so a word across an edge stays whole. A piece
+    that holds its last frame ends its run: the next one plays after the hold, not straight on."""
+    runs: List[Json] = []
+    for clip in clips:
+        if clip['image'] or clip['muted'] or clip['cut'] or clip['asset'] not in assets:
+            continue
+        last = runs[-1] if runs else None
+        if (last is not None and last['asset'] == clip['asset'] and last['speed'] == clip['speed']
+                and abs(last['spoken_end'] - last['end']) < 1e-3
+                and abs(last['out'] - clip['in']) < 1e-3 and abs(last['end'] - clip['start']) < 1e-3):
+            last['out'], last['end'], last['spoken_end'] = clip['out'], clip['end'], clip['spoken_end']
+        else:
+            runs.append(dict(clip))
+    return runs
+
+
 def reel_clips(scene: Json) -> List[Json]:
     """Each clip of the reel's track: where it starts on the reel, how long, and what it plays.
 
     `out` is the last source second the clip plays: a clip longer than its trim holds the last
     frame, so `spoken_end` is where its source stops on the reel, before `end`.
     """
-    track = next((layer for layer in scene.get('layers') or []
-                  if isinstance(layer, dict) and (layer.get('content') or {}).get('kind') == 'track'), None)
+    tracks = [layer for layer in scene.get('layers') or []
+              if isinstance(layer, dict) and (layer.get('content') or {}).get('kind') == 'track']
+    # A split reel has two tracks and only one is heard: its words are that track's.
+    heard = [t for t in tracks if any(isinstance(c, dict) and (c.get('content') or {}).get('kind') == 'media'
+                                      and (c.get('content') or {}).get('muted') is not True
+                                      for c in t['content'].get('clips') or [])]
+    track = (heard or tracks or [None])[0]
     if track is None:
         raise InputError('the scene has no track layer to time the words on')
     at = number(track.get('start', 0), 'the track layer start')
@@ -141,7 +191,7 @@ def reel_clips(scene: Json) -> List[Json]:
     out = []
     for i, clip in enumerate(track['content'].get('clips') or []):
         content = clip.get('content') or {}
-        trim = content.get('trim')
+        trim = content.get('trim') if content.get('kind', 'media') == 'media' else None
         speed = number(content.get('speed', 1), f'clips[{i}] speed')
         if clip.get('duration') is not None:
             length = number(clip['duration'], f'clips[{i}] duration')
@@ -156,7 +206,8 @@ def reel_clips(scene: Json) -> List[Json]:
         start = min(at, stop)
         if at + length > stop:
             source_out = min(source_out, source_in + max(0.0, stop - at) * speed)
-        out.append({'start': start, 'end': min(at + length, stop), 'asset': content.get('assetId'),
+        out.append({'start': start, 'end': min(at + length, stop),
+                    'asset': content.get('assetId') if content.get('kind', 'media') == 'media' else None,
                     'image': content.get('assetId') in images, 'muted': content.get('muted') is True,
                     'in': source_in, 'out': source_out, 'speed': speed, 'cut': at >= stop,
                     'spoken_end': start + max(0.0, source_out - source_in) / speed})
@@ -194,6 +245,102 @@ def caption_layers(clips: List[Json], transcripts: Dict[str, Json], style: Any) 
     if not layers:
         raise InputError('no unmuted clip of the track plays a source with a transcript, so there is nothing to caption')
     return layers
+
+
+CARD_HOLD = 0.8
+CARD_MIN = 0.5
+BREAKS = '.,?!'
+
+
+def word_cards(clips: List[Json], words: Dict[str, List[Tuple[str, float, float, bool]]], raw: Any,
+               height: float) -> Json:
+    """One captions layer of 1-3 word cards over every heard clip, held so they never blink. A
+    segment without word times is one card over the part of it the clip plays."""
+    opts = raw if isinstance(raw, dict) else {}
+    most = opts.get('words', 3)
+    if isinstance(most, bool) or not isinstance(most, int) or not 1 <= most <= 3:
+        raise InputError('cards words is 1, 2 or 3')
+    cards: List[Json] = []
+    runs = heard_runs(clips, words)
+    for clip in runs:
+        def at(t: float) -> float:
+            return clip['start'] + (t - clip['in']) / clip['speed']
+
+        def close(chunk: List[Tuple[str, float, float, bool]]) -> None:
+            if not chunk:
+                return
+            timed = [{'text': t.strip(), 'start': round(max(clip['start'], at(a)), 3),
+                      'end': round(min(clip['end'], at(b)), 3)} for t, a, b, _ in chunk]
+            start, end = min(x['start'] for x in timed), max(x['end'] for x in timed)
+            cards.append({'start': start, 'end': max(end, start + 0.1), 'text': ' '.join(x['text'] for x in timed),
+                          'words': timed})
+
+        chunk: List[Tuple[str, float, float, bool]] = []
+        for w in words[clip['asset']]:
+            if w[3]:
+                # an untimed segment: one card over the part of it this clip plays
+                if w[1] < clip['out'] and w[2] > clip['in']:
+                    close(chunk)
+                    chunk = []
+                    start, end = round(max(clip['start'], at(w[1])), 3), round(min(clip['end'], at(w[2])), 3)
+                    cards.append({'start': start, 'end': max(end, start + 0.1), 'text': w[0]})
+                continue
+            # a word the trim cuts into stays, within 50 ms of its edges; one wholly outside it is not heard
+            if not (w[1] >= clip['in'] - 0.05 and w[2] <= clip['out'] + 0.05 and w[2] > clip['in'] and w[1] < clip['out']):
+                continue
+            chunk.append(w)
+            if len(chunk) == most or w[0].strip()[-1:] in BREAKS:
+                close(chunk)
+                chunk = []
+        close(chunk)
+    if not cards:
+        raise InputError('no heard clip plays a source with word times, so there are no cards to make')
+    cards.sort(key=lambda c: c['start'])
+    # Cards hold no further than the last heard clip: never onto a muted end card after it.
+    stop = max(c['end'] for c in runs)
+    for card, nxt in zip(cards, cards[1:] + [{'start': stop}]):
+        card['end'] = round(max(card['end'], min(nxt['start'], max(card['end'] + CARD_HOLD, card['start'] + CARD_MIN))), 3)
+    style = copy.deepcopy(opts.get('style')) if isinstance(opts.get('style'), dict) else {}
+    if opts.get('seam') is not None:
+        style['offset'] = [0, round(number(opts['seam'], 'cards seam') - height / 2, 3)]
+    content: Json = {'kind': 'captions', 'timeOffset': 0, 'transcript': {'segments': cards}}
+    if style:
+        content['style'] = style
+    return {'id': 'captions', 'start': 0, 'duration': round(stop, 3), 'content': content}
+
+
+def hook_layers(raw: Any, width: float, height: float, notes: List[str]) -> List[Json]:
+    """The hook card: a colour box hugging the lines, and the lines on it, above the seam."""
+    if not isinstance(raw, dict):
+        raise InputError('hook must be an object with its lines')
+    lines = raw.get('lines')
+    if not isinstance(lines, list) or not lines or not all(isinstance(x, str) and x.strip() for x in lines):
+        raise InputError('hook lines are the approved lines of the hook, as a list')
+    if len(lines) > 3:
+        notes.append(f'the hook has {len(lines)} lines; the format reads 2 or 3')
+    for line in lines:
+        if len(line) > 22:
+            notes.append(f'the hook line "{line}" runs {len(line)} characters, over 22')
+    size = number(raw.get('size', 96), 'hook size')
+    line_height = number(raw.get('lineHeight', size * 100 / 96), 'hook lineHeight')
+    length = number(raw.get('length', 3.2), 'hook length')
+    w = min(width - 80, max(len(x) for x in lines) * size * 0.42 + 70)
+    h = line_height * len(lines) + 36
+    if raw.get('seam') is not None:
+        bottom = number(raw['seam'], 'hook seam') - number(raw.get('gap', 70), 'hook gap')
+    else:
+        bottom = height / 3 + h / 2
+    y = round(bottom - h / 2, 3)
+    font: Json = {'size': size}
+    if isinstance(raw.get('font'), str):
+        font['family'] = raw['font']
+    return [
+        {'id': 'hook-box', 'start': 0, 'duration': length, 'transform': {'position': [width / 2, y]},
+         'content': {'kind': 'color', 'color': raw.get('box', '#C8161D'), 'size': [round(w), round(h)]}},
+        {'id': 'hook-text', 'start': 0, 'duration': length, 'transform': {'position': [width / 2, y]},
+         'content': {'kind': 'text', 'text': '\n'.join(lines), 'font': font, 'color': raw.get('color', '#FFFFFF'),
+                     'alignment': 'center', 'lineHeight': line_height, 'wrapWidth': round(w - 40)}},
+    ]
 
 
 def default_highlight_style(width: float, height: float) -> Json:
@@ -251,8 +398,8 @@ def place_highlights(raw: Any, clips: List[Json], words: Dict[str, List[Word]]) 
 def place(data: Any, base: str = '.') -> Json:
     if not isinstance(data, dict):
         raise InputError('the input must be a JSON object')
-    if 'captions' not in data and 'highlights' not in data:
-        raise InputError('ask for "captions", "highlights" or both')
+    if not any(k in data for k in ('captions', 'highlights', 'cards', 'hook')):
+        raise InputError('ask for "captions", "cards", "highlights", "hook", or several')
     scene = read_json(data.get('scene'), base, 'scene')
     if not isinstance(scene, dict) or not isinstance(scene.get('composition'), dict):
         raise InputError('scene must be the scene document, or the path of a file that holds it')
@@ -261,9 +408,9 @@ def place(data: Any, base: str = '.') -> Json:
     height = number(scene['composition'].get('height'), 'the composition height')
     clips = reel_clips(scene)
     raw = data.get('transcripts')
-    if not isinstance(raw, dict) or not raw:
+    if (not isinstance(raw, dict) or not raw) and set(data) & {'captions', 'highlights', 'cards'}:
         raise InputError('transcripts must map an asset id to its transcript')
-    transcripts = {aid: read_transcript(aid, read_json(t, base, f'transcripts "{aid}"')) for aid, t in raw.items()}
+    transcripts = {aid: read_transcript(aid, read_json(t, base, f'transcripts "{aid}"')) for aid, t in (raw or {}).items()}
     taken = {layer.get('id') for layer in scene.get('layers') or [] if isinstance(layer, dict)}
 
     added: List[Json] = []
@@ -273,6 +420,10 @@ def place(data: Any, base: str = '.') -> Json:
 
     placed: List[Json] = []
     notes: List[str] = []
+    if 'cards' in data:
+        added.append(word_cards(clips, {a: spoken(t) for a, t in transcripts.items()}, data['cards'], height))
+    if 'hook' in data:
+        added += hook_layers(data['hook'], width, height, notes)
     if 'highlights' in data:
         placed, notes = place_highlights(data['highlights'], clips, {a: timed_words(t) for a, t in transcripts.items()})
         style = data.get('highlightStyle') or default_highlight_style(width, height)

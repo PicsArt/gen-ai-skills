@@ -61,8 +61,8 @@ If `python3` is missing, say so in one line and stop. On a Mac without Apple's c
 
 ## The critics and the challenger as agents
 
-The Claude Code package ships seven agents: `critic-roots`, `critic-radical`, `critic-interface`,
-`critic-story`, `critic-growth`, `critic-art` and `challenger`. When they are in your list of
+The Claude Code package ships eight agents: `critic-roots`, `critic-radical`, `critic-interface`,
+`critic-story`, `critic-growth`, `critic-art`, `challenger` and `qc-inspector`. When they are in your list of
 agents (the plugin's name may come before a colon, as `picsart:critic-art`), the host has
 them. Start each with the `Agent` tool by that name, and start the six critics in one message so
 they run in parallel. Each prompt holds only the inputs the quality-review skill names, as file paths in

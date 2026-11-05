@@ -2,7 +2,7 @@
 name: make-short-drama
 description: Make a vertical drama series, pilot or episode with a recurring cast. Use for a short drama, a story reel, microdrama, web series or its next episode. Not for a one-off film (movie-producer).
 metadata:
-  uses: drama-series-writing, film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, retention-hooks, spoken-captions, background-music, scene-building-basics, quality-review, realistic-color-grade, voice-over-generation
+  uses: drama-series-writing, film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, footage-reframing, retention-hooks, spoken-captions, background-music, scene-building-basics, quality-review, realistic-color-grade, voice-over-generation
   optional: realistic-color-grade, voice-over-generation
   title: Make a short drama
   short-description: Make a vertical drama series with a recurring cast
@@ -32,7 +32,7 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 5e. The cut, once the last take lands | REVIEW | film-cutting, scene-building-basics, quality-review |
 | 5f. Finishing, once per series | ASK, SPEND | spoken-captions, background-music, realistic-color-grade |
 | 6. Verdict | — | quality-review |
-| 7. Deliver and accept | ASK, DELIVER | film-finishing |
+| 7. Deliver and accept | ASK, DELIVER | film-finishing, footage-reframing |
 
 | File | Read it before you… |
 |---|---|
@@ -307,7 +307,7 @@ version: DELIVER the actual HTTPS master once with its verdict, as picsart-video
 commit its proposed story delta to the series record, mark it accepted and advance the next
 episode. Then offer once to post it. Use film-finishing for archive and model disclosure; record
 the disclosure and the music licence check the user owns. Confirm any additional master with one
-ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) before its first export.
+ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) before its first export; one in another shape is reframed as the footage-reframing skill says.
 
 Preserve rejected proposals separately. Persist production milestones as they happen without
 committing their story deltas. Say where the series stands at session end.

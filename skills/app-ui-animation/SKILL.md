@@ -4,6 +4,7 @@ description: Build a phone or web UI in a scene with scrolling, carousels, butto
 metadata:
   category: authoring
   version: '1.11'
+  ported-from: ui-motion 1.11 at 55.75.0
 user-invocable: false
 ---
 

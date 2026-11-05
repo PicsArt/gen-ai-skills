@@ -64,7 +64,9 @@ scene the user approved, with `python3 scripts/reel_text.py words.json`:
 }
 ```
 
-`transcripts` maps each spoken source's asset id to its saved transcript. Ask for `captions`,
+`transcripts` maps each spoken source's asset id to its transcript (its file, where you run
+commands). The script builds the words into the scene: where you cannot run commands, stop as
+picsart-video-rules says for a script that builds the scene. Ask for `captions`,
 `highlights` or both. The script reads each clip's place on the reel and its trim from the scene,
 so a clip the user retrimmed in the editor is read as they left it, and it prints the scene with
 the new layers on top. A phrase it had to cut short comes back in `notes`.
@@ -78,6 +80,34 @@ the new layers on top. A phrase it had to cut short comes back in `notes`.
 - **Highlights** all go on one `captions` layer, one segment per phrase, each on a pill the
   renderer fits to the measured words. Pass `highlightStyle` to change the look; the font follows
   the scene-building-basics skill.
+
+### Word cards and the hook (a reference's format)
+
+When the record's `format` sets the captions as word cards, or a hook card, ask the script for
+them instead of `captions`:
+
+```json
+{
+  "scene": "scene.json",
+  "transcripts": {"talk": "transcript-talk.json"},
+  "cards": {"words": 3, "seam": 960, "style": {"font": {"family": "bebas-neue-regular", "size": 100}}},
+  "hook": {"lines": ["HE'S PARALYZED.", "AND HE WON."], "box": "#C8161D", "size": 96,
+           "seam": 960, "gap": 70, "length": 3.2}
+}
+```
+
+- **Cards**: one `captions` layer of 1 to 3 words each (`words`), a card closing early on a word
+  ending in `. , ? !`. The words keep their spoken times; each card holds toward the next, so they
+  never blink. `seam` puts the cards on the seam of a split. On a split, the words come from the
+  track with the sound (the top one); the muted bottom track is never read. A segment without
+  word times is one card over its own span, and the last card stops where the speech does, never
+  over the end card.
+- **Hook**: a colour box that hugs the lines (`hook-box`) and the lines on it (`hook-text`), from
+  the reel's start for `length` seconds, the box's bottom `gap` px above the seam. The lines are
+  the ones the map approved, never written here. More than three lines, or a line over 22
+  characters, comes back in `notes`.
+
+The style, the box colour, the size and the length come from the format, never from taste.
 
 ### Choosing highlights
 
