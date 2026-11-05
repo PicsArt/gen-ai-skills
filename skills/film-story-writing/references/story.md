@@ -11,7 +11,8 @@ wrote down.
 - Playable action
 - What the middle is made of
 - Building to the peak
-- Read it as a stranger before showing it
+- Check it yourself before the cold read
+- The viewer track
 
 ## The ten lines
 
@@ -139,9 +140,11 @@ the shiver. We are moved by watching someone be moved, so a held-in face at the 
   written in its `note`. Every other face is at 1, or 2 where the action opens it.
 - One shot, not a scene. Two peaks are none.
 
-## Read it as a stranger before showing it
+## Check it yourself before the cold read
 
-Fix what you find in the text, not in a note to the user:
+These are the writer's checks. You know the story, so they can't tell you whether a stranger
+follows it: only the cold watch can (the viewer track, below). Fix what you find in the text, not
+in a note to the user:
 
 - Is the thing everyone wants seen before anyone speaks of it?
 - Would a viewer know who has it, and where the people are, at every moment?
@@ -156,3 +159,16 @@ Fix what you find in the text, not in a note to the user:
 
 The one exception: where a fix would touch **Fixed**, leave the text and say it in one line under
 the story. That is the user's call.
+
+## The viewer track
+
+With the story, write what a viewer who knows nothing must get from the film, and by when, as
+quality-review's cold watch says (`references/cold-watch.md`): a premise, the must-knows with the
+second each must land by, the misreads to avoid, and the questions to ask after watching, with
+their answers. Who each person is to the others, who is spoken to, and why someone decides are
+must-knows; a scene says them in what is seen or heard, never in a note.
+
+Keep the track apart from the story (the project record's `viewerTrack`), never inside the scenes,
+the cards or a prompt.
+It is never shown to a cold viewer or a critic. The use case asks the user to confirm its
+questions with the story; after a cold watch it changes only with the user's yes.

@@ -30,7 +30,7 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 5b. The shot list | ASK | film-story-writing, film-shot-generation |
 | 5c. Storyboard and animatic | SPEND, ASK, REVIEW | film-animatic, film-shot-generation, film-cast-design, voice-over-generation, scene-building-basics, quality-review |
 | 5d. Shooting | ASK, SPEND | voice-over-generation, film-shot-generation |
-| 5e. The cut, once the last take lands | REVIEW | film-cutting, scene-building-basics, quality-review |
+| 5e. The cut, once the last take lands | SPEND, REVIEW | film-cutting, scene-building-basics, quality-review |
 | 5f. Finishing, once per series | ASK, SPEND | spoken-captions, background-music, realistic-color-grade |
 | 6. Verdict | — | quality-review |
 | 7. Deliver and accept | ASK, DELIVER | film-finishing, footage-reframing |
@@ -103,8 +103,8 @@ missing. A supplied cast or picture is not in the Library until it is saved: whe
 | `voice` | 5c's sound: each line in the cast's locked voice, the beds and effects, as the film-animatic skill says, laid on the approved slides, the panels re-timed to the real lines | the voice lines and sound |
 | `video` | stages 5d to 5f, each take with its line's approved voice as reference audio where the model takes it, cut to the approved timing | the takes |
 
-- `slides`: build the animatic as the film-animatic skill says, without its sound. Then REVIEW it,
-  titled "<Episode> - slides". The on-screen text follows the house style the user gave (font, plate,
+- `slides`: build the animatic as the film-animatic skill says, without its sound, and watch it
+  cold. Then REVIEW it, titled "<Episode> - slides", opened cold. The on-screen text follows the house style the user gave (font, plate,
   safe area); without one, as the spoken-captions skill says. 5c's SPEND bought the pictures it
   quoted. A line with no picture yet, or a picture made again, is new: SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the extras as one
   batch before you make them, never under 5c's yes. The animatic is a timing draft, so its stills
@@ -182,8 +182,9 @@ through this gate alone; an existing lock survives.
 
 Use drama-series-writing against the committed ledger, with its episode beats and serialization
 checks, the finale's closure included. Use retention-hooks for
-the opening and film-story-writing for scene writing and dialogue. Keep its story and scene
-form; put the serialization delta beside it. A story note returns a rewritten paragraph.
+the opening and film-story-writing for scene writing and dialogue, and for the episode's viewer
+track. Keep its story and scene form; put the serialization delta beside it, and the track's
+after-watch questions under it, for correction. A story note returns a rewritten paragraph.
 
 Use film-shot-generation to shortlist models. Open `picsart_model_choose` under the script:
 3 candidates (2 is fine), exactly one recommended, with the trade for this episode. The pick
@@ -221,7 +222,9 @@ under its own SPEND, with a new version and fresh review.
 
 Then the sound, as film-animatic says: every line in the cast's locked voice, a bed per scene and
 the cards' effects, on one SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), each line's real length probed. Build, validate and
-cut-check the animatic, then REVIEW it with its sound. Notes route as film-animatic says, a story
+cut-check the animatic, watch it cold (quality-review's cold watch, quoted first with its own
+SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) unless every call is quoted at 0 credits),
+then REVIEW it with its sound, opened cold. Notes route as film-animatic says, a story
 note back to 5a's script, a shot note to that panel or line alone, each change under its own SPEND;
 loop until the user says yes. A user who wants to shoot without the animatic may, as a recorded
 override; never skip it yourself.
@@ -270,8 +273,10 @@ on its own layer, the series' look and captions (5f) and, when chosen, its music
 else the user did not ask for: no transitions, padding, freeze frames, stills played as video,
 titles or template looks. A panel the user kept in 5d is
 theirs, not a still played as video.
-Check it with quality-review and run the verdict (6), then REVIEW the whole episode: this is the
-episode's one review: say there what your check observed in each take. At episode 1 the review
+Check it with quality-review, its cold watch included (quoted first with its own SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) unless
+every call is quoted at 0 credits; on a no, the review line says "no cold watch yet"), and run the
+verdict (6), then REVIEW the whole episode, opened cold: this is the episode's one review. Once the
+user has answered, say what your check observed in each take. At episode 1 the review
 also offers music once (5f). Judge dialogue by ear and say when no tool checked its words against
 the script.
 

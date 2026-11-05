@@ -61,7 +61,7 @@ import re
 import sys
 from typing import Any, Dict, List, Optional
 
-from panel import word_blocks
+from _words import word_blocks
 from safe_zone import check as safe_check
 from timing import InputError as UncheckedWords, lint as timing_lint, scene_duration
 

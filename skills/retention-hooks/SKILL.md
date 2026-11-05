@@ -42,7 +42,8 @@ written. From the pool of moments:
   a question, not just sound strong.
 - **Intensifier:** a sentence right after it that raises the stakes of the same question.
 - **Rehook:** a sentence that turns: "but", "except", "what nobody tells you", a second problem.
-  Place it at the middle even when the speaker said it earlier, as long as it stands on its own.
+  Place it at the middle even when the speaker said it earlier, as long as it stands on its own:
+  a cold reader of the heard script says whether it does, not you (the speech-aware-cutting skill).
 - **Payoff:** the sentence that answers the hook. **Never use the payoff as the hook**: it closes
   the loop before it opens. Lead with the question, end with the answer.
 
@@ -89,7 +90,7 @@ Choose the opener from what the material holds:
 |---|---|---|
 | **The problem** | a frustration the viewer has had, in their own words | "my AI film had zero close-ups" |
 | **POV** | the viewer's own situation, in the second person | "POV: your storyboard is all wide shots" |
-| **In the middle** | the result happening, before any setup | the shot list rewriting itself |
+| **In the middle** | the result happening, before any setup, which lands within the next 3 seconds | the shot list rewriting itself |
 | **Before and after** | the two states, joined by a hard cut | the wide still, then the close-up |
 | **The surprise** | something the viewer did not expect to see here | a man in his fifties vaulting a wall for his coffee |
 
@@ -111,7 +112,8 @@ Any one of these makes a short read as an ad, and the viewer scrolls past it:
 the first, for instance by ending on the problem the hook opened on, now solved. A replay then
 reads as one continuous video. A serial exit follows drama-series-writing instead.
 
-The quality-review skill's viewer panel tests a hook on simulated viewers before anything is paid for.
+The quality-review skill's cold watch tests a hook on the built draft: its first two pieces (to
+3 s) say whether strangers who know nothing of the video keep watching.
 
 ## Check the loops
 

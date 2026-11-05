@@ -41,7 +41,7 @@ step; `outro.steps` is that one step, so the ending holds the payoff; `outro.cta
 `target` is the chosen length.
 
 **Check questions.** Does the hook open on a real moment, not the app's empty state or a product
-shot? Did the viewer panel pass the hook and the draft? Can a beginner tell
+shot? Did the draft's cold watch meet its floor, the hook included? Can a beginner tell
 what to click from each step alone? Is each feature line what the step gets done, not the clicks?
 Does the short make sense with no other short before it? Is anything private left on screen that
 the privacy pass did not cover?

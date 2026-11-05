@@ -18,16 +18,18 @@ limit that covers it). Building, checking, the editor and the export are free.
 ## 1. Cards that can be drawn
 
 Before a panel is bought, every shot card carries what film-story-writing's breakdown asks for,
-with three fields the animatic depends on: the **mode** (the camera's relation: lens, observed,
-point of view or voice-over), the **eyeline** (who or what the person on screen looks at or speaks
-to) and, on a shot where someone decides, the **cause** (the earlier shot that shows why). One
-action per shot, one feeling per face, one peak.
+with two fields the animatic depends on: the **mode** (the camera's relation: lens, observed,
+point of view or voice-over) and the **eyeline** (who or what the person on screen looks at or
+speaks to). One action per shot, one feeling per face, one peak. Why someone decides is not a card
+field: it is a must-know in the film's viewer track, and the cold watch tests whether the picture
+gives it.
 
 From this skill's folder, run `python3 scripts/animatic_plan.py <file>` on the cards (its header
 has the input). It fails a card with no mode or eyeline, a change of mode the picture does not
-show, a decision with no earlier cause, and a film without exactly one peak, and warns an opening
-shorter than 1.5 s. Fix an error on the card before any picture; a fix that changes what happens
-is a story note, answered as film-story-writing says.
+show, and a film without exactly one peak, and warns an opening shorter than 1.5 s. Fix an error
+on the card before any picture; a fix that changes what happens is a story note, answered as
+film-story-writing says. A clean plan says the cards are complete, never that a viewer will follow
+them.
 
 ## 2. Panels
 
@@ -72,7 +74,8 @@ Build it as scene-building-basics says, from the plan's timeline:
 - every voice line an audio layer at its planned start, the scene's bed under it, each effect on
   its action;
 - the captions and on-screen text in the house style the user gave, otherwise as the
-  spoken-captions skill says.
+  spoken-captions skill says. A caption carries only what is said: never a speaker's name the
+  viewer has not heard, a card's id or a stage direction. The viewer reads them as the film.
 
 Then `picsart_scene_validate`, and fix every error. From quality-review's folder run
 `python3 scripts/cut_check.py --slides <file>` on it, as quality-review says: the joins, overlays and
@@ -83,12 +86,17 @@ Without code execution, time the shots by hand the same way and say the scripts 
 
 ## 5. Review as watched
 
-- **Critics first, honestly.** Where quality-review's critic panel runs, it judges the contact
-  sheet with the timed script and the cards. Each critic says what it could not see or hear (the
-  voices, the timing at speed): a thing it could not judge is not a pass.
-- **Then the user watches it.** REVIEW the animatic in `picsart_scene_editor`, with its sound, as
-  picsart-video-rules says. Say in one line what the critics found and what nobody but the user
-  has heard yet.
+- **A cold watch first.** Run quality-review's cold watch on the animatic against the film's
+  viewer track, with the cast's voice lines as its `voices`, quoted first as its reference says: a
+  SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1 unless every call is quoted at 0 credits. You wrote the story, so you can't tell whether a
+  stranger follows it; nor can a critic who reads the cards. Fix what falls under its floor, the
+  earliest gap first, by changing what is seen or heard, and watch again with fresh viewers, a round
+  the yes did not cover quoted again. If the user says no, the review line says "no cold watch yet".
+- **Then the critics, with the gap list.** Where quality-review's critic panel runs, it judges the
+  contact sheet and the gap list, never the cards or the timed script. Each critic says what it
+  could not see or hear (the voices, the timing at speed): a thing it could not judge is not a pass.
+- **Then the user watches it, cold.** REVIEW the animatic in `picsart_scene_editor`, with its
+  sound, as picsart-video-rules says: a draft opens cold.
 - **An MP4 only when asked.** `picsart_scene_export` (free) when the user wants a file to watch or
   share, or when the host cannot show the editor; give its `downloadUrl`.
 
@@ -115,6 +123,9 @@ The approved animatic is the film's plan for everything after it:
 
 - Buying video before the animatic is approved, or calling the scene pictures alone an animatic.
 - A silent animatic called reviewed: the user has not heard the voices yet.
+- An animatic called reviewed with no cold watch, or a cold watch given the cards, the story or the
+  track: whoever knows the story fills in what the picture never shows.
+- Captions carrying speaker names, card ids or stage directions.
 - A generated interface on a screen.
 - A move added to a still to pass a motion check, or to make the draft look busy.
 - Re-making every panel for one note.

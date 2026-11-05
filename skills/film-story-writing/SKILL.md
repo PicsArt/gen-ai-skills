@@ -11,7 +11,7 @@ story and never the other way round. Read these before the step they serve:
 
 | File | Read it before you… |
 |---|---|
-| `references/story.md` | write or rewrite the story |
+| `references/story.md` | write or rewrite the story, or its viewer track |
 | `references/dialogue.md` | write a spoken line |
 | `references/breakdown.md` | turn the story into shot cards and asset tags |
 | `references/look.md` | suggest a look, or use the user's reference images |
@@ -58,6 +58,11 @@ it, check:
 - the events belong to the genre;
 - nothing contradicts what the user's brief fixed;
 - every scene has action, and every object belongs to the world and its period.
+
+These are your checks as the writer, never a stranger's read. Then write the film's viewer track
+(`references/story.md`): what a viewer who knows nothing must get, and by when. Whether a stranger
+gets it is decided by quality-review's cold watch on the animatic and the cut, never by you or a
+critic who has read the story.
 
 State the identity budget you inferred ("two faces and one garage"); never ask the user to choose
 it. A short affords two or three faces and one to three rooms comfortably. A crowd is one asset with

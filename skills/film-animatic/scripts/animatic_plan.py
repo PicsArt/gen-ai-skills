@@ -11,15 +11,15 @@ The input is one JSON object:
     {"shots": [{"id": "A", "seconds": 2.5, "mode": "observed", "eyeline": "the phone",
                 "lines": [{"who": "@bev", "text": "I'll just send the chat a picture.", "sec": 1.9}]},
                {"id": "B", "seconds": 3, "mode": "observed", "eyeline": "@dot",
-                "decides": true, "cause": "A", "peak": true,
+                "peak": true,
                 "lines": [{"who": "@bev", "text": "It's only a chat."}]}],
      "lead": 0.15, "gap": 0.2, "tail": 0.3}
 
 - `shots`: the approved cards, in story order. `seconds` is the card's planned length. `mode` is
   the camera's relation (`lens`, `observed`, `pov` or `voice-over`); `eyeline` is who or what the
   person on screen looks at or speaks to. `switch: true` marks a shot that shows a change of mode.
-  `decides: true` marks a shot where someone decides; `cause` is the id of the earlier shot that
-  shows why. `peak: true` marks the film's one peak.
+  `peak: true` marks the film's one peak. A field it does not know, such as an older card's
+  `decides` or `cause`, is ignored.
 - `lines`, optional per shot: what is heard in it, in order. `sec` is the line's real length from
   `picsart_media_probe`; without it the length is estimated at three words a second.
 - `lead` (0.15 s), `gap` (0.2 s) and `tail` (0.3 s), optional: the silence before the first line,
@@ -34,7 +34,6 @@ ready for the scene's audio layers. Each finding has a `code`, a `level` (`error
 - `no-mode`, `no-eyeline` (error): a card that does not say the camera's relation or who is
   addressed, so the viewer cannot tell who is spoken to.
 - `mode-switch` (error): the camera's relation changes from the shot before with no shown switch.
-- `no-cause` (error): a decision with no earlier shot showing its cause.
 - `peak` (error): the film has no peak or more than one.
 - `opening` (warn): the first shot is shorter than 1.5 s, so the opening cannot hold one thing.
 - `unprobed` (warn): a line timed from its word count, not its real length.
@@ -108,10 +107,9 @@ def run(data: Any) -> Dict[str, Any]:
 
     findings: List[Dict[str, Any]] = []
     timeline: List[Dict[str, Any]] = []
-    order = {s['id']: i for i, s in enumerate(shots)}
     t = 0.0
     prev_mode: Optional[str] = None
-    for i, s in enumerate(shots):
+    for s in shots:
         sid = s['id']
         mode = s.get('mode')
         if mode not in MODES:
@@ -125,11 +123,6 @@ def run(data: Any) -> Dict[str, Any]:
         if not isinstance(s.get('eyeline'), str) or not s['eyeline'].strip():
             findings.append(_finding('no-eyeline', 'error', sid, f'{sid} does not say who or what is looked at or spoken to',
                                      'name the eyeline: the lens, a person by tag, or a thing in frame'))
-        if s.get('decides'):
-            cause = s.get('cause')
-            if not isinstance(cause, str) or cause not in order or order[cause] >= i:
-                findings.append(_finding('no-cause', 'error', sid, f'{sid} holds a decision with no earlier shot showing why',
-                                         'name the earlier shot that shows the cause, or add one before it'))
 
         need = 0.0
         placed = []

@@ -43,6 +43,9 @@ The prompt that starts you gives you these, as file paths or URLs. Nothing else 
 5. **The destination**: where it is posted, and its length.
 6. **The brief**, when the user supplied one with the footage (notes, a guide, a script): its
    main message, audience and must-shows, quoted. Its words beat any slogan in the draft.
+7. **The cold watch's gap list**, when one ran: each place where strangers who watched the draft
+   cold, a few seconds at a time, lost the thread, in their own words. They knew nothing of it;
+   you know its goal. Where your lens touches a gap, start from it and say what caused it.
 
 If the source stills are missing, or the sheets are, do not judge from memory or guess. Return
 a note whose `verdict` names the missing input, with no problems.
@@ -78,5 +81,5 @@ Only this JSON object, in one fenced block, at most about 350 words in all:
   look for one.
 - Never write or change a file outside the session's scratch folder.
 - Never ask for the plan, the conversation, the skill's text or another critic's note. You judge
-  what a viewer would get: the frames and the words.
+  the frames and the words. What a stranger got is the gap list's to say, never yours.
 - Never praise what works. Never invent a problem to fill the note.
