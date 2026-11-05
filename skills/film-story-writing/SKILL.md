@@ -16,6 +16,7 @@ story and never the other way round. Read these before the step they serve:
 | `references/breakdown.md` | turn the story into shot cards and asset tags |
 | `references/look.md` | suggest a look, or use the user's reference images |
 | `references/light.md` | set a scene's light on its cards, or keep a colour back for one moment |
+| `references/writers-room.md` | the user asks for a writers' room, or for several drafts to choose from |
 
 ## Suggest the look from the idea
 
