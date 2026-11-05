@@ -104,11 +104,20 @@ the rules below. Where commands run, `python3 scripts/record.py status edit-foot
   `minHold`. A cut lands about 0.1 s before the word its picture illustrates, and only on key
   words: a shot holds through minor words. When the reference and the job's default disagree,
   the reference wins.
+- **Every cut has a reason.** In the plan, each shot after the first carries `why`: one line on why
+  the cut comes there, from the first of Walter Murch's reasons that holds: feeling (the viewer's
+  feeling turns), story (the viewer learns something new), rhythm, then the eye (it lands where the
+  next shot's interest is). A cut whose only reason is the word under it is not made: the shot
+  before holds through it.
 
 ## The meaning map
 
 At `story`, each phrase or beat gets the picture's **job** ("precision" → hands on a keyboard,
-close). Once the user approves the map, its rows go into `locked`, and they hold:
+close). Write the job as what the viewer gets from the picture, never only what it shows: a picture
+that only repeats the word under it (the letterhead on "Firm") gives the viewer nothing the voice
+has not. The map locks only after the first draft's cold watch (Gate rules), so a job the strangers
+did not get changes before the user approves it. Once the user approves the map, its rows go into
+`locked`, and they hold:
 
 - A later fix may swap a shot only for one with the same job.
 - A change of job needs a rendered A/B the user saw. Record their choice in `approvals` with
@@ -175,6 +184,11 @@ Every check in the pipeline, measured or by eye, follows these:
    and compare it with the script (a repeated or clipped line shows there), and look at stills at
    every used range with `picsart_scene_contact_sheet`, the render passed as `media`. Both are
    free. Write each check's result into the version's `gates`.
+9. **A stranger watches before the user does.** Each draft the user will see first gets a cold
+   watch, as the quality-review skill says, with `cuts: true`, its calls quoted first and a
+   SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1 unless every call is quoted at 0 credits: each moment also asks where a cut
+   felt like a jump or too fast, and why. Each jump it lists is fixed, or kept with its reason in
+   the version's `gates`. Nobody who knows the brief judges whether a stranger follows the cut.
 
 ## Who does what
 

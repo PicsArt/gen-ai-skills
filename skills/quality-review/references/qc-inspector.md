@@ -35,7 +35,8 @@ Where the host has the inspector as an agent (its host notes say so), start the 
   end card from the scene). Without commands, the inspector reads the same from the stills;
 - the meaning diff's lines against the last version the user saw, as the edit-pipeline skill's
   `scripts/meaning_diff.py` gives them;
-- in a later round, the earlier rounds' findings, without your answers to them.
+- in a later round, the earlier rounds' findings, without your answers to them;
+- the cold watch's gap list, when one ran on this draft.
 
 Never give it the conversation, your reasons for a choice, or a critic's note. Without the agent,
 run it as its own isolated worker where the host can, its prompt the whole text of

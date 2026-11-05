@@ -50,7 +50,7 @@ import json
 import sys
 from typing import Any, Dict, List, Optional, Tuple
 
-from panel import _blocks, _duration, _last, _num
+from _words import _blocks, _duration, _last, _num
 
 CRITICS = ('roots', 'radical', 'interface', 'story', 'growth', 'art')
 NAMES = {

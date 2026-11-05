@@ -50,13 +50,23 @@ play order into the **heard script**, and checks three things per clip:
 | Integrity | an edge cuts through a word, or the clip opens or stops mid-sentence | move that edge to the time given |
 | Substance | most of the clip is filler; the opening clip is held to a stricter share | drop it, or take the sentence beside it |
 | Fluency | a clip opens on a connective ("but", "so") with nothing before it, or the reel opens on a pronoun no one has been named for | move the in point back to what it refers to, or lead with another clip |
+| Context | a clip opens on an answer ("Yes", "Exactly") whose question the cut drops | move the in point back to the question |
 
 Each clip also lists the `speakers` its words carry. Use them when the footage-reframing skill asks who a
 clip should hold on.
 
-**Then read the `script` yourself, as prose.** If it does not hold together as a paragraph, it
-will not hold together as a video. The script finds the mechanical faults; whether a clean clip is
-worth its seconds is your call.
+The review also returns `context`: each name the reel says for the first time, each "she" or "that"
+right after a seam, each "as I said", and each seam that jumps far in its source, with the second of
+the reel it is heard at and, when the cut drops it, what the source said first. These are not faults.
+They are the places a listener who knows only the reel may get lost.
+
+**Then have the script read cold.** You know the whole footage, so you cannot hear what is missing.
+Have it read on paper as the quality-review skill's cold watch says, its calls quoted first as it
+says: a SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before the first read unless every call is quoted at 0 credits. Each row a clip's time in the
+reel and its heard words, so readers who know nothing read it up to each moment and say what they
+understood. Check their account at each `context` time: did they know who or what it was? Where
+they did not, keep the setup or lead with another clip. Read the `script` yourself too, as prose,
+for what is clunky; whether a clean clip is worth its seconds is your call.
 
 Apply the repairs to the plan and run it again until it is clean. A repair changes numbers in a
 plan, so it costs nothing. **The review never blocks the cut:** if every candidate is thin, build

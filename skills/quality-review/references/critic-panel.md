@@ -1,11 +1,11 @@
 # The critic panel
 
-Six simulated critics with taste look at a draft before the user does. Each has one lens. Each says
-what is wrong, when, and how to fix it.
+Six simulated critics with taste look at a draft after its cold watch and before the user does.
+Each has one lens. Each says what is wrong, when, and how to fix it.
 
 ## Contents
 
-- How it differs from the viewer panel
+- How it differs from the cold watch
 - The critics
 - What they see
 - What each returns
@@ -13,13 +13,15 @@ what is wrong, when, and how to fix it.
 - Merge the notes
 - Fix, ask, and review
 
-## How it differs from the viewer panel
+## How it differs from the cold watch
 
-The viewer panel asks naive viewers what they felt: would they stop, did they learn, would they
-keep it. The critic panel asks experts what is wrong and what to do about it. Where the use case
-runs the viewer panel, run it first: it says whether the draft works. The critics say why it does not, and what would make it
-better. Both are simulated. A critic's note is an opinion from the frames, not a measure of how a
-feed will treat the video. Never write "the critics approved it".
+The cold watch asks strangers what they got, a few seconds at a time, and marks their words against the
+viewer track: it says where viewers lose the thread (`references/cold-watch.md`). The critic panel
+asks experts what is wrong and what to do about it. The critics know the video's goal, so they can
+never tell whether a stranger follows it. Run the cold watch first and give the critics its gap
+list: they say why viewers lost the thread there, and what would make the draft better. Both are
+simulated. A critic's note is an opinion from the frames, not a measure of how a feed will treat
+the video. Never write "the critics approved it".
 
 ## The critics
 
@@ -32,7 +34,7 @@ same text is in this skill as `references/agent-critic-<id>.md`.
 | **The first-principles critic** (`roots`) | agent `critic-roots`, brief `references/agent-critic-roots.md` | the core problem the video solves for its viewer |
 | **The radical** (`radical`) | agent `critic-radical`, brief `references/agent-critic-radical.md` | the concept, not the execution |
 | **The interface designer** (`interface`) | agent `critic-interface`, brief `references/agent-critic-interface.md` | the UI on screen, and its fidelity to the real app |
-| **The story editor** (`story`) | agent `critic-story`, brief `references/agent-critic-story.md` | whether the message is true, clear at first watch and worth the time |
+| **The story editor** (`story`) | agent `critic-story`, brief `references/agent-critic-story.md` | whether the message is true and worth the time, and why viewers lost the thread where the cold watch found they did |
 | **The growth strategist** (`growth`) | agent `critic-growth`, brief `references/agent-critic-growth.md` | the first second, where viewers drop, what makes them save or send it |
 | **The art director** (`art`) | agent `critic-art`, brief `references/agent-critic-art.md` | the look |
 
@@ -53,7 +55,7 @@ builder's whole output too. It prints `frames`:
 - `words`: every block of words on screen, with when it starts and ends. Add each spoken line, if
   there is one, with its time from the transcript.
 
-Each critic gets the same six things and nothing else:
+Each critic gets the same seven things and nothing else:
 
 - every sheet of the draft;
 - **the source stills**, which are required: the real UI or footage the video depicts, at its key
@@ -68,7 +70,9 @@ Each critic gets the same six things and nothing else:
 - the goal in one line (the message, as the user said it);
 - the destination (where it is posted, and its length);
 - **the brief**, when the user supplied one with the footage (notes, guides, scripts): read in
-  full, as picsart-video-rules says, with its main message, audience and must-shows quoted.
+  full, as picsart-video-rules says, with its main message, audience and must-shows quoted;
+- **the cold watch's gap list**, when one ran: where viewers lost the thread, in their own
+  words. Never the viewers' whole accounts.
 
 ## What each returns
 
@@ -89,12 +93,12 @@ no problems; it never invents one to fill the note.
 **Where the host has the critics as agents** (its host notes say so), start the six by name, all
 at once: `critic-roots`, `critic-radical`, `critic-interface`, `critic-story`, `critic-growth`
 and `critic-art`. Each agent holds its own lens, temper and note shape. Give each only what the
-section above gives: the sheets, the source stills, the words, the goal, the destination and the
-brief, when there is one, as files or links. Each returns its note as JSON, ready for `notes`.
+section above gives: the sheets, the source stills, the words, the goal, the destination, and the
+brief and the gap list when they exist, as files or links. Each returns its note as JSON, ready
+for `notes`.
 
-**Otherwise**, run them apart as the viewer panel runs its viewers (`references/viewer-panel.md`):
-where the host can run isolated workers in parallel, run each critic as its own worker, all six at
-once. Each worker's prompt is the whole text of its `references/agent-critic-<id>.md`, then the
+**Otherwise**, run them apart: where the host can run isolated workers in parallel, run each
+critic as its own worker, all six at once. Each worker's prompt is the whole text of its `references/agent-critic-<id>.md`, then the
 "Looking at an image" section of your host notes (the worker has no host notes of its own), then
 what the section above gives, as files or links, and nothing else. Each returns only its JSON note.
 Where it cannot, run the critics inline, one after another, the first-principles critic first,

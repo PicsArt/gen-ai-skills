@@ -33,6 +33,8 @@ Asking rules. One job: one or more screen recordings in; one video, or a set of 
 out.
 
 Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
+A gate with a scope in brackets opens only there: `SPEND (vertical)` is the cold watch's go-ahead,
+for a vertical video's draft alone; a horizontal video goes straight on through stage 10.
 
 | Stage | Gate | Skills |
 |---|---|---|
@@ -45,7 +47,7 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 7. The plan of video 1 | ASK | retention-hooks, quality-review, film-shot-generation |
 | 8. The voice, when chosen | ASK, SPEND | voice-over-generation, speech-aware-cutting, spoken-captions, ai-presenter |
 | 9. Build | — | screen-recording-layouts, screen-recording-zoom, scene-building-basics, visual-style, screen-ui-redesign, motion-design-craft |
-| 10. Check it | — | quality-review, visual-style, screen-recording-zoom, screen-recording-layouts |
+| 10. Check it | SPEND (vertical) | quality-review, visual-style, screen-recording-zoom, screen-recording-layouts |
 | 11. The user reviews | REVIEW | — |
 | 12. The rest of the set | SPEND, REVIEW | retention-hooks, quality-review, voice-over-generation, screen-recording-layouts, screen-recording-zoom, scene-building-basics, visual-style |
 | 13. Music, when wanted | ASK, SPEND, REVIEW | background-music |
@@ -182,6 +184,10 @@ words, and why the beat is there, traced to the message. Write the words as the 
 outline's words rules say and the retention-hooks skill says. **Never invent what the recording does
 not show.**
 
+With the plan, write its viewer track, as quality-review's cold watch says: the promise by 3 s,
+each step a newcomer must follow, and the payoff, with the questions to ask after watching. Its
+questions are shown with the rows, for correction.
+
 **Review the script before anyone sees the plan**, as quality-review's script review says: put its
 rewritten lines into the rows, and its why under the opening sentence. A `drop` is not planned:
 ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) what to do with that video, with the reason quoted: "Leave it out" (recommended: the
@@ -193,12 +199,12 @@ feels, the result in the middle of happening, a before and after), each written 
 skill's hook rules say, each saying what it opens on. The rows are shown for correction, not for
 approval: anything the user writes changes them, and their answer to the hook moves on.
 
-**The viewer panel, before the ASK** (a vertical video). Build each drafted hook, which is free,
-and run quality-review's viewer panel on its first 2 s. Rewrite a hook that fails, as the panel's
-`fix` says. Offer only hooks that pass, each with the panel's one line. This comes before
-anything is paid for: a hook that opens on footage not made yet is judged on its still or its
-description. When no hook passes after the rounds, offer the best one and say what still
-fails.
+**Each hook built, before the ASK** (a vertical video). Build each drafted hook, which is free,
+take its first 2 s on a contact sheet, and check it against the retention-hooks skill's hook rules.
+Rewrite one that breaks them. Offer each as a prediction, never as tested: nobody has watched it
+yet. A hook that opens on footage not made yet is judged on its still or its description. The
+draft's cold watch is the hook's test: its first two pieces (to 3 s) say whether strangers keep
+watching.
 
 An opening the recording does not hold, such as a generated shot, is a SPEND. **The first reply
 about a generated shot offers its key frames and nothing else:** stills at the hook, the turn and
@@ -309,10 +315,12 @@ kind. Then the polish pass, which quality-review runs:
   with each step's measured reveal as a change);
 - the first frame is a real moment (the payoff, or the problem it solves), not a login screen or
   an empty app;
-- a vertical video's draft passes quality-review's viewer panel. Its hook is judged again on the real
-  frames; its `summary` goes in the review line.
+- a vertical video's draft gets quality-review's cold watch against its viewer track, quoted first
+  as it says, with its SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1 unless every call is quoted at 0 credits: its first
+  two pieces test the hook, and its floor line goes in the review line. When the user says no, the
+  review line says "no cold watch yet";
 - then quality-review's critic panel runs on every draft (the six `critic-*` agents where the host has
-  them), with the recording's stills at each step as its source. Make its must-fixes, and ASK its `choices` before REVIEW, never applied silently.
+  them), with the recording's stills at each step as its source and the cold watch's gap list. Make its must-fixes, and ASK its `choices` before REVIEW, never applied silently.
 
 Then grade the brief with quality-review's `checklist.py`: the message, the destinations, the length,
 the hook and the ending from the record, and the plan's step lines. Fix only what it says no to.
@@ -336,9 +344,11 @@ harder to fix a soft contact sheet (screen-recording-zoom).
 
 ## 11. The user reviews
 
-REVIEW the mask build, titled "<Product> <kind> — draft 1", with the checklist's `summary` and one
-line on what to look at for this pass, as `references/routes.md` gives it ("Does the result land in the first two seconds? Is
-each click readable? Say where it drags"). Each new draft's number goes up by one. Comments apply
+REVIEW the mask build, titled "<Product> <kind> — draft 1", opened cold as picsart-video-rules
+says: its length and the track's questions. Once the user has answered, give the checklist's
+`summary`, the cold watch's floor line and the line `references/routes.md` gives for the kind ("Does
+the result land in the first two seconds? Is each click readable? Say where it drags"). Each new
+draft's number goes up by one. Comments apply
 where they point; after the third round on the same video, ask what is causing the misses (the
 look, the pace or the words) instead of patching again.
 

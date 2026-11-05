@@ -70,10 +70,21 @@ quality-review's cut check finds these in the scene; build the cut so it finds n
 - **Allowed spans are locked.** Each screen clip placed in the cut is an allowed span: write
   `allowed-spans.json` as `[{ start, end, file, reason }]`, in seconds on the cut's timeline, as you
   place the clips, and rewrite it on every re-cut. Never cut, re-time or zoom inside a span.
+- **A rule is never passed by adding a move.** A cut, push-in or zoom added to get past a check
+  makes the picture busier and the story harder to follow, as film-animatic's traps say: cut less,
+  or take another moment.
 
 ## The review
 
 The whole cut is reviewed once through; never one review per clip.
+
+- **A cold watch first.** Before the user sees a cut, run quality-review's cold watch on it
+  against the film's viewer track, with the cast's voice lines as its `voices`, quoted first as its
+  reference says: a credit go-ahead before round 1 unless every call is quoted at 0 credits, and
+  "no cold watch yet" in the review line if the user says no. Fix what falls under its
+  floor, the earliest gap first, by changing what is seen or heard, never by adding words to a
+  caption that explain it. Then the user watches the cut cold: its length and the track's
+  questions only. The gaps and your notes come after the user's answer.
 
 - The user's own edits are taken as picsart-video-rules says for an editor reply of `needs_changes`.
 - Each comment is located on its clip and its source seconds, diagnosed, and applied; compatible

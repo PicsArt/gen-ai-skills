@@ -27,15 +27,21 @@ transcript added:
   reviewed, and the clips on either side of it still have to make sense.
 - Every other field is ignored, so reel_cut.py's input can be passed as it is.
 
-It prints one JSON line, `{clips, script, clean, duration}`:
+It prints one JSON line, `{clips, script, clean, duration, context}`:
 
 - `clips`, one per clip: `heard`, the words kept; `verdict`, `ok` or `fix`; `issues`, each
-  `{check, problem}` where check is `integrity`, `substance` or `fluency`; `repairs`, each
+  `{check, problem}` where check is `integrity`, `substance`, `fluency` or `context`; `repairs`, each
   `{edge, to}` with the time to move that edge to, or `{drop: true}`; and `speakers`, the speaker
   tags the clip's words carry.
 - `script`: the whole reel's heard words in play order, `[photo]` where a beat has no speech.
   Read it as prose.
 - `clean`: how many clips need no fix. It never refuses a cut: it reports.
+- `context`: what a listener who knows only the reel may not be able to place, in play order, each
+  `{at, clip, kind, heard, ask}`, with `dropped`, the source's own words the cut leaves out, when they
+  are the likely answer. `at` is the second of the reel it is heard at. Kinds: `name`, a name heard
+  for the first time; `pointer`, a word like "she" or "that" in the first words after a seam;
+  `callback`, a phrase like "as I said"; `seam`, two clips of one source far apart or out of order.
+  These are candidates, not faults: a cold reader's account says whether each one landed.
 
 Input it cannot read exits 1, with one line on stderr that says what is wrong.
 
@@ -68,6 +74,22 @@ FILLER = {'yeah', 'yep', 'yes', 'no', 'nope', 'right', 'ok', 'okay', 'mm', 'mhm'
           'er', 'ah', 'oh', 'like', 'just', 'really', 'totally', 'exactly', 'sure', 'well', 'anyway',
           'basically', 'literally', 'actually', 'i', 'mean', 'you', 'know'}
 TERMINAL = re.compile(r'[.!?]["\')\]]?$')
+# A clip that opens on one of these answers something; the question must be heard first.
+ANSWERS = {'yes', 'yeah', 'yep', 'no', 'nope', 'exactly', 'right', 'absolutely', 'definitely', 'sure',
+           'totally', 'correct', 'true', 'agreed'}
+# Words that point back, looked for in the first words after a seam.
+POINTERS = ORPHAN | {'they', 'there', 'here', 'theirs'}
+POINTER_REACH = 4
+# Phrases that call back to something said earlier; the last three only right after a seam.
+CALLBACKS = [('like', 'i', 'said'), ('as', 'i', 'said'), ('as', 'i', 'mentioned'), ('i', 'mentioned'),
+             ('i', 'told', 'you'), ('like', 'we', 'said'), ('as', 'we', 'said'), ('you', 'remember'),
+             ('going', 'back', 'to'), ('the', 'same', 'thing')]
+SEAM_CALLBACKS = [("that's", 'why'), ('which', 'is', 'why'), ('this', 'is', 'why')]
+# Two clips of one source further apart than this, or out of order, may not read as one thought.
+SEAM_JUMP = 20.0
+NOT_NAMES = {'I', "I'm", "I've", "I'll", "I'd", 'OK', 'Okay', 'January', 'February', 'March', 'April', 'May', 'June',
+             'July', 'August', 'September', 'October', 'November', 'December', 'Monday', 'Tuesday', 'Wednesday',
+             'Thursday', 'Friday', 'Saturday', 'Sunday'}
 
 Json = Dict[str, Any]
 
@@ -84,6 +106,24 @@ def number(value: Any, what: str) -> float:
 
 def bare(word: str) -> str:
     return re.sub(r"[^a-z'-]", '', word.lower())
+
+
+def name_key(token: str) -> str:
+    """A token as a name: 'Leo's' and 'Leo.' are 'Leo'."""
+    return re.sub(r"['’]s$", '', re.sub(r"[^\w'’-]", '', token))
+
+
+def tokens_of(words: List[Json]) -> List[tuple]:
+    """Each token with the word it is in, and whether it opens a sentence."""
+    out: List[tuple] = []
+    prev: Optional[tuple] = None
+    for w in words:
+        for i, token in enumerate(w['w'].split()):
+            opens = (prev is None or bool(TERMINAL.search(prev[0]))
+                     or (i == 0 and w['s'] - prev[1]['e'] >= PAUSE))
+            out.append((token, w, opens))
+            prev = (token, w)
+    return out
 
 
 # --- The transcript -------------------------------------------------------------------------
@@ -154,13 +194,35 @@ class Speech:
                 return word['e']
         return self.words[-1]['e'] if self.words else t
 
+    def sentence(self, word: Json) -> str:
+        """The words of the sentence `word` is in."""
+        start, end = self.thought_start(word['s']), self.thought_end(word['e'])
+        return ' '.join(x['w'] for x in self.words if start - EDGE <= x['s'] and x['e'] <= end + EDGE)
+
+    def names(self) -> set:
+        """Words the transcript capitalises mid-sentence: its names, as far as words can tell."""
+        return {name_key(t) for t, _, opens in tokens_of(self.words)
+                if not opens and name_key(t)[:1].isupper() and name_key(t) not in NOT_NAMES}
+
+
+def carries(speech: Speech, words: List[Json], before: Optional[List[float]]) -> bool:
+    """The seam carries on the source's own passage when the clip before, of the same source, kept the
+    word before this one's first and stopped before it: an overlapping or backward range replays speech."""
+    if not words or before is None:
+        return False
+    k = speech.words.index(words[0])
+    prev = speech.words[k - 1] if k > 0 else None
+    return (prev is not None and before[0] - EDGE <= prev['s'] and prev['e'] <= before[1] + EDGE
+            and before[1] <= words[0]['s'] + EDGE)
+
 
 # --- The review -----------------------------------------------------------------------------
 
 
 def review_clip(speech: Speech, t_in: float, t_out: float, first: bool,
-                before: Optional[List[float]] = None) -> Json:
-    """`before` is the range of the clip played just before this one, when it is of the same source."""
+                before: Optional[List[float]] = None, played: Optional[List[List[float]]] = None) -> Json:
+    """`before` is the range of the clip played just before this one, when it is of the same source;
+    `played` holds the ranges of every earlier spoken clip of the same source, in play order."""
     words = speech.kept(t_in, t_out)
     issues: List[Json] = []
     repairs: List[Json] = []
@@ -168,14 +230,7 @@ def review_clip(speech: Speech, t_in: float, t_out: float, first: bool,
     def problem(check: str, text: str) -> None:
         issues.append({'check': check, 'problem': text})
 
-    # The seam carries on the source's own passage when the clip before kept the word before this one
-    # and stopped before this one's first word: an overlapping or backward range replays speech.
-    carried = False
-    if words and before is not None:
-        k = speech.words.index(words[0])
-        prev = speech.words[k - 1] if k > 0 else None
-        carried = (prev is not None and before[0] - EDGE <= prev['s'] and prev['e'] <= before[1] + EDGE
-                   and before[1] <= words[0]['s'] + EDGE)
+    carried = carries(speech, words, before)
 
     def repair(edge: str, to: float) -> None:
         to = round(to, 3)
@@ -222,6 +277,25 @@ def review_clip(speech: Speech, t_in: float, t_out: float, first: bool,
         elif first and tokens[0] in ORPHAN:
             problem('fluency', f'the reel opens on "{words[0]["w"].split()[0]}", which names no one yet')
 
+    # Context: an answer is heard with its question. A clip to drop needs no other repair.
+    # The question is heard already when an earlier clip of this source played it, a photo or another
+    # clip between them or not: reaching back would replay it. A speaker change alone makes an answer
+    # only of an answer word that stands alone ("Yes." or "Yes" and a pause), never of a sentence that
+    # opens on one ("No one expected it").
+    if tokens and tokens[0] in ANSWERS and not carried and {'drop': True} not in repairs:
+        k = speech.words.index(words[0])
+        prev = speech.words[k - 1] if k > 0 else None
+        heard = prev is not None and any(r[0] - EDGE <= prev['s'] and prev['e'] <= r[1] + EDGE
+                                         for r in (played or []))
+        lead = words[0]['w'].split()
+        alone = (bool(re.search(r'[.,!?;:…—-]["\')\]]?$', lead[0]))
+                 or (len(lead) == 1 and (len(words) == 1 or words[1]['s'] - words[0]['e'] >= PAUSE)))
+        if prev is not None and not heard and (re.search(r'\?["\')\]]?$', prev['w'])
+                                               or (alone and prev['seg']['speaker'] != words[0]['seg']['speaker'])):
+            problem('context', f'it opens on "{words[0]["w"].split()[0]}", an answer to '
+                               f'"{speech.sentence(prev)}", which the cut drops')
+            repair('in', speech.thought_start(prev['s']))
+
     speakers = sorted({w['seg']['speaker'] for w in words if w['seg']['speaker']})
     return {
         'heard': ' '.join(w['w'] for w in words),
@@ -230,6 +304,66 @@ def review_clip(speech: Speech, t_in: float, t_out: float, first: bool,
         'repairs': repairs,
         'speakers': speakers,
     }
+
+
+def context(spoken: List[Json], speech: Dict[str, Optional[Speech]]) -> List[Json]:
+    """What a listener who knows only the reel may not be able to place, in play order. Each spoken
+    clip is `{clip, source, in, out, at, words, carried}`, `at` being where it starts in the reel."""
+    found: List[Json] = []
+    heard: set = set()
+    names = {sid: s.names() for sid, s in speech.items() if s is not None}
+    for n, clip in enumerate(spoken):
+        s, words = speech[clip['source']], clip['words']
+        if s is None or not words:
+            continue
+        toks = tokens_of(words)
+        seam = not clip['carried']
+        k = s.words.index(words[0])
+        prev = s.words[k - 1] if k > 0 else None
+
+        def add(kind: str, word: Json, said: str, ask: str, dropped: Optional[str] = None, **extra: Any) -> None:
+            item = dict({'at': round(clip['at'] + max(0.0, word['s'] - clip['in']), 2), 'clip': clip['clip'],
+                         'kind': kind, 'heard': said, 'ask': ask}, **extra)
+            if dropped:
+                item['dropped'] = dropped
+            found.append(item)
+
+        # A name, the first time the reel says it; and where the source said it first, when the cut drops that.
+        for token, word, _ in toks:
+            key = name_key(token)
+            if key in names[clip['source']] and key not in heard:
+                heard.add(key)
+                first = next(x for x in s.words if key in {name_key(t) for t in x['w'].split()})
+                add('name', word, key, f'Who or what is {key}?',
+                    f'{round(first["s"], 2)} s in the source: "{s.sentence(first)}"' if first['s'] < word['s'] - EDGE
+                    else None)
+        # A word that points back, in the first words after a seam, before any name.
+        if seam:
+            for i, (token, word, _) in enumerate(toks[:POINTER_REACH]):
+                if any(name_key(t) in names[clip['source']] for t, _, _ in toks[:i]):
+                    break
+                if bare(token) in POINTERS:
+                    # The reel's opening pronoun is already a fluency issue.
+                    if not (n == 0 and i == 0 and bare(token) in ORPHAN):
+                        add('pointer', word, bare(token), f'What does "{bare(token)}" point to?',
+                            f'just before, in the source: "{s.sentence(prev)}"' if prev is not None else None)
+                    break
+        # A phrase that calls back to something said before.
+        bares = [bare(t) for t, _, _ in toks]
+        for phrase in CALLBACKS + (SEAM_CALLBACKS if seam else []):
+            limit = len(bares) if phrase in CALLBACKS else POINTER_REACH
+            for i in range(min(limit, len(bares) - len(phrase) + 1)):
+                if tuple(bares[i:i + len(phrase)]) == phrase:
+                    add('callback', toks[i][1], ' '.join(phrase), f'What does "{" ".join(phrase)}" refer back to?')
+        # Two clips of one source, far apart or out of order, heard as one passage, even with nothing
+        # said between them.
+        before = spoken[n - 1] if n > 0 else None
+        if before is not None and before['source'] == clip['source']:
+            jump = clip['in'] - before['out']
+            if jump > SEAM_JUMP or clip['in'] < before['in']:
+                add('seam', words[0], ' '.join(t for t, _, _ in toks[:6]),
+                    'Do the clips on either side of this seam read as one thought?', jump=round(jump, 1))
+    return sorted(found, key=lambda item: (item['at'], item['clip']))
 
 
 def read_json_file(path: str, what: str) -> Any:
@@ -266,7 +400,7 @@ def review(data: Any, base: str = '.') -> Json:
     out: List[Json] = []
     script: List[str] = []
     duration = 0.0
-    spoken = 0
+    spoken: List[Json] = []
     for i, clip in enumerate(clips):
         if not isinstance(clip, dict) or clip.get('source') not in speech:
             raise InputError(f'clips[{i}] names a source that is not in sources')
@@ -284,10 +418,14 @@ def review(data: Any, base: str = '.') -> Json:
                 item = {'clip': i, 'source': sid, 'range': [t_in, t_out], 'verdict': 'silent'}
                 script.append(f'[{kinds[sid]}]')
             else:
+                before = out[-1].get('range') if out and out[-1]['source'] == sid else None
+                played = [[c['in'], c['out']] for c in spoken if c['source'] == sid]
                 item = dict({'clip': i, 'source': sid, 'range': [t_in, t_out]},
-                            **review_clip(speech[sid], t_in, t_out, first=spoken == 0,
-                                          before=out[-1].get('range') if out and out[-1]['source'] == sid else None))
-                spoken += 1
+                            **review_clip(speech[sid], t_in, t_out, first=not spoken, before=before,
+                                          played=played))
+                words = speech[sid].kept(t_in, t_out)
+                spoken.append({'clip': i, 'source': sid, 'in': t_in, 'out': t_out, 'at': duration, 'words': words,
+                               'carried': carries(speech[sid], words, before)})
                 script.append(item['heard'])
         duration += length
         out.append(item)
@@ -296,6 +434,7 @@ def review(data: Any, base: str = '.') -> Json:
         'script': ' '.join(script),
         'clean': sum(1 for c in out if c['verdict'] != 'fix'),
         'duration': round(duration, 3),
+        'context': context(spoken, speech),
     }
 
 

@@ -195,4 +195,4 @@ the app's colours lead").
 
 In the plan of each video the user chose to see: "Which opening?" · Header: `Hook`. 2-3 drafted
 hooks, each line saying what it opens on ("the problem: every shot is a wide", "before and
-after", "the shot list rewriting itself") and the viewer panel's verdict on it.
+after", "the shot list rewriting itself"), offered as a prediction: the draft's cold watch tests it.

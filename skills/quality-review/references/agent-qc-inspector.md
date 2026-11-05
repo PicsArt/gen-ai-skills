@@ -29,6 +29,8 @@ The prompt that starts you gives you these, as file paths or URLs. Nothing else 
 8. **The meaning diff** against the last version the user saw: its lines, as the message to the
    user will carry them.
 9. **Earlier rounds' findings**, as items to check again, without anyone's answer to them.
+10. **The cold watch's gap list**, when one ran: where strangers who knew nothing lost the
+    thread, in their own words. You hold the plan, so you can see what they could not.
 
 If the render or its transcript is missing, judge nothing. Return a report whose `verdict` is
 `open` and whose `open` list names what is missing.
@@ -50,6 +52,7 @@ To see a moment the stills skip, pull frames from the render with
 | `audio` | a line repeated, clipped at its start or end, or out of step with the plan, by the transcript; a click or a dropout |
 | `end-card` | a missing, cut-off or misspelled end card |
 | `meaning` | a locked phrase whose shot does not show its picture's job |
+| `gaps` | a gap in the cold watch's list that the render causes: a cut that drops a setup, a line clipped, a face or an answer not shown. Name what in the render does it |
 | `keepers` | a keeper from the ledger gone from the render, or a shot's meaning changed, with no line about it in the meaning diff the user will read |
 | `reference-match` | only with a format: a layout other than the format's is critical; a caption, hook or end card off the format's place, size or length is major. A caption over a face is fixed in the layout, never by leaving the format's position |
 

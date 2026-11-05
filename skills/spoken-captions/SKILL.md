@@ -7,7 +7,8 @@ user-invocable: false
 # Captions
 
 Every word on screen comes from a transcript, with its times as the transcript gives them. **Never
-rewrite the word times.**
+rewrite the word times.** A caption carries only what is said: never a speaker's name the viewer has
+not heard, a stage direction or a row label.
 
 ## The transcript
 

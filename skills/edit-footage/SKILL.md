@@ -47,7 +47,9 @@ below; in brackets are its record stage and the same step in the reel and remix 
 with no number there leaves it out. A gate or skill with jobs in brackets is only theirs:
 `SPEND (remix)` opens for the remix job alone, `ASK (reel/remix)` for the reel jobs and the remix,
 and `edit` names the edit jobs. `ASK (format-not-matched)` opens only when the footage cannot
-reproduce an element of the reference's format; one reproduced exactly goes straight on. One with
+reproduce an element of the reference's format; one reproduced exactly goes straight on.
+`SPEND (someone-speaks)` opens only when someone speaks, for the heard script's cold read; a job
+with no speech goes straight on. One with
 no brackets is every job's. Before acting on a step, load
 the skills in its row that are this job's, also when the work resumes there. Run the steps in one
 go: after each, go straight on unless its row has a gate for this job.
@@ -60,9 +62,9 @@ go: after each, go straight on unless its row has a gate for this job.
 | 4. Takes, when someone speaks (`takes`) | ASK | speech-aware-cutting |
 | 5. Look and sound (`look`) | ASK, SPEND | realistic-color-grade, background-music |
 | 6. The map: the meaning map, the moments, or the script on the beats (`story`; reel 4, remix 4) | REVIEW (edit), ASK (reel/remix) | retention-hooks, speech-aware-cutting (reel), reel-structure (remix) |
-| 7. Plan: the cut, the passes, the route (`plan`; reel 5-6, remix 5) | ASK (reel/remix) | edit-pipeline, speech-aware-cutting, screen-recording-layouts (remix), screen-recording-zoom (remix), ai-presenter (remix), photo-slideshow (remix), film-cast-design (remix) |
+| 7. Plan: the cut, the passes, the route (`plan`; reel 5-6, remix 5) | SPEND (someone-speaks), ASK (reel/remix) | edit-pipeline, speech-aware-cutting, screen-recording-layouts (remix), screen-recording-zoom (remix), ai-presenter (remix), photo-slideshow (remix), film-cast-design (remix) |
 | 8. Build (`build`; reel 7, remix 6-8) | SPEND (remix), REVIEW (remix) | footage-reframing, scene-building-basics, spoken-captions, photo-slideshow (reel/remix), quick-merge-and-export (reel), face-hiding (reel), film-shot-generation (remix), voice-over-generation (remix), film-cutting (remix) |
-| 9. The independent check and the reference match (`qc`; reel 8, remix 8) | ASK (reel) | quality-review, footage-reframing (reel) |
+| 9. The independent check and the reference match (`qc`; reel 8, remix 8) | SPEND, ASK (reel) | quality-review, footage-reframing (reel) |
 | 10. Critics, on the first full draft (`critics`; reel 8, remix 8) | — | quality-review |
 | 11. Review (`review`; reel 9-11, remix 6-9) | REVIEW, ASK (edit/reel), SPEND (reel) | spoken-captions (reel/remix), caption-decorations (reel), screen-recording-layouts (reel), background-music (reel) |
 | 12. Finish (`finish`; remix 9) | REVIEW (remix) | film-finishing, edit-on-your-computer, background-music (remix) |
@@ -202,7 +204,9 @@ are equally good and differ in what they say.
 ## 6. The meaning map
 
 Write the beats from the brief and the voice: for each phrase or beat, the picture's job, and the
-shot that does it (hook and ending as the retention-hooks skill says). Start from the record's
+shot that does it (hook and ending as the retention-hooks skill says). With the map, write its
+viewer track, as quality-review's cold watch says: what a stranger must get, and by when, with the
+questions to ask after watching; its questions are shown with the map, for correction. Start from the record's
 `keepers` when there are any: a pairing the user saw work stays unless they chose otherwise. Show
 With no speech and no brief, the story is provisional: infer one from what the footage shows, as
 `references/jobs.md` says, and say it is a proposal.
@@ -223,8 +227,12 @@ Plan every shot against the locked map and the record's `cutPace`: the cut lands
 shots hold at least the minimum, minor words are held through, no mouth moves under another
 voice, and no two shots of one place and size are cut together. For a speaker, the talking
 segments are cut as the speech-aware-cutting skill says. A rebuild starts from the keepers
-ledger, never from zero. Run the edit-pipeline skill's `lock-check` on the plan before building,
-and its meaning diff against the last version the user saw before showing anything.
+ledger, never from zero. Every shot carries its reason, as the edit-pipeline skill says. Run the
+edit-pipeline skill's `lock-check` on the plan before building, and its meaning diff against the
+last version the user saw before showing anything. When someone speaks, have the heard script read
+cold before the first build, as the speech-aware-cutting skill says, quoted first with its
+SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) (the row's `SPEND (someone-speaks)`; with no speech there is no read and nothing to ask): a story that does not survive
+the read will not survive the build.
 
 ## 8. Build the drafts
 
@@ -235,8 +243,14 @@ one.
 
 ## 9. The independent check
 
+First the cold watch, as quality-review says, with `cuts: true` (the edit-pipeline skill's gate
+rules), its calls quoted first as it says and a SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1 unless every call is
+quoted at 0 credits (on a no, the review line says "no cold watch yet"): strangers who know nothing watch the render a few seconds at a time and
+say what they understood, who each person on screen is, and where a cut jumped.
+
 Run the QC inspector on the render as the quality-review skill says, fresh each round, with the
-keepers ledger and the meaning diff, for every job, a reel or a remix included. With a format in
+cold watch's gaps, the keepers ledger and the meaning diff, for every job, a reel or a remix
+included. With a format in
 the record it also gets the format, the reference stills and the reference match: a layout other
 than the format's is critical. Fix its findings within the edit-pipeline skill's fix scope:
 a range moved, or a shot with the same job; a clash with a locked row or a keeper goes to the user
@@ -258,8 +272,8 @@ rendered A/Bs, never a silent change.
 ## 11. Review
 
 Show first the strongest complete draft that passed the check, never a partial or unchecked one,
-with the meaning map beside it when it is not yet approved. Then the version: its name first, what
-changed (the meaning diff's lines, one per change, a dropped keeper always among them), the check's
+opened cold as picsart-video-rules says. Once the user has answered, the meaning map beside it when
+it is not yet approved, then the version: its name first, what changed (the meaning diff's lines, one per change, a dropped keeper always among them), the check's
 verdict and anything open. Every taste choice is two rendered drafts side by side; ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which,
 never in words alone. Ask only the choices that change the film; take the rest as stated
 defaults. A note

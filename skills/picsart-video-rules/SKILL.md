@@ -158,6 +158,12 @@ Call `picsart_scene_editor` with `sceneUrl` when you hold the scene as a URL, ot
 - make sure every media URL in the scene is Picsart-hosted (see Asset URLs);
 - run the use case's check (see Evaluation).
 
+**A draft opens cold.** When the use case wrote a viewer track (quality-review's cold watch), the
+line that opens the draft's REVIEW gives its length and the track's after-watch questions, and
+nothing else: no summary of what it shows, no list of what changed, no known issue. The user watches
+it as a stranger would. Once they have answered, say what the cold watch's viewers missed and what
+the critics found.
+
 Then end the turn. The editor is free and renders nothing. The user answers in one of three ways:
 
 - **Accept** in the editor, with nothing edited or commented: the reply's `verdict` is `approved`.

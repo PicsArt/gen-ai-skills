@@ -33,7 +33,7 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 5. Cast, places and props | SPEND, ASK | film-cast-design |
 | 6. Storyboard and animatic | SPEND, ASK, REVIEW | film-animatic, film-shot-generation, film-cast-design, voice-over-generation, scene-building-basics, quality-review |
 | 7. Shooting | SPEND, ASK | film-shot-generation |
-| 8. The cut | ASK, REVIEW | film-cutting, scene-building-basics, quality-review |
+| 8. The cut | SPEND, ASK, REVIEW | film-cutting, scene-building-basics, quality-review |
 | 9. Finishing | SPEND, ASK, REVIEW | film-finishing, background-music, realistic-color-grade |
 | 10. Deliver | ASK, DELIVER | film-finishing, footage-reframing |
 
@@ -136,8 +136,9 @@ each card's own palette has to fit.
 
 ## 3. The story and the model
 
-**The story.** film-story-writing writes it, for the locked genre. State the identity budget you inferred ("two
-faces and one garage") rather than asking for it.
+**The story.** film-story-writing writes it, for the locked genre, with its viewer track. State the identity budget
+you inferred ("two faces and one garage") rather than asking for it. Show the track's after-watch questions under the
+story, for correction: they are what the user and the cold watch are asked after each draft.
 
 **The model, in the same turn.** The candidates are the current models, in this order:
 
@@ -237,8 +238,10 @@ shooting.
 3. **The sound**: every line in its person's voice, a bed per scene and the card's effects, as
    film-animatic says, on one SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), each voice line's real length probed before anything is
    timed to it.
-4. **The animatic**: built, validated, cut-checked and looked at as film-animatic says, then
-   REVIEWed in the scene editor, with its sound. Notes route as film-animatic says: a story note
+4. **The animatic**: built, validated, cut-checked, looked at and watched cold as film-animatic says
+   (quality-review's cold watch, quoted first with its own SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) unless every call is quoted at
+   0 credits), then REVIEWed in the scene editor,
+   with its sound, opened cold. Notes route as film-animatic says: a story note
    goes back to stage 3's paragraph, a shot note to that panel or line alone, each change made
    again under its own SPEND. Loop until the user says yes.
 
@@ -283,8 +286,9 @@ quote and handle in the record. No take is accepted yet.
 When the last take lands, film-cutting assembles the film once: every candidate take in story order
 with hard cuts, every generation one clip exactly as generated: no split at a run's internal cuts,
 no trims, no transitions, padding or freeze frames. The user's own trims and splits are kept and
-never recomputed. Check it with quality-review, then REVIEW the whole cut, unasked: this is the
-film's review, and it says what your check observed in each take. **The user's approval of the cut
+never recomputed. Check it with quality-review, its cold watch included (quoted first with its own SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) unless
+every call is quoted at 0 credits; on a no, the review line says "no cold watch yet"), then REVIEW the whole cut, unasked and opened cold: this is the film's review. Once the user has
+answered, say what your check observed in each take. **The user's approval of the cut
 accepts every take in it**, and its shots become `final`.
 
 **Notes route by meaning**, as film-shot-generation says: an edit, an extend or a re-roll. A note it

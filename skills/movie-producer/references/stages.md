@@ -89,8 +89,11 @@ Traps.
 - [ ] Every scene has an approved wide and a scene picture cut from it, and a room map where the
       scene cuts between walls.
 - [ ] Each scene picture shows the opening shot's cast only, as designed.
-- [ ] Every card has its mode, eyeline and, where someone decides, its cause, and
-      `animatic_plan.py` reported no error (or the check was done by hand and said so).
+- [ ] Every card has its mode and eyeline, and `animatic_plan.py` reported no error (or the
+      check was done by hand and said so).
+- [ ] The film's viewer track is written, its questions shown with the story, and every draft
+      the user reviewed was watched cold first (or the user declined its SPEND, and the review
+      line said "no cold watch yet").
 - [ ] Every shot has an approved panel, checked against its scene picture; every app screen is a
       built layer, none generated.
 - [ ] Every picture and sound was quoted and bought on a yes, looked at or listened to, and every
