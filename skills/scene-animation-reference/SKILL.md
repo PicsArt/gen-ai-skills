@@ -3,8 +3,8 @@ name: scene-animation-reference
 description: How a scene expresses motion — preset catalogs, layer animations and transform stacks, easing and spatial tangents, Lua expressions, shared path phase, text on a curved or closed path, named actions mixed on a placed scene, depth and the composition camera (2.5D, cards that flip or fan out in depth under an orbit, a 2D film camera's pan, push-in and parallax), motion blur, held drawings (animation on twos), transition firing, and parameter drivers that keep a character alive on their own (eyes looking around, blinks, breathing, hair and ears that follow through, a tail that settles, whiskers that wiggle), with a pointer to the walk, wave and jump cycles of a cartoon rig. Use when motion needs authoring or validation, a character or object should glance, blink, breathe or sway by itself, objects need editable path offsets, text must follow a baseline, a scene validates but renders wrong, or a preset is rejected for the content kind.
 metadata:
   category: authoring
-  version: '1.18'
-  ported-from: motion-mechanics 1.18 at 55.91.0
+  version: '1.19'
+  ported-from: motion-mechanics 1.19 at 55.104.0
 user-invocable: false
 ---
 
@@ -367,6 +367,11 @@ their weights; `frequency` and `damping` set the lag), never write the spring yo
 the swing, 0 while the drivers hold still. A chain of any length takes one value per piece through
 `segments`. The full recipe, with the parameter wiring and the units, is in `character-rigging`
 (fetch with `picsart_scene_recipe`, name `character-rigging`).
+
+A sketchy, hand-inked look comes from the `line_boil` preset on a shape's `path` items: each outline
+point sits up to `amplitude` px off its place and takes a new one `rate` times a second, where `shake`
+moves the layer and a group `wiggle` moves a part rigidly. Worked calls, `item` for one outline and the
+refusals: [references/line-boil.md](references/line-boil.md).
 
 A character that walks, waves or jumps from a few looped keys, a shape's outline that morphs, bends or
 is swapped (`vertices` tracks, `deformers`, outline expressions), bent limbs and two-bone `ik` foot

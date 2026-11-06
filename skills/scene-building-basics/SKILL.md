@@ -59,3 +59,7 @@ or two: a gap that short reads as a blink.
 When a panel replaces the one before it, a hard cut is fine and keeps the energy; a soft seam
 (`'crossfade'`, 0.3–0.5 s) suits a change of layout. Check the live catalog with
 `picsart_scene_capabilities` (`sections: ["transitions"]`) before naming any other transition.
+
+## Reusable parts
+
+When you build a custom character or a part the user may want to adjust, declare root `parameters` for the knobs they will want (pose, expression, timing, strength): plain names in their terms, tight `min`/`max` (not 0..4000), a `default`, a `group` per body part or concern, a `description`. A draggable point is `type: "vec2"` with `frame: "composition"`, or `frame: {"layer": "<id>"}`. Motion goes in root `actions` whose `parameters` tracks key only number, boolean, text, color, vec2 or vec3 parameters, with no `$eval` (`scene-animation-reference`, `references/named-actions.md`). `picsart_scene_tune` (see `motion-design-craft`) tunes what is declared, plus root layers' position.

@@ -49,16 +49,17 @@ with no number there leaves it out. A gate or skill with jobs in brackets is onl
 and `edit` names the edit jobs. `ASK (format-not-matched)` opens only when the footage cannot
 reproduce an element of the reference's format; one reproduced exactly goes straight on.
 `SPEND (someone-speaks)` opens only when someone speaks, for the heard script's cold read; a job
-with no speech goes straight on. One with
+with no speech goes straight on. `edit-on-your-computer (on-disk)` loads only for footage on
+this computer, and `ASK (gyro)` opens only when its camera also recorded gyro data. One with
 no brackets is every job's. Before acting on a step, load
 the skills in its row that are this job's, also when the work resumes there. Run the steps in one
 go: after each, go straight on unless its row has a gate for this job.
 
 | Stage | Gate | Skills |
 |---|---|---|
-| 1. Intake and the record (`intake`; reel 1-2, remix 1) | ASK | edit-pipeline, edit-on-your-computer, retention-hooks (reel) |
+| 1. Intake and the record (`intake`; reel 1-2, remix 1) | ASK | edit-pipeline, edit-on-your-computer (on-disk), retention-hooks (reel) |
 | 2. The reference: its sheet, its format, what the footage can match (`reference`; reel 2, remix 2-3) | SPEND (remix), REVIEW (remix), ASK (format-not-matched) | reel-structure, footage-analysis (remix) |
-| 3. Read the footage (`log`; reel 3) | SPEND | footage-analysis, footage-reframing |
+| 3. Read the footage (`log`; reel 3) | SPEND, ASK (gyro) | footage-analysis, footage-reframing, edit-on-your-computer (on-disk) |
 | 4. Takes, when someone speaks (`takes`) | ASK | speech-aware-cutting |
 | 5. Look and sound (`look`) | ASK, SPEND | realistic-color-grade, background-music |
 | 6. The map: the meaning map, the moments, or the script on the beats (`story`; reel 4, remix 4) | REVIEW (edit), ASK (reel/remix) | retention-hooks, speech-aware-cutting (reel), reel-structure (remix) |
@@ -67,7 +68,7 @@ go: after each, go straight on unless its row has a gate for this job.
 | 9. The independent check and the reference match (`qc`; reel 8, remix 8) | SPEND, ASK (reel) | quality-review, footage-reframing (reel) |
 | 10. Critics, on the first full draft (`critics`; reel 8, remix 8) | — | quality-review |
 | 11. Review (`review`; reel 9-11, remix 6-9) | REVIEW, ASK (edit/reel), SPEND (reel) | spoken-captions (reel/remix), caption-decorations (reel), screen-recording-layouts (reel), background-music (reel) |
-| 12. Finish (`finish`; remix 9) | REVIEW (remix) | film-finishing, edit-on-your-computer, background-music (remix) |
+| 12. Finish (`finish`; remix 9) | REVIEW (remix) | film-finishing, edit-on-your-computer (on-disk), background-music (remix) |
 | 13. Deliver (`deliver`; reel 12, remix 10) | DELIVER | reel-structure (remix) |
 
 Every question is asked as picsart-video-rules's Asking says: one per turn, the recommended answer
@@ -102,6 +103,11 @@ memory. The user never has to drive the stages; they answer questions and choose
 - **Read everything the user sent before the first question**: the brief, the deck, the brand
   pack (logo, fonts, colours), any colour or reference reel, and their channel. Then say
   back in one line the job, the format, the length, the beats and the must-shows.
+- **The brand guide's palette and fonts go into the record's `brand`** as you read them:
+  `palette` with each colour's `name`, `hex` and `text` (false when the guide keeps it off text),
+  and `fonts` with the role each plays (heading, paragraph). Every caption, card and colour the
+  scene sets comes from it; `record.py palette-check` checks a scene against it where commands
+  run, as the edit-pipeline skill says.
 - **Where the footage is** sets how the files are handled, never the edit. Drive files, links and
   files attached to the message are read by the tools from their URLs. A folder or paths on this
   computer, where you can run commands, also load the edit-on-your-computer skill at once, even
@@ -151,7 +157,9 @@ Every job given a reference runs this step: a reel job after its interview, the 
 for their **pace** and their **format**, never their content:
 
 - the pace: shot length, cuts per 10 s, caption style, colour, the first second and the ending,
-  into the record's `cutPace` as the edit-pipeline skill says;
+  into the record's `cutPace` as the edit-pipeline skill says. A reference lends its devices
+  apart from its tempo: when the brief names its register ("cinematic, atmospheric"), the tempo
+  and `cutPace.rhythm` follow the brief, with `register` quoting its words;
 - the sheet, with its Layout and each beat's Frame and Caption position;
 - the format, into the record's `format`: the layout and who sits where, the emphasis, the
   captions' style and position, the hook, the end card. **The user's own channel is the spec**:
@@ -163,12 +171,25 @@ for their **pace** and their **format**, never their content:
   format (`picsart_scene_contact_sheet`) beside the reference still. Everything reproduced: say so in one line and go on.
 
 The step is done only with a sheet that passes and no element open, as the edit-pipeline skill's
-gates say. When there is no reference, use the job's default pace and say so.
+gates say, and nothing is built before it is done. `record.py` refuses to mark the reference done
+without its sheet and an answered format; never mark it done by hand to get past that, since the
+look, the story and everything after build on it. When there is no reference, use the job's
+default pace and say so.
+
+The reference keeps binding after this step. At every plan, the lock check holds the plan to the
+reference's pace: every shot at or above `minHold` fails otherwise, and cuts per 10 s more than a
+quarter off the reference's come back `open`. Say that before the build: a faster or slower cut is
+the user's call, shown as an A/B against one at the reference's pace and recorded as an approval
+scoped `format:pace`, unless a standing note of theirs already chose it. Compare the draft's
+colour with the reference's too: when ffmpeg is on this computer, as the edit-on-your-computer
+skill's colour comparison says; otherwise take stills of both with `picsart_media_video_stills` and
+compare them by eye (brightness, saturation, warmth). A grade that drifts from the reference is
+fixed at the look, before the review.
 
 ## 3. Log the footage
 
-When the footage is on this computer, make and upload the proxies first, as the
-edit-on-your-computer skill says. Every tool below reads the sources from their URLs.
+When the footage is on this computer, make and upload the proxies first and read the originals' gyro
+data, as the edit-on-your-computer skill says. Every tool below reads the sources from their URLs.
 
 Log every source as the footage-analysis skill says, and for each one write into the record's
 `sources`:
@@ -177,6 +198,15 @@ Log every source as the footage-analysis skill says, and for each one write into
 - **steadiness per used range**, measured on a fixed detail with texture, as the edit-pipeline
   skill's gate rules say; low texture is `open`;
 - legible text: notes, names, another firm's plaque;
+- **which way is up**, as `upright`: `yes`, `rot90` (it needs a quarter turn clockwise),
+  `rot270` (a quarter turn anticlockwise), `rot180`, or `open`. Judge it from one still in the
+  middle of the clip: writing and signs, verticals, the horizon, faces, a pour or a drip. Never
+  from the file's rotation flag alone: some cameras (Sony's FX3 and A7S III among them) write
+  none when held on their side. A turned source is turned before anything frames it: on this
+  computer its proxy already carries the turn (the edit-on-your-computer skill's proxies), so the
+  build lays it as it is; otherwise the build turns the clip layer before the reframe is
+  measured. The reframe, the safe zone and every check read the turned frame. The conform turns
+  the original, before its crop;
 - what the shot can mean for the story, and its role (a second camera's shots may be inserts);
 - whether the range needs stabilising. This is decided here, not after a check fails.
 
@@ -193,8 +223,10 @@ are equally good and differ in what they say.
 ## 5. Look and sound
 
 - **Colour**: grade toward the colour reference or the brand, with the realistic-color-grade
-  skill where the footage needs it. A custom camera LUT is not a scene look; when the footage is
-  log, say so and grade it at the finish (stage 12).
+  skill where the footage needs it. A custom camera LUT is not a scene look. When log footage is
+  on this computer, its proxies already carry the conversion to normal colour, as the
+  edit-on-your-computer skill says, and the grade here is the look only. When log footage
+  is anywhere else, say that previews look flat and grade it at the finish (stage 12).
 - **Sound**: mixed in the scene as audio layers, never outside it: the voice placed on its
   lines, every audio layer given an explicit duration (one without it repeats), room tone under
   the cuts. Music follows the job's default in `references/jobs.md`; when it is offered,
@@ -224,7 +256,8 @@ edit-pipeline skill says; until then the plan follows the map as written.
 ## 7. Plan the cut
 
 Plan every shot against the locked map and the record's `cutPace`: the cut lands just before its key word,
-shots hold at least the minimum, minor words are held through, no mouth moves under another
+shots hold at least the minimum, each row names its `section`, the rhythm's long hold and breaths
+are placed first and the quick cuts between them, minor words are held through, no mouth moves under another
 voice, and no two shots of one place and size are cut together. For a speaker, the talking
 segments are cut as the speech-aware-cutting skill says. A rebuild starts from the keepers
 ledger, never from zero. Every shot carries its reason, as the edit-pipeline skill says. Run the
@@ -288,7 +321,10 @@ On the finish chosen at intake:
 - **The export**: export the approved scene at the delivery resolution with `picsart_scene_export`,
   which is free, its sources the full-resolution files the user gave.
 - **The conform**, when the originals are on this computer: rebuild the approved cut from them at
-  full resolution, as the edit-on-your-computer skill says, with the grade applied there.
+  full resolution, as the edit-on-your-computer skill says, with the grade applied there. This is
+  the finish for footage on this computer unless the user asks for the export: a scene export of
+  the proxies is a draft, never the delivery. Upload nothing more for it than a check that runs
+  only on the server needs (a transcript of the master), and keep the master on this computer.
 
 Then check the final master, whichever finish it is, before it is delivered:
 
@@ -300,7 +336,8 @@ Then check the final master, whichever finish it is, before it is delivered:
 - **Captions**: every line present, in sync, in the brand font, inside the safe zone.
 - **Crop and safe zone**: nothing that matters cut off by the delivery shape or the platform's UI.
 - **Grade**: matches the approved version, and holds across every cut.
-- **Output spec**: the format, resolution, fps, codec and length asked.
+- **Output spec**: the format, resolution, fps, codec and length asked, and only those: never a
+  second size or version nobody asked for.
 
 What could not be measured is `open` and said in the delivery note, never passed. A failure is
 fixed in the finish and the master checked again.

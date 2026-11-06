@@ -13,14 +13,12 @@ user-invocable: false
    warnings too.
 2. **Lint the layout.** `picsart_scene_lint_layout` over the timeline; on a long scene, narrow
    `t0`/`t1` to the part in question. Each of its `findings` is a sustained overlap between layers
-   that should not touch. For a pair placed together on purpose, pass `allow: ["idA:idB"]`. Leave
-   `engine` at its default (`native`), which measures real text boxes. A clean lint is not proof:
-   on the `jet` engine it never measures text (a fallback), and on `v3` a text box is the font's
-   line box, so it can flag empty space. If the tool is not in your list, or fails because the
+   that should not touch. For a pair placed together on purpose, pass `allow: ["idA:idB"]`. A text
+   box is the font's line box, so a clean lint is not proof and it can flag empty space. If the tool is not in your list, or fails because the
    query build is unavailable, skip to the frames.
 3. **Measure.** For a flagged pair, or a use-case question about where something sits (inside a
    panel, inside a mask), `picsart_scene_query_layout` at that moment gives each layer's box. It
-   reads layer geometry, not painted pixels, and has no box for text on `jet`.
+   reads layer geometry, not painted pixels.
 4. `picsart_scene_contact_sheet` at each moment the use case names. Look at every frame and answer
    the use case's questions about it.
 5. `picsart_scene_contact_sheet` once across the whole timeline — order, seams, nothing blank.

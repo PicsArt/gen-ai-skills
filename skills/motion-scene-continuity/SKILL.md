@@ -169,9 +169,8 @@ content id and kind, the same asset or text (`content`); then the same layer id 
 it moved, a child by its own id under parents already paired, unless its content id differs (`id`);
 then geometry, best IoU or nearest centre (`geometry`). An `internal` layer pairs only with an
 `internal` one. Deltas are centre-based. It does not compare numeric opacity: `restyled` is a change
-of visibility, rotation or paint order. Text boxes are unmeasured on `jet` and font-metric envelopes
-on `v3`, so text deltas are approximate, and two identical text-only boards on `jet` reach
-`indeterminate`; boards whose comparable layers do not pair report `unrelated`.
+of visibility, rotation or paint order. Text boxes are font-metric envelopes, not glyph bounds, so
+text deltas are approximate; boards whose comparable layers do not pair report `unrelated`.
 
 The tolerance is for **edges**, not independent center/width/height tolerances: a centered width
 change of 2 px moves each edge by 1 px and can pass `tolerancePx:1`. If the design specifies separate

@@ -47,7 +47,7 @@ do not guess a name for it.
 | `get_recipe`, `recipe` | `picsart_scene_recipe` |
 | `resolve_looks` | `picsart_scene_resolve_looks` |
 | `list_scene_templates`, `templates` | `picsart_scene_templates` |
-| `translate`, `translate_scene` | `picsart_scene_translate` |
+| `tune`, `tuner` | `picsart_scene_tune` |
 | `validate`, `validate_scene` | `picsart_scene_validate` |
 
 **This whole pipeline is free — it uses no
@@ -188,6 +188,7 @@ by describing the change or answering from your reading of the image — author 
 | "**delete / hide** this layer" | `patch_scene` **`remove`** the layer (or `set` its opacity to 0) |
 | "**slide** it in from the right / scroll / pop / parallax it" | pick the preset via `get_capabilities` (`sections: ["motionPresets"]`) → `apply_preset` with `motionPreset:<id>` (or `patch_scene` to tune an existing one) |
 | "type the headline **on** / stagger it in" | `apply_preset` with `textAnimation:<name>` |
+| "let me **adjust it by hand** / sliders / drag the joint" (after two chat rounds on it) | `tune` with `focus` (see the tuning section of `motion-design-craft`) |
 | "change the **colour / text / opacity / position**" | `patch_scene` `set` (id-anchored, the authored property) |
 | "use a **crossfade / slide / cut** at this seam" | `patch_scene` `set` → the seam's `transition` + `transitionDuration` |
 | "what **fonts** can I use?" | `picsart_scene_fonts` (its `query` also live-searches the catalog) |

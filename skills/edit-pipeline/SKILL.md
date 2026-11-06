@@ -101,9 +101,25 @@ the rules below. Where commands run, `python3 scripts/record.py status edit-foot
 - **The cut pace** (`cutPace`: `minHold`, `density` in cuts per 10 s, `wordAnchor`, `length`; never
   `pace`, which picsart-video-rules keeps for unattended mode) comes from
   the reference and the job, before the first build. The plan keeps every shot at or above
-  `minHold`. A cut lands about 0.1 s before the word its picture illustrates, and only on key
+  `minHold`, and its cuts per 10 s near `density`: a hold under `minHold` fails the plan, and cuts
+  per 10 s more than a quarter off `density` are said to the user before the build, unless they
+  already chose that pace (an approval scoped `format:pace`, or a standing note on the pace).
+  Where commands run, `lock-check` checks both on a plan whose rows carry `sceneStart` and
+  `sceneEnd` (the density comes back `open`, a short hold as a problem); otherwise check them by
+  reading the plan's holds. A cut lands about 0.1 s before the word its picture illustrates, and only on key
   words: a shot holds through minor words. When the reference and the job's default disagree,
-  the reference wins.
+  the reference wins, with one split: a reference lends its **devices** (caption style, sound
+  leading the picture, the ending) apart from its **tempo**. When the brief names its register
+  in words ("cinematic", "atmospheric", "slow"), the tempo follows those words and the job's
+  holds; a fast reel then lends its devices only. Say the split back in one line.
+- **The rhythm** (`cutPace.rhythm`) is the cut's shape, beyond its average: `medianHold` (s),
+  `fastHold` and `maxFastRun` (more shots under `fastHold` in a row than this reads as eventy;
+  1.2 s and 3 by default), `holdPerSection` (one shot at least this long in each section, from
+  the brief's order, as each plan row's `section`) and `breaths` (between sections, a shot with
+  picture and the shots' own sound and no voice). `register` quotes the brief's style words when
+  they ask for it. `lock-check` reports a broken rhythm `open`, said before the build, and fails
+  the plan only when `register` is set; a shape the user chose instead is an approval scoped
+  `format:rhythm`. The rhythm is set with `cutPace`, before the first build.
 - **Every cut has a reason.** In the plan, each shot after the first carries `why`: one line on why
   the cut comes there, from the first of Walter Murch's reasons that holds: feeling (the viewer's
   feeling turns), story (the viewer learns something new), rhythm, then the eye (it lands where the
@@ -128,6 +144,12 @@ did not get changes before the user approves it. Once the user approves the map,
   `format` without an approval scoped `format:layout` or `format:captions`. Say every
   same-meaning swap in the version's note. Where commands run,
   `python3 scripts/record.py lock-check edit-footage.json shot-plan.json` does it.
+- Before every review, check the scene's colours against the brand's by reading them: every colour it sets is in
+  the record's `brand.palette` (or the own-brand format's colours), and text only in a colour the
+  guide allows on text. Away from text, pure black and white and any see-through colour (a fade, a
+  scrim) pass, unless the guide forbids them (`brand.neutrals: false`). Where commands run,
+  `python3 scripts/record.py palette-check edit-footage.json scene.json` does it; with no palette in the record it is `open`, never a pass. Both checks live in
+  `scripts/match_check.py`, which `record.py` imports; never run it on its own.
 - **The job is the contract, not a caption.** It comes from the map and is never rewritten to fit
   whatever shot ends up there. A new job for a locked phrase needs the user's approval of that
   job; `record.py add` refuses it without one.

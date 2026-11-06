@@ -9,7 +9,8 @@ Usage (the record is a JSON file; every command prints JSON):
   record.py invalidate <record> <stage>        the stage and everything after it are to be redone
   record.py add <record> <list> <json>         append to standing, approvals, rejected, locked, keepers, openDecisions
   record.py version <record> <json>            append a version (name, scene, render, parent, changed, gates)
-  record.py lock-check <record> <plan>         a plan against the locked meaning map
+  record.py lock-check <record> <plan>         a plan against the locked meaning map, the format and the pace
+  record.py palette-check <record> <scene>     every colour a scene sets against the brand's palette
   record.py migrate <old record> [--out edit-footage.json]
                                                a client-edit, cut-footage-into-reel or remix-reel-structure
                                                record as edit-footage's, its done stages kept
@@ -55,8 +56,9 @@ BY_ID = {s['id']: s for s in STAGES}
 # record kept before the merge hashes as it did then (job_writes).
 JOB_WRITES = {'reference': ['sheet'], 'story': ['moments', 'mapping'], 'plan': ['route', 'takes']}
 # Keys a stage reads only when the record holds them, so a record without one hashes as before:
-# the reference's format (reel-structure's `references/format.md`) binds the plan and all after it.
-OPTIONAL_READS = {'plan': ['format']}
+# the reference's format (reel-structure's `references/format.md`) and the brand guide's palette and
+# fonts bind the plan and all after it.
+OPTIONAL_READS = {'plan': ['format', 'brand']}
 # What `done deliver` needs, for every job: the map approved, then the check, the critics and the
 # review done. A job that leaves one out of its pipeline cannot deliver.
 DELIVER_NEEDS = ['story', 'qc', 'critics', 'review']
@@ -79,6 +81,19 @@ FIELDS = {
 }
 # What each kind of keeper must say: a word and its picture, a moment, or the user's praise in their words.
 KEEPER_KINDS = {'pair': ['phrase', 'shot'], 'moment': ['shot'], 'praise': ['words']}
+# The motion data a camera writes beside the picture, as edit-on-your-computer's `scripts/gyro.py` names it.
+GYRO_KINDS = ('sony-rtmd', 'gopro-gpmf', 'dji', 'insta360')
+# A source's gyro fields: written at the proxies (also on a resume, after the log) and at the conform,
+# so no stage's fingerprint counts them and a stabilised copy leaves the log and all after it current.
+GYRO_FIELDS = ('gyro', 'gyroKind', 'stabilised')
+# Which way is up (edit-footage's log): `yes`, a quarter turn either way, a half turn, or `open`. A source
+# found turned after the log (a sign seen sideways in a draft) gets it then, so no fingerprint counts it
+# either: the turn changes the picture, not the takes or the story, and the build is redone on purpose
+# (`invalidate <record> build`).
+UPRIGHT = ('yes', 'rot90', 'rot270', 'rot180', 'open')
+UNHASHED_SOURCE_FIELDS = GYRO_FIELDS + ('upright',)
+# What the conform keeps of each used range: the stabilised copy, or the original when it is not steadier.
+STABILISED_USES = ('stabilised', 'original')
 
 
 def job_edit_error(record: dict, entry: dict) -> str | None:
@@ -162,12 +177,62 @@ def schema_errors(record: dict) -> list[str]:
             if name == 'approvals' and entry.get('session') and not entry.get('words'):
                 errors.append(f'approvals[{i}] was relayed from {entry["session"]} without the person\'s "words": a yes in a session\'s own words is not an approval')
     for i, row in enumerate(record.get('sources', []) or []):
+        errors.extend(gyro_errors(record, i, row))
+        if isinstance(row, dict) and 'upright' in row and row['upright'] not in UPRIGHT:
+            errors.append(f'sources[{i}].upright must be one of {", ".join(UPRIGHT)}')
         for r, rng in enumerate(row.get('ranges', []) if isinstance(row, dict) else []):
             for field in ('verdict', 'method', 'confidence'):
                 if field not in rng:
                     errors.append(f'sources[{i}].ranges[{r}] is missing "{field}": every gate verdict says how it was measured')
             if rng.get('verdict') == 'pass' and rng.get('confidence') == 'none':
                 errors.append(f'sources[{i}].ranges[{r}] passes with no confidence: what could not be measured is "open"')
+    return errors
+
+
+def gyro_errors(record: dict, i: int, row) -> list[str]:
+    """A source's gyro fields: what its camera recorded, and a stabilised copy only on the user's yes."""
+    if not isinstance(row, dict):
+        return []
+    errors = []
+    if 'gyro' in row and not isinstance(row['gyro'], bool):
+        errors.append(f'sources[{i}].gyro is true or false')
+    if 'gyroKind' in row:
+        if row.get('gyro') is not True:
+            errors.append(f'sources[{i}] names a gyroKind without "gyro": true')
+        elif row['gyroKind'] not in GYRO_KINDS:
+            errors.append(f'sources[{i}].gyroKind must be one of {", ".join(GYRO_KINDS)}')
+    stab = row.get('stabilised')
+    if stab is None:
+        return errors
+    if not isinstance(stab, dict) or not stab.get('file'):
+        return errors + [f'sources[{i}].stabilised needs its "file", a copy in the work folder']
+    if stab['file'] in (row.get('file'), row.get('url')):
+        errors.append(f'sources[{i}].stabilised.file is the original: stabilise into a copy, never over the original')
+    crop = stab.get('crop')
+    if isinstance(crop, bool) or not isinstance(crop, (int, float)) or crop < 1:
+        errors.append(f'sources[{i}].stabilised needs its "crop", the zoom applied (1 or more), so framing checks allow for it')
+    chosen = stab.get('ranges', [])
+    if not isinstance(chosen, list):
+        errors.append(f'sources[{i}].stabilised.ranges must be a list')
+        chosen = []
+    for r, rng in enumerate(chosen):
+        at = f'sources[{i}].stabilised.ranges[{r}]'
+        if not isinstance(rng, dict):
+            errors.append(f'{at} must be an object with in, out, use and shake')
+            continue
+        for field in ('in', 'out', 'use', 'shake'):
+            if field not in rng:
+                errors.append(f'{at} is missing "{field}"')
+        if 'use' in rng and rng['use'] not in STABILISED_USES:
+            errors.append(f'{at}.use must be one of {", ".join(STABILISED_USES)}')
+        shake = rng.get('shake')
+        if 'shake' in rng and not (isinstance(shake, list) and len(shake) == 2
+                                   and all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in shake)):
+            errors.append(f'{at}.shake is the two measurements [plain, stabilised]')
+        elif rng.get('use') == 'stabilised' and isinstance(shake, list) and len(shake) == 2 and not shake[1] < shake[0]:
+            errors.append(f'{at} uses the stabilised copy, which is not steadier: keep it as shot ("use": "original")')
+    if not any(isinstance(a, dict) and a.get('scope') == 'stabilise:gyro' for a in record.get('approvals', []) or []):
+        errors.append(f'sources[{i}] is stabilised without the user\'s yes: an approval with the scope "stabilise:gyro"')
     return errors
 
 
@@ -219,8 +284,11 @@ BUILT_KEYS = ('scene', 'render', 'url')
 
 
 def value(record: dict, key: str):
-    """A record key as its stages compare it: a reel job's takes as the planned clip lists only."""
+    """A record key as its stages compare it: a reel job's takes as the planned clip lists only, and
+    the sources without their gyro fields and `upright`, which may be written after the log."""
     v = record.get(key)
+    if key == 'sources' and isinstance(v, list):
+        return [{k: x for k, x in s.items() if k not in UNHASHED_SOURCE_FIELDS} if isinstance(s, dict) else s for s in v]
     if key != 'takes' or 'takes' in record.get('pipeline', []):
         return v
     if isinstance(v, list):
@@ -329,7 +397,17 @@ def lock_check(record: dict, plan: dict) -> dict:
             problems.append({'problem': 'format unchecked', 'why': "reel-structure's ref_format.py is not beside record.py"})
         else:
             problems += plan_check(record['format'], plan, record.get('approvals'))['problems']
-    return {'ok': not problems, 'problems': problems, 'sameMeaningSwaps': swaps}
+    opened = []
+    if isinstance(record.get('cutPace'), dict):
+        # the reference's pace binds the plan too: holds under minHold, or a density far from it
+        from match_check import pace_check
+        pace = pace_check(record['cutPace'], plan, record.get('approvals'))
+        problems += pace['problems']
+        opened += pace['open']
+    result = {'ok': not problems, 'problems': problems, 'sameMeaningSwaps': swaps}
+    if opened:
+        result['open'] = opened
+    return result
 
 
 def has_url(value) -> bool:
@@ -515,6 +593,7 @@ def main(argv: list[str]) -> int:
     a = sub.add_parser('add'); a.add_argument('record'); a.add_argument('list', choices=LISTS[:-1]); a.add_argument('entry')
     a = sub.add_parser('version'); a.add_argument('record'); a.add_argument('entry')
     a = sub.add_parser('lock-check'); a.add_argument('record'); a.add_argument('plan')
+    a = sub.add_parser('palette-check'); a.add_argument('record'); a.add_argument('scene')
     a = sub.add_parser('migrate'); a.add_argument('record'); a.add_argument('--out', default='edit-footage.json')
     args = p.parse_args(argv)
 
@@ -619,6 +698,10 @@ def main(argv: list[str]) -> int:
         return out({'ok': True, 'count': len(record[name])})
     if args.cmd == 'lock-check':
         result = lock_check(record, load(args.plan))
+        return out(result, 0 if result['ok'] else 1)
+    if args.cmd == 'palette-check':
+        from match_check import palette_check
+        result = palette_check(record, load(args.scene))
         return out(result, 0 if result['ok'] else 1)
     return 2
 

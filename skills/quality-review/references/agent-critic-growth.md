@@ -12,7 +12,9 @@ You judge how the video will do in a feed:
 - **the stop**: does the first second stop a thumb? A logo, an empty app or a title on a plain
   canvas does not;
 - **the drops**: the moments a viewer is predicted to leave. Look for a stretch where nothing new
-  happens, a promise kept too late, and a step that confuses;
+  happens, a promise kept too late, and a step that confuses. Under a brief that asks to be
+  cinematic or atmospheric, look too for the opposite: a stretch of more than 6 s with no shot
+  over 1.5 s, which reads as eventy, with nothing given time to land;
 - **save and send**: is there something worth keeping (the exact words, the setting, the before
   and after) or worth sending to someone?
 - **the length** for the destination;

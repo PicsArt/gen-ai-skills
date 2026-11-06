@@ -47,6 +47,7 @@ To see a moment the stills skip, pull frames from the render with
 | `cut-word` | a cut more than 0.25 s away from the word its picture illustrates, by the render's transcript |
 | `shot-length` | a shot shorter than the pace's minimum hold, unless its phrase is one word |
 | `jump-cut` | two shots of the same place and size cut together |
+| `upright` | a shot on its side or upside down: writing or a sign that reads sideways, verticals lying flat, a horizon or a pour running the wrong way. Critical: the client sees it at once |
 | `legible-text` | private or third-party writing a viewer can read: notes, names, addresses, another firm's plaque |
 | `captions` | a caption outside the safe zone, unreadable against its picture, or gone before it can be read |
 | `audio` | a line repeated, clipped at its start or end, or out of step with the plan, by the transcript; a click or a dropout |

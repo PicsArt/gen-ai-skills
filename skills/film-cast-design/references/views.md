@@ -4,17 +4,47 @@ A video model takes **one image per view**. A sheet with the right panel named i
 rightmost panel") comes back as a face blended from two panels, so a panel pointer is a dispatch
 error. Cut the panel into its own file; if it cannot be cut yet, wait.
 
+## Contents
+
+- Which views
+- Where each view sits (the strip, and an older T-cut sheet)
+- Before the first cut
+- The cut (the ratio, and padding a view)
+- Check every cut
+
 ## Which views
 
 | Asset | Views the cards can need |
 |---|---|
-| A person you generated | identity (the front face), wardrobe (the full body), profile (the side face) when a card shows it, one per state the cards name |
-| A person the user photographed | identity is the photo itself (or its face cut from a copy when it is a composite); profile from the generated profile; wardrobe and states from the approved sheet |
+| A person you generated | identity (the close-up), wardrobe (the full-body front), profile (the full-body side) when a card shows it, back (the full-body back) when a card shoots from behind, one per state the cards name |
+| A person the user photographed | identity is the photo itself (or its face cut from a copy when it is a composite); profile from the generated profile; wardrobe, back and states from the approved sheet |
 | A prop | the object alone; the scale panel is for the review only |
 | A place | the map and the wide, cut when its scene pictures are approved (film-shot-generation) |
 
 Cut only what a card names. One state is one file from one box, passed byte-identical in every run
 that names it.
+
+## Where each view sits
+
+A sheet is the strip: four views in one 16:9 row on one flat grey ground, separated by empty
+margins, never by lines. Left to right:
+
+| Position | Shows | View |
+|---|---|---|
+| 1 | full body, front | wardrobe |
+| 2 | full body, side, facing right | profile |
+| 3 | full body, from behind | back |
+| 4 | a large head-and-shoulders close-up, front | identity |
+
+The three full-body views share the left 55% of the frame, and the close-up the right 40%. The
+identity view is always the close-up, never the front full-body view: only the close-up holds a
+face at a size a run can keep. Save the views as `referenceImages` in the order identity, wardrobe,
+profile, back, leaving out any the cards do not need.
+
+**An older sheet is the T-cut** (front face top left, side face bottom left, the full body as a tall
+panel on the right, and a fourth tall back panel beside it when it has one). Its saved views stay as
+they are, and a re-cut of it reads those boxes: identity is the front face, wardrobe the full body,
+profile the side face. Only a new sheet is a strip.
 
 ## Before the first cut
 
@@ -35,12 +65,15 @@ at the origin, and scaled by one factor `k`:
 
 ```json
 { "version": "1.0",
-  "composition": { "width": 600, "height": 640, "duration": 1, "fps": 30 },
+  "composition": { "width": 1024, "height": 1200, "duration": 1, "fps": 30 },
   "layers": [{ "id": "panel",
-    "content": { "kind": "media", "fit": "none", "bounds": [2400, 640],
-      "asset": { "type": "image", "uri": "<the sheet>", "width": 2400, "height": 640 } },
-    "transform": { "anchor": [1800, 0], "position": [0, 0], "scale": [1, 1] } }] }
+    "content": { "kind": "media", "fit": "none", "bounds": [2560, 1440],
+      "asset": { "type": "image", "uri": "<the sheet>", "width": 2560, "height": 1440 } },
+    "transform": { "anchor": [1536, 120], "position": [0, 0], "scale": [1, 1] } }] }
 ```
+
+That is the identity view of a 2560 × 1440 strip: the box `[1536, 120, 1024, 1200]`, the close-up
+from the 60% mark to the right edge, at `k` 1.
 
 - `bounds` and the asset's `width`/`height` are the sheet's probed size. **`content.bounds` is
   mandatory**: validation passes without it and the export then fails.
@@ -59,15 +92,15 @@ at the origin, and scaled by one factor `k`:
   and the resize are one export.
 - **When the two clamps fight, the box is wrong.** A panel so narrow that the floor pushes its long
   side past the cap is a row of panels, a colour bar or a gutter caught in the box. Re-read and
-  re-cut; never ship a strip.
+  re-cut; never ship two views in one file.
 - `k` above 1 satisfies the floor and sharpens nothing. Ship it so the run is not blocked, and say
   the sheet was too small.
 - **The ratio, too.** A video model refuses a picture outside its input ratio before it makes
   anything: width over height from 0.4 to 2.5 on Seedance and MiniMax H3, unless the model's own
   limits say otherwise. `picsart_preflight` measures the sides, not the ratio, and
   `picsart_model_params` does not list it, so check it here, when the view is cut, never after a
-  run is refused. A full-body panel is tall by design: on the four-panel sheet (4:3) each one is
-  about 0.42 before the inset, so the cut lands under 0.4. **A full-body view under 0.45 is
+  run is refused. A full-body view is tall by design: on the strip each one is about 15% of a 16:9
+  frame's width, about 0.27 before the inset, so the cut lands under 0.4. **A full-body view under 0.45 is
   padded when it is cut**, to 0.45 as below, so the wardrobe view any run passes is already inside
   the range with a margin. Pad a view
   outside it in a **second export whose only media is the cut view file** (`w` × `h`, probed),

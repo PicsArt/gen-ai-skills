@@ -194,14 +194,16 @@ Use cases, the entry points a user asks for:
 | Skill | Description |
 |---|---|
 | [`animate-design`](./skills/animate-design) | Turn static material into a real motion-designed video. |
-| [`browse-assets`](./skills/browse-assets) | Open the Picsart Assets panel on what the user made with Picsart. |
+| [`assets`](./skills/assets) | Open the Picsart Assets panel on what the user made with Picsart. |
 | [`edit-footage`](./skills/edit-footage) | Make videos from the user's own footage, or copy a reel's structure onto their script. |
 | [`generate-media`](./skills/generate-media) | Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo. |
 | [`get-started`](./skills/get-started) | Get started with Picsart Video. |
-| [`make-comics`](./skills/make-comics) | Turn a photo into a short ComicMe comic book. |
+| [`make-character`](./skills/make-character) | Make one AI character with no film. |
+| [`make-comics`](./skills/make-comics) | Turn a photo into a ComicMe creation. |
 | [`make-screen-videos`](./skills/make-screen-videos) | Turn a screen recording of an app or site into videos. |
 | [`make-short-drama`](./skills/make-short-drama) | Make a vertical drama series, pilot or episode with a recurring cast. |
 | [`movie-producer`](./skills/movie-producer) | Make a short narrative film from a story. |
+| [`recast`](./skills/recast) | Put the user's own characters, people or things into a video of theirs with Recast. |
 | [`recreate-video`](./skills/recreate-video) | Rebuild a reference video as an editable animated scene that moves and looks like it. |
 
 Skills the use cases load:
@@ -233,7 +235,7 @@ Skills the use cases load:
 | [`linked-element-motion`](./skills/linked-element-motion) | Keep related scene elements aligned and moving together, including container resizing, shared fades, content reveals and sibling reflow. |
 | [`motion-design-craft`](./skills/motion-design-craft) | The craft of adding motion to any scene, whatever the video. |
 | [`motion-intent`](./skills/motion-intent) | Choose and diagnose scene motion from communication intent before selecting presets or keyframes. |
-| [`motion-pattern-library`](./skills/motion-pattern-library) | Worked scene motion patterns for entrances, exits, stagger, directional nudges, emphasis, ambient life, springs, arcs, layered beats, parenting, parallax, focus, wipes, and drawn strokes. |
+| [`motion-pattern-library`](./skills/motion-pattern-library) | Worked scene motion patterns for entrances, exits, stagger, directional nudges, emphasis, ambient life, springs, arcs, layered beats, parenting, parallax, focus, wipes, drawn strokes, and cartoon fast motion (smears, multiples, speed lines). |
 | [`motion-review`](./skills/motion-review) | Review an existing scene for motion that is confusing, mistimed, distracting, broken at a seam, or unnecessarily expensive. |
 | [`motion-scene-continuity`](./skills/motion-scene-continuity) | Plan and diagnose continuity across scene beats and scene boundaries—semantic handoffs, dominant direction, shared visual carriers, causal action/reaction, intentional resets, and seam verification. |
 | [`motion-tracking-from-video`](./skills/motion-tracking-from-video) | Measure what objects visibly do in a video. |

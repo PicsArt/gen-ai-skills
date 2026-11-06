@@ -67,7 +67,7 @@ step**, not "if you happen to need it":
 | act on any widget/panel response | `references/WIDGET-FEEDBACK.md` |
 | validate a scene — before showing ANY render, or when "it validates but looks wrong" | `references/SCENE-VALIDATION.md` — schema ≠ correct; the eye is the real check, ground truth branches by route |
 | a render/preview looks wrong or a tool errors | `references/MOTION-TROUBLESHOOTING.md` |
-| write the first keyframe / nested comp / zoom math / opacity from Figma | `references/ENGINE-GOTCHAS.md` — silent-bug rules (local clocks, one track per channel, sRGB→linear opacity, fixed-point zoom) |
+| write the first keyframe / nested comp / zoom math / opacity from Figma | `references/ENGINE-GOTCHAS.md` — silent-bug rules (local clocks, sRGB→linear opacity, fixed-point zoom) |
 | fetch anything from a Figma file | `references/figma-context.md` — this skill's; frame index once, full tree per pair, state not context |
 | work from uploaded assets with no motion described, or choose part-by-part vs whole | `references/asset-routes.md` — this skill's; propose mode and the working-mode offer |
 | compose any frame (Stage 2) | `references/stage-2-compose.md` — this skill's; live layers, hosting/CSP, fonts, alignment, duration, preview per frame |

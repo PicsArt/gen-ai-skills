@@ -1,10 +1,10 @@
 ---
 name: motion-pattern-library
-description: Worked scene motion patterns for entrances, exits, stagger, directional nudges, emphasis, ambient life, springs, arcs, layered beats, parenting, parallax, focus, wipes, and drawn strokes. Use when the motion intent is known and you need supported scene properties and keyframe structures to adapt; values are starting points, not universal timing rules.
+description: Worked scene motion patterns for entrances, exits, stagger, directional nudges, emphasis, ambient life, springs, arcs, layered beats, parenting, parallax, focus, wipes, drawn strokes, and cartoon fast motion (smears, multiples, speed lines). Use when the motion intent is known and you need supported scene properties and keyframe structures to adapt; values are starting points, not universal timing rules.
 metadata:
   category: authoring
-  version: '1.5'
-  ported-from: motion-patterns 1.5 at 55.75.0
+  version: '1.6'
+  ported-from: motion-patterns 1.6 at 55.104.0
 user-invocable: false
 ---
 
@@ -487,3 +487,10 @@ than a preset. Preview the start, partial stroke and completion; verify the inte
 An ink line that writes on — a signature, a doodle, a character's outline — is the same trim track with a
 tapered stroke (`character-rigging`, "Ink lines"). The taper is laid along the drawn part, so the moving
 end keeps its point as it writes on.
+
+## Cartoon fast motion: smears, multiples and speed lines
+
+A dash, a fast wave or a zip exit reads as a cartoon when its fast frames are drawn differently. The
+`smear`, `multiple` and `speed_lines` motion presets read the layer's real motion and draw only above a
+speed threshold, along the motion. Which layer each goes on, frame counts, the exit zip and how they
+combine with motion blur are in [references/cartoon-fast-motion.md](references/cartoon-fast-motion.md).

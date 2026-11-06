@@ -56,8 +56,10 @@ A skill's text says to run `python3 scripts/<name>.py`. Run it with the `Bash` t
 skill's own folder: the base directory Claude Code names when it loads the skill. Pass the input as
 a file in the session's scratch or working directory, not inline.
 
-If `python3` is missing, say so in one line and stop. On a Mac without Apple's command line tools,
-`python3` offers to install them. Tell the user what it is, and wait for them.
+If `python3` is missing, say so in one line, then go on with the Picsart tools, as picsart-video-rules
+says for the user's computer. On a Mac without Apple's command line tools, `python3` offers to
+install them: tell the user what that is, and carry on with the Picsart tools unless they choose
+to install it.
 
 ## The critics and the challenger as agents
 

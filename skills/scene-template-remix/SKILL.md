@@ -3,8 +3,8 @@ name: scene-template-remix
 description: Select, reuse and customize scene catalog items. Use when remixing scene templates, looks, motion presets, text animations, transitions, effects or caption decorations, replacing placeholder content with media, or joining an outside object to a template.
 metadata:
   category: workflow
-  version: '1.6'
-  ported-from: template-customization 1.6 at 55.75.0
+  version: '1.7'
+  ported-from: template-customization 1.7 at 55.104.0
 user-invocable: false
 ---
 
@@ -41,7 +41,9 @@ Read `supportedModes` before choosing an operation. An entry with
 `referencePolicy:"expand-only"` is a complete authored scene starter, not a blank
 scaffold or a live reusable reference. Use `bootstrap` for a new editable scene or
 `inline` for an existing host; reference mode (including the default) is refused.
-Zero parameters means edit the expanded layers, not invent bindings. Once copied,
+Zero parameters means edit the expanded layers, not invent bindings. A parameter declaration may carry `group`
+(a heading an editor lists it under) and, on a vec2, `frame` (`"composition"` or `{layer}`: the value is a point in
+that frame). Both are presentation only: a resolver ignores them and never moves the point. Once copied,
 the scene is yours to edit, save, and reference locally like any other scene.
 For effects on existing layers, list them with `picsart_scene_capabilities({sections:["effects"]})`, then read
 the chosen one with `effect:<id>`.
@@ -59,7 +61,7 @@ For looks, call `picsart_scene_looks` with `facetsOnly:true`, filter by `categor
 |---|---|
 | Animate or style existing content | Apply the relevant motion, text-animation, look or effect preset; retain the existing layer and placement. |
 | Reuse a composition with different inputs, when `supportedModes` includes reference | `picsart_scene_apply_template` with `mode:"reference"`; put its returned `sceneRef` in a layer's `content`. |
-| Start a new standalone editable scene | `mode:"bootstrap"`; this resolves inputs into a concrete scene, not a live parameterized reference. |
+| Start a new standalone editable scene | `mode:"bootstrap"`; this resolves inputs into a concrete scene, not a live parameterized reference, and drops the template's declared parameters (declare the knobs you want tuned). |
 | Bring editable template layers into an existing scene | `mode:"inline"` with the target `scene` and `at`; inspect the returned structure and IDs. |
 | Structurally edit an already placed reference | `picsart_scene_expand_ref` for that instance; inspect diagnostics and preserve placement/timing before patching. |
 
