@@ -1,4 +1,4 @@
-# Engine gotchas (scene / V3 renderer) — each caused a real, visible bug
+# Engine gotchas (scene renderer) — each caused a real, visible bug
 
 Learned in live projects; read before composing the first frame and again when a render
 "looks slightly wrong" with no validation error.
@@ -7,8 +7,6 @@ Learned in live projects; read before composing the first frame and again when a
 - **Figma layer opacity → scene opacity is sRGB→linear:** `lin = ((a + 0.055) / 1.055) ** 2.4`.
   Figma 20% → **0.0331**, 15% → 0.0196. Authoring Figma's raw value renders dimmed items far
   too bright. Confirm against the side-by-side render-match — the compare catches it either way.
-- **Opacity on a composition hosting masked children is not honoured** — put the opacity on the
-  leaf layers instead.
 - **Shape paint colours carry no alpha** (`#rrggbb` only); transparency goes in the paint item's
   own `opacity` (an `#rrggbbaa` byte is silently dropped — the validator now says so).
 
@@ -20,30 +18,16 @@ Learned in live projects; read before composing the first frame and again when a
 - Give leaving compositions a `duration` so they stop rendering after their exit.
 
 ## Transform channels
-- **V3: one track per channel per layer.** Two scale animations (a pop-in plus a tap, or two
-  presets touching scale) must be merged into one keyframe list — or one of them moved to another
-  channel (make the entrance a fade/slide instead).
-- In a `transforms` stack, put `translation` **after** `scale`.
 - Collapsed compositions: set `anchor` and `position` explicitly (both = the pivot) **before**
   animating scale — this is what makes "zoom toward the T-shirt tile" land on the T-shirt tile.
-- **To pivot a SHAPE, set the shape GROUP-ITEM's `anchor` — NOT the layer's `transform.anchor`.** A
-  layer-level `transform.anchor` on a shape fails at the engine (a shape has no resolution box to
-  normalize the anchor against): it is **hard-rejected** (`EngineUnrepresentableError`). The
-  **supported, animatable** pivot is **`ShapeGroupItem.anchor`** ("Pivot for rotation/scale,
-  content-local px, default `[0,0]`") — wrap the geometry in a group and set that group's `anchor`
-  (+ `position`). *(Verified in the render engine, not just the validator.)*
-- **`text` also rejects a layer `transform.anchor`** — the validator flags it
-  (`text_anchor_unsupported`); text renders centre-anchored around its `position`. Only
-  `media`/`color`/comps honour an arbitrary layer-level anchor (`AUTHORING-FLOW.md`'s anchor guidance
-  isn't universal — shape and text are the exceptions).
 - Avoid scale exactly 0 — start pops at ≥ 0.3 with opacity 0.
 
 ## Camera & presets (resolve from `get_capabilities` — `appliesTo` matters)
-- **A pan-only `composition.camera` is a NO-OP in the v1 player** — a `position` change with `zoom`
-  unchanged moves nothing. Camera **zoom** works; a pure **pan** does not. For a pan (e.g. a viewport
-  travelling a drawing line), use the **empty-"world"-layer rig**: parent everything to one `empty`
-  layer and animate *its* `position` so the world slides under a fixed viewport (recipe:
-  [`TRANSITIONS.md`](./TRANSITIONS.md) §"Recipe — the connected-canvas rig").
+- **`composition.camera.position` is the camera's pivot, not a pan.** A pivot move with `zoom` unchanged
+  shifts only layers off the z = 0 plane (parallax); a flat scene does not move. Camera **zoom** moves
+  everything. For a pan (e.g. a viewport travelling a drawing line), use the **empty-"world"-layer rig**:
+  parent everything to one `empty` layer and animate *its* `position` so the world slides under a fixed
+  viewport (recipe: [`TRANSITIONS.md`](./TRANSITIONS.md) §"Recipe — the connected-canvas rig").
 - **`fade_in` does NOT apply to `shape` layers** (its `appliesTo` is `text`/`media`/`color`/`scene_ref`
   — verified in caps) — applying it to a shape does nothing. **Fade a shape with `opacity` keyframes**
   instead; `glow_pulse` and `tap_pulse` *do* list `shape`. Check any preset's `appliesTo` before

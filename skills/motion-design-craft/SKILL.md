@@ -263,6 +263,41 @@ Each edit is a `patch_scene` → a new `sceneRef`. Read the `scene_editor_feedba
 "approved"` advances the conveyor. When `edited` is true, patch onto the returned `documentUrl`
 (the inline `document` only when it could not be stored), not your prior copy.
 
+## Tuning by hand — `picsart_scene_tune`
+
+**When:** one rule, here only. A declared knob goes to the tuner at the first taste complaint ("too much glow", "colour's off", "more bounce"). One named value ("20% stronger", "0.3 s later") is a `picsart_scene_patch`. With nothing declared, wait two chat rounds on the same thing, then extract it (below) and tune. Structural changes (adding a layer, a new action) stay with you.
+
+**How:** open `picsart_scene_tune` with `focus`. `primary` is the parameter the user's words point at. `related` holds the few that usually move with it (at most ~10). `note` is one line in the user's own terms ("Try headTurn first, then the eyes"). Never hide parameters; the rest stays under "All" and search.
+
+**After:** read back `changed`, `keys`, `order`, `layers` and `bindings`, continue from the returned `documentUrl` (inline `document` only when it could not be stored), and tell the user in one line what they changed.
+
+- `primary` and `related` also take a root layer id or a joint (a `vec2` parameter's name), not only a parameter name. Names must be exact ids; an unknown one is silently ignored.
+- `title` names what is tuned; `note` is at most 120 characters, in the user's language.
+- Nothing arrives until the user presses Accept; there is no close event. No `scene_tuner_feedback` means no change: keep the scene as it was and claim none.
+- Say which way in the `note`, never "left" alone: name the screen side or edge (on `rig-humanoid-front`, `+x` is the figure's left, the viewer's right).
+- Hand over the pair that moves together: a title and its subtitle are two layers; declare both positions (or parent one to the other) or the second stays behind.
+- Where the tool is not offered (`hiddenFrom: google`), keep iterating by chat.
+
+### Make it tunable when you struggle
+
+The tuner moves what the scene declares (root `parameters`, and `actions` that animate them) and, with no declaration, a root layer's literal `transform.position`, its order, and its `animations.position` keys (`tab: "layers"`, `primary` a layer id).
+
+**Escalation:** the "When" rule above. A root layer's position, order or position keys count as declared; any other property of an undeclared part is extracted first.
+
+**Extract:**
+1. Move the part into its own scene (`assets: { <id>: { type: "scene", scene } }`) and place it with a `scene_ref` (`assetId`) at the same spot and window. The rest of the scene stays as it is.
+2. Declare its knobs as `scene-building-basics` "Reusable parts" says, bound into the part's properties with `{"$eval": "<name>"}`.
+3. The tuner reads only the root `parameters` of the scene it opens, so declare the same knobs on the host root and forward each: `scene_ref.parameters: { "<inner>": { "$eval": "<outer>" } }`. The `scene_ref` layer no longer has a position handle, so declare its placement as a host `vec2` parameter (`frame: "composition"`) and bind it into the layer's position the same way. Check with `picsart_scene_validate`.
+4. Open `picsart_scene_tune` on the host with `focus.primary` the knob that matches the complaint, and continue from what comes back.
+
+A scene that already declares its parameters needs only step 3.
+
+**Motion that has no knob yet.** A preset's numbers are literals in the layer's tracks, so there is nothing to tune: declare the knob and read it in that track's expression. "Slower" on a rig action is a knob too: declare it and bind `content.animation[i].speed` with `{"$eval":"<knob>"}`.
+
+Any scalar field takes `{"$eval":"<knob>"}`, so a knob can sit on timing, effects, colours or transitions. For a transition, offer its own params (`picsart_scene_capabilities` lists them).
+
+Extracted parts follow the `character-rigging` skill (placement, clipping).
+
 ## Suggesting motion
 
 When you propose candidates, choose by **role × energy**, not a fixed list: a headline at

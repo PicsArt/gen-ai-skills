@@ -40,7 +40,7 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 4. Pick the moments | ASK | speech-aware-cutting, retention-hooks |
 | 5. Agree the passes | ASK | — |
 | 6. Plan the cut | — | speech-aware-cutting |
-| 7. Build the takes | — | footage-reframing, scene-building-basics, spoken-captions, edit-on-your-computer, photo-slideshow, quick-merge-and-export, face-hiding |
+| 7. Build the takes | — | footage-reframing, scene-building-basics, spoken-captions, edit-on-your-computer (on-disk), photo-slideshow, quick-merge-and-export, face-hiding |
 | 8. Check it: the framing, the QC inspector, the critics | ASK | footage-reframing, quality-review |
 | 9. The cut | REVIEW | — |
 | 10. Highlights, when wanted | ASK, REVIEW | spoken-captions, caption-decorations, screen-recording-layouts |

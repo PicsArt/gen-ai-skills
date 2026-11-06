@@ -118,3 +118,12 @@ planted foot. Check it with `picsart_scene_validate`, then render before, inside
 Unknown names report `action_unknown`, `action_layer_unknown` or `action_parameter_unknown`;
 invalid duration reports `action_duration_invalid`. Spine per-vertex deform timelines
 are refused as `spine_deform_unsupported`; do not silently discard them.
+
+## Catalog humanoid actions
+
+`scene://rig-humanoid` and `scene://rig-humanoid-front` declare actions: idle, walk (in place), wave, point, talk,
+shrug, nod, shake. `rig-face` has none; blink, gaze, breath and follow-through stay drivers. Place the template in
+reference mode and play its actions through the `scene_ref`'s `content.animation` as above; the walk stays in
+place, so move the body with a host position track (or a ground scroll). A layer that plays its body's actions
+stays a reference when `picsart_scene_expand_ref` expands in bulk, and detaching it by layer id is refused as
+`detach_plays_actions`.

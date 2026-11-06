@@ -17,7 +17,9 @@ The spring vocabulary and ranges are shared across both hosts; each host keeps i
 | `damping` | 0.1..2 / parameter 0.3, layer 0.49 | Damping ratio; below 1 rings, 1 is critically damped |
 | `property` | rotation (default), position, scale | Layer channel to simulate |
 | `inertia` | 0..1 / 0.6 | Layer response to parent world acceleration |
-| `gravity`, `wind` | [x,y], each -100000..100000 / [0,0] | Layer world acceleration in px/s²; +y down; affects position and angular pendulums |
+| `hold` | 0..1 / 0 | Layer constraint: fraction of support displacement retained each tick |
+| `end` | finite nonzero [x,y] / inferred lever | Rotation-only layer constraint: content-pixel vector from this layer's pivot to its far end |
+| `gravity`, `wind` | literal [x,y], each -100000..100000 / [0,0] | Layer world acceleration in px/s²; +y down; affects position and angular pendulums; no tracks |
 | `follow` | parameter/weight list / required for parameter host | Rig controls that drive parameter sway |
 | `amount` | -10..10 / 1 | Parameter swing multiplier |
 | `segments` | integer ≥1 / 1 | Number of generated parameter followers |
@@ -25,6 +27,18 @@ The spring vocabulary and ranges are shared across both hosts; each host keeps i
 Rotation bounds belong on the driven animation track's `min`/`max`, using the existing bounded
 path. Vector position and scale tracks currently remain unbounded;
 there is no separate spring `limit`, `mass`, or `strength` control. Forces are accelerations.
+
+On a layer's `follow_through` constraint, `inertia`, `hold`, `frequency` and `damping`
+accept numbers or tracks. They evaluate on fixed 1/120-second ticks from composition
+time zero, so backward seeks replay deterministically. `end` replaces the inferred
+rotation lever; position and scale constraints refuse it. Author `hold`, `end` or live
+control tracks directly on the constraint; the preset's parameter inputs are separate.
+See the **Layer follow-through** example in `character-rigging` for a hair tip held back by support motion.
+
+Inertia responds to support **acceleration**, hold retains part of its **displacement**,
+and damping dissipates the spring's velocity. Hold is not another damping control:
+use it to keep the far end from immediately travelling with its support. For position
+and scale it retains the corresponding channel's support displacement.
 
 For hair and ponytail layer chains, start with **inertia 0.7 and damping 0.5**, then tune
 from root to tip. These are authoring recommendations, not host defaults: omitting frequency
@@ -117,5 +131,5 @@ throughout the replay, including the instance's first active frame. A scale-in f
 sampling a later frame; use opacity to reveal a rig while preserving its transform space.
 Transform stacks are supported. Use one writer per (layer, channel): rotation physics plus
 position attach is legal, two position writers are not. Put looks on an outer wrapper.
-`property`, `inertia`, `gravity`, and `wind` are layer-only; `follow`, `amount`, and
+`property`, `inertia`, `hold`, `end`, `gravity`, and `wind` are layer-only; `follow`, `amount`, and
 `segments` are parameter-only. `frequency` and `damping` mean the same thing in both.

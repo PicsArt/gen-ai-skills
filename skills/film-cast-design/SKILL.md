@@ -18,7 +18,7 @@ cut into single views, passed to every video that shows that person. Read these 
 
 | Asset | Pictures | Compiled with |
 |---|---|---|
-| A person you generate | one sheet: front face, side face, full-body outfit, and a states row when the story needs one | `picsart_film_compile_prompt`, `kind: "sheet"` |
+| A person you generate | one sheet, the strip of Picsart's canvas: full-body front, side and back and a large face close-up in one row, in one generation | `picsart_film_compile_prompt`, `kind: "sheet"` |
 | A person the user photographed | the photo itself; a profile and a sheet only for views the photo lacks | `kind: "profile"`, then `kind: "sheet"`, from the photo |
 | A prop | one plate: the object alone on a neutral ground, and the object beside an everyday thing for scale; no people, no hands | `kind: "plate"` |
 | A place | a descriptor now; its pictures come from its scene (film-shot-generation) | — |
@@ -89,7 +89,8 @@ instead, as film-shot-generation says.
    film's `look`, the same object the shots get, and the descriptor's lines in `reference`
    (`identity` or `faceAndOutfit`, `outfit`, a plate's `descriptor` and `anchor`, `assetPalette`).
    Keep `look.scheme` and `look.hue` in it: left off, the cast comes back in no colour while the
-   shots compile to the film's hue. It returns the prompt, the
+   shots compile to the film's hue. Pass the film's image model as `model`: a picture sent with
+   reference images then gets a ratio that model takes with them. It returns the prompt, the
    `negativePrompt`, the `aspectRatio` and a `promptToken`. Send all of them as returned; never
    type or retype a template.
 3. Compile with `verifyWith` (`request` with the `imageUrls` you will send, `film` with the saved
@@ -111,7 +112,7 @@ Every tile comes back approved, changed or discarded.
   `name`, `descriptor`, `sheetVersion` (`"v1"`; a new version is a new save, never an overwrite),
   `voice` (an object: `mode` `preset` or `design`, or `nonSpeaking: true`; `voiceId`, `model`,
   `description`, `language`, `accent`, `sampleUrl`), `portraitUrl` (the sheet, or the user's photo),
-  the views as `referenceImages`, the `scenes` it serves, `projectFolderUid`, `status: "locked"`. The result's `locked`, not its
+  the views as `referenceImages` (the close-up first, as `references/views.md` orders them), the `scenes` it serves, `projectFolderUid`, `status: "locked"`. The result's `locked`, not its
   `saved`, says it is done.
   A locked save lands in the project's "Library", anything else under its "Assets"; with no project
   folder it goes to the flat global "Film Assets" folder. Only a save registers an asset for

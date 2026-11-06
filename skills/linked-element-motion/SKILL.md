@@ -186,9 +186,6 @@ One moment, one report. What its fields do and do not say:
   envelope, the projected center and `depth`, and no `rotationDeg`; `onCanvas` reads the envelope.
   A layer reaching the camera's eye has no geometry and is noted. A composition in depth paints
   far to near, so `zIndex` follows depth there.
-- **Engines.** `native` (default) resolves the authored scene directly. With `v3`, text boxes are
-  font-metric envelopes; with `jet`, text has no measured box, center, rotation or `onCanvas`
-  and is noted. Geometry can differ between engines.
 - The query may fetch referenced scenes, fonts and caption transcripts through guarded
   public-URL reads; it saves no report file. It certifies no effects, assets or codecs: look at
   rendered frames before export.
@@ -325,7 +322,7 @@ classified:
 - **`allow`** moves the named pairs to `allowed`, keeping their class, and clears a covered layer
   whose every cover is allowed. An entry that never overlaps is reported as stale.
 - **`mostlyOffCanvas`** lists root layers whose best visible share stayed below half.
-- Text boxes are metric envelopes, not glyph bounds; with `engine:"jet"` text is unmeasured.
+- Text boxes are metric envelopes, not glyph bounds.
 - Findings never fail the call. Bad options, a bad window and query errors do.
 
 Sampling is bounded to 600 samples per call: a window that needs more, at the default 0.25 s step

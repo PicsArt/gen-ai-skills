@@ -62,9 +62,7 @@ The montage template plays its clips one after another and renders one file.
    unchanged. These arguments are complete, so this job needs no schema or template lookup. The
    composition's duration is the sum of the clip durations: never set it by hand.
 4. **Validate.** Call `picsart_scene_validate` on the returned `scene`.
-5. **Optional: the editable project.** `picsart_scene_translate` returns the scene as a full
-   engine project, with each transition wired at its seam. Skip it when only the file is wanted.
-6. **Render.** Call `picsart_scene_export` with the scene and `mediaType: "mp4"`. It replies with a job
+5. **Render.** Call `picsart_scene_export` with the scene and `mediaType: "mp4"`. It replies with a job
    receipt: follow it as picsart-video-rules says until it reports `urls`, one merged file.
 
 The montage is sequential: each clip starts where the one before it ends. For layers that play at

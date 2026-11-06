@@ -122,7 +122,8 @@ the frame:
 | Anywhere else | `ebu` | 5% on every side |
 
 **Several places: the strictest holds**, side by side. **Run `scripts/safe_zone.py` to check a
-scene; never judge it by eye.** From this skill's folder, run `python3 scripts/safe_zone.py <file>`
+scene; never judge it by eye.** Where you cannot run commands, the safe zone is `open`. From this
+skill's folder, run `python3 scripts/safe_zone.py <file>`
 on `{ scene, destination }`, with `destination` one profile or a list of them. It prints
 `{ ok, findings }`: each text layer that crosses a margin (`outside_safe_zone`) or sits under the
 rail (`under_rail`), with how far, and a `fix` that says which way to move it. It estimates a text
@@ -140,7 +141,8 @@ measure it on a frame with `picsart_scene_query_layout` and pass its box in `mea
 
 A private box (an email, a key, a customer's name) is covered by an opaque card that moves with
 the recording, through every push and pan. **Run `scripts/cover.py` for the card; never place it
-by hand.** From this skill's folder, run `python3 scripts/cover.py <file>` with the recording
+by hand.** Where you cannot run commands, cut the moment or frame the box out of the panel. From
+this skill's folder, run `python3 scripts/cover.py <file>` with the recording
 layer exactly as it is in the scene, the source's size, the `box` in source px, the style's
 `surface` as `color`, and `from` and `to`, the scene seconds the box is on screen. It prints one
 `shape` layer: add it right after the recording layer, in the same scene (inside the nested scene

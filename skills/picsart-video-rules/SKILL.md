@@ -23,11 +23,21 @@ nor a model unless they asked about models. Say what you are doing: "watching yo
 If a tool named here or in a use case is not in your list, say that this part is not available
 here and stop that part. Never substitute another tool.
 
+**The user's computer, or the Picsart tools.** When the work is on the user's own computer (their
+footage on its disk) and you can run commands there, use the software installed on it, such as
+ffmpeg, python3 or Gyroflow. When something is not installed, ask before installing it, or skip
+it. Otherwise (the work is not on their computer, you cannot run commands, or a tool is missing
+and they decline it) do the whole job with the Picsart tools. A cloud sandbox or workspace is not
+the user's computer. A missing local tool means the Picsart tools, never a stop. It skips no
+question: installing software, uploading their footage and every charge still need their yes,
+as each skill and SPEND say.
+
 **A skill's script** (`python3 scripts/<name>.py`) checks what the skill's text already says.
 Where you cannot run commands, do that step by hand as the text describes it; a measurement only
 the script makes is `open`, never a pass. A script that builds the scene is the exception: never
-work a scene out by hand. Say the step needs the scene builder, which runs where commands do, on
-the desktop or in the Picsart app; offer to carry on there from the project record, and stop that
+work a scene out by hand. Where a Picsart tool does that step, use it. Where only the script does,
+say the step needs the scene builder, which runs where commands do, on the desktop or in the
+Picsart app; offer to carry on there from the project record, and stop that
 step. Never leave the user at "cannot".
 
 Before your first scene tool call, read `references/scene-tools.md`: `picsart_scene_capabilities`

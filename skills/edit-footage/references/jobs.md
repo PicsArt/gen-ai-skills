@@ -8,7 +8,7 @@ wins over a default. Say the job back at intake in one line.
 | **What it is** | B-roll cut under a voice-over: a brand, law-firm or real-estate film | a speaker on camera, with B-roll between and over their lines: an interview, a chef or founder intro | footage with no speech and no brief: an event, a trip, a product or a place |
 | **Stages** | all 13 | all 13 | all but `takes` |
 | **Takes** | the voice-over's take | the speaker's best take of each line, and the talking segments | none |
-| **Pace** | shots hold 2-4 s, never under about 1.4 s unless a one-word beat needs it; fewer, longer shots | talking segments follow the speech; B-roll holds 2-4 s | from the reference, else shots of 1.5-3 s on the picture's own rhythm |
+| **Pace** | shots hold 2-4 s, never under about 1.4 s unless a one-word beat needs it; fewer, longer shots | talking segments follow the speech; B-roll holds 2-4 s; a section per part of the brief (the speaker, the work, the result), each with one long hold and a breath before the next | from the reference, else shots of 1.5-3 s on the picture's own rhythm |
 | **Cuts** | on key words, about 0.1 s before the word; minor words held through | on the speaker's sentence ends; B-roll covers joins, never a face mid-line unless planned | on action and movement within the frame, or on the music's beats |
 | **Music** | none unless the brief asks; offer a quiet bed as an A/B | none | a bed carries it: offered as a rendered A/B; the shot's own sound kept under it |
 | **Extra checks** | no mouth moving under the voice-over | the speaker in frame; nobody cut mid-sentence | the story reads with no words |

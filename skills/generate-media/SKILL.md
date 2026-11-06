@@ -81,7 +81,8 @@ An edit skips this stage. For `picsart_generate`:
    say: three candidates from `picsart_model_catalog` (`concise: false`), each with what it is best
    for here, one marked recommended. When they want to look through all of them, open
    `picsart_model_show` with the `mode` and `purpose: "generate"`. Otherwise choose it yourself:
-   - an image: `flux-2-pro`;
+   - an image: `gpt-image-2.6-flare` (`flux-2-pro` for a 21:9 or 9:21 frame, which it does not
+     hold). It takes `reasoningEffort`, not `quality`, and no `negativePrompt`;
    - anything else: `picsart_model_catalog` with the `mode`, `purpose: "generate"`, the
      `inputType` (`t2v` or `i2v` for a video, `tts` for a voice line, `sfx` for a sound, `music`
      for a song) and `acceptsImage` or `acceptsVideo` when the user brought one. Take the first

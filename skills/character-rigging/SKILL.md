@@ -3,8 +3,8 @@ name: character-rigging
 description: Build and animate a 2D cartoon character in a scene — rig-humanoid and rig-face, their control names and ranges, walk_cycle, acting and drivers on a rig, two-bone IK, draw order, tapered ink lines, lip sync — and the craft of morphing a shape's outline — preparing two drawings so they morph without twisting, choosing between outline keyframes, morph targets, per-vertex tracks and outline expressions, blend-target hygiene, timing (anticipation, overshoot, holds), volume-keeping squash, face visemes and blinks, scene-to-scene morph transitions, bending a picture over an art mesh, and explicit skin weights. Use when a cartoon character, mascot or face walks, waves or talks; when a path's outline changes shape over time — one drawing becomes another; a jelly, blob or character squashes, stretches, bounces, wobbles or breathes; a cartoon face talks (lip sync, mouth shapes), smiles or blinks; a cut is hidden by a morph; or an image, text or composition has to bend.
 metadata:
   category: authoring
-  version: '1.6'
-  ported-from: shape-morphing 1.6 at 55.91.0
+  version: '1.7'
+  ported-from: shape-morphing 1.7 at 55.104.0
 user-invocable: false
 ---
 
@@ -25,8 +25,8 @@ composited result (mask, effect, non-normal blend, opacity below 1, motion blur,
 adjustment or look) isolates and clips it. Action bodies have time keys, no `$eval` or expressions;
 layer expressions and constraints run after the mix. Step channels switch immediately. Delayed first
 keys need the `beforeFirst: "rest"` action policy. `animations` is a layer field and the action stack is
-`content.animation`; root `actions` are distinct from a track content's sequential `clips`. Catalog rig
-presets stay parameter bindings, not actions. The schema is `picsart_scene_capabilities` with
+`content.animation`; root `actions` are distinct from a track content's sequential `clips`. `rig-humanoid` and
+`rig-humanoid-front` (the same body from the front) declare actions: `scene-animation-reference`. The schema is `picsart_scene_capabilities` with
 `sections: ["schema:SceneAction"]`; the full crossfade example is in
 `picsart_scene_recipe scene-animation-reference`.
 
@@ -474,7 +474,7 @@ from `picsart_scene_apply_preset` with `preset` `mesh:auto`; then `deformers` (`
 move its points over time, each fading in and out on its `mix`. `pins` give free handles to a flag,
 tail, ear or sticker corner, with `stiffnessRegions` to keep a head firm on a bending body. Read
 [references/art-mesh.md](references/art-mesh.md) before writing a mesh, and
-[references/live-pins.md](references/live-pins.md) before writing pins.
+[references/live-pins.md](references/live-pins.md) before writing pins. See also [traced SVG](references/traced-svg.md) and [follow-through, pixel art](references/layer-follow-through.md).
 
 ## 11. Explicit skin weights
 
@@ -482,6 +482,10 @@ When a limb, sleeve or imported mesh should follow painted bone influences inste
 radius falloff, give the `skin` deformer `weights`, one row per mesh vertex or outline point. Read
 [references/skin-weights.md](references/skin-weights.md) before writing them: the rest-pose
 alignment, the row numbering, the blend band a bend needs, and the limits.
+
+## Tuning by hand — `picsart_scene_tune`
+
+Open it as `motion-design-craft` describes. `rig-humanoid` and `rig-face` already declare their controls; a custom character exposes its own as `scene-building-basics` "Reusable parts" says.
 
 ## Not expressible (format findings, not rules)
 

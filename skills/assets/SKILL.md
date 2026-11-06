@@ -1,5 +1,5 @@
 ---
-name: browse-assets
+name: assets
 description: Open the Picsart Assets panel on what the user made with Picsart - their videos, images, audio, film characters, film props and film projects - newest first, with previews, or on one kind or one film when they name it. Use when the user wants to see what they made ("show my assets", "my film characters", "open the two-sisters film") or asks for the assets panel. Not for browsing Drive folders, and not for choosing a film's references for a generation.
 metadata:
   title: Browse assets
