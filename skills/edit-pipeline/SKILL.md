@@ -116,7 +116,8 @@ the rules below. Where commands run, `python3 scripts/record.py status edit-foot
   `fastHold` and `maxFastRun` (more shots under `fastHold` in a row than this reads as eventy;
   1.2 s and 3 by default), `holdPerSection` (one shot at least this long in each section, from
   the brief's order, as each plan row's `section`) and `breaths` (between sections, a shot with
-  picture and the shots' own sound and no voice). `register` quotes the brief's style words when
+  picture and the shots' own sound and no voice: a row with no `phrase`, or `voice: false` on a row
+  whose phrase names a silent beat). `register` quotes the brief's style words when
   they ask for it. `lock-check` reports a broken rhythm `open`, said before the build, and fails
   the plan only when `register` is set; a shape the user chose instead is an approval scoped
   `format:rhythm`. The rhythm is set with `cutPace`, before the first build.

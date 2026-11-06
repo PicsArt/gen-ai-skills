@@ -27,8 +27,14 @@ GAMMAS = [('s-log3', 's-log3'), ('slog3', 's-log3'), ('s-log2', 's-log2'), ('v-l
 GAMUTS = [('s-gamut3-cine', 's-gamut3.cine'), ('s-gamut3.cine', 's-gamut3.cine'), ('sgamut3cine', 's-gamut3.cine'),
           ('s-gamut3', 's-gamut3')]
 BUILT_IN = {'s-log3': ('s-gamut3.cine', 's-gamut3')}
-# Sony writes CaptureGammaEquation="s-log3-cine" for S-Log3 with S-Gamut3.Cine
-SONY = re.compile(rb'CaptureGammaEquation[^>]{0,40}?(?:value=)?"([^"]{1,40})"', re.I)
+# The camera's own word on its curve and gamut, as Sony writes them:
+# <Item name="CaptureGammaEquation" value="s-log3-cine"/> is S-Log3 with S-Gamut3.Cine.
+# Also read: <CaptureGammaEquation value="..."/> and CaptureGammaEquation="...".
+CAPTURE = re.compile(rb'Capture(GammaEquation|ColorPrimaries)"?(?:\s+value\s*=\s*|\s*=\s*)"([^"]{1,40})"', re.I)
+# What a person typed (a title, a comment) can name a curve, "Daily vlog", without being one:
+# XML title and comment elements, and QuickTime's title, comment and description atoms.
+TYPED = re.compile(rb'<(Title|Description|Comment|UserComment)\b[^>]*>.*?</\1\s*>', re.I | re.S)
+TYPED_ATOMS = (b'\xa9nam', b'\xa9cmt', b'\xa9des')
 
 
 def chunks(path: str) -> list[bytes]:
@@ -36,10 +42,29 @@ def chunks(path: str) -> list[bytes]:
     size = os.path.getsize(path)
     with open(path, 'rb') as f:
         out.append(f.read(HEAD))
-        if size > HEAD + TAIL:
-            f.seek(size - TAIL)
+        if size > HEAD:
+            # the rest of a file under HEAD + TAIL, the last TAIL bytes of a longer one
+            f.seek(max(HEAD, size - TAIL))
             out.append(f.read(TAIL))
     return out
+
+
+def untyped(blob: bytes) -> bytes:
+    """The blob without the text a person typed into it."""
+    blob = TYPED.sub(b'', blob)
+    for atom in TYPED_ATOMS:
+        at = blob.find(atom)
+        while at != -1:
+            size = int.from_bytes(blob[max(at - 4, 0):at], 'big') if at >= 4 else 0
+            # an atom is its 4-byte size, its name and its data; a size that cannot be one drops the name alone
+            start, end = (at - 4, at - 4 + size) if 8 <= size <= 64 * 1024 else (at, at + 4)
+            blob = blob[:start] + blob[end:]
+            at = blob.find(atom, start)
+    return blob
+
+
+def name_of(text: str, names: list) -> str | None:
+    return next((name for needle, name in names if needle in text), None)
 
 
 def sidecars(path: str) -> list[str]:
@@ -54,26 +79,21 @@ def sidecars(path: str) -> list[str]:
 
 def read(blobs: list[bytes], probe: dict | None) -> dict:
     gamma = gamut = None
+    declared = {}
     for blob in blobs:
-        m = SONY.search(blob)
-        if m:
-            tag = m.group(1).decode('ascii', 'ignore').lower()
-            if tag.startswith('s-log3'):
-                gamma = 's-log3'
-                if tag.endswith('cine'):
-                    gamut = 's-gamut3.cine'
-            break
-    text = b'\n'.join(blobs).lower()
-    if gamma is None:
-        for needle, name in GAMMAS:
-            if needle.encode() in text:
-                gamma = name
-                break
+        for m in CAPTURE.finditer(blob):
+            declared.setdefault(m.group(1).lower(), m.group(2).decode('ascii', 'ignore').lower())
+    text = b'\n'.join(untyped(blob) for blob in blobs).decode('latin-1').lower()
+    curve = declared.get(b'gammaequation')
+    if curve is not None:
+        # The camera named its curve, so that decides: a Rec.709 clip stays Rec.709 whatever else it says.
+        gamma = name_of(curve, GAMMAS)
+        if gamma == 's-log3' and curve.endswith('cine'):
+            gamut = 's-gamut3.cine'
+    else:
+        gamma = name_of(text, GAMMAS)
     if gamut is None:
-        for needle, name in GAMUTS:
-            if needle.encode() in text:
-                gamut = name
-                break
+        gamut = name_of(declared.get(b'colorprimaries', text), GAMUTS)
     stream = {}
     for s in (probe or {}).get('streams', []):
         if s.get('codec_type') == 'video':

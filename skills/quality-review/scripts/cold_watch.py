@@ -464,11 +464,13 @@ def segment_words(k: int, seg: Dict[str, Any]) -> List[Word]:
     need(isinstance(text, str), f'{where}.text must be text')
     tags = as_list(seg.get('tags') or [], f'{where}.tags')
     speaker = next((t for t in tags if isinstance(t, str) and t.startswith('speaker:')), None)
-    if seg.get('words'):
+    entries = as_list(seg.get('words') or [], f'{where}.words')
+    tokens = text.split()
+    if entries and (len(entries) == len(tokens) or all(isinstance(w, dict) and isinstance(w.get('text', w.get('word')), str) for w in entries)):
         timed = []
-        for i, w in enumerate(as_list(seg['words'], f'{where}.words')):
+        for i, w in enumerate(entries):
             w = as_dict(w, f'{where}.words[{i}]')
-            word = w.get('text', w.get('word'))
+            word = w.get('text', w.get('word', tokens[i] if len(entries) == len(tokens) else None))
             need(isinstance(word, str), f'{where}.words[{i}].text must be text')
             timed.append((word.strip(), as_num(w.get('start'), f'{where}.words[{i}].start'), as_num(w.get('end'), f'{where}.words[{i}].end')))
     else:
@@ -553,6 +555,9 @@ def frames_of(video: Video, a: float, b: float) -> List[Tuple[float, str]]:
     picks, seen = [], set()
     for x in frame_times(a, b):
         i = min(round(x * video.fps), len(video.frames) - 1)
+        # The nearest frame can be the next piece's first: take the one before, so no piece shows what comes after it.
+        if i > 0 and i / video.fps >= b:
+            i -= 1
         if i not in seen:
             seen.add(i)
             picks.append((i, x))
@@ -763,9 +768,13 @@ def answer(reply: Optional[Dict[str, Any]], key: str) -> str:
     return v if isinstance(v, str) else NO_ANSWER
 
 
+def checkpoint(w: Watch) -> int:
+    return next((i for i, (_, end) in enumerate(w.pieces) if end >= 3.0), len(w.pieces) - 1)
+
+
 def piece_keys(w: Watch, packet: int) -> Tuple[str, ...]:
     """The keys beyond the four every piece asks."""
-    return (('keep_watching', 'ad') if w.short and packet <= 2 else ()) + (('jump',) if w.cuts else ())
+    return (('keep_watching', 'ad') if w.short and (packet <= 2 or packet == checkpoint(w) + 1) else ()) + (('jump',) if w.cuts else ())
 
 
 def note_line(a: float, b: float, fields: Optional[Dict[str, str]], short: bool = False) -> str:
@@ -793,7 +802,7 @@ def fit(build: Callable[[str], str], notes: List[Tuple[float, float, Optional[Di
 
 def piece_prompt(w: Watch, persona: Dict[str, str], packet: int, view: Tuple[List[str], str, str], notes: str) -> str:
     a, b = w.pieces[packet - 1]
-    extra = (EXTRA_SHORT if w.short and packet <= 2 else '') + (EXTRA_CUTS if w.cuts else '')
+    extra = (EXTRA_SHORT if w.short and (packet <= 2 or packet == checkpoint(w) + 1) else '') + (EXTRA_CUTS if w.cuts else '')
     values = {'system': SYSTEM, 'persona': persona['text'], 't0': tm(a), 't1': tm(b), 'notes': notes, 'extra': extra,
               'limit': str(LIMIT_EXTRA if extra else LIMIT)}
     if w.video is None:
@@ -842,7 +851,8 @@ def end_account(w: Watch, reply: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     away = away if isinstance(away, dict) else {}
     given = reply.get('answers') if reply else None
     answers = [x if isinstance(x, str) else NO_ANSWER for x in given] if isinstance(given, list) else []
-    out: Dict[str, Any] = {'friend': answer(reply, 'friend'), 'scroll_away': {'at': answer(away, 'at'), 'why': answer(away, 'why')},
+    at = str(away['at']) if _num(away.get('at')) else answer(away, 'at')
+    out: Dict[str, Any] = {'friend': answer(reply, 'friend'), 'scroll_away': {'at': at, 'why': answer(away, 'why')},
                            'answers': (answers + [NO_ANSWER] * n)[:n]}
     if w.short:
         out.update({'could_do': answer(reply, 'could_do'), 'keep': answer(reply, 'keep')})
@@ -964,6 +974,22 @@ def locate(words: Tuple[List[List[str]], List[str]], quote: str) -> Optional[int
     return len(words[0]) if want and any(want in straight(f) for f in words[1]) else None
 
 
+def locate_carried(words: Tuple[List[List[str]], List[str]], quote: str) -> Optional[int]:
+    """Prefer an occurrence outside a denial or uncertainty, then the latest match."""
+    want = straight(quote)
+    matches = []
+    for i, fields in enumerate(words[0] + [words[1]]):
+        for field in fields:
+            text = straight(field)
+            for match in re.finditer(re.escape(want), text) if want else ():
+                # Doubt counts in the quote's own clause only: "I don't know who sent it, but it is her
+                # sister's account" says the fact.
+                context = re.split(r'[.!?;:]|\b(?:but|though|although|however|yet)\b', text[:match.start()])[-1]
+                uncertain = re.search(r"\b(?:not|no|never|whether|if|unknown|unsure|doubt|don't|doesn't|isn't|can't)\b", context)
+                matches.append((i, bool(uncertain)))
+    return next((i for i, uncertain in matches if not uncertain), matches[-1][0] if matches else None)
+
+
 def check_mark_rows(raw: Any, w: Watch, words: Dict[str, Any], problems: List[str]) -> Dict[Tuple[str, str], Dict[str, Any]]:
     marks: Dict[Tuple[str, str], Dict[str, Any]] = {}
     if not isinstance(raw, list):
@@ -1019,7 +1045,8 @@ def check_unplanned(raw: Any, words: Dict[str, Any], problems: List[str]) -> Lis
             problems.append(f'unplanned[{i}] “{collapse(u["question"])}”: the quote “{collapse(u["quote"])}” is not in '
                             f'the words of {join_and(who)}')
         else:
-            out.append({'t': float(u['t']), 'question': u['question'].strip(), 'viewers': list(u['viewers']), 'quote': u['quote'].strip()})
+            out.append({'t': float(u['t']), 'question': u['question'].strip(), 'viewers': list(u['viewers']),
+                        'quote': u['quote'].strip(), 'quote_viewer': next(v for v in who if locate(words[v], u['quote']) is not None)})
     return sorted(out, key=lambda x: x['t'])
 
 
@@ -1061,7 +1088,7 @@ def judge(w: Watch, item: Dict[str, Any], marks: Dict[Tuple[str, str], Dict[str,
         m = marks[(item['id'], viewer)]
         mark, quote, t = m['mark'], m['quote'] or None, None
         if mark in QUOTED:
-            at = locate(words[viewer], m['quote'])
+            at = locate_carried(words[viewer], m['quote']) if mark == 'carried' else locate(words[viewer], m['quote'])
             t = time_at(w, at if at is not None else len(w.pieces))
             if mark == 'carried':
                 mark = 'hit' if at is not None and at <= deadline else 'late'
@@ -1077,7 +1104,7 @@ def short_failures(w: Watch, accounts: List[Dict[str, Any]]) -> List[Dict[str, A
     """What a short must also clear: staying for the first seconds, no ad, could do it, would keep it."""
     if not w.short:
         return []
-    first = min(len(w.pieces), 2) - 1
+    first = checkpoint(w)
     at = min(3.0, w.duration)
     out: List[Dict[str, Any]] = []
 
@@ -1124,8 +1151,7 @@ def fixes_of(gaps: List[Dict[str, Any]], must_not: List[Dict[str, Any]], asked: 
     for row in gaps + must_not:
         out.extend(fix_of(m['t'], m['mark'], row['text'], [{'viewer': v, 'quote': m['quote']}], row['id'])
                    for v, m in row['marks'].items() if m['mark'] in ('misread', 'wondering', 'thought'))
-    out.extend(fix_of(a['t'], 'asked', a['text'], [{'viewer': a['viewer'], 'quote': a['text']}]) for a in asked)
-    out.extend(fix_of(u['t'], 'unplanned', u['question'], [{'viewer': u['viewers'][0], 'quote': u['quote']}]) for u in unplanned)
+    out.extend(fix_of(u['t'], 'unplanned', u['question'], [{'viewer': u['quote_viewer'], 'quote': u['quote']}]) for u in unplanned)
     out.extend(fix_of(s['t'], 'short', s['text'], s['quotes']) for s in shorts)
     return sorted(out, key=lambda x: x['t'])
 

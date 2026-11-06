@@ -91,7 +91,11 @@ GYRO_FIELDS = ('gyro', 'gyroKind', 'stabilised')
 # either: the turn changes the picture, not the takes or the story, and the build is redone on purpose
 # (`invalidate <record> build`).
 UPRIGHT = ('yes', 'rot90', 'rot270', 'rot180', 'open')
-UNHASHED_SOURCE_FIELDS = GYRO_FIELDS + ('upright',)
+# `stream` is the data stream `gyro.py` prints beside `gyro`: saved with them, it counts no more than they do.
+UNHASHED_SOURCE_FIELDS = GYRO_FIELDS + ('stream', 'upright')
+# The fields left out before `stream` was: a stage marked done in a record saved then, with `stream`
+# in a source, still matches its inputs hashed this way.
+STREAM_HASHED_SOURCE_FIELDS = GYRO_FIELDS + ('upright',)
 # What the conform keeps of each used range: the stabilised copy, or the original when it is not steadier.
 STABILISED_USES = ('stabilised', 'original')
 
@@ -283,12 +287,12 @@ def job_writes(record: dict, stage: str) -> list[str]:
 BUILT_KEYS = ('scene', 'render', 'url')
 
 
-def value(record: dict, key: str):
+def value(record: dict, key: str, unhashed: tuple = UNHASHED_SOURCE_FIELDS):
     """A record key as its stages compare it: a reel job's takes as the planned clip lists only, and
     the sources without their gyro fields and `upright`, which may be written after the log."""
     v = record.get(key)
     if key == 'sources' and isinstance(v, list):
-        return [{k: x for k, x in s.items() if k not in UNHASHED_SOURCE_FIELDS} if isinstance(s, dict) else s for s in v]
+        return [{k: x for k, x in s.items() if k not in unhashed} if isinstance(s, dict) else s for s in v]
     if key != 'takes' or 'takes' in record.get('pipeline', []):
         return v
     if isinstance(v, list):
@@ -299,28 +303,31 @@ def value(record: dict, key: str):
     return v
 
 
-def fingerprint(record: dict, stage: str, cache: dict, legacy: bool = False) -> str:
+def fingerprint(record: dict, stage: str, cache: dict, legacy: bool = False,
+                unhashed: tuple = UNHASHED_SOURCE_FIELDS) -> str:
     """What a stage produced: its record keys and its artifact file, as they are now."""
     if stage in cache:
         return cache[stage]
     entry = record['stages'].get(stage, {})
     writes = LEGACY_WRITES.get(stage, BY_ID[stage]['writes']) if legacy else job_writes(record, stage)
-    parts = {k: value(record, k) for k in writes}
+    parts = {k: value(record, k, unhashed) for k in writes}
     parts['artifact'] = file_digest(entry.get('artifact', '')) or entry.get('artifactHash')
-    parts['inputs'] = inputs_hash(record, stage, cache, legacy)
+    parts['inputs'] = inputs_hash(record, stage, cache, legacy, unhashed)
     cache[stage] = digest(parts)
     return cache[stage]
 
 
-def inputs_hash(record: dict, stage: str, cache: dict, legacy: bool = False) -> str:
+def inputs_hash(record: dict, stage: str, cache: dict, legacy: bool = False,
+                unhashed: tuple = UNHASHED_SOURCE_FIELDS) -> str:
     parts = {'reads': {k: record.get(k) for k in stage_reads(record, stage)}}
-    parts['after'] = {d: fingerprint(record, d, cache, legacy) for d in effective_after(record, stage)}
+    parts['after'] = {d: fingerprint(record, d, cache, legacy, unhashed) for d in effective_after(record, stage)}
     return digest(parts)
 
 
 def status(record: dict) -> dict:
     cache: dict = {}
     old: dict = {}  # the same, hashed as a record saved before review owned `locked` (never had `story`)
+    streamed: dict = {}  # the same, hashed with `stream` counted, as a record saved before 2026-11-06
     states: dict = {}
     for stage in record['pipeline']:
         entry = record['stages'].get(stage, {})
@@ -337,7 +344,8 @@ def status(record: dict) -> dict:
                           for k in hand_keys(record, stage))
             states[stage] = 'stale' if changed else 'done'
         elif entry.get('inputsHash') != inputs_hash(record, stage, cache) and (
-                'story' in record or entry.get('inputsHash') != inputs_hash(record, stage, old, True)):
+                'story' in record or entry.get('inputsHash') != inputs_hash(record, stage, old, True)) and (
+                entry.get('inputsHash') != inputs_hash(record, stage, streamed, unhashed=STREAM_HASHED_SOURCE_FIELDS)):
             states[stage] = 'stale'
         else:
             states[stage] = 'done'

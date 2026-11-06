@@ -11,7 +11,7 @@ import re
 # a plan within this share of the reference's cuts per 10 s keeps its pace
 DENSITY_TOLERANCE = 0.25
 HEX = re.compile(r'^#([0-9a-fA-F]{6})([0-9a-fA-F]{2})?$')
-COLOUR_KEYS = ('color', 'colour', 'background', 'fill')
+COLOUR_KEYS = ('color', 'colour', 'background', 'fill', 'stroke')
 TEXT_KINDS = ('captions', 'text')
 NEUTRALS = ('#000000', '#FFFFFF')
 
@@ -19,13 +19,16 @@ NEUTRALS = ('#000000', '#FFFFFF')
 def holds(plan: dict) -> list[tuple[int, float]]:
     """(row, seconds) for every planned shot that says where it sits in the cut."""
     out = []
-    for i, r in enumerate(plan.get('rows') or []):
+    for i, r in enumerate(plan.get('rows') or plan.get('clips') or []):
         if not isinstance(r, dict):
             continue
-        for a, b in (('sceneStart', 'sceneEnd'), ('start', 'end')):
+        for a, b in (('sceneStart', 'sceneEnd'), ('start', 'end'), ('in', 'out')):
             if isinstance(r.get(a), (int, float)) and isinstance(r.get(b), (int, float)):
                 out.append((i, float(r[b]) - float(r[a])))
                 break
+        else:
+            if isinstance(r.get('duration'), (int, float)):
+                out.append((i, float(r['duration'])))
     return out
 
 
@@ -37,7 +40,7 @@ def pace_check(cut_pace: dict, plan: dict, approvals: list | None = None) -> dic
     problems: list[dict] = []
     opened: list[str] = []
     timed = holds(plan)
-    rows = [r for r in plan.get('rows') or [] if isinstance(r, dict)]
+    rows = [r for r in plan.get('rows') or plan.get('clips') or [] if isinstance(r, dict)]
     if not timed:
         return {'problems': [], 'open': ['pace: no row says its sceneStart and sceneEnd'] if rows else []}
     min_hold = cut_pace.get('minHold')
@@ -64,6 +67,11 @@ def pace_check(cut_pace: dict, plan: dict, approvals: list | None = None) -> dic
 FAST_HOLD, MAX_FAST_RUN = 1.2, 3
 
 
+def voiced(row: dict) -> bool:
+    """Whether a voice runs under the shot: a row says `voice: false` when its phrase names a silent beat."""
+    return row['voice'] if isinstance(row.get('voice'), bool) else bool(row.get('phrase'))
+
+
 def rhythm_check(rhythm, plan: dict, approved: set | None = None) -> dict:
     """The cut's shape, beyond its average: the median hold, runs of fast shots, one long hold in
     each section, and a breath with no voice between sections. A finding is `open`, said to the user
@@ -72,7 +80,7 @@ def rhythm_check(rhythm, plan: dict, approved: set | None = None) -> dict:
     instead (an approval scoped `format:rhythm`) passes."""
     if not isinstance(rhythm, dict) or 'format:rhythm' in (approved or set()):
         return {'problems': [], 'open': []}
-    rows = [r for r in plan.get('rows') or [] if isinstance(r, dict)]
+    rows = plan.get('rows') or plan.get('clips') or []
     timed = holds(plan)
     if not timed:
         return {'problems': [], 'open': []}  # pace_check already says the rows carry no times
@@ -111,7 +119,7 @@ def rhythm_check(rhythm, plan: dict, approved: set | None = None) -> dict:
         for k in range(1, len(order)):
             if order[k] and order[k - 1] and order[k] != order[k - 1]:
                 a, b = rows[timed[k - 1][0]], rows[timed[k][0]]
-                if a.get('phrase') and b.get('phrase'):
+                if voiced(a) and voiced(b):
                     found.append({'problem': 'no breath between sections', 'sections': [order[k - 1], order[k]],
                                   'row': timed[k][0]})
     for f in found:
@@ -136,23 +144,51 @@ def palette(record: dict) -> list[dict]:
     return entries
 
 
-def colours(node, path: str = '', text: bool = False):
-    """(path, hex, alpha, on text) for every colour a scene sets."""
-    if isinstance(node, dict):
+def colours(node, path: str = '', text: bool = False, translucent: bool = False,
+            colour_value: bool = False, assets=None, seen=()):
+    """(path, hex, translucent, on text) for colours drawn by the scene."""
+    if isinstance(node, str):
+        m = HEX.fullmatch(node) if colour_value else None
+        if m:
+            yield path, '#' + m.group(1).upper(), translucent or (m.group(2) is not None and m.group(2).upper() != 'FF'), text
+    elif isinstance(node, dict):
+        if id(node) in seen:
+            return
+        seen = seen + (id(node),)
         kind = (node.get('content') or {}).get('kind') if isinstance(node.get('content'), dict) else node.get('kind')
         text = text or kind in TEXT_KINDS
+        opacity = node.get('opacity')
+        transform = node.get('transform')
+        if isinstance(transform, dict) and isinstance(transform.get('opacity'), (int, float)):
+            translucent = translucent or transform['opacity'] < 1
+        if isinstance(opacity, (int, float)):
+            translucent = translucent or opacity < 1
+        if node.get('place') == 'behind':
+            text = False
+        local_assets = node.get('assets', assets)
+        if isinstance(local_assets, list):
+            local_assets = {a.get('id'): a for a in local_assets if isinstance(a, dict)}
+        if not isinstance(local_assets, dict):
+            local_assets = {}
+        if node.get('kind') == 'scene_ref':
+            content = node
+            asset = content.get('asset') or local_assets.get(content.get('assetId')) or {}
+            inner = asset.get('scene') if isinstance(asset, dict) else None
+            if isinstance(inner, dict):
+                yield from colours(inner, f'{path}.scene' if path else 'scene', False, translucent, assets=None, seen=seen)
         for k, v in node.items():
-            if k == 'effects':  # an edge or shadow is not the text's colour
+            if k in ('mask', 'assets') or (kind == 'scene_ref' and k == 'asset'):
                 continue
             p = f'{path}.{k}' if path else k
-            if k in COLOUR_KEYS and isinstance(v, str) and HEX.match(v):
-                m = HEX.match(v)
-                yield p, '#' + m.group(1).upper(), m.group(2), text
-            else:
-                yield from colours(v, p, text)
+            # Keep the established paths for root layers.
+            if not path and k == 'layers':
+                p = ''
+            child_text = False if k in ('effects', 'contentEffects') else text
+            is_colour = k in COLOUR_KEYS or (colour_value and k in ('keyframes', 'value'))
+            yield from colours(v, p, child_text, translucent, is_colour, local_assets, seen)
     elif isinstance(node, list):
         for i, v in enumerate(node):
-            yield from colours(v, f'{path}[{i}]', text)
+            yield from colours(v, f'{path}[{i}]', text, translucent, colour_value, assets, seen)
 
 
 def palette_check(record: dict, scene: dict) -> dict:
@@ -166,9 +202,8 @@ def palette_check(record: dict, scene: dict) -> dict:
     brand = record.get('brand') if isinstance(record.get('brand'), dict) else {}
     neutrals_ok = brand.get('neutrals') is not False
     problems = []
-    for path, hexcode, alpha, on_text in colours(scene.get('layers', scene)):
+    for path, hexcode, see_through, on_text in colours(scene):
         e = by_hex.get(hexcode)
-        see_through = alpha is not None and alpha.upper() != 'FF'
         if e is None and neutrals_ok and not on_text and (hexcode in NEUTRALS or see_through):
             continue
         if e is None:

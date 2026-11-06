@@ -77,6 +77,8 @@ TERMINAL = re.compile(r'[.!?]["\')\]]?$')
 # A clip that opens on one of these answers something; the question must be heard first.
 ANSWERS = {'yes', 'yeah', 'yep', 'no', 'nope', 'exactly', 'right', 'absolutely', 'definitely', 'sure',
            'totally', 'correct', 'true', 'agreed'}
+# Openings that start on an answer word and answer nothing ("Right now our factory employs fifty people").
+NOT_ANSWERS = {('right', 'now'), ('right', 'after'), ('no', 'one'), ('sure', 'enough'), ('true', 'story')}
 # Words that point back, looked for in the first words after a seam.
 POINTERS = ORPHAN | {'they', 'there', 'here', 'theirs'}
 POINTER_REACH = 4
@@ -220,9 +222,10 @@ def carries(speech: Speech, words: List[Json], before: Optional[List[float]]) ->
 
 
 def review_clip(speech: Speech, t_in: float, t_out: float, first: bool,
-                before: Optional[List[float]] = None, played: Optional[List[List[float]]] = None) -> Json:
+                before: Optional[List[float]] = None, played: Optional[List[List[float]]] = None,
+                other_speech: Optional[List[List[str]]] = None) -> Json:
     """`before` is the range of the clip played just before this one, when it is of the same source;
-    `played` holds the ranges of every earlier spoken clip of the same source, in play order."""
+    `played` holds earlier ranges of the same source; `other_speech` holds words heard from other sources."""
     words = speech.kept(t_in, t_out)
     issues: List[Json] = []
     repairs: List[Json] = []
@@ -279,9 +282,10 @@ def review_clip(speech: Speech, t_in: float, t_out: float, first: bool,
 
     # Context: an answer is heard with its question. A clip to drop needs no other repair.
     # The question is heard already when an earlier clip of this source played it, a photo or another
-    # clip between them or not: reaching back would replay it. A speaker change alone makes an answer
-    # only of an answer word that stands alone ("Yes." or "Yes" and a pause), never of a sentence that
-    # opens on one ("No one expected it").
+    # clip between them or not: reaching back would replay it. A clip of another source heard it too
+    # when its words hold the question (a second camera on the same interview). A speaker change alone
+    # makes an answer only of an answer word that stands alone ("Yes." or "Yes" and a pause), never of
+    # a sentence that opens on one ("No one expected it"), and no opening in NOT_ANSWERS answers.
     if tokens and tokens[0] in ANSWERS and not carried and {'drop': True} not in repairs:
         k = speech.words.index(words[0])
         prev = speech.words[k - 1] if k > 0 else None
@@ -290,7 +294,13 @@ def review_clip(speech: Speech, t_in: float, t_out: float, first: bool,
         lead = words[0]['w'].split()
         alone = (bool(re.search(r'[.,!?;:…—-]["\')\]]?$', lead[0]))
                  or (len(lead) == 1 and (len(words) == 1 or words[1]['s'] - words[0]['e'] >= PAUSE)))
-        if prev is not None and not heard and (re.search(r'\?["\')\]]?$', prev['w'])
+        non_answer = not alone and tuple(tokens[:2]) in NOT_ANSWERS
+        if prev is not None and re.search(r'\?["\')\]]?$', prev['w']):
+            question = [bare(t) for t in speech.sentence(prev).split()]
+            heard = heard or any(any(row[i:i + len(question)] == question
+                                     for i in range(len(row) - len(question) + 1))
+                                 for row in (other_speech or []))
+        if prev is not None and not heard and not non_answer and (re.search(r'\?["\')\]]?$', prev['w'])
                                                or (alone and prev['seg']['speaker'] != words[0]['seg']['speaker'])):
             problem('context', f'it opens on "{words[0]["w"].split()[0]}", an answer to '
                                f'"{speech.sentence(prev)}", which the cut drops')
@@ -420,9 +430,11 @@ def review(data: Any, base: str = '.') -> Json:
             else:
                 before = out[-1].get('range') if out and out[-1]['source'] == sid else None
                 played = [[c['in'], c['out']] for c in spoken if c['source'] == sid]
+                other_speech = [[bare(t) for w in c['words'] for t in w['w'].split()]
+                                for c in spoken if c['source'] != sid]
                 item = dict({'clip': i, 'source': sid, 'range': [t_in, t_out]},
                             **review_clip(speech[sid], t_in, t_out, first=not spoken, before=before,
-                                          played=played))
+                                          played=played, other_speech=other_speech))
                 words = speech[sid].kept(t_in, t_out)
                 spoken.append({'clip': i, 'source': sid, 'in': t_in, 'out': t_out, 'at': duration, 'words': words,
                                'carried': carries(speech[sid], words, before)})
