@@ -983,8 +983,9 @@ def locate_carried(words: Tuple[List[List[str]], List[str]], quote: str) -> Opti
             text = straight(field)
             for match in re.finditer(re.escape(want), text) if want else ():
                 # Doubt counts in the quote's own clause only: "I don't know who sent it, but it is her
-                # sister's account" says the fact.
-                context = re.split(r'[.!?;:]|\b(?:but|though|although|however|yet)\b', text[:match.start()])[-1]
+                # sister's account" says the fact. A connective set off by a comma ("I don't think,
+                # however, that ...") opens no clause, so the doubt before it still holds.
+                context = re.split(r'[.!?;:]|\b(?:but|though|although|however|yet)\b(?!\s*,)', text[:match.start()])[-1]
                 uncertain = re.search(r"\b(?:not|no|never|whether|if|unknown|unsure|doubt|don't|doesn't|isn't|can't)\b", context)
                 matches.append((i, bool(uncertain)))
     return next((i for i, uncertain in matches if not uncertain), matches[-1][0] if matches else None)
