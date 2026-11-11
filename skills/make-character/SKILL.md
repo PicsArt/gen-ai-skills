@@ -36,10 +36,10 @@ When the user brings a photo of the real person, the photo is the character, as 
 
 ## 2. Their look
 
-ASK with `picsart_film_choose_cast`, with no `film` and this one character: their @tag as `id`,
+ASK with `picsart_asset_choose_characters`, with no `film` and this one character: their @tag as `id`,
 `name`, who they are as `role`, and the descriptor's lines as `story`. The card opens on the
 ready-made characters, with the look you `suggested` picked, and keeps your lines on its story tab.
-Then act on `film_cast_chooser_feedback` as film-cast-design's The starting point says:
+Then act on `character_chooser_feedback` as film-cast-design's The starting point says:
 `story` keeps your draft. A `preset` with `saved` reuses that asset without compiling or spending; deliver the saved character and skip the quote and generation steps below.
 For an unsaved `preset`, quote the sheet’s credit cost, compile with `sheetModel`, and save under
 the preset’s own name so the next pick reuses it. An unsaved `preset` and `person` pass their `reference` on unchanged with only the
@@ -66,13 +66,13 @@ the preset’s own name so the next pick reuses it. An unsaved `preset` and `per
 ## 4. The sheet
 
 Generate it with `picsart_generate` and follow the job. Then REVIEW it in
-`picsart_film_review_assets`, and read the review as film-cast-design's Reading the review says: a
+`picsart_asset_approve`, and read the review as film-cast-design's Reading the review says: a
 change is surgical, and a new picture is quoted on its own.
 
 ## 5. Save it
 
 Cut the approved sheet into its four views, as film-cast-design's `references/views.md` says, and
-look at each. Save with `picsart_film_save_asset`: `tag`, `assetType: "character"`, `name`,
+look at each. Save with `picsart_asset_save`: `tag`, `assetType: "character"`, `name`,
 `descriptor`, `sheetVersion: "v1"`, `voice: { "nonSpeaking": true }`, the whole sheet as
 `portraitUrl`, the views as `referenceImages` (the close-up first), `status: "locked"`, and no
 `projectFolderUid`. Also save `identityReferences` with the supplied originals (`[]` for an

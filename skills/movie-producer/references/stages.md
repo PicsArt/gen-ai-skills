@@ -75,8 +75,8 @@ board and never shown as text.
 - [ ] The project folder exists and its uids are in the record.
 - [ ] Every generated picture was compiled, verified, quoted and bought on a yes.
 - [ ] Every picture was looked at before it went on a board.
-- [ ] Every generated person and prop is approved on `picsart_film_review_assets` (a photographed person
-      is not put up for approval), and its `picsart_film_save_asset` result reads `locked: true`.
+- [ ] Every generated person and prop is approved on `picsart_asset_approve` (a photographed person
+      is not put up for approval), and its `picsart_asset_save` result reads `locked: true`.
 - [ ] Every card's tag resolves to a single-view file (identity, wardrobe, each state, each prop),
       cut and checked.
 - [ ] A photo the user brought is saved as it came, matched on probe, and never put up for approval.
@@ -85,7 +85,7 @@ board and never shown as text.
 - [ ] A room map exists where the scene cuts between walls; it is reused per place and time of day.
       A single outdoor background uses its wide as its geography.
 - [ ] Location URLs and the geography line are recorded in `scenes[].pictures` and `scenes[].geography`.
-- [ ] Every tag in a run has a locked row read back from `picsart_film_list_assets`.
+- [ ] Every tag in a run has a locked row read back from `picsart_asset_list`.
 - [ ] Scene pictures were checked for the cast's faces, positions and room geometry; no separate
       still test was bought. Per-shot panels exist only for an explicit preview request.
 

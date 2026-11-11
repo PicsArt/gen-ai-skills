@@ -48,8 +48,8 @@ against them.
 
 | Field | Use |
 |---|---|
-| `approved[]` | Each is locked: cut its views and save it with `picsart_film_save_asset`, `status: "locked"`. A `note` on an approved tile is kept on the asset's row |
-| `changes[]` | Each carries a `note`, and `models` when the user asked to try other models. First save that version with `picsart_film_save_asset`, `status: "rejected"`, and add its tag and file to `rejectedAssets[]`. Then regenerate THAT asset with the note folded into its own prompt, and change nothing else |
+| `approved[]` | Each is locked: cut its views and save it with `picsart_asset_save`, `status: "locked"`. A `note` on an approved tile is kept on the asset's row |
+| `changes[]` | Each carries a `note`, and `models` when the user asked to try other models. First save that version with `picsart_asset_save`, `status: "rejected"`, and add its tag and file to `rejectedAssets[]`. Then regenerate THAT asset with the note folded into its own prompt, and change nothing else |
 | `discarded[]` | The unchosen siblings of a same-tag, several-model comparison. Save them as `rejected` and record their tags and files in `rejectedAssets[]`; never show, use or regenerate them |
 | `total` | `approved` + `changes` + `discarded` always equals it |
 | a general note | Applies to the whole board; fold it into each change it concerns |

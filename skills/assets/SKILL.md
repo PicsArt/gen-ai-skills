@@ -21,7 +21,7 @@ Nothing here charges credits.
 
 ## 1. Open the panel
 
-Call `picsart_film_show_assets`, read-only and free:
+Call `picsart_asset_show`, read-only and free:
 
 - **Nothing named:** call it with `{}`. Every kind opens, one tab per kind.
 - **One kind named:** call it with `type`: `video`, `image`, `audio`, `character`, `prop`, or
@@ -37,7 +37,7 @@ Pass a `projectUid` only as a `type: "project"` reply gave it: the panel refuses
 When the tool says the user is not signed in, or that Drive is unavailable, say so in one line.
 
 This panel is for looking. Browsing Drive folders is `picsart_drive_list`, reading a film's
-assets for a generation is `picsart_film_list_assets`, and showing or picking the user's saved scene
+assets for a generation is `picsart_asset_list`, and showing or picking the user's saved scene
 documents (characters, locations, templates, looks…) is `picsart_scene_library_list`: it opens the
 picker, and a picked card comes back as `libraryId`, `sceneUrl` and `kind`, to open with the scene tools
 or use with `picsart_scene_apply_preset` (`library:<id>`) or `picsart_scene_apply_template`.

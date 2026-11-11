@@ -32,7 +32,7 @@ ASK with `picsart_drive_upload_ask` for all of them in one panel, in the first t
 
 What goes in, at most 8 pictures, in the order the user named them:
 
-- **A character they name:** find it with `picsart_film_list_assets`, with no `projectFolderUid` for
+- **A character they name:** find it with `picsart_asset_list`, with no `projectFolderUid` for
   a character made outside a film and with the film's for its cast. Pass its `portraitUrl` as `url`,
   its `name`, and `character: true`: the sheet's views are one character.
 - **A photo or a product shot:** its URL, with a `name` when the user gave one.

@@ -213,9 +213,9 @@ with one long shot or buy a bridge for every boundary.
 ## 5. Cast, places and props
 
 **The project folder first**, before anything is generated. `picsart_drive_create_folder` with
-`path: "Picsart Films/<film-slug>"` and
+`path: "Picsart Plugin/<film-slug>"` and
 `children: ["Library", "Assets", "Shots", "Exports"]`. Keep every uid it returns in the record.
-Say it once, plainly: "Created Picsart Films/the-garage in your Picsart Drive, with Library,
+Say it once, plainly: "Created Picsart Plugin/the-garage in your Picsart Drive, with Library,
 Assets, Shots and Exports inside. Everything this film makes is filed there." Never say it again,
 and never list the whole Drive: no `list` without a `folderUid`. Pass the right `folderUid` on
 every `picsart_generate` and `picsart_job_status` call of the film, and the project folder as
@@ -234,9 +234,9 @@ Then film-cast-design's conveyor, in one pass:
 3. Dispatch on the yes as one batch (picsart-video-rules, SPEND), with `folderUid` set to Assets, and
    let the batch's card follow the jobs as picsart-video-rules says.
 4. Look at each picture (picsart-video-rules, Asset URLs) before anything uses it, then put them all on
-   `picsart_film_review_assets` in one call (at most 12 tiles; more go on a second board), with the one thing to judge them by as the board's `judge`, and one line per tile as its `assets[].why`.
+   `picsart_asset_approve` in one call (at most 12 tiles; more go on a second board), with the one thing to judge them by as the board's `judge`, and one line per tile as its `assets[].why`.
 5. Act on the reply as `references/board-replies.md` says. Each approved asset is cut into views and
-   locked with `picsart_film_save_asset`, as film-cast-design says. Before regenerating a rejected
+   locked with `picsart_asset_save`, as film-cast-design says. Before regenerating a rejected
    picture, save that version as `rejected` and record it as below. The replacement is regenerated
    under its own SPEND and shown alone on a fresh board, with `assets[].version`; omit `assets[].previousUrl` when the previous picture
    was rejected. A discarded tile is recorded as rejected and never used.
@@ -252,7 +252,7 @@ Treat "Change one", "not her", "profile is not ok", "it's not her", or any no to
 as a rejection. If several pictures were shown and the target is unclear, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which one
 without showing them again; do not regenerate until it is identified.
 
-Before regenerating, call `picsart_film_save_asset` for the rejected version with `status: "rejected"`,
+Before regenerating, call `picsart_asset_save` for the rejected version with `status: "rejected"`,
 its original `tag`, `sheetVersion`, `portraitUrl`, `projectFolderUid` and saved asset metadata.
 Pass the saved `identityReferences` too. Every new save supplies the user's original photo URLs
 there, or `identityReferences: []` when all views are generated. Do not infer provenance from a
@@ -282,7 +282,7 @@ geography. Record the URLs in `scenes[].pictures` and the geography line in `sce
 
 Compile and verify the required pictures, quote them together with SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), then generate the
 independent pictures in a batch. Check each before its board review, including the cast's faces,
-opening positions and room geometry. Use `picsart_film_review_assets` for the location references
+opening positions and room geometry. Use `picsart_asset_approve` for the location references
 and apply `references/board-replies.md`. Reuse approved pictures already in the record. A real app's
 screen is built as a scene layer from the user's screenshots or recording, never generated.
 
@@ -291,7 +291,7 @@ A cast or prop correction goes through that asset's conveyor only, under its own
 
 **The gate into shooting:** the story and shot list approved, every scene in a run has approved
 location references, and film-cast-design's gate into a run holds for all its tags, read back from
-`picsart_film_list_assets`. The opening scene picture starts the scene's first run; later runs use
+`picsart_asset_list`. The opening scene picture starts the scene's first run; later runs use
 film-shot-generation's continuity references. No storyboard panels, voiced slideshow or animatic
 approval is required in the default flow.
 
@@ -300,7 +300,7 @@ approval is required in the default flow.
 Record the explicit request in `requestedPreview` (`kind: "storyboard"` or `"animatic"`,
 `status: "requested"`) and load film-animatic for that work. A request for a **storyboard** uses
 its panel method only: quote and make the requested panels, check them, and review them on
-`picsart_film_review_assets`. It does not buy voices, music or a timed animatic. A request for an
+`picsart_asset_approve`. It does not buy voices, music or a timed animatic. A request for an
 **animatic** uses its timed-preview method and voice-over-generation for its sound; quote the
 needed pictures and sound with SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), then validate, check and REVIEW the preview as that
 skill says. Reuse the approved cast and location references in either case.
