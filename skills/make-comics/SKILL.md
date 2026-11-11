@@ -11,6 +11,8 @@ argument-hint: '[the photo and the comic you want]'
 
 # Make a comic from a photo
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "make-comics"`: the answer leads with what this job reads and names the rest in one line.
+
 Read the `picsart-video-rules` skill first. One job: a photo of a person in; a ComicMe creation
 out, with the person as its hero. ComicMe makes six things from a photo, each through its own
 tool, and this use case covers them all: the user picks one and its settings on the setup console

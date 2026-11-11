@@ -114,8 +114,8 @@ author of a render tends to confirm it; look for the ways it fails.
 1. **Name the intended action in one sentence** ("both hands hold the ball at chest height"). Judge
    the picture against that sentence, not against your previous draft or a metric.
 2. **Lint the shot's window before you show it** (`picsart_scene_lint_layout`; allow a pair meant to touch). The
-   hosted lint reads layer geometry, not painted pixels: it warns on figures whose bounds overlap and on a figure
-   the frame cuts. It cannot see a prop its own body hides or a speaking mouth under its own arm or hand; look for
+   hosted lint reads layer geometry, not painted pixels: it warns on figures whose bounds overlap, on a figure
+   the frame cuts, and on a layer standing farther back painted over a nearer one (`groundPaintOrder`). It cannot see a prop its own body hides or a speaking mouth under its own arm or hand; look for
    those on the contact sheet yourself, along with a prop away from its hand, a figure or key layer the frame mostly
    misses, and frames that draw nothing but the background. A warning is a defect you found before the viewer: fix it, or allow it
    knowing why.

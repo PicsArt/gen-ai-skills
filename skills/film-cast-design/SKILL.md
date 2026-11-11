@@ -46,11 +46,14 @@ Its answer, `character_chooser_feedback`, has one entry per @tag:
 - **`preset` with `saved`** — reuse that saved asset as the user’s sheet; compile no sheet and spend nothing.
 - **`preset` without `saved`** — it has no sheet yet. Include its credit cost in the quote, compile with the answer’s `sheetModel`, then save it under the preset’s own name so a later pick reuses it.
 - **`preset` without `saved`** or **`person`** — the answer carries the look as `reference`: pass it unchanged as
-  that character's `reference` on `picsart_film_compile_prompt`. It holds who they are, how they
+  that character's `reference` on `picsart_film_compile_prompt`. A `person` is a character the
+  user built on the board: a person, and any of their features, face and hair, outfit, accessories
+  and body, already joined into that one `reference`. It holds who they are, how they
   look (an animal's species and coat, the face, the build) and what they wear and hold. Add from
-  your descriptor only the paths `fromStory` names: `identity.<field>` for what the preset leaves
-  open — no preset names an origin, and a Person pick names no hair — and `outfit` when nothing was
-  picked to wear. A field you add replaces the preset's. Presets carry no voice: the voice line
+  your descriptor only the paths `fromStory` names: `identity.<field>` for what the picks leave
+  open — a ready-made character names no origin, and a person names no hair unless a face and hair
+  look was picked — and `outfit` when no clothes were picked. Accessories picked without clothes
+  are already in `faceAndOutfit`: keep them there. A field you add replaces the preset's. Presets carry no voice: the voice line
   stays yours. The descriptor you save is that `reference` in your own line keys, plus the voice.
 - **`describe`** — rewrite the descriptor from the user's words. Keep your voice line and every line
   the words leave unsaid.

@@ -13,6 +13,8 @@ argument-hint: '[what you want to make]'
 
 # Getting started with Picsart Video
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "get-started"`: the answer leads with what this job reads and names the rest in one line.
+
 Read picsart-video-rules first. One job: in a turn or two, the user knows their account works, has their
 Picsart open if they want it, and knows what to ask for next. Nothing here charges credits.
 

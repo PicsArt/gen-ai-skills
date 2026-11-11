@@ -13,6 +13,8 @@ argument-hint: '[reference video, your photos and text]'
 
 # Recreate a video
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "recreate-video"`: the answer leads with what this job reads and names the rest in one line.
+
 A reference video is flat pixels: nothing in it says how it was made. This use case measures it,
 fragment by fragment, and rebuilds it as a scene the user can edit, with their own content. The
 result reproduces what the viewer sees, not the original project.

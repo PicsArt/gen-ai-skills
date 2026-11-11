@@ -13,6 +13,8 @@ argument-hint: '[who is in it and what happens]'
 
 # Make a cartoon
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "make-cartoon"`: the answer leads with what this job reads and names the rest in one line.
+
 Read picsart-video-rules first. One job: one short cartoon clip, 9:16, 8 to 20 seconds, one or two
 characters, one place, with a narrator's voice-over or captions. The characters do not speak on screen, and
 nothing here turns, sits, hugs, claps or hands a prop to another character: reword such a beat or say
@@ -21,6 +23,8 @@ different job: say so before starting. These limits are for planning a new carto
 lengthens the clip, such as slowing the ending, is done as asked. If it pushes the clip past 20 seconds, say so once and do it anyway.
 
 Before acting on a stage, load the available skills in its row that apply to this job, also when the work resumes there.
+
+character-rigging is read by section, not whole: `references/rig-build.md` for Cast, `rig-place.md` and `rig-controls.md` for Place and Prop, `rig-act.md` for Build the scene (its router table names them).
 
 | Stage | Gate | Skills |
 |---|---|---|
@@ -43,7 +47,8 @@ from `picsart_scene_capabilities`, not from memory: a beat it does not list is r
 ## 2. Cast
 
 One character at a time. Look in the user's saved library first with `picsart_scene_library_list`
-(`kind: "character"`), and offer the ready-made cast from `picsart_scene_capabilities`. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which:
+(`kind: "character"`; each row gives `parameterCount`, and `detail: "full"` with `name` returns that one
+character's controls), and offer the ready-made cast from `picsart_scene_capabilities`. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which:
 a saved or ready-made one,
 a new one described in their words,
 or one built from a part sheet they drew.
@@ -164,6 +169,10 @@ a second and look at it. Fix each failure through its own path and render again,
   layer mostly off canvas): move the layer's `transform.position`;
 - characters and props do not overlap each other (sheet; `picsart_scene_lint_layout` compares whole frames and
   flags a pair that does not touch): move the layer's `transform.position`;
+- whatever stands nearer paints in front: for each beat where layers overlap, write a contract asserting
+  `{"kind": "order", "axis": "paint", "follows": "bottom", "members": [...]}`, run `picsart_scene_check_contracts`
+  and read `groundPaintOrder` in `picsart_scene_lint_layout`; on a failure, move the nearer layer after the other
+  in `layers`;
 - the ending hold is 1 s or less (`picsart_scene_check_motion` shows when the last part stops): shorten the
   composition and layer `duration`;
 - the voice-over starts on its beat: move the audio layer's `start`.

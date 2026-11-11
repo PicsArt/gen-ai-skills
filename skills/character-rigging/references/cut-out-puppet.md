@@ -24,7 +24,7 @@ acting. Hands stay rigid (no finger poses) unless the drawing carries a complete
 
 ## Standard control set
 
-Both views declare `rig-humanoid`'s names ([character-rigging](../SKILL.md) "Standard control names"), so the
+Both views declare `rig-humanoid`'s names ([rig-controls.md](rig-controls.md)), so the
 catalogue presets drive a cut-out unchanged: `wave`, `point`, `think`, `walk_cycle`, `jog`, `jump`, `idle` and `acting`
 (`jog` takes `view: "front"` for the front view). No preset sits: key those dials yourself.
 
@@ -135,6 +135,6 @@ Run the pose set, then the checks; judge frames, never a mean pixel diff (it can
 
 ## Waving
 
-The robot's `wave` action and the catalogue `wave` preset follow the wave rule in `character-rigging` "Gesture arms": the same rows by
+The robot's `wave` action and the catalogue `wave` preset follow the wave rule in `character-rigging` `references/rig-act.md` "Gesture arms": the same rows by
 `viewAngle`, `HandSwing` swinging on a cut-out arm as on the catalogue rigs. Tune `amount`, or key the dials yourself under an
 ease-in, hold, ease-out envelope.
