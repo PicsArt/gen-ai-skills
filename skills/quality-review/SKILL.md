@@ -1,6 +1,6 @@
 ---
 name: quality-review
-description: Check work before the user sees it - a scene validated, linted and looked at in contact-sheet frames, then fixed and checked again; a draft watched cold by model viewers against its viewer track, then reviewed by critics; the brief graded; an export checked against its scene. Use after a script is written and before it is built or paid for, after building or changing a scene, before REVIEW or an export, before handing over an export, and at each decision a use case names.
+description: Check work before the user sees it - a scene validated, linted and looked at in contact-sheet frames, then fixed and checked again; a draft reviewed by critics, after a cold watch against its viewer track when one runs; the brief graded; an export checked against its scene. Use after a script is written and before it is built or paid for, after building or changing a scene, before REVIEW or an export, before handing over an export, and at each decision a use case names.
 metadata:
   imports: screen-recording-layouts
 user-invocable: false
@@ -73,12 +73,14 @@ Its viewer calls cost credits unless their quote shows 0 for every one: quote th
 `references/cold-watch.md` says and SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before the first round; a credit or storage error
 stops it, never retried. It is not a measure of retention, and it says so.
 
-**The critic panel.** After the cold watch, before the user sees a draft, six simulated critics
+**The critic panel.** The panel meets
+After the cold watch,
+before the user sees a draft, and six simulated critics
 with taste each look at it through one lens: the first-principles critic (the core problem the
 video solves), the radical (the concept), the interface designer (the UI on screen), the story
 editor (the message and the script), the growth strategist (the stop, the drops, the ending) and
 the art director (the look). Each sees only frames every 0.5 s, the source stills (the real UI or
-footage the video depicts), the words, the goal, the destination and the cold watch's gap list, and returns a verdict, problems with their times, and fixes. `scripts/critics.py`
+footage the video depicts), the words, the goal, the destination and the cold watch's gap list when one ran, and returns a verdict, problems with their times, and fixes. `scripts/critics.py`
 picks the frames and lays the notes side by side. Where critics agree it is a must-fix, weighed
 against the first-principles critic's core sentence; a new concept goes to the user as a choice,
 never applied silently. So does a shot a critic would swap in an edit of the user's footage: it
@@ -104,7 +106,9 @@ open, never as a pass. `scripts/inspection.py` reads its report back.
 | Read this | Before you |
 |---|---|
 | `references/qc-inspector.md` | check a draft of an edit of the user's footage, or a fix to one |
-| `references/cold-watch.md` | write a viewer track, or run the cold watch on a draft |
+| `references/cold-watch.md` | write a viewer track
+, or run the cold watch on a draft
+|
 | `references/cold-watch-comparer.md` | mark a cold watch's accounts against the track (the comparer's prompt) |
 | `references/critic-panel.md` | run the critic panel on a draft |
 | `references/challenger.md` | go on from a decision the use case names, or show a quote |

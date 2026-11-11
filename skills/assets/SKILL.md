@@ -36,8 +36,11 @@ Call `picsart_film_show_assets`, read-only and free:
 Pass a `projectUid` only as a `type: "project"` reply gave it: the panel refuses any other folder.
 When the tool says the user is not signed in, or that Drive is unavailable, say so in one line.
 
-This panel is for looking. Browsing Drive folders is `picsart_drive_list`, and reading a film's
-assets for a generation is `picsart_film_list_assets`.
+This panel is for looking. Browsing Drive folders is `picsart_drive_list`, reading a film's
+assets for a generation is `picsart_film_list_assets`, and showing or picking the user's saved scene
+documents (characters, locations, templates, looks…) is `picsart_scene_library_list`: it opens the
+picker, and a picked card comes back as `libraryId`, `sceneUrl` and `kind`, to open with the scene tools
+or use with `picsart_scene_apply_preset` (`library:<id>`) or `picsart_scene_apply_template`.
 
 ## 2. One line
 

@@ -60,6 +60,26 @@ When a panel replaces the one before it, a hard cut is fine and keeps the energy
 (`'crossfade'`, 0.3–0.5 s) suits a change of layout. Check the live catalog with
 `picsart_scene_capabilities` (`sections: ["transitions"]`) before naming any other transition.
 
+## Coordinates
+
+A scene built by hand goes wrong first in its coordinates:
+- **A shape layer inside a composition starts at that composition's centre.** Set its position to
+  `[0, 0]` and draw the shape in the composition's own pixels, or it lands half a frame off.
+- **A mask is in the pixels of the composition that holds its layer**, not the layer's own: draw it
+  where it shows, never shifted by the layer's position, and it does not follow the layer when the
+  layer moves. A photo inside a card is masked in the card's pixels; a title wipe, in the frame's.
+- **A composition placed as a layer needs its `bounds`** (`[width, height]` of its own pixels), or
+  it is fitted to its host: a 1000×1500 card comes out 1080×1620. `picsart_scene_validate` warns
+  `composition_fitted_to_host`.
+- **A group's `scale` is a ratio**: 1 is full size, never 100.
+
+Check the first build with `picsart_scene_query_layout` at a few times before you export: a
+layer 76,000 px wide or half a frame off shows there.
+
+**A scene written as a file** can go directly to tools that accept an inline `scene`: read the
+file's JSON and pass that object. When an actual scene edit returns a `sceneUrl`, use that URL
+for later calls. Do not make an unchanged edit just to obtain a URL.
+
 ## Reusable parts
 
 When you build a custom character or a part the user may want to adjust, declare root `parameters` for the knobs they will want (pose, expression, timing, strength): plain names in their terms, tight `min`/`max` (not 0..4000), a `default`, a `group` per body part or concern, a `description`. A draggable point is `type: "vec2"` with `frame: "composition"`, or `frame: {"layer": "<id>"}`. Motion goes in root `actions` whose `parameters` tracks key only number, boolean, text, color, vec2 or vec3 parameters, with no `$eval` (`scene-animation-reference`, `references/named-actions.md`). `picsart_scene_tune` (see `motion-design-craft`) tunes what is declared, plus root layers' position.

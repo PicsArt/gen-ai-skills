@@ -11,7 +11,8 @@ viewer is an **open loop**: a question the video has raised and not yet answered
 long as one loop is open, and sags wherever none is.
 
 A loop is two moments: the line that **opens** a question and the later one that **closes** it.
-Never open a loop the video cannot close, and never close one before the next is open. A serial
+Never open a loop the video cannot close, and never close one before the next is open.
+A serial
 episode's exit question follows drama-series-writing instead.
 
 ## The three loops
@@ -110,7 +111,8 @@ Any one of these makes a short read as an ad, and the viewer scrolls past it:
 
 **The ending loops back.** When the video ends without a call to action, its last frame leads into
 the first, for instance by ending on the problem the hook opened on, now solved. A replay then
-reads as one continuous video. A serial exit follows drama-series-writing instead.
+reads as one continuous video.
+A serial exit follows drama-series-writing instead.
 
 The quality-review skill's cold watch tests a hook on the built draft: its first two pieces (to
 3 s) say whether strangers who know nothing of the video keep watching.

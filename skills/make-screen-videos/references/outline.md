@@ -40,7 +40,8 @@ own moments and stills.
 | `font` | a bold face that draws every character in `language`, chosen as scene-building-basics says |
 | `style`, `brand` | the style chosen at stage 6, by its id, and the brand colours mapped onto it, as the visual-style skill says. Left out, the build uses its old dark palette: always set it |
 | `clip` | `"mask"`, then `"nest"` if masks fail at the check |
-| `narration` | `"own"`: the user's voice kept; `"voice-over"`: generated lines; `"text"`: the step lines alone |
+| `narration` | `"own"`: the user's voice kept; `"text"`: the step lines alone |
+| `narration` | `"voice-over"`: generated lines |
 | `duration` | only when the uploaded copy is shorter than the recording the moments were read from |
 | `intro` | the finished result the tutorial opens on: `at`, a source second where it is on screen, and `box`, its box in the recording's pixels, both from a still |
 | `steps` | every step, in recording order. Each has an `id` of your own (never `intro`, never starting with `chapter_`), `actions`, the indices from `scripts/actions.py` it plays (one, or several the stills showed are one thing), and `text`, its step line |

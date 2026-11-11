@@ -4,7 +4,7 @@ description: Select, reuse and customize scene catalog items. Use when remixing 
 metadata:
   category: workflow
   version: '1.7'
-  ported-from: template-customization 1.7 at 55.104.0
+  ported-from: template-customization 1.7 at 55.128.2
 user-invocable: false
 ---
 
@@ -37,6 +37,11 @@ For example, `picsart_scene_templates({category:"ui_widget",tags:["chat","input"
 finds a reusable chat input composition; `{category:"editorial",referencePolicy:"expand-only",detail:"full"}`
 finds editable editorial starters. If no entry matches, remove the narrowest tag or
 category and inspect facets; do not substitute an unrelated template just to get a result.
+When two or more entries (or looks, presets, transitions) fit the brief and the choice
+comes down to taste, build 2–6 of them on the user's content and let the user pick in
+`picsart_scene_picker`, each card labelled in their terms; go on from the one they keep
+and say which (picsart-video-rules, "A choice made by eye"). A technical fit (aspect,
+supported modes, parameters) is yours to settle.
 Read `supportedModes` before choosing an operation. An entry with
 `referencePolicy:"expand-only"` is a complete authored scene starter, not a blank
 scaffold or a live reusable reference. Use `bootstrap` for a new editable scene or
@@ -97,6 +102,7 @@ Read types, defaults, ranges and descriptions; retain existing bindings not bein
 Use parameters while they express the change. Declared slots constrain bindings, not all
 possible edits to detached source. Follow any supplied design-preservation contract;
 otherwise preserve unrelated layout, styling, timing and assets from the user's scene.
+To make a motion preset's knob a scene parameter, pass `expose` when applying it instead of promoting by hand: `picsart_scene_apply_preset` with `expose: {"distance": "heroDistance"}` keeps the preset's arithmetic as an `$eval` over the scene parameter `heroDistance`, declared from the preset's own spec (a number parameter of that name already there is shared). Number params only.
 
 Preserve relationships by construction: shared motion belongs on the component owner, and related
 dimensions/positions should derive from one parameter source. Do not detach a label into duplicate

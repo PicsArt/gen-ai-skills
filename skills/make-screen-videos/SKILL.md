@@ -1,6 +1,6 @@
 ---
 name: make-screen-videos
-description: Turn a screen recording of an app or site into videos - standalone how-to shorts for Reels, TikTok or Shorts each teaching one easy thing, a feature explainer, a promo with each request typed over its result, a long session's timelapse, or a step-by-step 16:9 tutorial with chapters - in a style picked by eye, with a voice-over and captions if wanted. Use when the user has a screen recording and wants a tutorial video (for a help center too), a how-to, a reel, a short, a promo, a walkthrough or a demo video from it, or carries on with videos already planned from one, including a generated shot. Not for camera footage or a text-only article.
+description: Turn a screen recording of an app or site into videos - standalone how-to shorts for Reels, TikTok or Shorts each teaching one easy thing, a feature explainer, a promo with each request typed over its result, a long session's timelapse, or a step-by-step 16:9 tutorial with chapters - in a style picked by eye, with a voice-over and captions if wanted. Use when the user has a screen recording and wants a tutorial video (for a help center too), a how-to, a reel, a short, a promo, a walkthrough or a demo video from it, or carries on with videos already planned from one. Not for camera footage or a text-only article.
 metadata:
   uses: screen-recording-analysis, footage-analysis, speech-aware-cutting, screen-recording-layouts, screen-recording-zoom, visual-style, screen-ui-redesign, retention-hooks, scene-building-basics, quality-review, ai-presenter, voice-over-generation, spoken-captions, background-music, motion-design-craft, film-shot-generation
   optional: ai-presenter, voice-over-generation, speech-aware-cutting, spoken-captions, background-music, motion-design-craft, film-shot-generation
@@ -233,6 +233,7 @@ film-shot-generation skill's `scripts/keyframes.py`, SHOW them before the shot i
 the approved one. In the hook ASK, a generated opening is offered as its key frames first.
 Its key frames and its shot are compiled with `picsart_film_compile_prompt` (picsart-video-rules's SPEND rule 9), with
 the size and lens the recording's own plan gives that shot.
+Footage the user supplies, received with `picsart_drive_upload_ask`, can open it too.
 
 The words' language is the user's own, unless the recording's words are in another: then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which.
 
@@ -357,17 +358,22 @@ look, the pace or the words) instead of patching again.
 Build the other videos with video 1's approved style and with what the user's comments on it
 taught (the pace, the words' tone, the moves). Plan and review each as stage 7 does, with every `drop` in the set asked in one turn, and its own hook asked
 only when the user chose to see plans; otherwise draft the hook yourself and list it as assumed.
-Their voice lines are one batch SPEND. REVIEW them one after another, and ask one "anything to
+Their voice lines are one batch SPEND.
+REVIEW them one after another, and ask one "anything to
 change?" for the set (picsart-video-rules).
 
 ## 13. Music, when wanted
 
 Offer it once, after the drafts are approved, unless the sound chosen was the user's own voice or
-the recording's own sound. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with two drafted briefs that differ in feel, as the background-music skill
+the recording's own sound.
+ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with two drafted briefs that differ in feel, as the background-music skill
 says, and "No music". On a pick, the bed (and a promo's push sounds, `references/routes.md`) is one
 SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) for the set. Lay it under each video as the background-music skill says, validate and look as stage
 10 does, and REVIEW, titled "<Product> <kind> — music", with one line on what to listen for. If it
 fails or is declined, say so in one line and go on with the approved drafts.
+With a track of the user's own, received with `picsart_drive_upload_ask`, lay it under each video as
+an audio layer, validate and look as stage 10 does, and REVIEW, titled "<Product> <kind> — music";
+with none, go on with the approved drafts.
 
 ## 14. Deliver
 
@@ -382,8 +388,9 @@ With each video, give:
 - **post copy** for the destination, as `references/routes.md` says: a title under 40 characters,
   a first caption line that hooks and a caption that says what the video shows, and 3-5 words of
   cover text taken from the payoff frame; hashtags only if asked;
-- what it sounds like: silent (a track can be added when it is posted), the user's voice, a
-  generated voice (AI-made: tell them to switch on the platform's AI-content label), or music;
+- what it sounds like: silent (a track can be added when it is posted), the user's voice,
+  a generated voice (AI-made: tell them to switch on the platform's AI-content label),
+  or music;
 - a tutorial's chapters, exactly as the build printed them, to paste into the description.
 
 Then offer one next step in a sentence: another kind from the same recording (nothing is read

@@ -103,8 +103,9 @@ for example a how-to short on Reels:
 
 These two are independent and weigh the same: ask them together, two questions in one turn.
 
-- Question: "How should it sound?" · Header: `Sound`. Offer only what this package can make: a
-  generated voice needs the voice-over-generation skill, the user's voice needs speech in the recording.
+- Question: "How should it sound?" · Header: `Sound`. Offer only what this package can make:
+  a generated voice needs the voice-over-generation skill,
+  the user's voice needs speech in the recording.
   - "A generated voice with captions" — "Holds viewers with the sound on, and captions carry it
     muted. Costs credits; I'll quote first."
   - "Captions and music, no voice" — "Free except the music. The words carry it."

@@ -18,8 +18,8 @@ fragment by fragment, and rebuilds it as a scene the user can edit, with their o
 result reproduces what the viewer sees, not the original project.
 
 Read picsart-video-rules first. One job: a reference video in, an editable scene that matches it out.
-Measuring and checking go as reference-fragment-matching says, with no SPEND gate; the SPENDs here
-are artwork or music you choose to generate.
+Measuring and checking go as reference-fragment-matching says, with no SPEND gate.
+The SPENDs here are artwork or music you choose to generate.
 
 Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
 
@@ -37,6 +37,11 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 8. The user reviews | REVIEW | — |
 | 9. Deliver | DELIVER | — |
 
+For generated replacements, follow picsart-video-rules's Image generation and supplied photos:
+keep its image default or the user's explicit model, and pass the supplied original photo in
+each replacement's actual `imageUrls`. Carry it through subsequent shots; a description or
+generated character sheet alone is insufficient.
+
 ## 1. Take the reference in
 
 ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) for what is missing, in one question, with every file in one upload panel, as picsart-video-rules
@@ -52,7 +57,9 @@ says (Asset URLs):
 
 **The sound.** When the reference is theirs, its soundtrack is the default: it is laid under the
 recreation from the hosted reference in stage 7. When it is not, the reference's music is someone
-else's: offer no sound, or a music bed made as the `background-music` skill says (a SPEND).
+else's: offer no sound,
+a music bed made as the `background-music` skill says (a SPEND),
+or the user's own music, received with `picsart_drive_upload_ask`.
 
 ## 1b. Map the content to the reference's slots
 
@@ -74,6 +81,7 @@ them, with a recommendation:
   says;
 - **redrawn as vectors** from the stills: the only route when the reference is not theirs and
   nothing is generated;
+- **the user's own artwork**, a cut-out PNG or SVG they send with `picsart_drive_upload_ask`;
 - **generated** with `picsart_generate` on an image model: the only route that always charges, so
   it is a SPEND, quoted for every decoration at once as picsart-video-rules says.
 
@@ -120,7 +128,9 @@ Join them and check the whole clip as reference-fragment-matching says (`referen
 Then lay the sound decided in stage 1. The reference's soundtrack goes on an audio layer, as
 scene-building-basics says, starting where the chosen part of the reference starts, so its cuts land
 where the reference's did, and check the cuts against its beats as the `reference-fragment-matching`
-skill says (`references/seams.md` there). A music bed is laid as the `background-music` skill says.
+skill says (`references/seams.md` there).
+A music bed is laid as the `background-music` skill says.
+The user's own music goes on an audio layer too, as scene-building-basics says.
 
 ## 8. The user reviews
 

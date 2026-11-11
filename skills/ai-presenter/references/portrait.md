@@ -68,7 +68,7 @@ For example:
 
 ## Generating it
 
-Pick an image model with `picsart_model_catalog` (`purpose: "generate"`, `mode: "image"`), and
+Use picsart-video-rules's image default unless the user chose another model, and
 read its inputs with `picsart_model_params`. On Dev on 2026-10-01, `gemini-3.1-flash-image` made a
 usable presenter. Ask for four candidates in one `picsart_generate` call (`count: 4`) where the
 model takes a count, at the take's shape (`aspectRatio`) and at the model's 2K or higher.

@@ -54,7 +54,7 @@ logos, icons and simple graphics well. Anything else is made with `picsart_gener
 ## 2. The user's files, as URLs
 
 Every input is a URL: `image` on the edit tools, `imageUrls` and `videoUrl` on `picsart_generate`.
-A URL a Picsart tool returned in this conversation is passed as it is (picsart-video-rules's Asset URLs).
+A URL a Picsart tool returned in this conversation is passed as it is, except a HEIC photo's (picsart-video-rules's Asset URLs).
 Otherwise:
 
 - **A file on disk, and you can run shell commands:** call `picsart_upload_local_files` with each
@@ -81,8 +81,12 @@ An edit skips this stage. For `picsart_generate`:
    say: three candidates from `picsart_model_catalog` (`concise: false`), each with what it is best
    for here, one marked recommended. When they want to look through all of them, open
    `picsart_model_show` with the `mode` and `purpose: "generate"`. Otherwise choose it yourself:
-   - an image: `gpt-image-2.6-flare` (`flux-2-pro` for a 21:9 or 9:21 frame, which it does not
-     hold). It takes `reasoningEffort`, not `quality`, and no `negativePrompt`;
+   - an image: `gpt-image-2.6-sunburst`, as picsart-video-rules's Image generation and supplied
+     photos says. Use a supported generation ratio and frame/crop to a wider canvas; never
+     silently switch models. Its `quality` is `max`, `xhigh`, `high`, `medium` or `low`,
+     `complexity` is `high`, `medium` or `low`, and `resolution` is `1K`, `2K` or `4K`.
+     It takes up to 16 `imageUrls` and ratios `1:1`, `3:2`, `2:3`, `16:9`, `9:16`, `4:3`,
+     `3:4` and `auto`. Recheck the live schema; send neither `reasoningEffort` nor `negativePrompt`;
    - anything else: `picsart_model_catalog` with the `mode`, `purpose: "generate"`, the
      `inputType` (`t2v` or `i2v` for a video, `tts` for a voice line, `sfx` for a sound, `music`
      for a song) and `acceptsImage` or `acceptsVideo` when the user brought one. Take the first

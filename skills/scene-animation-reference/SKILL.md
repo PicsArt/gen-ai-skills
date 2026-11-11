@@ -4,7 +4,7 @@ description: How a scene expresses motion — preset catalogs, layer animations 
 metadata:
   category: authoring
   version: '1.19'
-  ported-from: motion-mechanics 1.19 at 55.104.0
+  ported-from: motion-mechanics 1.19 at 55.128.2
 user-invocable: false
 ---
 
@@ -301,11 +301,11 @@ hand-rolling the trigonometry. Call them directly as `picsart.<name>(...)`; an a
 
 **Reading another value at a time.** `ctx.composition:getParameters():<name>([t])` is a parameter
 at `t`, seconds on the reader's clock (default now): `p:headTurn(time - 0.25)` trails a quarter
-second. `ctx.composition:getLayer(id):getPlacement():position([t])` / `rotation([t])` is that
+second. `ctx.composition:getLayer(id):getPlacement():position([t])` / `rotation([t])` / `scale([t])` is that
 layer's placement at `t`, seconds on the reader's clock with the layer's own clock applied:
 `position(time - 0.2)` trails it by 0.2 s. The layer is one of the same composition; a timed read
 of a layer that plays on another composition's clock fails the frame. Without `t` it reads this
-same instant (see "Bind a supported property instead of copying its track").
+same instant (see "Bind a supported property instead of copying its track"). `getSocket` and `getSocketDirection` on a layer read a placed character's published sockets (`character-rigging` "Standard sockets").
 
 **In a DEFINITION** (a look, a transition, a decoration) `{param}` splices the definition's own
 scope into the expression text, so the shape stays parametric:
@@ -376,7 +376,7 @@ refusals: [references/line-boil.md](references/line-boil.md).
 A character that walks, waves or jumps from a few looped keys, a shape's outline that morphs, bends or
 is swapped (`vertices` tracks, `deformers`, outline expressions), bent limbs and two-bone `ik` foot
 targets are all in `character-rigging` as well. Pose the catalog rig (`rig-humanoid`, `rig-face`) when it
-fits; build by hand only when it does not. Within a shape's `items`, and a group's `contents`, the
+fits; build by hand only when it does not. A humanoid rig holds a prop itself through its `held` parameter, and a `reach` constraint on its instance layer (`{"type": "reach", "socket": "rightHand", "target": {"layer": "ball"}, "mix": 1}`) puts a hand, foot or the `seat` on a stage point: both in `character-rigging`. Within a shape's `items`, and a group's `contents`, the
 first item paints on top, as After Effects stacks layers: list a face's mouth and eyes before the head
 they sit on.
 

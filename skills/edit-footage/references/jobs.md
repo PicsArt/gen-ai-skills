@@ -28,8 +28,9 @@ The record's `pipeline` for each job, in the core order. The defaults of the ree
 |---|---|
 | `broll-voiceover`, `talking-broll` | `intake, reference, proxies, log, takes, look, story, plan, build, qc, critics, review, finish, deliver` (`proxies` only for footage on this computer) |
 | `footage-story` | the same, without `takes` |
-| `reel`, `highlight`, `podcast-clips`, `split`, `montage`, `slideshow`, `lesson` | `intake, reference, log, story, plan, build, qc, critics, review, deliver` (`reference` only when a reference reel was given; `split` always has one) |
+| `reel`, `highlight`, `podcast-clips`, `split`, `montage`, `slideshow`, `lesson` | `intake, reference, log, story, plan, build, qc, critics, review, deliver` (`reference` only when a reference reel was given or the cut is Vibe or Match a reel, both known before the record starts; `split` always has one) |
 | `remix` | `intake, reference, story, plan, build, qc, critics, review, finish, deliver` |
+| `channel-clips` | `intake, reference, log, story, plan, build, qc, critics, review, deliver` (`reference` always: the look is the job) |
 
 ## An old record, carried on by hand
 

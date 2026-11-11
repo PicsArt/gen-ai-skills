@@ -34,12 +34,15 @@ list.
 
 ## The archive
 
-Everything a later session needs to regenerate a broken shot, recut a scene or start a sequel with
+Everything a later session needs to
+regenerate a broken shot,
+recut a scene or start a sequel with
 the same faces. It is filed in the project's Drive folder and kept in the project record. Filing
 is not a guarantee that a file stays available, so keep the record current:
 
 - the final prompts, every prompt version and their tokens, and the generation log;
 - the asset rows: descriptors, voice lines, sheets and views;
+- the asset rows of the user's media: each file the cut uses, and where it came from;
 - the story, the shot list and the look;
 - the cut: clip order, the user's trims and any transitions they asked for, per scene;
 - every select at final resolution, and the masters;

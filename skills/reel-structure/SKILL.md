@@ -3,6 +3,7 @@ name: reel-structure
 description: Read a reference reel's structure and format, never its content - its beats, shots, caption pattern, pace and bed into a structure sheet (or parse a written breakdown for free), its layout, captions, hook and end card into the record's format, with what the footage can match; fit the user's script to the beats, and report each beat as matched, changed, dropped or added, with the content rules checked. Use when a short should be built the way a reference reel is built or looks, including the user's own channel.
 metadata:
   source: channel team breakdowns and tools/reuse_guard.py, commit 3f064f0
+  local-scripts: pick_style.py, style_check.py, build_index.py
 user-invocable: false
 ---
 
@@ -30,19 +31,31 @@ the read:
 python3 scripts/sheet.py parse breakdown.md --out sheet.json
 ```
 
-**A reference video is read with the tools.** Every call below except the probe and the stills
-may charge credits, and a tool charges only when its description says so. Quote what the read
-will cost, then SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says). The calls do not depend on each other; run them at the same time,
-and follow each job receipt as picsart-video-rules says.
+**A style from our library supplies its own breakdown.** When the user brought no reference and the use case
+builds in a style, read `references/style-library.md` (how the one best-fitting style is picked
+for the footage, how it becomes the sheet and the format with no read and no SPEND, and how it is
+built) and `references/style-index.md` (one line per style); then open only the picked style's
+file, `styles/<id>.md`, never the whole folder. For a Thanksgiving or Friendsgiving reel, also read
+`references/skin-thanksgiving.md` (the full skin); never on other occasions.
 
-| Tool | What it gives the sheet |
-|---|---|
-| `picsart_media_probe` | length, frame size, and whether there is audio |
-| `picsart_media_segment_shots` over the whole length | the shots: holds and transitions |
-| `picsart_media_transcribe` | the words' timing, for the pace and for the reuse check, never to reuse them |
-| `picsart_media_describe_video` with `detail: "deep"` | shot types, camera moves, on-screen text style, per shot |
-| `picsart_media_analyze_audio` | the bed: tempo and loudness |
-| `picsart_media_video_stills` | one still per beat, **for the user to look at only**, never an input to a generation |
+**A reference video is read with the tools, and the read is required**: none of it is optional
+when the user sends a reel to follow. Run each required analysis below. Use the tool's billing
+contract and picsart-video-rules's SPEND rule: quote any charged call, then SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says).
+Follow each job receipt as picsart-video-rules says.
+
+| Order | Tool | What it gives the sheet |
+|---|---|---|
+| 1 | `picsart_media_probe` | length, frame size, frame rate, and whether there is audio |
+| 1 | `picsart_media_segment_shots` over the whole length | the shots: holds and transitions, each with the step to sample it at |
+| 2 | `picsart_media_video_stills` | at least 8 frames per shot, and every transition at its suggested step, at 480 px wide or more (never 180 px tiles); crop sheets (`crop`) of each frame, border and title, so a frame's shape (wavy, hand-drawn, doodled) is read, not guessed |
+| 3 | `picsart_media_track_motion` | every card, photo and title that moves, measured (below) |
+| 3 | `picsart_media_analyze_audio` | the bed's beat grid, tempo and loudness, when there is music |
+| 3 | `picsart_media_transcribe` | only when someone speaks: the words' timing, for the pace and the reuse check, never to reuse them. Never on a music-only reel |
+| any | `picsart_media_describe_video` with `detail: "standard"` | what each shot shows and its on-screen text, in words; optional when the use case says so, and quoted whenever it runs |
+
+The stills are **for the user to look at only**, never an input to a generation; you read the
+reference from them too.
+The calls in one row of the order run at the same time.
 
 Keep each result as it came back (as files, where you run commands), then draft the sheet from them. No video is decoded here:
 
@@ -53,8 +66,57 @@ python3 scripts/sheet.py draft --shots shots.json --transcript transcript.json \
 
 The draft has one row per shot (a long shot is split at its sentences). A short transition is a
 cut, and a long one is a move inside the shot: check each boundary on the stills. Every field
-the tools cannot know is `?`. **Name every beat yourself**, from the watch and the stills: join
-rows that make one beat, and fill picture, on screen, caption and sound.
+the tools cannot know is `?`. **Name every beat yourself**, from the stills (and the watch when it
+ran): join rows that make one beat, and fill picture, on screen, caption and sound.
+
+**Measure the moves; never guess them.** The stills show what moves; the motion tools measure it.
+Track every move the edit adds with `picsart_media_track_motion`, as the
+motion-tracking-from-video skill says:
+- a push, punch-in or pan on a shot or photo: the whole frame is the target;
+- a photo, card or title that slides, scales or turns, with `"mode": "similarity"` (`"corners"`
+  when it skews or tilts in 3D), from automatic targets or boxes read off the stills;
+- a seam that moves the picture;
+- a sticker or object that leads a reveal (a title wiped in as it passes).
+
+Each window runs from the frame before the move starts to the frame after it settles, at the
+video's own frame rate. Track every window; never guess a move to save a call. Targets that
+share a window go in one call. Then read each move's easing with that skill's `fit_motion.py moves --into sheet.json`:
+it adds the moves to the sheet's `moves`. Set each one's `track` to the result's `resultUrl`.
+Write what it measured in the beat's Move cell: from and to, how long, the delay, the curve and the
+overshoot (for example "card 1 up 1625→760 px over 0.77 s from 2.10 s, ease out, no overshoot").
+Keep each result, as files where you run commands, for the build and the check. A camera move filmed
+in the reference's own footage goes in the Shot cell and is not tracked: the user's footage has its
+own. A move the tracker cannot see, such as a wipe or a fade, is read from cropped stills, one per
+frame, as that skill says. Record those observations in the beat's `stillMeasurements`: each
+entry names the `target`, a `channel` of `opacity` or `reveal`, and at least two ordered `frames`
+with `t` in source seconds, `source` identifying the frame, and the observed `value` from 0 to 1.
+The values must change and the observations must overlap the beat. For example:
+
+```json
+{"target":"title","channel":"reveal","frames":[
+  {"t":2.0,"source":"stills/title-060.png","value":0},
+  {"t":2.5,"source":"stills/title-075.png","value":1}
+]}
+```
+
+The Move cell describes those numbers. A `(stills)` label alone is not evidence; position,
+scale and rotation still require tracking.
+
+Every moving beat declares `motionRequirements`, listing **every** target and channel observed
+in the reference, independently of the evidence collected. For a card that slides and fades:
+`[{"target":"card1","channel":"position"},{"target":"card1","channel":"opacity"}]`.
+The gate checks each requirement separately: matching tracked moves for position, scale and
+rotation; matching frame measurements for opacity and reveal. Evidence for one target or channel
+cannot cover another. Write the Move cell from this complete list, never use prose to opt out.
+
+A sheet from a reference video passes the measured check before anything is mapped onto it:
+
+```
+python3 scripts/sheet.py validate sheet.json --measured
+```
+
+It refuses a moving beat without overlapping tracked or supported still measurements, a Move
+cell with words alone, and a Move left `?`.
 
 ## 2. The sheet
 
@@ -112,10 +174,12 @@ python3 scripts/ref_format.py check format.json
 ```
 
 Then answer each element against the user's footage: reproduced, approximated (say how) or
-impossible. Anything not reproduced: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered mock (one free frame of their
+impossible. For a reference video, an element that moves (a text animation, a card's move, a frame
+that turns) says "measured" with its moves in its answer, never a look alone. Anything not reproduced: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered mock (one free frame of their
 footage in the format) beside the reference still, and keep the answer in the block.
 `ref_format.py feasibility format.json` refuses while an element is open. The reference stage is
-done only with a sheet that passes `sheet.py validate` and no open feasibility row.
+done only with a sheet that passes `sheet.py validate` (with `--measured` for a reference video)
+and no open feasibility row.
 
 ## 4. Map the script
 

@@ -36,8 +36,10 @@ entrance for titles, lines and the call to action.
    the product's category, the destination and the audience. Say the reason in one line: "a bright
    UI and beginners: paper-ink keeps it friendly and lets the app's colours lead".
 2. **Show three that differ**, on the user's own recording, before anything is rendered: the same
-   hook frame and one step frame built in each, sampled on a contact sheet (free). Never ask for a
-   style by its name alone.
+   hook frame and one step frame built in each, side by side in `picsart_scene_picker` (free), each
+   card labelled by how it looks to them ("paper and ink, friendly"), not by its id. Never ask for a
+   style by its name alone and never pick it for them; go on from the one they keep and say which
+   (picsart-video-rules, "A choice made by eye").
 3. **A brand** (colours the recording shows, or the user gives) goes onto the chosen style's roles:
    `python3 scripts/style.py <style> brand.json`. The style keeps its bones; the brand gives its
    colours. A brand colour that would make the words unreadable is refused with the role it

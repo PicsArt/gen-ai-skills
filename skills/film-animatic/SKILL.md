@@ -1,6 +1,6 @@
 ---
 name: film-animatic
-description: Draft a film or drama episode as a voiced storyboard animatic before any video is bought - a still per shot, app screens built as scenes, every line voiced at its shot's time, cut with captions and watched until the user says yes. Use when a film's story and shots are worked on stills and sound first.
+description: Draft a film or drama episode as a voiced storyboard animatic before any video is bought, with a still per shot, app screens built as scenes, every line voiced at its shot's time, cut with captions and watched until the user says yes. Use when a film's story and shots are worked on stills and sound first.
 user-invocable: false
 ---
 

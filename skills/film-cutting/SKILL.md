@@ -1,6 +1,6 @@
 ---
 name: film-cutting
-description: Cut a film's accepted takes into one scene - every generation one clip as generated, never split or trimmed, the montage bootstrap with hard cuts, separate dialogue and ambience, cleanup of named glitches, and diagnosing a bad join before choosing the smallest repair. Use when a film's takes are assembled into a cut, a cut is changed or fixed from notes ("fix my film"), or a join between two shots is repaired.
+description: Cut a film's accepted takes into one scene - the montage bootstrap with hard cuts, separate dialogue and ambience, and diagnosing a bad join before choosing the smallest repair. Use when a film's takes are assembled into a cut, a cut is changed or fixed from notes ("fix my film"), or a join between two shots is repaired.
 user-invocable: false
 ---
 
@@ -27,6 +27,9 @@ story order, with hard cuts between clips.
 Before footage is bought, judge shot lengths and continuity in the plan (film-shot-generation): the
 cut does not shorten a take. When a take looks too long, too slow or wrong at a run edge, say so in
 the review; the user trims it, or asks for a repair.
+Every clip goes into the cut once, in story order, with hard cuts between clips. The user's own trims and splits are
+theirs: made in the editor, each is recorded on its clip and kept as it is, never recomputed or reset. Never replace a
+clip with a trimmed export: that welds the handles shut.
 
 ## Assembly
 
@@ -71,7 +74,9 @@ quality-review's cut check finds these in the scene; build the cut so it finds n
   `allowed-spans.json` as `[{ start, end, file, reason }]`, in seconds on the cut's timeline, as you
   place the clips, and rewrite it on every re-cut. Never cut, re-time or zoom inside a span.
 - **A rule is never passed by adding a move.** A cut, push-in or zoom added to get past a check
-  makes the picture busier and the story harder to follow, as film-animatic's traps say: cut less,
+  makes the picture busier and the story harder to follow;
+  as film-animatic's traps say,
+  cut less,
   or take another moment.
 
 ## The review
@@ -99,7 +104,8 @@ A named glitch (hands, teeth, a melted face, a drifting object, boiling texture,
 repaired on its clip with the edit model, naming the defect and its time and keeping the run's
 references. Each fix is offered in the review and bought as its own spend, never applied
 silently. Put the fix back in the cut, whole, and review the **whole affected stretch**: a fix can
-break the light or the continuity. If two edits do not fix it, the run may need a re-roll. When a
+break the light or the continuity. If two edits do not fix it, the run may need a re-roll.
+When a
 shot cannot be made clean, offer the honest fallbacks in the review: a cut around it (a cutaway, a
 tighter trim) the user approves, or their acceptance of the flaw, in words. Never cut around a
 glitch silently.

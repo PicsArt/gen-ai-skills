@@ -127,14 +127,12 @@ they fill. Nothing else is needed.
 **Prefer a shape mask over a video matte.** It needs no asset, no network,
 no external renderer, and it cannot drift out of time with its window. **Never
 ship a `.webm` matte:** iOS (AVFoundation) cannot decode WebM, so the incoming
-clip just cut in there — which is why `push`, `bubble`, `cubes`, `free_fall`,
-`kaleida` and `splatter` were removed from the catalogue. The matte notes below
-are kept for a matte in a format supported by the intended playback environment.
+clip just cut in there — which is why `push`, `bubble`, `cubes`, `free_fall`, `kaleida` and `splatter` were removed from the catalogue.
+The matte notes below are kept for a matte in a format supported by the intended playback environment.
 
 **Keep a definition cheap enough to play in real time on a phone.** A blur's cost
 grows with its radius times the area it covers, and a firing pays it on every frame
-of the window. `movement_camera` peaked at a full-frame whip blur, 260 px at 720p,
-which cost up to ~180 ms a frame at the cut and stalled playback, so it was removed
+of the window. `movement_camera` peaked at a full-frame whip blur, 260 px at 720p, which cost up to ~180 ms a frame at the cut and stalled playback, so it was removed
 from the catalogue too. Blur a small layer, or keep the radius low.
 
 `iris` does a circle, a six-point star and a widening bar from one definition:

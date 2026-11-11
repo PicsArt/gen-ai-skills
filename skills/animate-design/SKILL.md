@@ -1,6 +1,6 @@
 ---
 name: animate-design
-description: Turn static material into a real motion-designed video — a Figma design's LAYERS, or the user's own uploaded assets (photos, logos, screenshots, clips), become a composed, animated ad/reel where elements slide, scroll, type on, parallax, and smart-animate, tuned by eye, then rendered — or add designed motion to a video that already exists. The user can describe the motion they want, or let the skill analyze the assets and propose a concept. Use when the user wants to animate a design or assets, "make an ad/reel/video from these images/frames/screens", add motion to a Figma flow, bring static material to life, or add an animated intro, title card, transition, morph, callout or logo reveal to a tutorial, walkthrough, promo or reel. Not for cutting the user's footage into an edit, and not for generating footage from a pure text idea (that's generate-media); the motion inside such a video still comes here.
+description: Turn static material into a real motion-designed video — a Figma design's LAYERS, or the user's own uploaded assets (photos, logos, screenshots, clips), become a composed, animated ad/reel where elements slide, scroll, type on, parallax, and smart-animate, tuned by eye, then rendered — or add designed motion to a video that already exists. The user can describe the motion they want, or let the skill analyze the assets and propose a concept. Use when the user wants to animate a design or assets, "make an ad/reel/video from these images/frames/screens", add motion to a Figma flow, bring static material to life, or add an animated intro, title card, transition, morph, callout or logo reveal to a tutorial, walkthrough, promo or reel. Not for cutting the user's footage into an edit, and not for generating footage from a pure text idea; the motion inside such a video still comes here.
 metadata:
   owner: motion-designer
   uses: design-layer-import, motion-design-craft, resting-frame-rules, character-rigging, figma-storyboard-animation, motion-intent, motion-pattern-library, scene-animation-reference, scene-3d-authoring, custom-transitions, app-ui-animation, photo-slideshow, asset-audit, motion-review, quick-merge-and-export, scene-template-remix, large-scene-assembly, linked-element-motion, motion-scene-continuity
@@ -25,13 +25,15 @@ is a composite of moving elements — never a montage of flat screens.** A real 
 built the way the After-Effects reference is built: each element on its own layer, each
 with its own motion, shared elements carried between frames.
 
-One economic law runs underneath: **the motion loop is free; the one paid capability is video
-generation, and it is always credit-gated.** Every tool the compose/motion/preview loop touches —
+One economic law runs underneath: **the motion loop is free.**
+**The one paid capability is video
+generation, and it is always credit-gated.**
+Every tool the compose/motion/preview loop touches —
 layer ingest, compose/`patch_scene`, layout queries, `validate`, the panel, and the renders
 themselves (`picsart_scene_export`, `picsart_scene_contact_sheet`) — is on the connector's
 zero-credit list (verified against live billing), so for all of that: **never tell the designer an
-action will cost credits, and never hesitate to render for cost reasons — there is no cost.** The
-**sole exception** is **generating video** (`picsart_generate` and the generative tools), which spends
+action will cost credits, and never hesitate to render for cost reasons — there is no cost.**
+The **sole exception** is **generating video** (`picsart_generate` and the generative tools), which spends
 credits — and it **never runs without the designer's explicit, informed consent**: show the balance,
 quote the exact cost and SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) (full gate in *Video generation* below). No other part of this
 pipeline charges.
@@ -97,8 +99,9 @@ choose it while layers are available.
 
 ## Scope and formats
 
-Static material into an ad is the scope now; generated footage is a credit-gated capability within
-it. The scene is the one editable source and the mp4 is only its render. Both in full:
+Static material into an ad is the scope now.
+Generated footage is a credit-gated capability within it.
+The scene is the one editable source and the mp4 is only its render. Both in full:
 `references/scope-and-formats.md`.
 
 ## 0. Triage — route before anything
@@ -440,9 +443,11 @@ without asking: render first, show, *then* wait for the reaction. Never ask "sha
 never report that a preview "needs your go-ahead", and **never tell the designer to type "go"
 (or any keyword) to continue** — the designer speaks in design terms ("snappier", "approved",
 "change the easing"), not in control tokens. The compose/motion/preview loop is free, so it never
-gates on cost. The actions that **do** require an explicit ask are **saving to Drive** and
+gates on cost.
+The actions that **do** require an explicit ask are **saving to Drive** and
 **generating video** — the latter behind the full cost-consent gate (show credits → preflight cost →
 explicit yes, or a spend limit the designer stated that covers it; see *Video generation*). Those two aside, act on free calls without asking.
+**Saving to Drive** requires an explicit ask; act on free calls without asking.
 
 **Open with frame 1's entrance, before pair 1→2.** The reel starts with motion, not a frozen
 frame — author frame 1's own elements animating **in** at `t=0` (entrances by role, staggered by
@@ -499,6 +504,8 @@ The panel does not latch: every edit writes a new scene document and `sceneRef` 
 always edit the latest. And when the editor returns an **`edited` document**, that becomes the
 latest — patch further changes onto it, not onto the copy you opened with.
 
+For a video element, use the designer's own clip via `picsart_drive_upload_ask`, or choose a suitable library asset or template, then place it in the scene.
+
 ## Video generation — opt-in, and CREDIT-GATED (the one paid capability)
 
 Sometimes the design needs **generated footage** — a video card/element that should be real motion,
@@ -509,6 +516,7 @@ something. Run this flow **in order, and never skip the gate**:
 the eight steps in `references/video-generation.md`, in order — balance, model pick, params,
 `picsart_preflight` cost, explicit yes (or a spend limit the designer stated that covers it), generate,
 monitor, place. **No preflight cost shown and no explicit yes or covering spend limit means no generation.**
+
 
 ## The state — `motion.json`
 
@@ -523,6 +531,7 @@ Its shape, and how each `motion[].kind` label maps to a preset or keyframes, are
 | Free (everything in this plugin's loop) | Charged, no rollback |
 |---|---|
 | layer import, compose, `validate`, layout queries, the panel and its motion previews, filmstrip, **and the renders** — `picsart_scene_export`, `picsart_scene_contact_sheet` (GPU renders that move no credits) | **generative** tools only — image/video/audio generation, remove-bg and kin |
+Everything in this plugin's loop is free: layer import, compose, `validate`, layout queries, the panel and its motion previews, filmstrip, **and the renders** — `picsart_scene_export`, `picsart_scene_contact_sheet`, which are GPU renders that move no credits.
 
 **A dropped call is never a failed render.** An export usually completed even when the
 connection dropped — check first (`picsart_job_status`, recent Drive files), never

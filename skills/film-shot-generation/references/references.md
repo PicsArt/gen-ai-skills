@@ -8,7 +8,9 @@ an exact frame passed on its own shuts the references out, and a frame shows onl
 - **Every person who appears at any point in the run**, even one not in its first frame: their
   identity view and their wardrobe view. A person carried by words alone is drawn from the model's
   habits. Add a profile, back or state view only where a shot needs it. A photographed person's
-  original goes first and untouched; generated views follow it.
+  supplied originals from `identityReferences` stay in every shot's actual `imageUrls`,
+  untouched; generated views follow them. Check each later run and replacement too, not only
+  the first character compile. A start frame or generated sheet never stands in for an original.
 - **Every prop the film gave a plate**, as its own image, named by number where it appears. Every
   object is named once, in one place: a flask on her strap and in her hand in one prompt is two
   flasks.
@@ -26,7 +28,14 @@ The prompt's header names every image by number and role, once, in the order of 
 `IMAGE 1 — START FRAME`, `IDENTITY @cal`, `WARDROBE @cal`, `PROP: the wrench`, `SCENE PICTURE`,
 `SPACE map`, `SPACE wide`. After the header, people are called by name, never re-described. The
 compiler writes the header from `images`; record the ordered list and the roles, since every shot's
-references are numbers into it.
+references are numbers into it. Label the scene's opening image `START FRAME`, the location wide
+`SPACE wide`, and the map `SPACE map`. The opening frame carries composition and scene appearance.
+Match the START FRAME’s visual appearance in every shot. Follow the specified video camera
+movement and focus behaviour.
+The wide carries location appearance and geography; the map carries geometry only, never a visual
+style or a frame to reproduce. Pass the same locked `look` as the scene pictures so camera texture,
+colour and rendering continue through the video. Appearance-only restrictions apply to identity,
+wardrobe and prop views, not to the approved scene frame or location wide.
 
 ## Budget
 
@@ -39,7 +48,7 @@ when a measured limit binds, in this order:
 3. re-encode a PNG view as JPEG, same pixels;
 4. last, a smaller copy of a view, never softening an identity view past what holds a face.
 
-**Never drop the map, an identity view or a wardrobe view** to fit. A smaller copy of a view becomes
+**Never drop supplied originals, the map, an identity view or a wardrobe view** to fit. A smaller copy of a view becomes
 that view for every run after it (film-cast-design).
 
 ## Frames from a take

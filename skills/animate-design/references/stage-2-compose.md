@@ -96,7 +96,9 @@ which forfeits every per-element move Stage 3 exists for. The full kind-triage l
 - **A missing font is surfaced, never silently swapped.** For every text layer, check its
   typeface against `picsart_scene_fonts` (the platform's available fonts; its `query` also
   live-searches a font not in the bundled snapshot and returns a `.ttf`/`.otf` URL you author directly). If the
-  design's font is **not available from the media tools** — neither tool can find it — do
+  design's font is **not available from the media tools**
+ — neither tool can find it —
+  do
   **not** quietly substitute a fallback and move on. **Tell the designer plainly**: name
   the missing font, name the fallback you'd otherwise use, and say the text will render in
   that fallback (different metrics → the layout can shift). Let them decide — pick an

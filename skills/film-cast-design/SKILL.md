@@ -35,14 +35,17 @@ fire, is a scene with its own pictures, never a state.
 ## The starting point
 
 Draft every descriptor first, as below. Then OFFER the cast board once: `picsart_film_choose_cast`
-with the whole cast (at most 12 a board), each character's descriptor lines as `story`. Every card
-opens on those lines, so a board sent untouched changes nothing. It is an offer, not a gate: it
-spends nothing, and a reply that ignores it keeps every character as the story has them.
+with the film's title as `film` and the whole cast (at most 12 a board), each character's
+descriptor lines as `story`. Every card opens on the ready-made characters; a card left with nothing
+picked keeps those lines, so a board sent untouched changes nothing. It is an offer, not a gate: it spends nothing, and a reply that ignores it keeps every
+character as the story has them.
 
 Its answer, `film_cast_chooser_feedback`, has one entry per @tag:
 
 - **`story`** — keep your descriptor.
-- **`preset`** or **`person`** — the answer carries the look as `reference`: pass it unchanged as
+- **`preset` with `saved`** — reuse that saved asset as the user’s sheet; compile no sheet and spend nothing.
+- **`preset` without `saved`** — it has no sheet yet. Include its credit cost in the quote, compile with the answer’s `sheetModel`, then save it under the preset’s own name so a later pick reuses it.
+- **`preset` without `saved`** or **`person`** — the answer carries the look as `reference`: pass it unchanged as
   that character's `reference` on `picsart_film_compile_prompt`. It holds who they are, how they
   look (an animal's species and coat, the face, the build) and what they wear and hold. Add from
   your descriptor only the paths `fromStory` names: `identity.<field>` for what the preset leaves
@@ -82,19 +85,24 @@ instead, as film-shot-generation says.
 
 ## Pictures
 
-1. Choose the image model once per film with `picsart_model_catalog`, filtered by the film's frame
-   (a model whose ratios lack it is out) and by image input when a photo feeds it. Record it; one
-   film never changes image model midway.
+1. Use picsart-video-rules's image default unless the user chose another model. Record it once
+   per film. Check its image inputs and supported generation ratios with `picsart_model_params`;
+   frame/crop a supported ratio to the film canvas instead of silently changing models.
 2. Compile every picture with `picsart_film_compile_prompt` and its reference `kind`, passing the
    film's `look`, the same object the shots get, and the descriptor's lines in `reference`
    (`identity` or `faceAndOutfit`, `outfit`, a plate's `descriptor` and `anchor`, `assetPalette`).
+   Keep the selected `look.camera`: references retain its image texture, colour and detail;
+   neutral identity views omit an action camera's fisheye and a drone's aerial viewpoint.
+   Do not substitute a portrait-camera look or add unrequested lens and exposure settings.
    Keep `look.scheme` and `look.hue` in it: left off, the cast comes back in no colour while the
    shots compile to the film's hue. Pass the film's image model as `model`: a picture sent with
    reference images then gets a ratio that model takes with them. It returns the prompt, the
-   `negativePrompt`, the `aspectRatio` and a `promptToken`. Send all of them as returned; never
-   type or retype a template.
+   `negativePrompt`, the `aspectRatio` and a `promptToken`. Send the prompt as returned, and
+   only parameters the chosen model supports; omit `negativePrompt` when unsupported.
+   Never type or retype a template. With a supplied photo, set `reference.usePhoto: true`
+   and put its original URL in the actual `imageUrls`; the flag alone attaches nothing.
 3. Compile with `verifyWith` (`request` with the `imageUrls` you will send, `film` with the saved
-   assets and their views, `limits` from `picsart_model_params`) and read each result's `check`:
+   assets, their `identityReferences` and views, `limits` from `picsart_model_params`) and read each result's `check`:
    `picsart_film_verify_prompt` already run on that prompt. A failure is fixed in the inputs and
    compiled again; a `skipped` reference budget or view check has not run. Never retype a compiled
    prompt into verify.
@@ -112,7 +120,8 @@ Every tile comes back approved, changed or discarded.
   `name`, `descriptor`, `sheetVersion` (`"v1"`; a new version is a new save, never an overwrite),
   `voice` (an object: `mode` `preset` or `design`, or `nonSpeaking: true`; `voiceId`, `model`,
   `description`, `language`, `accent`, `sampleUrl`), `portraitUrl` (the sheet, or the user's photo),
-  the views as `referenceImages` (the close-up first, as `references/views.md` orders them), the `scenes` it serves, `projectFolderUid`, `status: "locked"`. The result's `locked`, not its
+  the views as `referenceImages` (the close-up first, as `references/views.md` orders them),
+  `identityReferences` with the user's original photo URLs (or `[]` when every view is generated), the `scenes` it serves, `projectFolderUid`, `status: "locked"`. The result's `locked`, not its
   `saved`, says it is done.
   A locked save lands in the project's "Library", anything else under its "Assets"; with no project
   folder it goes to the flat global "Film Assets" folder. Only a save registers an asset for

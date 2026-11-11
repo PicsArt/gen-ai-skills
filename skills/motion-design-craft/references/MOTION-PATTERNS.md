@@ -22,7 +22,7 @@ polish — two properties is the sweet spot.** (Property choice per goal is in `
 
 ## Screen / element transitions (apply directly to A→B frames)
 
-Author each as a real **seam transition** (`slide`, `push`, `page_curl`, `crossfade`,
+Author each as a real **seam transition** (`slide`, `page_curl`, `crossfade`,
 `zoom_through`, `iris`, `card_flip`, `shape_reveal`…) and/or **entrance presets** (`slide_in`,
 `fade_in`, `reveal_in`, `zoom_in`, `flip_in`). Resolve ids from `get_capabilities`.
 

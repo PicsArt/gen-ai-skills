@@ -148,7 +148,7 @@ generated opening: it goes through these steps like a run.
    `picsart_film_verify_prompt` already run on that prompt and its `blocks`, against what you pass
    in `verifyWith`: `approved` from the approved board (its lines, never the ones you typed into
    `speech`), `request` with the other arguments you will send to picsart_generate (`generateAudio`,
-   `imageUrls`), `film` with the saved assets and their views, and `limits` from
+   `imageUrls`), `film` with the saved assets, their `identityReferences` and views, and `limits` from
    `picsart_model_params`. Never retype the prompt into verify. A failed check is fixed in the
    inputs and compiled again; a check whose `skipped` names the board, the lines or the reference
    budget has not checked them, so compile again with them before anything is paid. Call

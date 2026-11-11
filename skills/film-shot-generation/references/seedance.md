@@ -10,6 +10,12 @@ are already approved: `sd25-pe` for Seedance 2.5, `sd2-pe` for Seedance 2.0. Wri
 action, lines and `extra` by it, and every prompt written by hand (an edit or extend). The compiled
 run prompt still goes out verbatim.
 
+**Its questions go to the user as yours.** When `sd2-pe` or `sd25-pe` has something to confirm (its
+"multi-selection interaction", a picture's place in the frame, a grid image to split), ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) it:
+one question for each suggestion, its fix as the recommended option, and room for the user's own
+words. Never copy its sample message or its `- [ ]` checkboxes into the reply: some apps show them
+as raw characters.
+
 ## What the compiler does for you
 
 Pass the model's id as `model` to `picsart_film_compile_prompt`, and give each `cast` member the

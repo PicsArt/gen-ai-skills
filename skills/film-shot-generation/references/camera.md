@@ -52,9 +52,12 @@ both. Never swap it quietly. A wide on a simple move is not flagged.
 
 ## What the model will and will not do
 
-- **It renders the result, not the mechanism.** An optical zoom and a dolly-in both come back as
-  "the frame got tighter"; a pivot and a short truck both as "the frame swung". Choose the move by
-  the frame it ends on, and spend no words defending a difference the picture cannot show.
+- **Keep the selected camera's mechanism and visible result.** For an optical zoom, the lens
+  changes focal length while the viewpoint stays put; do not replace it with a dolly-in. Preserve
+  handheld operation during a zoom when the camera calls for it. A camcorder's uneven zoom and
+  imperfect autofocus belong to that capture; a clean landing is not mandatory for every camera.
+  State the opening and ending composition, and do not add a constant-framing lock to a move
+  whose purpose is to change the framing. Explicit user choices still govern the shot.
 - **Rotation and travel are two different requests.** When a shot wants another angle on the same
   moment, say which: the camera turns where it stands (a pan or tilt that reveals what was beside
   or above it, named), or the camera moves to a new position (named against the geography line:
