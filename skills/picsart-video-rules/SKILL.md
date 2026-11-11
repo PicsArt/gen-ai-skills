@@ -334,6 +334,11 @@ Picsart Drive. Only an `async: false` export saves it there by itself. Either wa
 only when a result returns a `driveUid`. Then offer one next step in a sentence, and do it only if
 the user says yes.
 
+**Report the truth before the praise.** Every check of your own that failed its bar goes in the delivery
+message, named with its measured value and its bar ("planted foot drifts 4.9 px, the bar is 4"), before any
+praise; a failure written only into a file or a log is not reported. Say where each part came from exactly as it
+happened: a character loaded from the library, or newly drawn in this session; never a source you did not use.
+
 To keep the scene itself for reuse (a template, a rig or a plain scene), save it with
 `picsart_drive_upload` and `scene` (inline or by https URL). Its assets on expiring storage are
 saved too; a local one is refused by name. The returned `url` works as any scene tool's `scene`

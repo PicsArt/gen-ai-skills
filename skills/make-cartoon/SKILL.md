@@ -17,7 +17,8 @@ Read picsart-video-rules first. One job: one short cartoon clip, 9:16, 8 to 20 s
 characters, one place, with a narrator's voice-over or captions. The characters do not speak on screen, and
 nothing here turns, sits, hugs, claps or hands a prop to another character: reword such a beat or say
 "not yet". More than two characters, a second place, more than 20 seconds or another ratio is a
-different job: say so before starting.
+different job: say so before starting. These limits are for planning a new cartoon. They never cap an edit the user asks for: an edit that
+lengthens the clip, such as slowing the ending, is done as asked. If it pushes the clip past 20 seconds, say so once and do it anyway.
 
 Before acting on a stage, load the available skills in its row that apply to this job, also when the work resumes there.
 
@@ -154,7 +155,7 @@ or ask in words.
 
 ## 7. Export
 
-`picsart_scene_export`, 1080 by 1920 at 30 fps. DELIVER the `downloadUrl`. Offer to save the scene to
+`picsart_scene_export`, 1080 by 1920 at 30 fps. DELIVER the `downloadUrl`, naming each check that failed its bar before any praise, and for each character whether it was loaded from the library or newly drawn (DELIVER in picsart-video-rules). Offer to save the scene to
 the library as kind `story` with `picsart_scene_library_save`, and do it only on a yes. Say where each
 described
 character is kept.
