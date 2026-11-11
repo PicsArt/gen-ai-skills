@@ -41,7 +41,7 @@ remembered: "locked" is true when the asset's row says so, not when you recall s
   },
   "assets": [
     { "tag": "@cal", "type": "character", "source": "generated", "version": "v1", "status": "locked",
-      "assetId": "<picsart_film_save_asset result>", "identityReferences": [],
+      "assetId": "<picsart_asset_save result>", "identityReferences": [],
       "descriptor": [{ "line": "face", "text": "…" }],
       "voice": "<verbatim, frozen once saved>",
       "sheet": "<url>", "grid": "<as declared>",
@@ -98,7 +98,7 @@ remembered: "locked" is true when the asset's row says so, not when you recall s
 - `descriptor` is line-keyed, so a change is one line and a sheet redo changes one thing.
 - `rejectedAssets[]` persists each rejected tag, version and file (uid and URL), every derived view
   or panel, the user's reason and any explicit exception. Save that version with
-  `picsart_film_save_asset`, `status: "rejected"`, before regenerating, and mark its asset row
+  `picsart_asset_save`, `status: "rejected"`, before regenerating, and mark its asset row
   `rejected`. Keep this list across replacements and resumed turns; check it before showing any
   picture or choosing any reference. No rejected sheet or part of it is shown or used again.
   One rejected view rejects the whole sheet unless the user explicitly said otherwise.

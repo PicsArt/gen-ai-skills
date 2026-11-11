@@ -43,7 +43,7 @@ One panel per shot, at the film's frame:
   call), filed in the project's Assets folder before you look at them.
 - **Continuity against the master.** Look at each panel beside its scene picture before it goes on
   a board: the same faces and wardrobe as the locked views, the same light and set, the eyeline and
-  screen direction the card says. Put them on `picsart_film_review_assets`, 12 tiles a board, with
+  screen direction the card says. Put them on `picsart_asset_approve`, 12 tiles a board, with
   "continuity with the scene picture" as its `judge`. A changed panel is its own SPEND.
 - **A real app's screen is built, never generated.** A phone or a computer screen in a shot is a
   scene layer built from the user's own screenshots or recording (stills with

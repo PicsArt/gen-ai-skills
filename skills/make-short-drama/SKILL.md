@@ -46,13 +46,13 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | One-off short film | movie-producer |
 | One clip | Offer one generation via `picsart_model_choose`, then SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) and `picsart_generate` |
 | Series, pilot, sitcom or drama episode | This use case |
-| Series record present | Read it, call `picsart_film_list_assets` with its `projectFolderUid`, say where the series stands, continue at the next episode |
+| Series record present | Read it, call `picsart_asset_list` with its `projectFolderUid`, say where the series stands, continue at the next episode |
 
 An unfinished proposed episode resumes at its recorded stage before another is started. Restore
 the accepted ledger and current asset versions first. Do not reset people to the original premise.
 Take supplied state as fact; ask only for missing facts needed by the next step. A writing-only
 request stops at the requested outline or script and needs no paid step or production board.
-On every resume, before outlining the next episode, call `picsart_film_list_assets` with the
+On every resume, before outlining the next episode, call `picsart_asset_list` with the
 record's `projectFolderUid`. The Library is the authority on who is locked at which version; the
 record's cast manifest is only its copy. Do this even for an outline-only request.
 
@@ -94,7 +94,7 @@ cast, the script, the model, the shot list and the voices. Mark that stage's exi
 the record" and never open its board again; a stage asks, or opens its board, only for what is still
 missing. A supplied cast or picture is not in the Library until it is saved: when the record has no
 `drive`, create the project as stage 4 says, then save each approved person, place and prop with
-`picsart_film_save_asset` (`status: "locked"`, `projectFolderUid`, `sheetVersion`; it is free), read
+`picsart_asset_save` (`status: "locked"`, `projectFolderUid`, `sheetVersion`; it is free), read
 `locked` in each result and write it to the cast manifest, before 5c.
 
 | Stage | What it builds | Paid |
@@ -152,21 +152,21 @@ look revision; later episodes inherit the lock. Record varying episode runtimes 
 ## 4. Cast, places and props for the whole series
 
 Create one series project with `picsart_drive_create_folder`,
-`path: "Picsart Films/<series-slug>"`, `children: ["Library", "Assets", "Shots", "Exports"]`.
+`path: "Picsart Plugin/<series-slug>"`, `children: ["Library", "Assets", "Shots", "Exports"]`.
 Record all returned uids and say once where files go. Scope any listing to its folder. Pass the
 proper `folderUid` on every generation and job-status call, and `projectFolderUid` on asset calls.
 Save finished pictures and takes before showing them. A filed file is not promised permanent.
 
 Use film-cast-design to design and lock the WHOLE series inventory once: people, sets and props.
 Quote its compiled and verified reference batch under one SPEND, then review the landed pictures
-on `picsart_film_review_assets` (at most 12 tiles per board). On approval, cut views and save with
-`picsart_film_save_asset`, `status: "locked"`, `projectFolderUid` and `sheetVersion`. This files the
+on `picsart_asset_approve` (at most 12 tiles per board). On approval, cut views and save with
+`picsart_asset_save`, `status: "locked"`, `projectFolderUid` and `sheetVersion`. This files the
 asset in the project's Library. Read `locked` in the result; `saved` alone does not establish a lock.
 A changed tile gets its own SPEND and a fresh board with `assets[].version` and `assets[].previousUrl`. Approved
 tiles never reappear on a board. A supplied person's photo is theirs, not a redesign invitation.
 Raise film-cast-design's photo or era flags in one short ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with its named options.
 
-Later episodes call `picsart_film_list_assets` with `projectFolderUid` and reuse locked rows.
+Later episodes call `picsart_asset_list` with `projectFolderUid` and reuse locked rows.
 Never re-design a locked person or reopen their review merely because an episode changed.
 A requested changed look is a new `sheetVersion`, saved and locked, with superseded versions and
 affected episodes recorded. Preserve voice notes verbatim. Check dependencies by identity,

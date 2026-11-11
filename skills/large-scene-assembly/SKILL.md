@@ -66,14 +66,24 @@ Outline rows also carry container pointers, `cameraExempt` and references, and t
 
 Inspect shared definitions in their own asset scope. Editing a shared definition affects all its instances; create an instance-specific definition and retarget only the intended consumer for a local variation. Keep the original revision and explicitly update parent references after a child changes. Revalidate and query every affected instance and seam. Source inspection cannot certify layout, media availability or motion.
 
+## A film is a root of shots that share saved rigs
+
+A film of N shots that act the same character is one root with N `scene_ref` layers, one per shot,
+each naming the shot's saved scene by URL; each shot names the character's saved rig the same way. Save
+the rig once and give every shot that one URL. An export renders the root as written and the worker
+fetches each distinct URL from its allowed hosts, so a hosted rig costs one fetch however many shots use
+it. A re-saved rig is a new document with a new URL: point each affected shot at it, re-save those shots, then point the root at their new URLs, or the export renders the old revision. A URL on a host the worker does not
+allow fails the export by name; fix the URL, do not inline the rig to get past it.
+
 ## Consolidate without losing the sources
 
 Consolidation means a coherent, resolvable deliverable—not indiscriminate flattening.
 
 1. Save a named source revision and its manifest before replacing references.
-2. Prefer a root with resolvable saved children when the consumer supports those handles/URLs.
-   If a self-contained document is required, inline scene assets with their scoped dependencies
-   using the current schema, or use `picsart_scene_expand_ref` for a supported local detachment.
+2. Keep a root whose children are saved scenes referenced by URL (`scene_ref`): an export sends the root
+   as authored and the renderer fetches each hosted child itself, so no body is copied into the root.
+   Inline (`picsart_scene_expand_ref`, or scene assets with their scoped dependencies) only when the consumer
+   cannot fetch the URLs, and say so.
 3. Expansion is not a universal recursive bundler. Read its diagnostics and `stillReferenced`;
    process only the intended instance, preserve track timing, and do not delete assets still used.
 4. Check for unresolved/local-only handles, unavailable assets, namespace collisions, duration

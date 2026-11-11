@@ -48,9 +48,11 @@ a saved or ready-made one,
 a new one described in their words,
 or one built from a part sheet they drew.
 
-**Pick.** A saved character is a scene in the library: place it with `picsart_scene_apply_template`,
-`uri: "library:<libraryId>"`, so a second scene with the same character is identical. A ready-made one
-is placed with `picsart_scene_apply_template` too, with the template's `uri` from `picsart_scene_templates`.
+**Pick.** A saved character is a scene in the library, placed by reference so a second scene with the same
+character is identical: `picsart_scene_apply_template` with `uri: "library:<libraryId>"` (no `mode`) returns a
+`scene_ref` snippet, and `picsart_scene_patch` adds it as a layer: an `add` op with `kind: "layer"` and
+`value` `{ id, start, duration, content: <the snippet> }`. Do not inline the character. A ready-made one
+comes from `picsart_scene_templates` the same way, with the template's `uri`.
 Actions are applied later, to the placed character, with `picsart_scene_apply_preset`.
 
 **Describe.** Follow character-rigging's "From a picture" and its part-sheet prompt:
@@ -62,7 +64,7 @@ Actions are applied later, to the placed character, with `picsart_scene_apply_pr
    sheets, about four minutes; I'll check in." Then follow the receipts with `picsart_job_status`, the
    longest `waitSeconds`, and tell the user in a sentence each time something changes (one sheet done, both
    done, a failure and what you do next). Never wait silently. A failed sheet is retried once.
-2. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which sheet, with `picsart_film_review_assets`; a change is surgical, a new sheet is
+2. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which sheet, with `picsart_asset_approve`; a change is surgical, a new sheet is
    quoted on its own.
 3. Build the rig with `picsart_scene_build_model`, `character: { svgUrl }` (and `view`), `svgUrl` being the
    chosen sheet's `url` from the generation result: the server fetches it, so never paste the SVG into the
@@ -119,6 +121,7 @@ Place each character's scene with `fit: none` on the floor line. The narration i
   `picsart_media_transcribe` for its timing;
 - the lines as captions, with no voice.
 
+A child character's lines take a child's voice, cast as voice-over-generation says; say which voice was picked.
 Start each line within 0.3 seconds of the beat it describes. Background music is optional:
 when the user wants some, choose it as background-music says and duck it under the voice;
 music the user sends, received with `picsart_drive_upload_ask`, goes on an audio layer under any voice.
