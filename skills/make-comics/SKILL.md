@@ -56,7 +56,8 @@ mood in one line ("make me a horror comic").
 - The console is the ASK. On `comic_setup_feedback` (`verdict: "locked"`), its `tool` is the one
   to call and its `selections` go to that tool unchanged, with `language` when present; its
   `estimatedCredits` is the cost the console showed next to the lock, for stage 3. That
-  lock is the setup's lock; to change it later, open the console again with `current`.
+  lock is the setup's lock; to change it later, open the console again with `current`: the locked
+  values with the user's change applied, since the console seeds `current` over `suggested`.
 - A "Custom" kind of story (`premise`, or a tale look's `talePremise`) means the user tells
   their own story: ask for it only then, in one question, and pass it under the inputs the
   lock's reply names, which differ by tool and look: the comic's and video comic's `plot`, with
