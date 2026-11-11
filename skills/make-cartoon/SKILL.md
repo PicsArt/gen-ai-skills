@@ -124,6 +124,21 @@ when the user wants some, choose it as background-music says and duck it under t
 music the user sends, received with `picsart_drive_upload_ask`, goes on an audio layer under any voice.
 Check the scene with `picsart_scene_validate` and the capabilities' own limits.
 
+### Staging
+
+Before building, list one shot per beat, each with its size:
+- **wide**: the establishing shot, the opening beat only;
+- **medium**: the characters are at least 35% of the frame height, for action and dialogue;
+- **close**: head and shoulders, the face at least 15% of the frame width, for the emotional beat.
+
+A story has at least 3 shots, and its emotional beat is a close. Change the framing with the camera: the `push_in`
+preset (`zoom` is the scale it ends at) for a move in, or a cut, the camera keys on the same frame, for a new shot. A move
+eases and never snaps in the middle of a beat.
+
+Two characters who talk or react to each other face each other, both in the three-quarter view, never both side-on.
+Nothing important is cut by the frame edge: never a face; feet leave the frame only in a close. A prop that changes state
+(a tower that falls, a cup that fills) crossfades over at least 6 frames; it never swaps in one.
+
 ## 6. Review
 
 Render the busiest beat for 3 to 5 seconds first, then the whole clip, and look at every beat of it,
