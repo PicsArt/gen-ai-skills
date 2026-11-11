@@ -1,10 +1,10 @@
 ---
 name: motion-review
-description: Review an existing scene for motion that is confusing, mistimed, distracting, broken at a seam, or unnecessarily expensive. Use when asked to critique or improve a finished animation, audit a multi-beat scene, prioritize motion fixes, or decide whether a static element should move.
+description: Review an existing scene for motion that is confusing, mistimed, distracting, broken at a seam, or unnecessarily expensive. Use when asked to critique or improve a finished animation, audit a multi-beat scene, prioritize motion fixes, or decide whether a static element should move, and before reporting that your own render, character, rig or acceptance video works.
 metadata:
   category: workflow
   version: '1.0'
-  ported-from: motion-review 1.0 at 55.75.0
+  ported-from: motion-review 1.0 at 55.128.2
 user-invocable: false
 ---
 
@@ -105,3 +105,37 @@ scene location, root-time interval, what the viewer sees, the evidence, and the 
 Separate **measured**, **visually inspected**, and **not yet verified** claims. List rejected
 motion additions when the user asked where to animate, so stillness is an explicit design choice.
 Keep a short ordered set of actionable changes; do not manufacture polish findings to fill a list.
+
+## Accept your own render before reporting it
+
+Apply this before you call any rendered scene, character, rig or acceptance video "working". The
+author of a render tends to confirm it; look for the ways it fails.
+
+1. **Name the intended action in one sentence** ("both hands hold the ball at chest height"). Judge
+   the picture against that sentence, not against your previous draft or a metric.
+2. **Lint the shot's window before you show it** (`picsart_scene_lint_layout`; allow a pair meant to touch). The
+   hosted lint reads layer geometry, not painted pixels: it warns on figures whose bounds overlap and on a figure
+   the frame cuts. It cannot see a prop its own body hides or a speaking mouth under its own arm or hand; look for
+   those on the contact sheet yourself. A warning is a defect you found before the viewer: fix it, or allow it
+   knowing why.
+3. **Read each line's action against its words.** For every spoken line, set the text beside the action keyed over
+   it: a line that says "look" or "wave" plays that, not `idle` or `talk`. Nothing checks it.
+4. **Look at the whole window.** Make a contact sheet of at least 8 frames spread across the clip,
+   including interior frames (`picsart_scene_contact_sheet` for a scene, `picsart_media_video_stills` for a video), and
+   open it yourself. One still or the endpoints hide mid-motion tears, drift and pops. For sync between
+   two things (mouth and voice, hand and prop), track both per frame (`picsart_media_track_motion`); stills hid a mouth
+   drift that per-frame tracking caught.
+5. **Check what the viewer sees, not what you built.** A metric on the mechanism can pass while the
+   picture is wrong: a grip socket landed within 0.55 px of the ball while the drawn hand stopped a
+   hand-width short. Check the drawn result: contact between silhouettes, limbs bending the
+   anatomical way, nothing passing through a body or prop, near and far parts in the right draw
+   order, garments following the body without tears or flares. A mean pixel diff cannot see text
+   or small parts.
+6. **List defects first**, each with the frame or time where it shows, then what works. One passing
+   gate is not success. A first iteration may carry minor labelled defects but no bad mistake: a
+   broken anatomy, a missed contact or a stated rule broken blocks it.
+7. **Deliver the moving result.** Send the labelled final video for motion, not a sheet of
+   measurements; the sheet is your evidence, the video is the deliverable.
+
+When the work matters (a change others will build on, a result shared with others), have someone other than the author
+review it with fresh eyes, applying this section.

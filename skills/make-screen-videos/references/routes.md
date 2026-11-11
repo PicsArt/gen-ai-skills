@@ -81,6 +81,9 @@ runs as long as its stages and its result take. The recording decides the shape 
   voice: "Mute it" / "Keep it where a clip plays at normal speed". Say what keeping it means: it
   plays only under clips at 1×, the jump cuts chop speech, and it is never transcribed, so not
   captioned. The answer is the spec's `sourceAudio`.
+- **The recording's own sound**, when `input.hasAudio`: "Mute it" / "Keep it where a clip plays at normal speed". Say what keeping it means: it
+  plays only under clips at 1×, the jump cuts chop speech, and it is never transcribed, so not
+  captioned. The answer is the spec's `sourceAudio`.
 
 **The spec** is `references/spec.md`: the steps to keep (at most six), each request as the viewer
 should read it or a feature line, the hook and the call to action; a timelapse's chapter words,
@@ -148,7 +151,10 @@ drafted ones. The user renames, merges and splits chapters by saying so.
 
 **The voice**: the user's own voice is `narration: "own"`: the transcript goes in whole, every span
 of speech plays at 1×, and every seam is checked with the speech-aware-cutting skill's `review_cuts.py`
-before stage 10. A generated voice is `narration: "voice-over"`, one line per step. With neither,
+before stage 10.
+A generated voice is `narration: "voice-over"`, one line per step.
+With neither,
+Without a voice,
 `narration: "text"`: the step lines on screen.
 
 **After the build**: captions in the band each step's `timeline` entry names (`band`), as the

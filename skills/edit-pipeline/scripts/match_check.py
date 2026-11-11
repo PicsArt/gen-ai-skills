@@ -2,10 +2,12 @@
 
 Both are numbers a draft can drift from without anyone saying so: a cut that holds each shot 2.2 s
 when the reference holds 3.6 s, or a caption in a colour the brand guide keeps off text.
-record.py lock-check runs the pace check; `record.py palette-check <record> <scene>` the palette.
+record.py lock-check runs the pace check; `record.py palette-check <record> <scene>` the palette;
+`record.py length-check <record> <scene>` the reel's end against the recipe's length.
 """
 from __future__ import annotations
 
+import math
 import re
 
 # a plan within this share of the reference's cuts per 10 s keeps its pace
@@ -14,6 +16,14 @@ HEX = re.compile(r'^#([0-9a-fA-F]{6})([0-9a-fA-F]{2})?$')
 COLOUR_KEYS = ('color', 'colour', 'background', 'fill', 'stroke')
 TEXT_KINDS = ('captions', 'text')
 NEUTRALS = ('#000000', '#FFFFFF')
+# the reel may run this far past the recipe's length (a seam's rounding), and its last clip hold
+# this much longer than the recipe's last beat
+END_TOLERANCE = 0.5
+TAIL_LIMIT = 1.5
+# A reel this much shorter than its length (a share of it, at least END_TOLERANCE) is short.
+SHORT_SHARE = 0.1
+FRAME = 1 / 30
+PICTURE_KINDS = ('media', 'composition', 'image', 'video')
 
 
 def holds(plan: dict) -> list[tuple[int, float]]:
@@ -212,3 +222,256 @@ def palette_check(record: dict, scene: dict) -> dict:
             problems.append({'path': path, 'colour': hexcode, 'name': e.get('name'),
                              'problem': 'the brand guide keeps this colour off text'})
     return {'ok': not problems, 'problems': problems, 'open': []}
+
+
+def asset_table(scene: dict) -> dict:
+    """The scene's assets by id, from a list or a map."""
+    assets = scene.get('assets') or []
+    if isinstance(assets, dict):
+        return {str(k): v for k, v in assets.items() if isinstance(v, dict)}
+    return {str(a.get('id')): a for a in assets if isinstance(a, dict)} if isinstance(assets, list) else {}
+
+
+def _num(value) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
+def _asset(content: dict, assets: dict, scenes: dict | None = None) -> dict:
+    inline = content.get('asset')
+    if isinstance(inline, dict):
+        return inline
+    if content.get('sceneRef') is not None:
+        inner = (scenes or {}).get(str(content['sceneRef']))
+        return {'scene': inner} if isinstance(inner, dict) else {}
+    return assets.get(str(content.get('assetId'))) or {}
+
+
+def _speed(content: dict, item: dict) -> float:
+    speed = content.get('speed', item.get('speed', 1))
+    return float(speed) if _num(speed) and speed > 0 else 1.0
+
+
+def scene_length(scene: dict, depth: int = 0, scenes: dict | None = None) -> float | None:
+    """How long a scene (or a composition's content) plays: its composition's duration, else where
+    its last layer ends."""
+    composition = scene.get('composition') if isinstance(scene.get('composition'), dict) else {}
+    if _num(composition.get('duration')) and composition['duration'] > 0:
+        return float(composition['duration'])
+    if _num(scene.get('duration')) and scene['duration'] > 0:
+        return float(scene['duration'])
+    assets = asset_table(scene)
+    scenes = {**(scenes or {}), **(scene.get('scenes') or {})}
+    ends = []
+    for layer in scene.get('layers') or []:
+        if not isinstance(layer, dict):
+            continue
+        length = own_length(layer, assets, depth + 1, scenes)
+        start = layer.get('start', 0)
+        if length is not None:
+            ends.append((float(start) if _num(start) else 0.0) + length)
+    return max(ends) if ends else None
+
+
+def own_length(item: dict, assets: dict, depth: int = 0, scenes: dict | None = None) -> float | None:
+    """How long a layer or a track clip plays, before what holds it cuts it: its `duration`; else
+    its trim over its speed; else its asset's length (inline or by id) past the trim's in, over the
+    speed; a track, its clips added up; a composition, its own length or its layers'; a scene_ref,
+    its scene's, trimmed and at its speed."""
+    if depth > 32:
+        return None
+    if _num(item.get('duration')):
+        return float(item['duration'])
+    content = item.get('content') if isinstance(item.get('content'), dict) else {}
+    kind = content.get('kind')
+    if kind == 'track':
+        lengths = [own_length(c, assets, depth + 1, scenes) for c in content.get('clips') or [] if isinstance(c, dict)]
+        return sum(x for x in lengths if x) or None
+    if kind == 'composition':
+        return scene_length({**content, 'assets': content.get('assets') or assets}, depth + 1, scenes)
+    speed = _speed(content, item)
+    trim = content.get('trim') if isinstance(content.get('trim'), dict) else {}
+    t_in = float(trim['in']) if _num(trim.get('in')) else 0.0
+    record = _asset(content, assets, scenes)
+    source_length = (scene_length(record['scene'], depth + 1, scenes)
+                     if kind == 'scene_ref' and isinstance(record.get('scene'), dict)
+                     else float(record['duration']) if _num(record.get('duration')) else None)
+    if source_length is not None:
+        t_in = min(max(0.0, t_in), source_length)
+    end = (float(trim['out']) if _num(trim.get('out')) else
+           t_in + float(trim['duration']) if _num(trim.get('duration')) else source_length)
+    if end is None:
+        return None
+    if source_length is not None:
+        end = min(end, source_length)
+    return max(0.0, end - t_in) / speed
+
+
+
+def slots(scene: dict) -> list[tuple[str, float, float]]:
+    """(id, start, end) in reel seconds for every picture slot: media, a track's clips and the
+    pictures inside a composition or a scene_ref, at any depth. A composition with no picture
+    inside is a slot itself. Each is cut to the time its parent layer, and the reel, show it."""
+    out: list[tuple[str, float, float]] = []
+
+    def place(name: str, at: float, length: float | None, window: tuple[float, float]) -> None:
+        if length is None:
+            return
+        start, end = max(at, window[0]), min(at + length, window[1])
+        if end > start + 1e-6:
+            out.append((name, start, end))
+
+    def holder(content: dict, at: float, length: float | None, window: tuple[float, float],
+               assets: dict, scenes: dict, rate: float, depth: int) -> bool:
+        """Walk what a composition or scene_ref holds; True when it holds a picture."""
+        inside = (max(at, window[0]), min(at + length, window[1]) if length is not None else window[1])
+        inner_count = len(out)
+        if content.get('kind') == 'composition':
+            walk(content.get('layers'), at, inside, content.get('assets') and asset_table(content) or assets,
+                 content.get('composition'), {**scenes, **(content.get('scenes') or {})}, rate, depth + 1)
+        else:
+            inner = _asset(content, assets, scenes).get('scene')
+            if isinstance(inner, dict):
+                speed = _speed(content, {})
+                trim = content.get('trim') if isinstance(content.get('trim'), dict) else {}
+                t_in = float(trim['in']) if _num(trim.get('in')) else 0.0
+                if _num(trim.get('out')):
+                    inside = (inside[0], min(inside[1], at + (float(trim['out']) - t_in) * rate / speed))
+                walk(inner.get('layers'), at - t_in * rate / speed, inside, asset_table(inner),
+                     inner.get('composition'), {**scenes, **(inner.get('scenes') or {})}, rate / speed, depth + 1)
+        return len(out) > inner_count
+
+    def walk(layers, offset: float, window: tuple[float, float], assets: dict, comp, scenes: dict, rate: float, depth: int) -> None:
+        if depth > 32:
+            return
+        if isinstance(comp, dict) and _num(comp.get('duration')):
+            window = (window[0], min(window[1], offset + float(comp['duration']) * rate))
+        for layer in layers or []:
+            if not isinstance(layer, dict):
+                continue
+            content = layer.get('content') if isinstance(layer.get('content'), dict) else {}
+            kind = content.get('kind')
+            start = layer.get('start', 0)
+            at = offset + (float(start) if _num(start) else 0.0) * rate
+            if kind != 'track' and not _num(layer.get('duration')) and math.isfinite(window[1]):
+                length = max(0.0, window[1] - at)
+            else:
+                length = own_length(layer, assets, scenes=scenes)
+                length = length * rate if length is not None else None
+            name = str(layer.get('id'))
+            if kind == 'track':
+                end = min(at + length, window[1]) if length is not None else window[1]
+                clock = at
+                for n, clip in enumerate(content.get('clips') or []):
+                    if not isinstance(clip, dict):
+                        continue
+                    clip_length = own_length(clip, assets, scenes=scenes)
+                    if clip_length is None:
+                        break
+                    clip_length *= rate
+                    clip_content = clip.get('content') if isinstance(clip.get('content'), dict) else {}
+                    clip_name = str(clip.get('id') or f'{name}[{n}]')
+                    inner_window = (max(at, window[0]), end)
+                    if clip_content.get('kind') in ('composition', 'scene_ref'):
+                        if not holder(clip_content, clock, clip_length, inner_window, assets, scenes, rate, depth):
+                            place(clip_name, clock, clip_length, inner_window)
+                    elif clip_content.get('kind') in PICTURE_KINDS or 'kind' not in clip_content:
+                        place(clip_name, clock, clip_length, inner_window)
+                    clock += clip_length
+                continue
+            if kind in ('composition', 'scene_ref'):
+                if holder(content, at, length, window, assets, scenes, rate, depth):
+                    continue
+                if kind == 'composition':
+                    place(name, at, length, window)
+                continue
+            if kind in PICTURE_KINDS:
+                place(name, at, length, window)
+
+    walk(scene.get('layers'), 0.0, (0.0, scene_length(scene) or float('inf')), asset_table(scene),
+         scene.get('composition'), scene.get('scenes') or {}, 1.0, 0)
+    return out
+
+
+def last_slot(placed: list[tuple[str, float, float]]) -> tuple[str, float, float]:
+    """The slot on screen at the end: of those that end last, the one that came in last. Cards that
+    stack, and a background under the whole reel, end with it but came in earlier."""
+    end = max(x[2] for x in placed)
+    return max((x for x in placed if x[2] >= end - FRAME), key=lambda x: x[1])
+
+
+def beat_median(placed: list[tuple[str, float, float]], last: tuple[str, float, float]) -> float:
+    """The usual time from one slot coming in to the next, before the last one."""
+    starts = sorted({round(a, 3) for _, a, _ in placed if a < last[1] - FRAME} | {round(last[1], 3)})
+    gaps = sorted(b - a for a, b in zip(starts, starts[1:]))
+    return gaps[len(gaps) // 2] if gaps else last[2] - last[1]
+
+
+def reel_length(scene: dict) -> float:
+    """The composition's duration; without one, where its last layer ends, as the engine plays it:
+    a track as long as its clips, a media layer as its trim or its asset, a composition as its
+    layers, at any depth."""
+    return scene_length(scene) or 0.0
+
+
+def seconds(value) -> float | None:
+    """A length as seconds: 25, 25.0, "25", "25 s", "25s", "0:25"."""
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value) if value > 0 else None
+    if isinstance(value, str):
+        m = re.fullmatch(r'\s*(?:(\d+):)?(\d+(?:\.\d+)?)\s*(?:s|sec|seconds)?\s*', value)
+        if m:
+            total = float(m.group(2)) + 60 * float(m.group(1) or 0)
+            return total if total > 0 else None
+    return None
+
+
+def chosen_length(record: dict, sheet_length: float | None) -> tuple[float | None, str]:
+    """The reel's length: the user's own (`brief.said.length`), else the cut pace's, else the sheet's."""
+    brief = record.get('brief') if isinstance(record.get('brief'), dict) else {}
+    said = brief.get('said') if isinstance(brief.get('said'), dict) else {}
+    pace = record.get('cutPace') if isinstance(record.get('cutPace'), dict) else {}
+    for value, where in ((said.get('length'), 'the user\'s length'), (pace.get('length'), 'the cut pace\'s length')):
+        if seconds(value):
+            return seconds(value), where
+    return sheet_length, 'the recipe\'s length'
+
+
+def length_check(record: dict, scene: dict) -> dict:
+    """The reel ends at its length, and its last clip is not held past its beat. The length is the
+    user's when they gave one (`brief.said.length`), else the cut pace's, else the sheet's
+    `total_length`; the sheet's last beat stretches with it. A clip held 6 s at the end reads as a
+    stalled reel."""
+    sheet = record.get('sheet') if isinstance(record.get('sheet'), dict) else {}
+    beats = [b for b in sheet.get('beats') or [] if isinstance(b, dict)
+             and isinstance(b.get('start'), (int, float)) and isinstance(b.get('end'), (int, float))]
+    recipe = seconds(sheet.get('total_length'))
+    if not recipe and beats:
+        recipe = max(b['end'] for b in beats)
+    length, where = chosen_length(record, recipe)
+    if not length:
+        return {'ok': True, 'problems': [], 'open': ['length: the record holds no length (brief.said.length, cutPace.length or sheet.total_length)']}
+    stretch = length / recipe if recipe else 1.0
+    problems = []
+    end = reel_length(scene)
+    if end > length + END_TOLERANCE:
+        problems.append({'problem': f'the reel runs {end:.2f} s, past {where} {length:g} s',
+                         'over': round(end - length, 2)})
+    elif end < length - max(END_TOLERANCE, SHORT_SHARE * length):
+        problems.append({'problem': f'the reel runs {end:.2f} s, short of {where} {length:g} s',
+                         'short': round(length - end, 2)})
+    placed = slots(scene)
+    if placed:
+        last = last_slot(placed)
+        held = last[2] - last[1]
+        if beats:
+            final = max(beats, key=lambda b: b['end'])
+            beat = (final['end'] - final['start']) * stretch
+        else:
+            beat = beat_median(placed, last)
+        if held - beat > TAIL_LIMIT:
+            problems.append({'layer': last[0], 'problem': f'the last clip holds {held:.2f} s, {held - beat:.2f} s '
+                             f'longer than its {beat:.2f} s beat (at most {TAIL_LIMIT:g} s longer)',
+                             'tail': round(held - beat, 2)})
+    return {'ok': not problems, 'problems': problems, 'open': [], 'length': length, 'lengthFrom': where}

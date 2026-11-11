@@ -57,7 +57,8 @@ done edit-footage.json <stage> --artifact <file>` marks a stage done with a fing
 Two stages are gates, for every job, by hand as by `record.py done`, which refuses them:
 
 - `reference`, when a reference reel was given: done only with its sheet passing the
-  reel-structure skill's `sheet.py validate`, and its `format` with no feasibility row open.
+  reel-structure skill's `sheet.py validate`, and its `format` with no feasibility row open;
+  a `channel-clips` record copies a look, not a structure, so its `format` alone.
 - `deliver`: done only once `story`, `qc`, `critics` and `review` are done and the map was
   approved: its rows in `locked`, or an approval with `scope` `map`, `moments` or `mapping`.
   Record that approval when the user gives it.
@@ -149,7 +150,13 @@ did not get changes before the user approves it. Once the user approves the map,
   the record's `brand.palette` (or the own-brand format's colours), and text only in a colour the
   guide allows on text. Away from text, pure black and white and any see-through colour (a fade, a
   scrim) pass, unless the guide forbids them (`brand.neutrals: false`). Where commands run,
-  `python3 scripts/record.py palette-check edit-footage.json scene.json` does it; with no palette in the record it is `open`, never a pass. Both checks live in
+  `python3 scripts/record.py palette-check edit-footage.json scene.json` does it; with no palette in the record it is `open`, never a pass.
+- Before every review of a reel built to a sheet, check its end: the reel ends at its length (half
+  a second over at most, a tenth short at most), and the clip on screen at the end (the last one
+  in, when cards stack) holds at most 1.5 s longer than the sheet's last beat, stretched to that
+  length. Clips inside a track or a composition count. The length is the user's (`brief.said.length`), else `cutPace.length`,
+  else the sheet's `total_length`. Where commands run, `python3 scripts/record.py length-check edit-footage.json
+  scene.json` does it; with no length in the record it is `open`. The checks live in
   `scripts/match_check.py`, which `record.py` imports; never run it on its own.
 - **The job is the contract, not a caption.** It comes from the map and is never rewritten to fit
   whatever shot ends up there. A new job for a locked phrase needs the user's approval of that
@@ -217,6 +224,6 @@ Every check in the pipeline, measured or by eye, follows these:
 
 The stages that make the edit run in this conversation, with the skills the use case names.
 Checking runs apart from the maker: the QC check and the critics are agents that get only the
-render, the record's `standing`, `locked`, `keepers` and `cutPace`, the meaning diff, and their checklist, never your reasoning.
+render, the record's `standing`, `locked`, `keepers` and `cutPace`, the look's board when the record holds one, the meaning diff, and their checklist, never your reasoning.
 Each runs fresh each round. A background agent may log several sources at once. Its brief is
 "load the skill, read the record, write this file", never a role to play.

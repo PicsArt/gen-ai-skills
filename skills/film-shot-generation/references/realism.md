@@ -6,9 +6,12 @@ silence after a line). What follows is what only the shot knows, written into th
 already passes: the performances, `setting`, `audio` and `extra`, plus the call's top-level
 `filmConstraints`, the whole lines the film imposes on every prompt.
 
-These are physical rules, true of any camera. Devices that imitate a cheap one (autofocus hunting,
-exposure breathing, uneven zooms, tape texture) are not realism: they fight the look the film
-locked. A camera artefact the film wants is picked in the shot's `artefact`, never written in.
+Physical realism must support the selected camera and the user's reference. A VHS camcorder can
+have autofocus hunting, exposure breathing, uneven optical zooms and tape texture; these are part
+of that requested capture, not defects to remove. Preserve a phone's handheld character, a film
+stock's grain, an action camera's fisheye and a drone's aerial viewpoint. Add no unrequested camera
+damage to another look. Use a matching `artefact` preset when one exists; otherwise describe the
+requested behaviour in the shot's `extra` or `audio`, without contradicting an explicit shot pick.
 
 ## Physical consequence: the action lands on something
 

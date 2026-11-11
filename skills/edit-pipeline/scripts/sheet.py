@@ -2,7 +2,7 @@
 """The structure sheet: a reference reel's beats, as Markdown and as JSON.
 
     python3 scripts/sheet.py parse breakdown.md [--out sheet.json]
-    python3 scripts/sheet.py validate sheet.json
+    python3 scripts/sheet.py validate sheet.json [--measured]
     python3 scripts/sheet.py markdown sheet.json [--out sheet.md]
     python3 scripts/sheet.py draft --shots shots.json [--transcript t.json] [--describe d.json]
                                    [--audio a.json] [--probe p.json] [--out sheet.json]
@@ -40,6 +40,14 @@ picsart_media_segment_shots' fragments set the shots (a short transition is a cu
 move inside the shot), picsart_media_transcribe's words fill Voice and split a long shot at its
 sentences, picsart_media_describe_video's shots fill the picture, and picsart_media_analyze_audio's
 tempo names the bed. Every field the tools cannot know is "?", and the beats are left to name.
+
+`validate --measured` is the gate for a reference video's sheet (Match a reel): every beat whose
+Move is not still declares every target/channel in `motionRequirements` and needs a measured move in the sheet's `moves` list, the output of the
+motion-tracking-from-video skill's `fit_motion.py moves --into`, overlapping the beat's time and
+naming the tracking result it came from (`track`), and a Move cell with its numbers, never words
+alone. A `?` Move fails there: a reference's moves are measured, never left unread. A fade or
+reveal uses the beat's `stillMeasurements`: target, channel (opacity or reveal), and at least two
+frames with source, t and a measured value in 0..1. A `(stills)` label alone is not evidence.
 
 Exits 0 when the sheet is valid, 1 with its problems, 2 on unreadable input. Standard library only.
 """
@@ -435,11 +443,123 @@ def finite(value: Any) -> bool:
     return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
 
 
-def validate(sheet: Any) -> List[str]:
+# A Move cell that says the beat does not move.
+STILL_MOVES = ("static", "still", "none", "no move", "hold", "-", "—", "–")
+# The fields a measured move needs (fit_motion.py's output).
+MOVE_FIELDS = ("target", "channel", "at", "end", "duration", "curve", "track")
+
+
+def is_still(move: Any) -> bool:
+    """A Move cell that says the beat holds still: "static", or one with a note ("static (fixed camera)").
+    A blank cell says nothing, so it is not still."""
+    text = plain(str(move or "")).strip().lower().rstrip(".")
+    text = re.sub(r"\s*\([^()]*\)$", "", text).strip()
+    return bool(text) and text in STILL_MOVES
+
+
+def still_measurement_problems(evidence: Any, start: Any, end: Any) -> List[str]:
+    """Fades and reveals need time-stamped frame evidence, not a prose exemption."""
+    if not isinstance(evidence, list) or not evidence:
+        return ["stillMeasurements must contain frame measurements for each fade or reveal"]
+    problems = []
+    for n, measurement in enumerate(evidence, 1):
+        if not isinstance(measurement, dict):
+            problems.append(f"still measurement {n} must be an object")
+            continue
+        target = measurement.get("target")
+        if not isinstance(target, str) or not target.strip():
+            problems.append(f"still measurement {n} needs its target")
+        if measurement.get("channel") not in ("opacity", "reveal"):
+            problems.append(f"still measurement {n}: only opacity or reveal uses stills; track position, scale and rotation")
+        frames = measurement.get("frames")
+        if not isinstance(frames, list) or len(frames) < 2:
+            problems.append(f"still measurement {n} needs at least two frames")
+            continue
+        times, values = [], []
+        for frame in frames:
+            if (not isinstance(frame, dict) or not finite(frame.get("t")) or frame["t"] < 0
+                    or not isinstance(frame.get("source"), str) or not frame["source"].strip()
+                    or not finite(frame.get("value")) or not 0 <= frame["value"] <= 1):
+                problems.append(f"still measurement {n}: each frame needs source, t in seconds and value in 0..1")
+                break
+            times.append(frame["t"])
+            values.append(frame["value"])
+        else:
+            if any(a >= b for a, b in zip(times, times[1:])):
+                problems.append(f"still measurement {n}: frame times must increase")
+            if not finite(start) or not finite(end) or times[0] >= end or times[-1] <= start:
+                problems.append(f"still measurement {n}: its frames must overlap the beat")
+            if min(values) == max(values):
+                problems.append(f"still measurement {n}: the frames show no change")
+    return problems
+
+
+def measured_problems(sheet: Json) -> List[str]:
+    """What keeps a reference video's sheet from being measured: a moving beat with no tracked move."""
+    problems = []
+    moves = sheet.get("moves")
+    if moves is not None and not isinstance(moves, list):
+        return ["moves must be the list fit_motion.py moves --into writes"]
+    good = []
+    for n, m in enumerate(moves or [], 1):
+        missing = [f for f in MOVE_FIELDS if not isinstance(m, dict) or m.get(f) in (None, "")]
+        if missing:
+            problems.append(f"move {n}: no {', '.join(missing)}; write it with fit_motion.py moves --into from a"
+                            " picsart_media_track_motion result, and set its track")
+        elif finite(m["at"]) and finite(m["end"]):
+            good.append(m)
+    for n, beat in enumerate(sheet.get("beats") or [], 1):
+        if not isinstance(beat, dict):
+            continue
+        move = beat.get("move")
+        start, end = beat.get("start"), beat.get("end")
+        when = f" ({start:g}–{end:g} s)" if finite(start) and finite(end) else ""
+        if unknown(move):
+            problems.append(f"beat {n}{when}: its Move is ?; measure it with picsart_media_track_motion")
+            continue
+        if not plain(str(move)).strip():
+            problems.append(f"beat {n}{when}: its Move is blank; write static, or measure it with"
+                            " picsart_media_track_motion")
+            continue
+        if is_still(move):
+            continue
+        if not re.search(r"\d", str(move)):
+            problems.append(f"beat {n}{when}: Move \"{move}\" is words alone; write the measured numbers"
+                            " (from and to, how long, the curve)")
+        requirements = beat.get("motionRequirements")
+        if not isinstance(requirements, list) or not requirements:
+            problems.append(f"beat {n}{when}: motionRequirements must list every moving target and channel")
+            continue
+        evidence = beat.get("stillMeasurements", [])
+        if evidence or "(stills)" in str(move).lower():
+            problems.extend(f"beat {n}{when}: {p}" for p in
+                            still_measurement_problems(evidence, start, end))
+        for requirement in requirements:
+            if (not isinstance(requirement, dict) or not isinstance(requirement.get("target"), str)
+                    or not requirement["target"].strip()
+                    or requirement.get("channel") not in ("position", "scale", "rotation", "opacity", "reveal")):
+                problems.append(f"beat {n}{when}: each motion requirement needs a target and supported channel")
+                continue
+            target, channel = requirement["target"], requirement["channel"]
+            if channel in ("opacity", "reveal"):
+                if not isinstance(evidence, list) or not any(isinstance(m, dict) and
+                        m.get("target") == target and m.get("channel") == channel for m in evidence):
+                    problems.append(f"beat {n}{when}: no stillMeasurements for {target} {channel}")
+            elif not finite(start) or not finite(end):
+                problems.append(f"beat {n}: a moving beat needs its time to be matched to its measured moves")
+            elif not any(m["target"] == target and m["channel"] == channel and
+                         m["at"] < end and m["end"] > start for m in good):
+                problems.append(f"beat {n}{when}: no measured move overlaps it for {target} {channel}; track it with"
+                                " picsart_media_track_motion and add it with fit_motion.py moves --into")
+    return problems
+
+
+def validate(sheet: Any, measured: bool = False) -> List[str]:
     """Every problem with a sheet, as one sentence each; empty when it is valid.
 
     `?` is unknown, not malformed: a beat whose time is unknown has start and end null, and
-    its text cells may read `?`. Only what is written must be well formed.
+    its text cells may read `?`. Only what is written must be well formed. `measured` adds the
+    reference video's gate: every moving beat has a tracked move (measured_problems).
     """
     if not isinstance(sheet, dict):
         return ["the sheet must be a JSON object with a beats list"]
@@ -486,6 +606,8 @@ def validate(sheet: Any) -> List[str]:
         if finite(total) and end > total + 1e-6:
             problems.append(f"{where} ends at {end:g} s, after the total length {total:g} s")
         previous = end
+    if measured and not problems:
+        problems.extend(measured_problems(sheet))
     return problems
 
 
@@ -770,6 +892,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     p.add_argument("--out")
     v = sub.add_parser("validate", help="check a JSON or Markdown sheet")
     v.add_argument("sheet")
+    v.add_argument("--measured", action="store_true", help="a reference video's sheet: every moving beat is measured")
     m = sub.add_parser("markdown", help="JSON sheet to Markdown")
     m.add_argument("sheet")
     m.add_argument("--out")
@@ -789,7 +912,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             emit(json.dumps(sheet, ensure_ascii=False, indent=2) + "\n", args.out)
             problems = validate(sheet)
         elif args.command == "validate":
-            problems = validate(load_sheet(args.sheet))
+            problems = validate(load_sheet(args.sheet), measured=args.measured)
             if not problems:
                 print("The sheet is valid.")
         elif args.command == "markdown":

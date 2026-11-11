@@ -198,11 +198,12 @@ Use cases, the entry points a user asks for:
 | [`edit-footage`](./skills/edit-footage) | Make videos from the user's own footage, or copy a reel's structure onto their script. |
 | [`generate-media`](./skills/generate-media) | Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo. |
 | [`get-started`](./skills/get-started) | Get started with Picsart Video. |
+| [`make-cartoon`](./skills/make-cartoon) | Make a short cartoon clip with a character the user picks or describes. |
 | [`make-character`](./skills/make-character) | Make one AI character with no film. |
 | [`make-comics`](./skills/make-comics) | Turn a photo into a ComicMe creation. |
 | [`make-screen-videos`](./skills/make-screen-videos) | Turn a screen recording of an app or site into videos. |
 | [`make-short-drama`](./skills/make-short-drama) | Make a vertical drama series, pilot or episode with a recurring cast. |
-| [`movie-producer`](./skills/movie-producer) | Make a short narrative film from a story. |
+| [`movie-producer`](./skills/movie-producer) | Make a short narrative film from a story, with recurring characters, one look and approved cast/location references, then draft video and a reviewed cut. |
 | [`recast`](./skills/recast) | Put the user's own characters, people or things into a video of theirs with Recast. |
 | [`recreate-video`](./skills/recreate-video) | Rebuild a reference video as an editable animated scene that moves and looks like it. |
 
@@ -223,7 +224,7 @@ Skills the use cases load:
 | [`edit-pipeline`](./skills/edit-pipeline) | Run an edit of the user's footage as fixed stages, with a project record (standing decisions, approvals, the pace, a locked meaning map, every version), resume from the first stage not done, and the gate rules every check follows. |
 | [`face-hiding`](./skills/face-hiding) | Hide the faces in a video or photo by blurring or pixelating them. |
 | [`figma-storyboard-animation`](./skills/figma-storyboard-animation) | Turn a Figma storyboard of static frames into an animated scene. |
-| [`film-animatic`](./skills/film-animatic) | Draft a film or drama episode as a voiced storyboard animatic before any video is bought. |
+| [`film-animatic`](./skills/film-animatic) | Draft a film or drama episode as a voiced storyboard animatic before any video is bought, with a still per shot, app screens built as scenes, every line voiced at its shot's time, cut with captions and watched until the user says yes. |
 | [`film-cast-design`](./skills/film-cast-design) | Make a film's people, props and places consistent on pictures. |
 | [`film-cutting`](./skills/film-cutting) | Cut a film's accepted takes into one scene. |
 | [`film-finishing`](./skills/film-finishing) | Finish a film after picture lock. |
@@ -259,6 +260,7 @@ Skills the use cases load:
 | [`screen-ui-redesign`](./skills/screen-ui-redesign) | Recreate the screens of a recording as designed motion UI. |
 | [`sd2-pe`](./skills/sd2-pe) | Use only for a Seedance 2.0 model (model ids seedance-2.0*): optimizes user prompts for Seedance 2.0 multi-modal video generation. |
 | [`sd25-pe`](./skills/sd25-pe) | Use only for a Seedance 2.5 model (model ids seedance-2.5*): optimizes text, stories, or optional multimodal references for Seedance 2.5 text-to-video, multi-reference generation, keyframes, storyboards, blockouts, video editing, audio editing, or extension. |
+| [`social-posting`](./skills/social-posting) | Post a finished video to the user's own TikTok, Instagram, YouTube or other connected accounts through the Picsart app's post preview. |
 | [`speech-aware-cutting`](./skills/speech-aware-cutting) | Choose the moments of talking footage worth keeping and cut them so no one is clipped mid-sentence. |
 | [`spoken-captions`](./skills/spoken-captions) | Put spoken words on screen from the transcript. |
 | [`visual-style`](./skills/visual-style) | A video's style, chosen by eye and kept. |

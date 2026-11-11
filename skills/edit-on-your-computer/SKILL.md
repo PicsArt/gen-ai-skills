@@ -315,7 +315,9 @@ own bit depth, so a 10-bit draft would read about four times brighter than an 8-
 set the two side by side. The grade has drifted when either differs by more than about a tenth of
 the reference's value: a draft clearly darker or flatter than the reference. Hue is judged by eye:
 look at a frame of each side by side for a draft warmer, cooler or tinted another way than the
-reference, since no single hue figure survives a frame whose colours sit either side of red. A
+reference, since no single hue figure survives a frame whose colours sit either side of red. At the look stage the same reading, with `YLOW` (the black point) and `YHIGH` (the white point)
+added to the `grep`, is taken on the board's stills and on the same frames in the chosen look;
+edit-footage's `scripts/look_check.py` compares them. A
 drift is fixed at the look, before the review, and said in one line when it is the user's own
 choice; a figure that could not be read is `open`, never a pass. Where ffmpeg is not here, the use
 case compares stills of both by eye instead.

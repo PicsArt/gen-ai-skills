@@ -84,6 +84,19 @@ y, then z, outermost first), or the layer turns outside it.
   "keyframes": [{"at": 0, "value": 0, "easing": "linear"}, {"at": 1, "value": -150}]}}
 ```
 
+**A hand-built arm as one shape.** The catalog rigs already build each limb as one outline bent at its joint. For an arm built by hand
+outside them: one outline shape, one `skin` with a bone per segment.
+
+- Leave the upper bone's `end` unset, so it ends at the forearm's pivot; an offset `end` tears the outline. The last bone writes its
+  `end`. Give every bone a positive `radius`, about the limb's width (`skin_bone_radius_out_of_range` otherwise).
+- Fold creases are interior lines inside the same shape, each a `morph` target keyed by the elbow dial, for example
+  `"weight": { "expression": "return picsart.ease(ctx.composition:getParameters():elbow(), 0.3, 1, 0, 1)" }`.
+  A crease grows by its offsets, not by `opacity`.
+- The hand is its own rigid layer, listed before the sleeve layer so the cuff covers the wrist (layers: later on top; shape `items`:
+  first on top; see [cut-out-puppet.md](cut-out-puppet.md) "Draw order" for where a depth-ordering `z` goes).
+- Optional: a round outer heel is a `heel` morph target on the outer corner; a painted fold is two sleeve drawings (hanging, folded)
+  aligned vertex to vertex and applied as a `fold` morph target. Both are author-named targets, not format features.
+
 **The walk: animate foot TARGETS, not angles.** Proven natively: a whole looping walk shot in 67
 timed keys, feet slipping ≤ 0.81 px.
 
@@ -235,12 +248,12 @@ A parameter that follows itself around a loop (`a` follows `b`, `b` follows `a`)
 parameter's last key at or before `t` to `t`, on its instance's clock: every key restarts it, a key
 repeating the value before it too, and before the first key -- or with none, as for a constant or an
 expression alone -- it counts from the instance start. It
-reads any type, so a text `action` parameter whose keys are commands (`idle`, `wave`, `wave`) clocks
-each one: a clip plays its own local time as `p:actionSince()`, and the clip leaving in a
-crossfade reads the action before the last key as `p:action(time - p:actionSince() - 1/120)`
+reads any type, so a text action parameter (`kidAction`) whose keys are commands (`idle`, `wave`, `wave`) clocks
+each one: a clip plays its own local time as `p:kidActionSince()`, and the clip leaving in a
+crossfade reads the action before the last key as `p:kidAction(time - p:kidActionSince() - 1/120)`
 (`p = ctx.composition:getParameters()`). A parameter that is not `animatable` never carries keys, so
 `<name>Since` on it is refused as `parameter_since_not_animatable`. On a cartoon rig the `acting`
-preset is built this way: key `action` and the rig plays the clips
+preset is built this way: key the layer's `<layer id>Action` and the rig plays the clips
 ([SKILL.md](../SKILL.md) §0).
 
 **A binding reads its host.** An expression bound at a `scene_ref` (`content.parameters.<name>`) is

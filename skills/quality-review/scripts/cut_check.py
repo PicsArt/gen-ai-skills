@@ -94,7 +94,7 @@ EPS = 1e-6
 # Transitions that show both clips at once.
 DISSOLVES = {'crossfade', 'blur_dissolve', 'light_leak_burst', 'zoom_through'}
 # Transitions whose own motion can hide a change of take.
-MASKING = {'zoom_through', 'movement_camera', 'glitch_cut', 'slide', 'diagonal_slide', 'card_flip',
+MASKING = {'zoom_through', 'glitch_cut', 'slide', 'diagonal_slide', 'card_flip',
            'page_curl', 'iris', 'shape_reveal', 'manga_page', 'flash_cut'}
 
 # What a geometric track must change by to be seen, per property.

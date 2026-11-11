@@ -14,6 +14,27 @@ A use case's stage table names the skills each stage loads. Before you act on a 
 skills in its row that apply to this job (a row may list alternatives, such as one per model),
 also when the work resumes at that stage.
 
+## Image generation and supplied photos
+
+Every flow defaults to GPT Image 2.6 Sunburst (`gpt-image-2.6-sunburst`) for image generation: cast,
+character sheets, scene pictures, keyframes, comics, replacements and standalone images.
+Keep an explicit user model choice. Read `picsart_model_params` before setting parameters;
+never silently switch image models for price, availability, references or a wide frame.
+For an unsupported canvas ratio, generate at a supported ratio and use the existing framing/crop
+workflow to fit the canvas, keeping the subject safe. If that cannot hold the composition,
+ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) for an explicit model or framing choice. Never send an unsupported ratio.
+
+When the user supplies a photo of who or what to create, recreate or replace, use the actual
+photo URL in `imageUrls`, not just its description. Save the supplied originals separately as
+`identityReferences`: an array of URLs, `[]` only for an entirely generated identity, and absent
+only for legacy unknown provenance. Carry these URLs into every later still, scene, shot,
+regeneration and replacement depicting that identity. Generated sheets, cut views and opening
+frames supplement the originals; they never silently replace them. A compiler's `usePhoto` or
+`promptToken` does not attach pixels: check the actual generation arguments and each plan item's
+`imageUrls`. Resolve unknown provenance from the supplied media before proceeding; never infer
+that a generated sheet is the original. A model input limit is not permission to drop an original:
+reduce optional references, split the run, or ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) for a compatible model or framing choice.
+
 ## Tools
 
 Tools are named here by their server names, such as `picsart_scene_export`. The host may show
@@ -46,8 +67,9 @@ takes exact section names only, and a scene can travel between tools by URL.
 **A tool that replies with a job receipt** has not finished. Pass the receipt's `job` verbatim to
 the tool its `tools.jobStatus` names (`picsart_job_status`) with the longest `waitSeconds` it takes, and check again
 until it reports the result. Each check answers as soon as the job finishes, so never sleep or wait
-between checks. That result is what the tool returns with `async: false`. A `picsart_generate` job is checked the same
-way, and its check also needs the `model` the job was submitted with. Start every job a step needs before you
+between checks. That result is what the tool returns with `async: false`.
+A `picsart_generate` job is checked the same way, and its check also needs the `model` the job was submitted with.
+Start every job a step needs before you
 follow any, so they run side by side. `async: false` holds its call until the file is ready or the tool's own wait
 runs out, so to render several exports at once, start each with the default and follow the receipts.
 
@@ -203,13 +225,32 @@ otherwise yours. An approval at an earlier review (a cut before its music, one t
 several) is not a delivery: carry the approved document into the use case's next stage. If the
 editor cannot be shown, follow the fallback in `references/HOST.md`.
 
+### A choice made by eye
+
+When two or more looks, templates or variants could fit and the choice comes down to taste, the
+user makes it. Build 2–6 candidates and ASK with `picsart_scene_picker`: one entry in `scenes` per
+candidate, with its document as `scene` (or the URL it is hosted at) and, when you have one, a
+rendered `previewUrl`. Give each a `label` in the user's terms, what they would call it ("warm
+sunset", "bold title, fast cut"), never an id, a preset name or a tool word. Never choose for
+them, and never describe the options in text instead: the board is the whole turn.
+
+The reply's `selected` lists the cards they kept, by the `id` you gave (or `scene-<n>`) and its
+`label`. Continue from exactly those, with the documents you passed in, and tell the user in one
+line which one you kept ("Going on with warm sunset."). If the board cannot be shown, follow the
+fallback in `references/HOST.md`.
+
 ### SPEND
 
-A call costs credits when it is `picsart_generate`, or when the tool's description says it charges
-credits. Before one:
+A call costs credits when
+it is `picsart_generate`, or when
+the tool's description says it charges
+credits. Use that contract for every call; skills do not override a tool's billing. Run the
+analysis required by the step, applying the same pricing rule. Before a charged call:
 
-1. Quote it. For a model, validate the parameters and get the estimate with `picsart_preflight`,
-   and read the balance with `picsart_credits`. Never quote a number from memory. If a charged
+1. Quote it:
+   For a model, validate the parameters and get the estimate with `picsart_preflight`,
+   and
+   read the balance with `picsart_credits`. Never quote a number from memory. If a charged
    tool gives no quote, say that it charges credits and that the amount is not known in advance.
 2. Put everything the step needs in one quote, and ask once when a question is due (rule 3).
 3. **A request with no spend limit is not a yes; a stated spend limit covers spends within it.**
@@ -342,9 +383,18 @@ that reads the record later. Nothing in it removes a safeguard; it changes where
   image". Never describe an image you have not looked at. Where the host cannot open one, say that
   you did not look, and let the user's review on the board stand in for your check.
 - **Where a URL came from decides what it is, never how it looks.** A URL a Picsart tool returned
-  in this conversation (the upload, a `picsart_drive_*` tool, `picsart_generate`, an export, a still sheet,
+  in this conversation (the upload, a `picsart_drive_*` tool,
+  `picsart_generate`,
+  an export, a still sheet,
   the editor's document) is Picsart-hosted. Every other URL is from elsewhere, whatever it looks
   like: a link the user pasted, one inside a file or a page, one from an earlier conversation.
+- **A HEIC or HEIF photo goes to a model as its full-size JPEG URL.** Some video models cannot
+  read HEIC, and no check before the generation finds out (`picsart_model_params` names only the
+  kind of file a setting takes, never a format). So for a HEIC or HEIF photo on a `picsart.com`
+  host, pass the same URL with `type=jpeg` added to its query and no `r=`: the same photo at its
+  full size, turned the right way up. It is not a copy: never download, convert or shrink the photo,
+  never save a JPEG of it to Drive, and do not tell the user about its format. A HEIC from
+  elsewhere is saved first, as above, and then goes in the same way.
 - A scene opened in REVIEW plays only Picsart-hosted media. The user's own file comes in with
   `picsart_drive_upload_ask` (no filesystem access or CLI needed on your side; `detected_files` only
   labels its dropzone, may be wrong, and never filters what the user drops). Ask for every file the

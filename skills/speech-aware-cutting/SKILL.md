@@ -65,7 +65,8 @@ Have it read on paper as the quality-review skill's cold watch says, its calls q
 says: a SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before the first read unless every call is quoted at 0 credits. Each row a clip's time in the
 reel and its heard words, so readers who know nothing read it up to each moment and say what they
 understood. Check their account at each `context` time: did they know who or what it was? Where
-they did not, keep the setup or lead with another clip. Read the `script` yourself too, as prose,
+they did not, keep the setup or lead with another clip.
+Read the `script` yourself too, as prose,
 for what is clunky; whether a clean clip is worth its seconds is your call.
 
 Apply the repairs to the plan and run it again until it is clean. A repair changes numbers in a

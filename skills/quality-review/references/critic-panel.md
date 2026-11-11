@@ -1,6 +1,8 @@
 # The critic panel
 
-Six simulated critics with taste look at a draft after its cold watch and before the user does.
+Six simulated critics with taste look at a draft
+after its cold watch and
+before the user does.
 Each has one lens. Each says what is wrong, when, and how to fix it.
 
 ## Contents
@@ -18,8 +20,10 @@ Each has one lens. Each says what is wrong, when, and how to fix it.
 The cold watch asks strangers what they got, a few seconds at a time, and marks their words against the
 viewer track: it says where viewers lose the thread (`references/cold-watch.md`). The critic panel
 asks experts what is wrong and what to do about it. The critics know the video's goal, so they can
-never tell whether a stranger follows it. Run the cold watch first and give the critics its gap
-list: they say why viewers lost the thread there, and what would make the draft better. Both are
+never tell whether a stranger follows it.
+Run the cold watch first and give the critics its gap
+list: they say why viewers lost the thread there, and what would make the draft better.
+Both are
 simulated. A critic's note is an opinion from the frames, not a measure of how a feed will treat
 the video. Never write "the critics approved it".
 
@@ -71,6 +75,9 @@ Each critic gets the same seven things and nothing else:
 - the destination (where it is posted, and its length);
 - **the brief**, when the user supplied one with the footage (notes, guides, scripts): read in
   full, as picsart-video-rules says, with its main message, audience and must-shows quoted;
+- **the look board**, when the record holds a `look`: its board's stills with their sources,
+  and the brief's style words quoted. A drift from the board is marked `fidelity`, as a drift
+  from the source stills is;
 - **the cold watch's gap list**, when one ran: where viewers lost the thread, in their own
   words. Never the viewers' whole accounts.
 
@@ -94,7 +101,7 @@ no problems; it never invents one to fill the note.
 at once: `critic-roots`, `critic-radical`, `critic-interface`, `critic-story`, `critic-growth`
 and `critic-art`. Each agent holds its own lens, temper and note shape. Give each only what the
 section above gives: the sheets, the source stills, the words, the goal, the destination, and the
-brief and the gap list when they exist, as files or links. Each returns its note as JSON, ready
+brief, the look board and the gap list when they exist, as files or links. Each returns its note as JSON, ready
 for `notes`.
 
 **Otherwise**, run them apart: where the host can run isolated workers in parallel, run each

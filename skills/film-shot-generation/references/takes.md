@@ -23,6 +23,7 @@ its first (picsart-video-rules, Asset URLs). Then check:
 - every planned cut is there, near its time, as a hard cut: not a morph, a dissolve or a whip;
 - the camera move matches the card;
 - movements and eyelines carry through the internal cuts and across the run edges;
+- every shot keeps the START FRAME's visual style; flag any drift in the existing review;
 - light and colour hold with the neighbouring takes;
 - every line's last word finishes before its shot ends, with its beat of silence.
 

@@ -40,6 +40,8 @@ A successful call is not a passing motion verdict; read `status`. The `motion` r
 | No overshoot / stay in corridor | `value_range` on center or size throughout the move. Add the other axis if needed. A speed limit alone cannot prove the correct destination. |
 | No unexpected jump | Bound adjacent-frame velocity; also bound acceleration when changing speed itself must be smooth. Intentional cuts need separate windows. |
 | Settled by a deadline | Tail window with both destination `value_range` and near-zero `velocity_range` on each relevant channel. Small acceleration alone accepts constant drift. |
+| It must move (a walk, a wave) | `kind: "must_move"` with `channel`, `min` (least peak-to-peak travel, px or deg), `within` (seconds each window spans; at least a full stride, 1 s, for a foot, since a foot is planted half of every stride) and optionally `window` (the span the motion is expected in). The verdict names the failing run as one `not_moving` issue (first and last frame, `actual` = best travel in it): a freeze or a missing wave, with no extrema to read. No `max`. |
+| A character's parts | Target `{ "rig": "kid", "parts": ["foot", "hand"] }` instead of layer ids: each layer `kid__<name>` whose name is or ends in a part (`foot` reads `leftFoot` and `rightFoot`, not `leftFootArt`) is its own result. Works with every kind. |
 | Resize / fade | Width/height or `effectiveOpacity` value and rate ranges. Opacity is evaluated layer opacity, not painted alpha. |
 | Shared widget / phase attachment | Construct shared motion with parenting/composition ownership or a supported binding first. Check cross-layer relations with `picsart_scene_check_contracts`, supported layout lint or explicit query comparisons; scalar rates alone do not establish ownership handoffs. |
 
@@ -78,5 +80,7 @@ inconclusive. More than 180°/frame or extra revolutions can alias; do not use t
   not that every channel was measurable. `betweenFramesProven` is always false. Scene/motion
   hashes fingerprint input JSON, not remote asset bytes. Remote scene references are resolved
   once per call; use immutable assets/handles for reproducible runs.
+
+`picsart_scene_lint_layout` pairs root layers (a rig is one layer; `parts: true` adds its limbs). On this server no layer is drawn alone, so overlaps are judged by bounds: a pair whose bounds overlap over drawings that never touch is still reported as a collision, and `edgeCut` stays empty. Read such a finding against a contact sheet before acting on it, and look there for a tail or limb the frame cuts.
 
 Keep `picsart_scene_validate` for structure and `picsart_scene_lint_layout` or `picsart_scene_check_contracts` for sampled relationships. Explicitly compare remaining design requirements with `picsart_scene_query_layout` and record unexecuted checks as unchecked. Render full-resolution frames and watch playback for typography, clipping, occlusion, masks, effects, blur and perceived timing; numerical success is not a pixel-quality guarantee.

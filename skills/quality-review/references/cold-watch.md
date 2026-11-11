@@ -4,6 +4,7 @@ Strangers who know nothing of the video watch it a few seconds at a time, with i
 what they make of it. Their words are then laid against the viewer track, written before the draft
 was built. It is the one check that can say whether a viewer follows the video. You, the critics
 and the user all know what it means, and whoever knows fills in what the picture never shows.
+The viewer track says what a stranger must get from the video, and by when.
 
 ## Contents
 
@@ -31,9 +32,12 @@ it finds what is missing.
 
 ## The viewer track
 
-The writer writes it before the draft is built: film-story-writing's viewer track for a film, the
+The writer writes it before the draft is built:
+film-story-writing's viewer track for a film,
+the
 script's for any other short. Keep its text in the project record as `viewerTrack`, with the
 `seal` `cold_watch.py` prints for it, apart from the story and the cards:
+the script's viewer track for a short, kept in the project record as `viewerTrack` apart from the cards:
 
 ```text
 # Viewer track

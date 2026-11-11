@@ -43,9 +43,11 @@ yours from your own moments and stills.
 | `style`, `brand` | the style chosen at stage 6, by its id, and the brand colours mapped onto it, as the visual-style skill says. The build resolves them and colours every layer from them. Left out, the build uses its old dark palette: always set it |
 | `clip` | `"mask"`: panels with rounded corners, clipped by masks. `"nest"`: each panel is a nested scene the size of the panel, with square corners. Start with `"mask"`; the use case's check says when to switch |
 | `sourceAudio` | `"mute"`, the default, or `"keep"`: the recording's clips at speed 1 play its own sound. The build warns about each kept clip it speeds up. `"mute"` with a presenter |
+| `sourceAudio` | `"mute"`, the default, or `"keep"`: the recording's clips at speed 1 play its own sound. The build warns about each kept clip it speeds up. |
 | `duration` | only when the uploaded copy is shorter than the recording the moments were read from |
 | `hook.title` | the hook, one entry per line |
 | `hook.duration`, `outro.duration` | leave them out, unless a presenter's line or a generated hook shot sets the length |
+| `hook.duration`, `outro.duration` | leave them out |
 | `outro.cta` | the call to action, one entry per line |
 | `sfx` | a promo only, and only when the user chose sound: `{ push, outro, volume }`. `push` plays as each step's push onto its result starts, `outro` as the outro starts; each is `{ url, duration }` of a sound a Picsart tool generated. `volume` is 0–100, 35 when left out. Leave it out for silence |
 

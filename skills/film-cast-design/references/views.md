@@ -39,7 +39,10 @@ margins, never by lines. Left to right:
 The three full-body views share the left 55% of the frame, and the close-up the right 40%. The
 identity view is always the close-up, never the front full-body view: only the close-up holds a
 face at a size a run can keep. Save the views as `referenceImages` in the order identity, wardrobe,
-profile, back, leaving out any the cards do not need.
+profile, back, leaving out any the cards do not need. On every new save, pass
+`identityReferences` with the user's original photo URLs, or `[]` if every view was generated.
+The first `referenceImages` entry alone does not establish its origin. Keep the saved provenance
+when updating or rejecting that version; do not label a generated close-up as an original photo.
 
 **An older sheet is the T-cut** (front face top left, side face bottom left, the full body as a tall
 panel on the right, and a fourth tall back panel beside it when it has one). Its saved views stay as

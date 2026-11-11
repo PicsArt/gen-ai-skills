@@ -17,7 +17,7 @@ transcribed here like any talking footage, and nothing in it is watched.
    reports container facts only, never what is shown.
 2. `picsart_media_describe_video` with the use case's request as its `question`, asking for JSON,
    not prose. It charges credits on every call, so the use case gets consent before it runs. Read its
-   `answer`.
+   `answer`. Apply picsart-video-rules's SPEND rule to each tool's billing contract.
 3. Unless the probe reports `hasAudio: false`, and when the narration is worth quoting,
    `picsart_media_transcribe` the file. The probe leaves `hasAudio` out when it cannot tell, and
    that is not a no.

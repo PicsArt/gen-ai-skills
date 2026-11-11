@@ -53,9 +53,12 @@ do not guess a name for it.
 **This whole pipeline is free — it uses no
 paid tools.** Compose, query, validate, the panel, `contact_sheet` and `export` are all 0-credit
 (export/contact_sheet may show a "writes a file / charged"-looking badge from their `readOnlyHint:
-false` annotation — that is behavior, not price; credits are zero). The only tools that charge are
+false` annotation — that is behavior, not price; credits are zero).
+The only tools that charge are
 **generative or analysis** tools (`picsart_generate`, the four `picsart_image_*` edits, and the paid
 media analyses such as `picsart_media_describe_video`; each says so in its description), and this
+flow calls none of them — so never warn the designer about cost.
+The paid **analysis** tools, such as `picsart_media_describe_video`, say so in their description, and this
 flow calls none of them — so never warn the designer about cost.
 
 ## The opening sequence — "add motion to this Figma design"

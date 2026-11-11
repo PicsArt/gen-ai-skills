@@ -5,6 +5,7 @@ Part of the `character-rigging` skill: the field-level mechanics behind its morp
 ## Contents
 
 - A shape's outline
+- Puff or pinch a whole outline: `puckerBloat`
 
 ## A shape's outline
 
@@ -235,3 +236,32 @@ sizing effects of a look's host. The keys stand at strictly increasing `at` valu
   refused (`animation_clock_needs_keyframes`), a key with `time` on a `by` track or `at` on any
   other is `keyframe_axis_mismatch`, and keys outside a parameter's `min`/`max` warn
   (`keyframe_outside_parameter_range`), each axis judged as its own parameter.
+
+## Puff or pinch a whole outline: `puckerBloat`
+
+`{ "type": "puckerBloat", "amount": 40 }` reshapes every geometry item above it in its group (nested
+groups included) around each contour's centre, the average of its vertices. A positive `amount`
+bloats: each vertex moves `amount` percent of the way to the centre while its handles push out, so the
+edges bow outward. A negative `amount` puckers: the vertices move out and the handles move in, into
+spikes. `amount` is animatable, so one item takes a star to a flower and back:
+
+```json
+{ "kind": "shape", "items": [
+  { "type": "polystar", "starType": "star", "points": 6, "outerRadius": 120, "innerRadius": 60 },
+  { "type": "puckerBloat", "amount": { "keyframes": [
+    { "time": 0, "value": 0 }, { "time": 2, "value": 60 }, { "time": 4, "value": -40 } ] } },
+  { "type": "fill", "color": "#F2A33A" } ] }
+```
+
+A rounded badge whose sides puff out: bloat a SHARP `rect`, then round it with `offsetPaths`. Bloat on
+a `rect` with `roundness` pinches each rounded corner into ears, and `roundCorners` after the bloat does
+not smooth them. `offsetPaths` grows the outline by `amount` with round corners, so draw the rect
+`2 × amount` smaller than the badge:
+
+```json
+{ "kind": "shape", "items": [
+  { "type": "rect", "size": [232, 92] },
+  { "type": "puckerBloat", "amount": 14 },
+  { "type": "offsetPaths", "amount": 24 },
+  { "type": "fill", "color": "#3A7BF2" } ] }
+```

@@ -11,6 +11,7 @@ Usage (the record is a JSON file; every command prints JSON):
   record.py version <record> <json>            append a version (name, scene, render, parent, changed, gates)
   record.py lock-check <record> <plan>         a plan against the locked meaning map, the format and the pace
   record.py palette-check <record> <scene>     every colour a scene sets against the brand's palette
+  record.py length-check <record> <scene>      the reel ends at the recipe's length, no held last clip
   record.py migrate <old record> [--out edit-footage.json]
                                                a client-edit, cut-footage-into-reel or remix-reel-structure
                                                record as edit-footage's, its done stages kept
@@ -59,6 +60,9 @@ JOB_WRITES = {'reference': ['sheet'], 'story': ['moments', 'mapping'], 'plan': [
 # the reference's format (reel-structure's `references/format.md`) and the brand guide's palette and
 # fonts bind the plan and all after it.
 OPTIONAL_READS = {'plan': ['format', 'brand']}
+# Keys a stage writes only when the record holds them, so a record kept before the stage wrote one
+# hashes as before: the look stage's board, spec and check (edit-footage's `references/film-look.md`).
+OPTIONAL_WRITES = {'look': ['look']}
 # What `done deliver` needs, for every job: the map approved, then the check, the critics and the
 # review done. A job that leaves one out of its pipeline cannot deliver.
 DELIVER_NEEDS = ['story', 'qc', 'critics', 'review']
@@ -180,6 +184,7 @@ def schema_errors(record: dict) -> list[str]:
                         errors.append(f'keepers[{i}] is a {kind} and needs "{field}"')
             if name == 'approvals' and entry.get('session') and not entry.get('words'):
                 errors.append(f'approvals[{i}] was relayed from {entry["session"]} without the person\'s "words": a yes in a session\'s own words is not an approval')
+    errors.extend(look_errors(record.get('look')))
     for i, row in enumerate(record.get('sources', []) or []):
         errors.extend(gyro_errors(record, i, row))
         if isinstance(row, dict) and 'upright' in row and row['upright'] not in UPRIGHT:
@@ -240,6 +245,36 @@ def gyro_errors(record: dict, i: int, row) -> list[str]:
     return errors
 
 
+LOOK_CHECKS = ('pass', 'flag', 'open')
+
+
+def look_errors(look) -> list[str]:
+    """The look stage's record: its board, its spec and the check against the board (edit-footage's
+    `references/film-look.md`). A number nobody could read is `open`, never a pass."""
+    if look is None:
+        return []
+    if not isinstance(look, dict):
+        return ['"look" must be an object with "board", "spec" and "check"']
+    errors = []
+    if not isinstance(look.get('board'), list) or not look['board']:
+        errors.append('look.board must list the reference stills the look was chosen from')
+    if not isinstance(look.get('spec'), dict) or not look['spec']:
+        errors.append('look.spec must say what the board shows (blacks, highlights, palette, ...)')
+    check = look.get('check')
+    # look_check.py prints {"ok", "items"}; film-look.md says to store that result as printed, so the
+    # object form is the items it carries. A bare list of items is the same check written by hand.
+    if isinstance(check, dict) and isinstance(check.get('items'), list):
+        check = check['items']
+    if not isinstance(check, list):
+        errors.append('look.check must be a list of items, or look_check.py\'s result ({"ok", "items"}): '
+                      'each item against the board, or [] when nothing was compared')
+        check = []
+    for i, item in enumerate(check):
+        if not isinstance(item, dict) or item.get('verdict') not in LOOK_CHECKS:
+            errors.append(f'look.check[{i}] needs a verdict: {", ".join(LOOK_CHECKS)}')
+    return errors
+
+
 def hand_keys(record: dict, stage: str) -> list[str]:
     """The keys a stage marked done by hand keeps in `reads`: its own reads, then what every stage it
     builds on reads and writes (a revised story or cut pace makes the plan and what follows stale)."""
@@ -275,6 +310,7 @@ def stage_reads(record: dict, stage: str) -> list[str]:
 def job_writes(record: dict, stage: str) -> list[str]:
     """A stage's writes, with the reel and remix jobs' own keys when the record holds them."""
     writes = list(BY_ID[stage]['writes'])
+    writes.extend(k for k in OPTIONAL_WRITES.get(stage, []) if k in record and k not in writes)
     for key in JOB_WRITES.get(stage, []):
         owner = next((s['id'] for s in STAGES if key in s['writes']), None)
         if key in record and key not in writes and owner not in record.get('pipeline', []):
@@ -309,7 +345,12 @@ def fingerprint(record: dict, stage: str, cache: dict, legacy: bool = False,
     if stage in cache:
         return cache[stage]
     entry = record['stages'].get(stage, {})
-    writes = LEGACY_WRITES.get(stage, BY_ID[stage]['writes']) if legacy else job_writes(record, stage)
+    writes = job_writes(record, stage)
+    if legacy:
+        # as a record saved before review owned `locked` hashed it, plus the keys no such record held
+        # (the look): one added since is a change, so the stages after it go stale
+        writes = list(LEGACY_WRITES.get(stage, BY_ID[stage]['writes']))
+        writes.extend(k for k in OPTIONAL_WRITES.get(stage, []) if k in record and k not in writes)
     parts = {k: value(record, k, unhashed) for k in writes}
     parts['artifact'] = file_digest(entry.get('artifact', '')) or entry.get('artifactHash')
     parts['inputs'] = inputs_hash(record, stage, cache, legacy, unhashed)
@@ -446,9 +487,16 @@ def map_approved(record: dict) -> bool:
 def done_error(record: dict, stage: str) -> str | None:
     """What keeps a gated stage from being marked done: the reference needs its sheet and an answered
     format; delivery needs the map approved and the check, the critics and the review done."""
-    if stage == 'reference' and (has_url(record.get('reference')) or 'format' in record):
+    ref = record.get('reference')
+    # a picked style ({"style": "<id>"}) is a reference like a reel's link
+    given = has_url(ref) or (isinstance(ref, dict) and bool(ref.get('style')))
+    if stage == 'reference' and (given or 'format' in record):
         # a reference reel was given (or its format written): with none, the job's default pace holds
-        if has_url(record.get('reference')) and ('sheet' not in record or 'format' not in record):
+        if given and record.get('job') == 'channel-clips':
+            # channel clips copy a look, not a structure: the format alone, no sheet
+            if 'format' not in record:
+                return 'the reference is done with its format: write it into the record first'
+        elif given and ('sheet' not in record or 'format' not in record):
             return 'the reference is done with its sheet and its format: write them into the record first'
         try:
             from sheet import validate
@@ -602,6 +650,7 @@ def main(argv: list[str]) -> int:
     a = sub.add_parser('version'); a.add_argument('record'); a.add_argument('entry')
     a = sub.add_parser('lock-check'); a.add_argument('record'); a.add_argument('plan')
     a = sub.add_parser('palette-check'); a.add_argument('record'); a.add_argument('scene')
+    a = sub.add_parser('length-check'); a.add_argument('record'); a.add_argument('scene')
     a = sub.add_parser('migrate'); a.add_argument('record'); a.add_argument('--out', default='edit-footage.json')
     args = p.parse_args(argv)
 
@@ -710,6 +759,10 @@ def main(argv: list[str]) -> int:
     if args.cmd == 'palette-check':
         from match_check import palette_check
         result = palette_check(record, load(args.scene))
+        return out(result, 0 if result['ok'] else 1)
+    if args.cmd == 'length-check':
+        from match_check import length_check
+        result = length_check(record, load(args.scene))
         return out(result, 0 if result['ok'] else 1)
     return 2
 

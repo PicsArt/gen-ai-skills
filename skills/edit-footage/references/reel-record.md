@@ -13,6 +13,10 @@ skill's core keys. The reel jobs also keep:
 - `reframes`: per video, its saved reframe and its corrected file, as the footage-reframing skill says;
 - `takes`: here the planned takes (clip lists), not a speaker's best take of a line, and for each
   reel the latest approved scene URL at each pass;
+- `cut`: the cut the user chose or their words set (`clean`, `story`, `vibe` or `match`),
+  as `references/reel-flow.md` says (Which cut);
+- `style` and `stylesTried`, for a reel made in a style from the library: the style's id, and
+  every style id built so far, so "Try another style" never builds one again;
 - `openDecisions`.
 
 A record from before the merge, `cut-footage-into-reel.json`, is the same project: continue it,

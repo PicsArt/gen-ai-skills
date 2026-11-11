@@ -1,6 +1,6 @@
 ---
 name: spoken-captions
-description: Put spoken words on screen from the transcript - word-timed captions on a generated voice-over or on the user's own talking footage, and on a cut reel, captions per clip and a few highlight phrases timed to the words they call out, placed with scripts/reel_text.py. Use when a video is watched muted and its speech must be read, or when a short's key lines should land on screen.
+description: Put spoken words on screen from the transcript - word-timed captions on the user's own talking footage, and on a cut reel, captions per clip and a few highlight phrases timed to the words they call out, placed with scripts/reel_text.py. Use when a video is watched muted and its speech must be read, or when a short's key lines should land on screen.
 user-invocable: false
 ---
 

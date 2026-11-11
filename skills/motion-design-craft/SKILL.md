@@ -305,6 +305,13 @@ When you propose candidates, choose by **role × energy**, not a fixed list: a h
 real element**, never as a named list of presets in prose — a designer judges motion by
 watching it, and a still or a word ("fade_in") approves things that are wrong.
 
+**When two or more could fit and it's taste, the designer picks.** Build 2–6 candidates on the
+real element and open them in `picsart_scene_picker` — one `scenes` entry each, its document as
+`scene`, its `label` what the designer would call it ("fast word-stagger", "soft fade-up"), never
+a preset id. Don't choose for them and don't describe the options in text. Carry on from the
+card(s) in the reply's `selected` and say in one line which one you kept (picsart-video-rules,
+*A choice made by eye*). With one clear best reading, step 0's single proposal stands.
+
 ## Anti-patterns (the slideshow tells)
 
 - **A static first frame** — the reel holds on a frozen frame 1, then jumps into the 1→2 motion.

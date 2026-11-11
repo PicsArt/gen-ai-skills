@@ -49,13 +49,18 @@ against them.
 | Field | Use |
 |---|---|
 | `approved[]` | Each is locked: cut its views and save it with `picsart_film_save_asset`, `status: "locked"`. A `note` on an approved tile is kept on the asset's row |
-| `changes[]` | Each carries a `note`, and `models` when the user asked to try other models. Regenerate THAT asset with the note folded into its own prompt, and change nothing else |
-| `discarded[]` | The unchosen siblings of a same-tag, several-model comparison. Never save, use or regenerate them |
+| `changes[]` | Each carries a `note`, and `models` when the user asked to try other models. First save that version with `picsart_film_save_asset`, `status: "rejected"`, and add its tag and file to `rejectedAssets[]`. Then regenerate THAT asset with the note folded into its own prompt, and change nothing else |
+| `discarded[]` | The unchosen siblings of a same-tag, several-model comparison. Save them as `rejected` and record their tags and files in `rejectedAssets[]`; never show, use or regenerate them |
 | `total` | `approved` + `changes` + `discarded` always equals it |
 | a general note | Applies to the whole board; fold it into each change it concerns |
 
+Every new save above includes `identityReferences`: the user's original photo URLs, or `[]` for
+all-generated views. An update or rejection carries that version's saved provenance unchanged.
+
 After changes, open a FRESH board with only the changed assets, each with `assets[].version` (`"v2"`) and
-`assets[].previousUrl`, so the user can compare and ask to go back. Approved assets never reappear. Repeat
+no `assets[].previousUrl` pointing at a rejected picture. Never show a rejected sheet or use any view
+or panel from it as a reference. One rejected view rejects the whole sheet unless the user explicitly
+said otherwise. Keep the user's original photos as the identity references for replacements. Approved assets never reappear. Repeat
 until `changes` is empty. A change is a new generation: its own SPEND.
 
 ## Renders: `render_monitor_feedback`

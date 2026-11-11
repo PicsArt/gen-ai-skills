@@ -46,20 +46,25 @@ skip this stage and say nothing about it: not every host can open Picsart beside
 
 ## 3. What Picsart Video does
 
-Say it in three short parts, in the user's words. The tools in brackets are for you, never for the
+Say it in
+three
+short parts, in the user's words. The tools in brackets are for you, never for the
 user (picsart-video-rules's Tools).
 
 - **Drive.** Their files, stored with their Picsart account: browse them, search them in
   Picsart, make folders, move and delete (a deleted file goes to the trash first).
   The `picsart_drive_*` tools do this (`picsart_drive_list`, `picsart_drive_create_folder`,
   `picsart_drive_move`, `picsart_drive_delete`). When they bring a file of their own, it comes in with
-  `picsart_drive_upload_ask`.
+  `picsart_drive_upload_ask`. Their saved characters, locations, templates and looks (scene documents)
+  open in the same browser with `picsart_scene_library_list`.
 - **Create.** Images, videos and audio from a prompt, with a choice of models. They can pick a
   model themselves (`picsart_model_show`), and every creation is quoted before anything is
   charged (`picsart_preflight`, then picsart-video-rules's SPEND).
-- **Edit.** For an image: remove the background (`picsart_image_remove_bg`), replace it
+- **Edit.**
+  For an image: remove the background (`picsart_image_remove_bg`), replace it
   (`picsart_image_change_bg`), enhance it (`picsart_image_enhance`) or turn it into a vector
-  (`picsart_image_vectorize`). For a video: a scene editor where they watch it, trim, split and comment,
+  (`picsart_image_vectorize`).
+  For a video: a scene editor where they watch it, trim, split and comment,
   and approve it before it is exported (`picsart_scene_editor`, picsart-video-rules's REVIEW).
 
 Edits charge credits too; each is quoted first. Say that once, not per item.
@@ -78,7 +83,7 @@ are here: look at the skills you have, not at this list. Today they can include:
   scenes;
 - `edit-footage`: the user's own footage becomes a tight vertical short, podcast clips or a finished
   edit, the best moments in order, with captions and music if they want them;
-- `make-comics`: a photo of a person becomes a ComicMe comic book, tale, video, reel or anime series.
+- `make-comics`: a photo of a person becomes a ComicMe comic, tale, video comic, video tale, reel or anime series.
 
 ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with 2–4 of them, plus "Just explore". On a use case, start it by its name, from its first
 stage. On "Just explore", invite them to ask for anything from stage 3, and end the turn.

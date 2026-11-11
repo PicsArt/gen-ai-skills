@@ -1,9 +1,9 @@
 ---
 name: edit-footage
-description: Make videos from the user's own footage, or copy a reel's structure onto their script - a vertical reel, podcast clips, a highlight reel, a montage, a photo slideshow, a lesson filmed to camera, split-screen podcast shorts, B-roll under a voice-over, an interview with B-roll, or a remix of a reference reel (a talking head or a skit included) - cut on the words, checked, choices shown as A/Bs. Use for "edit my footage", "edit my video", "make a reel from this", "remix this reel with my script". Not for a screen recording, a short film from a script or idea with no reference reel (movie-producer), or rebuilding a reference's animation with the user's photos (recreate-video).
+description: Make videos from the user's own footage, or copy a reel's structure onto their script - a vertical reel, podcast clips, a highlight reel, a montage, a photo slideshow, a lesson filmed to camera, split-screen podcast shorts, channel clips from a long video or its link in the look of a short you bring, B-roll under a voice-over, an interview with B-roll, or a remix of a reference reel (a talking head or a skit included) - cut on the words, checked, choices shown as A/Bs. Use for "edit my footage", "edit my video", "make a reel from this", "clip this podcast like my shorts", "remix this reel with my script". Not for a screen recording, a short film from a script or idea with no reference reel, or rebuilding a reference's animation with the user's photos (recreate-video).
 metadata:
-  uses: edit-pipeline, reel-structure, footage-analysis, footage-reframing, speech-aware-cutting, retention-hooks, realistic-color-grade, background-music, scene-building-basics, spoken-captions, quality-review, film-finishing, edit-on-your-computer, screen-recording-layouts, face-hiding, photo-slideshow, caption-decorations, quick-merge-and-export, screen-recording-zoom, film-cast-design, film-shot-generation, film-cutting, ai-presenter, voice-over-generation
-  optional: realistic-color-grade, background-music, spoken-captions, edit-on-your-computer, face-hiding, photo-slideshow, caption-decorations, quick-merge-and-export, screen-recording-zoom, film-cast-design, film-shot-generation, film-cutting, ai-presenter, voice-over-generation
+  uses: edit-pipeline, reel-structure, footage-analysis, footage-reframing, speech-aware-cutting, retention-hooks, realistic-color-grade, background-music, scene-building-basics, spoken-captions, quality-review, film-finishing, edit-on-your-computer, screen-recording-layouts, face-hiding, photo-slideshow, caption-decorations, quick-merge-and-export, screen-recording-zoom, film-cast-design, film-shot-generation, film-cutting, ai-presenter, voice-over-generation, motion-design-craft, motion-pattern-library, scene-template-remix, custom-transitions, linked-element-motion, visual-style, resting-frame-rules, motion-review, motion-tracking-from-video, social-posting
+  optional: realistic-color-grade, background-music, spoken-captions, edit-on-your-computer, face-hiding, photo-slideshow, caption-decorations, quick-merge-and-export, screen-recording-zoom, film-cast-design, film-shot-generation, film-cutting, ai-presenter, voice-over-generation, motion-design-craft, motion-pattern-library, scene-template-remix, custom-transitions, linked-element-motion, visual-style, resting-frame-rules, motion-review, motion-tracking-from-video, social-posting
   title: Edit your footage
   short-description: Edit your footage into a reel, clips or a finished video
   argument-hint: '[your footage or script, a reference, a brief]'
@@ -29,6 +29,11 @@ line, and keep it in the record's `job`. Ask only when two jobs fit equally. A c
 | `reel`, `highlight`, `podcast-clips`, `split`, `montage`, `slideshow`, `lesson` | one or several vertical shorts from talking footage, action or photos: the best moments, cut on the words; `split` stacks two speakers in a split screen, as the reference's format sets | `references/reel-flow.md`, with `references/reel-jobs.md` |
 | `broll-voiceover`, `talking-broll`, `footage-story` | one finished video to a brief or a story found in it: B-roll under a voice-over, an interview with B-roll, footage with no words | the numbered sections below, with `references/jobs.md` |
 | `remix` | a reference reel's structure (beats, shots, caption pattern, pace, bed) on the user's own script or topic, as slides, voice and video | `references/remix-flow.md` |
+| `channel-clips` | several clips from one long video or a link to it, each in the look of a short the user brings (their channel's or anyone's): the moments, the frame, the hook card, the captions and the end card the look has, with a cover and post copy each, in one Drive folder, then the offer to post them; a reel job that asks two things at most | `references/clips-flow.md`, with `references/reel-jobs.md` and, for a pasted campaign brief, `references/clip-briefs.md` |
+
+`channel-clips` is picked only when your identity names it as your job, or its /channel-clips
+command names it. Otherwise it is never picked: a request for clips stays `podcast-clips` or
+`split`, run as their own rows say.
 
 **Read the job's file whole before its first step**, and again when the work resumes in it. Its
 steps are its own; never run another job's steps.
@@ -39,6 +44,7 @@ steps are its own; never run another job's steps.
 | `references/reel-interview.md` | ask a reel job's interview questions |
 | `references/reel-platforms.md` | place words on a reel job's frame, or deliver it |
 | `references/reel-record.md` | write a reel job's own keys into the record |
+| `references/film-look.md` | choose an edit job's look, at the look stage, and before any grade |
 
 ## The flow
 
@@ -46,11 +52,15 @@ Every job runs these steps in this order. The row's number is the step in the ed
 below; in brackets are its record stage and the same step in the reel and remix texts, and a job
 with no number there leaves it out. A gate or skill with jobs in brackets is only theirs:
 `SPEND (remix)` opens for the remix job alone, `ASK (reel/remix)` for the reel jobs and the remix,
-and `edit` names the edit jobs. `ASK (format-not-matched)` opens only when the footage cannot
+`channel-clips` names the clips job alone, and `edit` names the edit jobs. `ASK (format-not-matched)` opens only when the footage cannot
 reproduce an element of the reference's format; one reproduced exactly goes straight on.
 `SPEND (someone-speaks)` opens only when someone speaks, for the heard script's cold read; a job
 with no speech goes straight on. `edit-on-your-computer (on-disk)` loads only for footage on
-this computer, and `ASK (gyro)` opens only when its camera also recorded gyro data. One with
+this computer, and `ASK (gyro)` opens only when its camera also recorded gyro data. A skill
+marked `(style)` loads only for a reel job on Vibe Cut (`references/reel-flow.md`, Which cut), built in
+the style the agent picks from the reel-structure skill's style library with no question, and then
+only those the picked style's Skills field names. A skill marked `(reference)` loads only when the user gave a reference video: its
+moves are measured when it is read, and measured again on the build to check them. One with
 no brackets is every job's. Before acting on a step, load
 the skills in its row that are this job's, also when the work resumes there. Run the steps in one
 go: after each, go straight on unless its row has a gate for this job.
@@ -58,18 +68,18 @@ go: after each, go straight on unless its row has a gate for this job.
 | Stage | Gate | Skills |
 |---|---|---|
 | 1. Intake and the record (`intake`; reel 1-2, remix 1) | ASK | edit-pipeline, edit-on-your-computer (on-disk), retention-hooks (reel) |
-| 2. The reference: its sheet, its format, what the footage can match (`reference`; reel 2, remix 2-3) | SPEND (remix), REVIEW (remix), ASK (format-not-matched) | reel-structure, footage-analysis (remix) |
+| 2. The reference: its sheet, its format, what the footage can match (`reference`; reel 2, remix 2-3) | SPEND (remix), REVIEW (remix), ASK (format-not-matched) | reel-structure, footage-analysis (remix), motion-tracking-from-video (reference) |
 | 3. Read the footage (`log`; reel 3) | SPEND, ASK (gyro) | footage-analysis, footage-reframing, edit-on-your-computer (on-disk) |
 | 4. Takes, when someone speaks (`takes`) | ASK | speech-aware-cutting |
 | 5. Look and sound (`look`) | ASK, SPEND | realistic-color-grade, background-music |
 | 6. The map: the meaning map, the moments, or the script on the beats (`story`; reel 4, remix 4) | REVIEW (edit), ASK (reel/remix) | retention-hooks, speech-aware-cutting (reel), reel-structure (remix) |
 | 7. Plan: the cut, the passes, the route (`plan`; reel 5-6, remix 5) | SPEND (someone-speaks), ASK (reel/remix) | edit-pipeline, speech-aware-cutting, screen-recording-layouts (remix), screen-recording-zoom (remix), ai-presenter (remix), photo-slideshow (remix), film-cast-design (remix) |
-| 8. Build (`build`; reel 7, remix 6-8) | SPEND (remix), REVIEW (remix) | footage-reframing, scene-building-basics, spoken-captions, photo-slideshow (reel/remix), quick-merge-and-export (reel), face-hiding (reel), film-shot-generation (remix), voice-over-generation (remix), film-cutting (remix) |
-| 9. The independent check and the reference match (`qc`; reel 8, remix 8) | SPEND, ASK (reel) | quality-review, footage-reframing (reel) |
+| 8. Build (`build`; reel 7, remix 6-8) | SPEND (remix), REVIEW (remix) | footage-reframing, scene-building-basics, spoken-captions, photo-slideshow (reel/remix), quick-merge-and-export (reel), face-hiding (reel), film-shot-generation (remix), voice-over-generation (remix), film-cutting (remix), motion-design-craft (style), motion-pattern-library (style), scene-template-remix (style), custom-transitions (style), linked-element-motion (style), caption-decorations (style), visual-style (style), motion-tracking-from-video (reference) |
+| 9. The independent check and the reference match (`qc`; reel 8, remix 8) | SPEND, ASK (reel) | quality-review, footage-reframing (reel), resting-frame-rules (style), motion-review (style), motion-tracking-from-video (reference) |
 | 10. Critics, on the first full draft (`critics`; reel 8, remix 8) | — | quality-review |
 | 11. Review (`review`; reel 9-11, remix 6-9) | REVIEW, ASK (edit/reel), SPEND (reel) | spoken-captions (reel/remix), caption-decorations (reel), screen-recording-layouts (reel), background-music (reel) |
 | 12. Finish (`finish`; remix 9) | REVIEW (remix) | film-finishing, edit-on-your-computer (on-disk), background-music (remix) |
-| 13. Deliver (`deliver`; reel 12, remix 10) | DELIVER | reel-structure (remix) |
+| 13. Deliver (`deliver`; reel 12, remix 10) | DELIVER | reel-structure (remix), social-posting (channel-clips) |
 
 Every question is asked as picsart-video-rules's Asking says: one per turn, the recommended answer
 first, each option saying what it changes. The step names are your bookkeeping, never the user's.
@@ -138,7 +148,9 @@ memory. The user never has to drive the stages; they answer questions and choose
 - **The reference.** When the brief, the brand pack and the user's channel give no reference for
   the pace and the look, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, in the first reply: "What should guide the edit?" with the
   options my brand or channel, a reel I'll share, I'll describe it, and skip, you decide. It is the
-  only question at intake. Uploads and the free reads go on meanwhile; it never waits on the files.
+  only question at intake. A `reel`, `highlight`, `montage` or `slideshow` asks its cut instead
+  (`references/reel-flow.md`, Which cut), whose Match a reel takes a reel to follow, and
+  `channel-clips` asks its look instead (`references/clips-flow.md`). Uploads and the free reads go on meanwhile; it never waits on the files.
   Which take of the voice or a line to use is never asked at intake: stage 4 picks it, and asks
   only when two takes tie.
   On "skip", say the direction you chose once, in one line, and go on. Whatever it gives goes into
@@ -172,9 +184,14 @@ for their **pace** and their **format**, never their content:
 
 The step is done only with a sheet that passes and no element open, as the edit-pipeline skill's
 gates say, and nothing is built before it is done. `record.py` refuses to mark the reference done
-without its sheet and an answered format; never mark it done by hand to get past that, since the
+without its sheet and an answered format (`channel-clips`: the format alone); never mark it done by hand to get past that, since the
 look, the story and everything after build on it. When there is no reference, use the job's
-default pace and say so.
+default pace and say so. A `highlight`, `montage` or `slideshow` on Vibe Cut is the exception: it
+is built in the one best-fitting style from the reel-structure skill's style library, picked by
+the agent without asking, and that style is the reference from here on, as
+`references/reel-flow.md` says (No reference: a style); its sheet is free, with no read. The cut
+names the style, and "Try another style" rebuilds it in the next best fit, reusing existing
+assets and quoting any new charged operations as the reel flow says.
 
 The reference keeps binding after this step. At every plan, the lock check holds the plan to the
 reference's pace: every shot at or above `minHold` fails otherwise, and cuts per 10 s more than a
@@ -222,16 +239,23 @@ are equally good and differ in what they say.
 
 ## 5. Look and sound
 
-- **Colour**: grade toward the colour reference or the brand, with the realistic-color-grade
-  skill where the footage needs it. A custom camera LUT is not a scene look. When log footage is
+- **The look**: chosen from evidence, never left at a default, as `references/film-look.md` says:
+  a board of stills from the brief's references and the client's own posts, a spec read from it
+  (blacks, highlights, palette, texture, captions, the second camera, the ending), three
+  candidate looks side by side on the hardest frames, and a check against the board. All of it
+  goes into the record's `look` before this stage is done; the critics judge the draft against
+  that board.
+- **Colour**: grade toward the chosen look, with the realistic-color-grade skill only where
+  the footage needs realism. A custom camera LUT is not a scene look. When log footage is
   on this computer, its proxies already carry the conversion to normal colour, as the
   edit-on-your-computer skill says, and the grade here is the look only. When log footage
   is anywhere else, say that previews look flat and grade it at the finish (stage 12).
 - **Sound**: mixed in the scene as audio layers, never outside it: the voice placed on its
   lines, every audio layer given an explicit duration (one without it repeats), room tone under
   the cuts. Music follows the job's default in `references/jobs.md`; when it is offered,
-  ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered A/B, and quote any generation as the background-music skill says before
-  its SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says).
+  ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered A/B.
+  Quote any generation as the background-music skill says before its SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says).
+  A track the user brings is received with `picsart_drive_upload_ask`.
 
 ## 6. The meaning map
 
@@ -262,7 +286,8 @@ voice, and no two shots of one place and size are cut together. For a speaker, t
 segments are cut as the speech-aware-cutting skill says. A rebuild starts from the keepers
 ledger, never from zero. Every shot carries its reason, as the edit-pipeline skill says. Run the
 edit-pipeline skill's `lock-check` on the plan before building, and its meaning diff against the
-last version the user saw before showing anything. When someone speaks, have the heard script read
+last version the user saw before showing anything.
+When someone speaks, have the heard script read
 cold before the first build, as the speech-aware-cutting skill says, quoted first with its
 SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) (the row's `SPEND (someone-speaks)`; with no speech there is no read and nothing to ask): a story that does not survive
 the read will not survive the build.
@@ -281,8 +306,9 @@ rules), its calls quoted first as it says and a SPEND (quote it in one line, the
 quoted at 0 credits (on a no, the review line says "no cold watch yet"): strangers who know nothing watch the render a few seconds at a time and
 say what they understood, who each person on screen is, and where a cut jumped.
 
-Run the QC inspector on the render as the quality-review skill says, fresh each round, with the
-cold watch's gaps, the keepers ledger and the meaning diff, for every job, a reel or a remix
+Run the QC inspector on the render as the quality-review skill says, fresh each round, with
+the cold watch's gaps,
+the keepers ledger and the meaning diff, for every job, a reel or a remix
 included. With a format in
 the record it also gets the format, the reference stills and the reference match: a layout other
 than the format's is critical. Fix its findings within the edit-pipeline skill's fix scope:

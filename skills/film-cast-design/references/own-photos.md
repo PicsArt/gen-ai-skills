@@ -26,14 +26,20 @@ them in, their profile) beats a generated view, so name both, the generated one 
 Never generate a lookalike to fill a slot the user could fill with a photo. A generated view is a
 profile from the photo, then a sheet from the photo, the profile and the outfit, compiled with
 `picsart_film_compile_prompt` and its `reference.usePhoto` and `reference.useOutfitImage` inputs.
+Pass the actual attachment URLs in `verifyWith.request.imageUrls`. Use `images` entries with
+`n` matching each attachment and `job` naming its role and the target's saved tag, when known
+(for example, `@hero original identity photo` or `@hero outfit reference`). The compiler carries
+these numbered roles into the prompt; saved-photo or view URLs can also identify their owner.
+A film's only saved character is not automatically the subject of a new reference. Require the
+returned `check.passed` before generation, including when creating another character from words.
 
 A photo that already shows every view the cards need gets no generated sheet at all.
 
 ## An era the photo does not match
 
 When the film's tone is an era and the photo is plainly modern, flag that an era-adapted portrait
-is possible, and that choosing it makes a generated image, not the photograph, the identity in
-every run. Never restyle a real person's photo on your own call.
+is possible. An approved adaptation supplements the original identity photo in every run;
+it never replaces that original in `imageUrls`. Never restyle a real person's photo on your own call.
 
 ## Allowed derived copies
 
@@ -44,8 +50,12 @@ every run. Never restyle a real person's photo on your own call.
 - a neutral background cut-out, only after a first run proves the original background leaks into
   the shots.
 
-In every run, the original (or its identity cut) goes first, and any approved generated view
-follows it.
+Save the original URLs in `identityReferences`, separately from generated `referenceImages`.
+In every run depicting the person, include those original URLs in the actual `imageUrls`,
+including later shots, new scenes, regenerations and replacements. An approved generated view
+follows them; a description, sheet or opening frame never replaces the originals. A required
+format conversion or identity cut is a documented derived input beside the saved original,
+never a silent substitution. Follow picsart-video-rules when a model cannot accept the originals.
 
 ## A real place
 

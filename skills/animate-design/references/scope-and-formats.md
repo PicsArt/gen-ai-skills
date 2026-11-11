@@ -13,6 +13,7 @@
   once the server's v2v path is wired. Don't build it yet; keep the hook
   (`motion.json.source` can name a given video, not only a design).
 
+
 ## Formats — scene is the source of truth
 
 Everything is authored and edited as a **scene** — the format the engine natively

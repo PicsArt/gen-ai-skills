@@ -152,7 +152,7 @@ Reserve the punchy `zoom_through` and the stylized set for a genuine emphasis be
 - **Matte/animation-driven transitions have an authored length** and read as a glitch when
   starved of it — a 3-second choreography crammed into 0.4s is not a fast version of the
   effect, it's a broken one. Give an animated transition its natural window or don't use it.
-- **A directional `slide`/`push` should match the motion it stands in for** — if the next
+- **A directional `slide` should match the motion it stands in for** — if the next
   frame is "scroll down," a downward push reads as continuous; a random direction reads as
   a cut with extra steps.
 

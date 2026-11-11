@@ -2,16 +2,11 @@
 
 The questions of stage 2, in order. Ask them as the use case's *2. The interview* says.
 
-**1. Where it goes.** Header "Destination".
-
-- "TikTok, Reels and Shorts (Recommended)": one 30 s cut that plays on all three.
-- "TikTok": 15–60 s, the hook in the first 2 s.
-- "Instagram Reels": up to 90 s when the story holds.
-- "YouTube Shorts": under 60 s; it takes up to 3 min, but only when the user asks for it.
-
-Then **state, never ask**, what follows from it, from `references/reel-platforms.md`: "9:16 at
-1080×1920 and 30 fps, words kept clear of the platform's buttons." A destination outside that file
-gets the frame its user names, and is said back the same way.
+**1. Where it goes.** Never asked: **state, never ask**, what follows from it, from
+`references/reel-platforms.md`: "9:16 at 1080×1920 and 30 fps, for TikTok, Reels and Shorts, words
+kept clear of all three apps' buttons." A platform the user names sets the length and the hook; a
+shape they name (a post, square, a YouTube video) sets the frame, as that file says. A destination
+outside that file gets the frame its user names, and is said back the same way.
 
 **2. What it is for.** Header "Goal". It decides which moments win and how the short ends.
 

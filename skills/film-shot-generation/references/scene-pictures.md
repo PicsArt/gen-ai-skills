@@ -6,7 +6,9 @@ scene that moves to another room is another chain of pictures.
 ## The order
 
 1. **The wide first**, at the film's frame and the image model's top resolution: the opening shot's
-   cast, small in the room, compiled with `picsart_film_compile_prompt` (`kind: "scene-picture"`).
+   cast, small in the room, compiled with `picsart_film_compile_prompt` (`kind: "scene-picture"`)
+   and the same locked `look`, including `look.camera`, as the video. Keep its camera texture,
+   colour and detail in the wide; the opening crop inherits them.
 2. **The scene picture is cut from the wide**, around the opening composition at the film's ratio,
    with `picsart_scene_export` (as film-cast-design cuts views). It is free, not another generation. If the
    cut's short side falls below the video's resolution, the wide itself opens the run.

@@ -10,11 +10,10 @@ stage is done. A ✗ line is what you say next: which line, and what closes it.
 3. The story and the model
 4. The shot list
 5. Cast, places and props
-6. Storyboard and animatic
-7. Shooting
-8. The cut
-9. Finishing
-10. Deliver
+6. Shooting
+7. The cut
+8. Finishing
+9. Deliver
 
 ## 1. The idea
 
@@ -55,7 +54,11 @@ note is answered, and the writing traps, are film-story-writing's.
 - [ ] Every shot has a card: action and line copied from the story, the tags of everyone and
       everything in frame, what each face feels, seconds, and camera.
 - [ ] Every shot's seconds keep film-shot-generation' duration rule.
+- [ ] Current model durations and reference limits were read; the ordered shots are packed into
+      the fewest runs that fit, across scenes, before assigning run ids. Each boundary records why
+      the next shot cannot fit, or the user's explicit split; a final remainder may be short.
 - [ ] Every shot has its run; the shot opening each run carries the join sentence.
+- [ ] Internal cuts and necessary run edges follow film-shot-generation's seams method.
 - [ ] Every person, place and prop has a tag, including the lasting changes the story makes (a
       wrecked room, a torn coat).
 - [ ] `shotlist_board_feedback` arrived with `verdict: "approved"`, and the stored list was replaced
@@ -67,7 +70,7 @@ board and never shown as text.
 
 ## 5. Cast, places and props
 
-**Goal:** every person and prop approved as a picture and locked; every place described.
+**Goal:** every person and prop approved as a picture and locked; every place has approved location references.
 
 - [ ] The project folder exists and its uids are in the record.
 - [ ] Every generated picture was compiled, verified, quoted and bought on a yes.
@@ -78,42 +81,28 @@ board and never shown as text.
       cut and checked.
 - [ ] A photo the user brought is saved as it came, matched on probe, and never put up for approval.
 - [ ] Every speaking character has a saved voice line.
+- [ ] Every scene has an approved wide and opening scene picture, with the opening cast only.
+- [ ] A room map exists where the scene cuts between walls; it is reused per place and time of day.
+      A single outdoor background uses its wide as its geography.
+- [ ] Location URLs and the geography line are recorded in `scenes[].pictures` and `scenes[].geography`.
+- [ ] Every tag in a run has a locked row read back from `picsart_film_list_assets`.
+- [ ] Scene pictures were checked for the cast's faces, positions and room geometry; no separate
+      still test was bought. Per-shot panels exist only for an explicit preview request.
 
 Common mistakes: putting a picture on a board before looking at it; the rest are film-cast-design's
 Traps.
 
-## 6. Storyboard and animatic
-
-**Goal:** the film as a voiced animatic the user has watched and said yes to, before any video.
-
-- [ ] Every scene has an approved wide and a scene picture cut from it, and a room map where the
-      scene cuts between walls.
-- [ ] Each scene picture shows the opening shot's cast only, as designed.
-- [ ] Every card has its mode and eyeline, and `animatic_plan.py` reported no error (or the
-      check was done by hand and said so).
-- [ ] The film's viewer track is written, its questions shown with the story, and every draft
-      the user reviewed was watched cold first (or the user declined its SPEND, and the review
-      line said "no cold watch yet").
-- [ ] Every shot has an approved panel, checked against its scene picture; every app screen is a
-      built layer, none generated.
-- [ ] Every picture and sound was quoted and bought on a yes, looked at or listened to, and every
-      picture approved on a board.
-- [ ] Every line is voiced in its person's voice, its real length probed, and the shots re-timed to it.
-- [ ] Every tag of every scene in a run has a locked row, read back from `picsart_film_list_assets`.
-- [ ] The cast's faces were checked on the scene pictures and panels, and what you saw was said in
-      their review; no separate still test was bought.
-- [ ] The animatic validated, `cut_check.py --slides` run, and the user approved it in the scene
-      editor (or a recorded override to shoot without it).
-
-Common mistakes: reading coverage from memory; a scene picture that stages the dramatic centre
-instead of the opening; clean pictures of a place a later run has already wrecked; a silent
-animatic called reviewed; a quote for video before the animatic's yes.
-
-## 7. Shooting
+## 6. Shooting
 
 **Goal:** every take landed as a draft and checked by you; none accepted yet.
 
-- [ ] The user picked which shots go to video; a shot kept as a panel is recorded as theirs.
+- [ ] The approved shot list and any existing user exclusions determine the video runs.
+- [ ] Capacity was rechecked before quoting: generation count and each run's seconds against the
+      selected model's ceiling are shown; no mergeable short runs remain. A changed approved
+      grouping is shown in the existing approval/quote step, with prompts and quote refreshed.
+- [ ] Existing job handles and footage are preserved; repacking never resubmits paid work.
+- [ ] Stage 5's cast and location-reference checks passed. Only an explicit `requestedPreview`
+      needs its own review completed; no preview is required in the default flow.
 - [ ] A forecast was given once, before the first video, at the draft rate with the finish beside
       it, and called an estimate.
 - [ ] Every independent run went out in one batch as a draft (the model's draft setting or lowest
@@ -128,7 +117,7 @@ Common mistakes: dispatching on the forecast; a test run first; the first batch 
 settings; a review per take. The shooting
 traps are film-shot-generation'.
 
-## 8. The cut
+## 7. The cut
 
 **Goal:** the cut the user calls final.
 
@@ -142,7 +131,7 @@ traps are film-shot-generation'.
 Common mistakes: cutting or showing the film before the last take lands;
 buying footage for a seam before the pair was diagnosed; a separate review per clip.
 
-## 9. Finishing
+## 8. Finishing
 
 **Goal:** the final pixels, one look across the film, the sound decided.
 
@@ -156,7 +145,7 @@ buying footage for a seam before the pair was diagnosed; a separate review per c
 Common mistakes: offering music before the cut is final. The grading traps are
 film-finishing's, and the music traps background-music's.
 
-## 10. Deliver
+## 9. Deliver
 
 **Goal:** the film in the user's hands, and everything needed to make it again.
 

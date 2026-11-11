@@ -114,11 +114,15 @@ window. Each check answers one question, and none of them alone says the fragmen
 - **Cutting a decoration out of the reference.** A still one is a cropped still: `picsart_media_video_stills`
   at one time with `crop` set to its box, saved with `picsart_drive_upload` before it goes into a
   scene, since a still sheet is not kept. A still has no transparency, so over anything but a flat
-  background it takes its background box with it, unless it goes through `picsart_image_remove_bg`,
-  which charges. A moving one is the hosted reference on a media layer, cropped and masked to its box,
+  background it takes its background box with it.
+  Unless it goes through `picsart_image_remove_bg`,
+  which charges.
+  Where the box would show, redraw it as shape layers, or use a cut-out PNG the user supplies.
+  A moving one is the hosted reference on a media layer, cropped and masked to its box,
   and only over a flat background the recreation keeps: a mask cannot separate it from what is behind
   it, so over a content slot it would carry a moving patch of the original photo across the user's.
-  There, redraw it as shape layers, or generate it.
+  There, redraw it as shape layers.
+  Or generate it.
 - **A layer's box is two fields.** `transform.position` is a point in composition pixels, top-left
   origin, and the layer's `anchor` lands on it. The anchor is the box's centre for every content
   kind except text, so measure each reference element to its **centre**, not its corner. Its size is
