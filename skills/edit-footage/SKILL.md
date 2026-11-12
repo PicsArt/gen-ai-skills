@@ -13,6 +13,8 @@ argument-hint: '[your footage or script, a reference, a brief]'
 
 # Edit your footage
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "edit-footage"`: the answer leads with what this job reads and names the rest in one line.
+
 Everything made from the user's own footage runs here, and so does a reference reel's structure
 copied onto their script. One intake picks the **job**, and the job picks the steps. The steps
 share one record, one way to resume, and the same checks; what differs is which steps a job runs

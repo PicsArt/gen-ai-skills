@@ -11,6 +11,8 @@ argument-hint: '[your video, and who or what goes in]'
 
 # Recast
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "recast"`: the answer leads with what this job reads and names the rest in one line.
+
 Read picsart-video-rules first. One job: one of the user's own videos, with people or things in it
 replaced by the user's pictures. The Recast board checks the video, offers the video models with
 the price, and makes the video itself. You bring it the video, the pictures and who is in the video,

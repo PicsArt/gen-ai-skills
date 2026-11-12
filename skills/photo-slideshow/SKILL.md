@@ -10,6 +10,8 @@ user-invocable: false
 
 # Photo promo / slideshow
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "photo-slideshow"`: the answer leads with what this job reads and names the rest in one line.
+
 Assumes the font asset from picsart_scene_fonts (a `live.fonts` entry), and that picsart_scene_patch returns the patched scene you pass to the next tool.
 
 The most common scene job: N photos, one after another, a transition at each seam, a title.

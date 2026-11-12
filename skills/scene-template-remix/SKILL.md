@@ -10,6 +10,8 @@ user-invocable: false
 
 # Reuse and customize a catalog item
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "scene-template-remix"`: the answer leads with what this job reads and names the rest in one line.
+
 Served checks: `picsart_scene_check_contracts` runs contract records and reusable templates, `picsart_scene_check_motion` runs frame-complete motion records, and `picsart_scene_inspect` pages large sources; the one remaining limit is that pixel records have no automated checker, so inspect full-resolution rendered frames for them.
 
 Keep the requested design; change the smallest unit that meets the brief. A rendered

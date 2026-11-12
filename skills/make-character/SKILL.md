@@ -1,6 +1,6 @@
 ---
 name: make-character
-description: Make one AI character with no film - a person or an animal drawn as one photoreal reference sheet, the canvas's strip (full-body front, side and back, and a large face close-up, in one row), its look picked from Picsart's ready-made characters, a person and an outfit, or the user's own words, approved, then saved to their Picsart Assets where Picsart's canvas finds it too. A character maker for an AI influencer, a mascot or a recurring face. Use when the user wants an AI character, a character sheet or a consistent face of their own, with no story around it. Not for a film's cast (movie-producer), nor for a single picture of someone (generate-media).
+description: Make one AI character with no film - a person or an animal drawn as one photoreal reference sheet, the canvas's strip (full-body front, side and back, and a large face close-up, in one row), its look picked from Picsart's ready-made characters, built from a person with a face, hair, an outfit, accessories and a body, or the user's own words, approved, then saved to their Picsart Assets where Picsart's canvas finds it too. A character maker for an AI influencer, a mascot or a recurring face. Use when the user wants an AI character, a character sheet or a consistent face of their own, with no story around it. Not for a film's cast (movie-producer), nor for a single picture of someone (generate-media).
 metadata:
   uses: film-cast-design
   title: Make a character
@@ -11,6 +11,8 @@ argument-hint: '[who they are, or a photo of them]'
 ---
 
 # Make a character
+
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "make-character"`: the answer leads with what this job reads and names the rest in one line.
 
 Read picsart-video-rules first. One job: one character, with no film, as one approved sheet saved to
 the user's Assets. A film's cast is movie-producer's; a single picture of someone is generate-media's.

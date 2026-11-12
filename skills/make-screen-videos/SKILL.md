@@ -14,6 +14,8 @@ argument-hint: '[screen recording and the video you want]'
 
 # Screen video
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "make-screen-videos"`: the answer leads with what this job reads and names the rest in one line.
+
 A screen recording is mostly waiting, and what it shows is a few pixels of dense UI. The same
 recording can become very different videos: a set of 20-second shorts that each show how easy one
 thing is, a promo that sells, or a tutorial that keeps every step. Which one is the user's to say,

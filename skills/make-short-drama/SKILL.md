@@ -13,6 +13,8 @@ argument-hint: '[series idea or the next episode]'
 
 # Make a short drama
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "make-short-drama"`: the answer leads with what this job reads and names the rest in one line.
+
 Read picsart-video-rules first. Keep one visual world, one series Library and one accepted story
 ledger. Decide on text, stills and sound before buying video: the user watches each episode as a
 voiced animatic, and says yes to it, before its first take is bought. A generated episode is a candidate until

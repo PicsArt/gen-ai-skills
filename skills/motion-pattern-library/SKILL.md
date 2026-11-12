@@ -485,7 +485,7 @@ bar. This lives at the shape-`items` level, which layer presets don't reach, so 
 than a preset. Preview the start, partial stroke and completion; verify the intended path direction.
 
 An ink line that writes on — a signature, a doodle, a character's outline — is the same trim track with a
-tapered stroke (`character-rigging`, "Ink lines"). The taper is laid along the drawn part, so the moving
+tapered stroke (`character-rigging`, `references/rig-act.md` "Ink lines"). The taper is laid along the drawn part, so the moving
 end keeps its point as it writes on.
 
 ## Cartoon fast motion: smears, multiples and speed lines

@@ -13,6 +13,8 @@ argument-hint: '[story idea or script]'
 
 # Short film
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "movie-producer"`: the answer leads with what this job reads and names the rest in one line.
+
 A film is not a long video. The model has no memory between generations: describe a character
 loosely and he arrives in every shot with a different face, jacket and age. Everything here exists
 to keep those people and places consistent. Lock the story, shot list, cast and location references,

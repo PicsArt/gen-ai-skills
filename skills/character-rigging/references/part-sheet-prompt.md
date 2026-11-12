@@ -1,6 +1,6 @@
 # A character picture for a cut-out puppet (drawn as SVG)
 
-Part of [character-rigging](../SKILL.md) "Named SVG cut-outs" and the [cut-out puppet reference](cut-out-puppet.md).
+Part of [rig-build.md](rig-build.md) "Named SVG cut-outs" and the [cut-out puppet reference](cut-out-puppet.md).
 An image model
 (GPT Image) drawing SVG directly gives every part its own group, so the picture needs no vectorizing; `picsart_image_vectorize`
 of a part-sheet PNG stays as the alternative.

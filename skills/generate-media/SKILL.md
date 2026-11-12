@@ -12,6 +12,8 @@ argument-hint: '[what to make or edit]'
 
 # Make or edit an image, a video or audio
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "generate-media"`: the answer leads with what this job reads and names the rest in one line.
+
 Read picsart-video-rules first. One job: the user asks for one piece of media, or one edit of a picture,
 and gets it with no failed call and no surprise charge. A whole video project is another use case:
 when the user wants their footage cut, a screen recording turned into a video, a film or an

@@ -19,7 +19,7 @@ the catalog rig `rig-humanoid` does not fit; when it fits, pose the rig instead
 **A limb is one drawn shape bent by a `bend`** (`deformers` on the shape content: `bend`, `push`,
 `stretch`; see "Bending or denting an outline" in `references/outline-mechanics.md`). A joint dial is the bend's
 `angle`: keyed, or keyed `by` a parameter. An ink-line limb is a stroke with a `taper`, thin at both
-ends and full in the middle ([SKILL.md](../SKILL.md) §0, "Ink lines").
+ends and full in the middle ([rig-act.md](rig-act.md), "Ink lines").
 
 **A torso and neck are one drawing `skin`ned to bone layers** (`spine`, `neck`): the bones are
 empty layers in the chain, keyed or driven by `spineLean` and `headNod`, the arms and head parented

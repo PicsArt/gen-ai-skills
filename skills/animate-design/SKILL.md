@@ -14,6 +14,8 @@ argument-hint: '[Figma link, design or assets]'
 
 # Motion — a static design becomes a motion-designed ad
 
+When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "animate-design"`: the answer leads with what this job reads and names the rest in one line.
+
 The frames are not the video. They are a **design**, and a design is made of **layers**:
 panels, headlines, buttons, images, lists. Motion design animates those *elements* — a
 list scrolls, a headline types on, a card slides in with a stagger, a tap-dot pulses,
