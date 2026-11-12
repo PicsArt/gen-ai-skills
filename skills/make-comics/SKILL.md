@@ -37,22 +37,35 @@ after a creation) is this stage once more: open the console, with `heroImage` wh
 is already known, and treat its next lock as a new setup.
 
 **`picsart_comic_setup` comes first**, before the photos and before a word of story. The console is
-the ASK for everything at once: what to make, a comic (`picsart_comic_create`), a tale
-(`picsart_comic_create_tale`), a video comic or a video tale (`picsart_comic_create_video`, by its
-`style`), a reel (`picsart_comic_create_reel`) or an anime series (`picsart_comic_create_series`),
-and that creation's settings: for the comic the genre (`genre`), the art style (`artStyle`), the
-tone (`tone`), the premise (`premise`) and how many pages (`pageCount`); for the others their own
-look and length, and for a series its story idea (`storyIdea`). It offers the values the Picsart app
-offers, every one a value the tool's schema accepts, with the defaults chosen, so no value is
-written here. One panel, one lock: never a question in the chat for what the console asks. Read the
+the ASK for everything at once, laid out as the Picsart app's menu: a story type (Series, Comic,
+Fairy Tale or Aphorisms) and, under Comic or Fairy Tale, a format (Reel, Video or Book), which
+together name the creation and its tool: a comic book (`picsart_comic_create`), a fairy-tale book
+(`picsart_comic_create_tale`), a comic or fairy-tale video (`picsart_comic_create_video`, by its
+`style`), a comic or fairy-tale reel (`picsart_comic_create_reel`, by its `style`), a series
+(`picsart_comic_create_series`) or an aphorism (`picsart_comic_create_aphorism`), and that
+creation's settings, every field the Picsart app asks: the two people's names (`heroName` and
+`nemesisName`, `companionName` or `secondaryName`), for the comic the genre (`genre`), the art style
+(`artStyle`), the tone (`tone`) and the premise (`premise`), with a `title` and a `plot` (`story` on
+a reel) when the premise is Custom; for the others their own look the same way; for a series the
+cast's names and roles one per line (`characterNames`, `characterDescriptions`), its episode count,
+story idea (`storyIdea`), facts to keep true (`fixedFacts`), genres, one visual style (which carries
+the audience, medium and anime style), a ready-made story type under the Realistic style, moods and
+the launch (`firstEpisodeOnly`: the first episode alone, or the whole series); for an aphorism its
+style and a ready-made quote or the user's own words (`text`, up to 120 characters); and on every
+type but a reel the language, one of the app's 16 by its own name (`language`). A book or a video
+starts at 3 pages and a reel runs 15 seconds, as the app fixes them: the lock carries those counts,
+and more pages come from `picsart_comic_add_page` afterwards. It offers the values the app offers,
+every one a value the tool's schema accepts, with the defaults chosen, so no value is written here. One panel, one lock: never a question in the chat for what the console asks. Read the
 request before you open it (the `picsart-video-rules` skill's Asking): most say the hero and the
 mood in one line ("make me a horror comic").
 
-- Pass `creation` when the words name what to make ("make me a reel"), and what they decide as
+- Pass `creation` when the words name what to make ("make me a reel" is `reel-comic`, "a quote
+  video" is `aphorism`), and what they decide as
   `suggested.selections` under the tool's own input names, one `suggested.why` line each: the
-  genre the words name, the pages when they said a number, a series' story idea when they told
-  one, and the language (`language`) they wrote in when it is not English. Pass only what the
-  words decide; the console's defaults stand otherwise.
+  genre the words name, a series' episode count when they said a number, its story idea when they
+  told one, and the language (`language`, one of the app's 16 by its own name: "Español", "日本語";
+  an English name such as "Spanish" lands on it too) they wrote in when it is not English. Pass
+  only what the words decide; the console's defaults stand otherwise.
 - Pass the hero's photo as `heroImage` when its URL is already known (stage 2), so the console
   shows it. Open the console in full screen where the host supports it.
 - The console is the ASK. On `comic_setup_feedback` (`verdict: "locked"`), its `tool` is the one
@@ -61,16 +74,18 @@ mood in one line ("make me a horror comic").
   lock is the setup's lock; to change it later, open the console again with `current`: the locked
   values with the user's change applied, since the console seeds `current` over `suggested`.
 - A "Custom" kind of story (`premise`, or a tale look's `talePremise`) means the user tells
-  their own story: ask for it only then, in one question, and pass it under the inputs the
-  lock's reply names, which differ by tool and look: the comic's and video comic's `plot`, with
-  a `title`, a `heroName` and a `nemesisName` when they gave them; a tale's `plot` with its
-  `companionName`; a video tale's `talePlot`, `taleTitle` and `taleHeroName`; a reel's `story`
-  with its `secondaryName`. Any other kind of story needs none. Never ask for a story the user
-  did not offer: a comic needs none, and only the series requires one, which the console
-  collects.
-- A narrated quote video, `picsart_comic_create_aphorism`, needs no photo and no console: offer
-  it only when the user asks for words on screen rather than themselves, and take its `text` and
-  `author` in the chat.
+  their own story, which the console asks for under the premise (a title and a plot). When the
+  lock carries the plot, pass it on as it came; when it does not, the lock's reply says so: ask
+  for the story then, in one question, and pass it under the inputs the reply names, which differ
+  by tool and look: the comic's and video comic's `plot` with its `title`; a tale's `plot`; a video
+  tale's `talePlot` and `taleTitle`; a reel's `story`. Any other kind of story needs none. Never ask
+  for a story the user did not offer: a comic needs none, and only the series requires one, which
+  the console collects.
+- A narrated quote video, `picsart_comic_create_aphorism`, needs no photo: it is the console's
+  Aphorisms type, where the user picks a ready-made quote (locked as its `text` and `author`) or
+  writes their own (`text` alone; nobody is asked for an author), and it costs 45 credits, said
+  before the yes. Offer it when the user
+  asks for words on screen rather than themselves.
 
 "Just make it" still opens the console: locking it is one tap, and it is where the defaults are
 said (Asking, rule 6).
@@ -145,12 +160,14 @@ tool's own schema.
 - **A video comic or a video tale**, drawn from the photo and narrated:
   `picsart_comic_create_video`, in the comic or tale `style`; charged per page; its result
   carries `result.url` and `result.videoId`.
-- **A reel**, one short vertical clip, as long as its `durationSeconds` within the schema's bounds:
-  `picsart_comic_create_reel`, with the user's own `story` when they told one and a
+- **A reel**, one short vertical clip of 15 seconds as the console fixes it (the tool's
+  `durationSeconds` takes 4 to 15 in the chat): `picsart_comic_create_reel`, with the user's own
+  `story` when they told one and a
   `secondaryImage` for a second person; charged once; its result carries `result.url` and
   `result.episodeId`.
 - **A narrated quote video**, no photo needed: `picsart_comic_create_aphorism`, with the `text`
-  and its `author`; charged once; its result carries `result.url`.
+  (and a ready-made quote's `author`) as the console locked them; charged once, 45 credits; its result carries
+  `result.url`.
 - **An anime series** of several episodes from a story idea and the characters' photos, as many
   as the schema's `characterImages` allows: `picsart_comic_create_series`, with `storyIdea`,
   `characterImages` and `totalEpisodes`; charged
