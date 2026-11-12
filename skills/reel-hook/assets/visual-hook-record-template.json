@@ -1,0 +1,198 @@
+{
+  "recordVersion": 3,
+  "entryId": null,
+  "source": {
+    "url": null,
+    "creator": null,
+    "observedDate": null,
+    "coverage": null,
+    "audioCoverage": "unreviewed",
+    "durationSeconds": null,
+    "durationBasis": null,
+    "nativeWidth": null,
+    "nativeHeight": null,
+    "fps": null,
+    "sha256": null
+  },
+  "userGuidance": {
+    "goal": null,
+    "fidelityMode": null,
+    "requiredPreservations": [],
+    "allowedChanges": []
+  },
+  "observations": [],
+  "triggers": [
+    {
+      "name": "anticipation",
+      "reference": {
+        "role": "unknown",
+        "cue": null,
+        "evidenceIds": [],
+        "resolution": null
+      },
+      "recommendation": {
+        "role": "undecided",
+        "reason": null,
+        "adaptationIds": []
+      }
+    },
+    {
+      "name": "impossibility",
+      "reference": {
+        "role": "unknown",
+        "cue": null,
+        "evidenceIds": [],
+        "resolution": null
+      },
+      "recommendation": {
+        "role": "undecided",
+        "reason": null,
+        "adaptationIds": []
+      }
+    },
+    {
+      "name": "danger",
+      "reference": {
+        "role": "unknown",
+        "cue": null,
+        "evidenceIds": [],
+        "resolution": null
+      },
+      "recommendation": {
+        "role": "undecided",
+        "reason": null,
+        "adaptationIds": []
+      }
+    }
+  ],
+  "mechanism": {
+    "family": null,
+    "viewerQuestionHypothesis": null,
+    "progression": null,
+    "resolution": null,
+    "productBridge": null
+  },
+  "adaptationMap": [],
+  "fit": {
+    "products": [],
+    "audienceSituations": [],
+    "goals": [],
+    "avoidWhen": []
+  },
+  "production": {
+    "assetsRequired": [],
+    "techniqueHypothesis": null,
+    "continuityRisks": [],
+    "promptPath": null,
+    "readiness": "analysis-only"
+  },
+  "review": {
+    "gaps": [],
+    "performanceEvidence": null,
+    "testHypothesis": null,
+    "generatedOutputs": []
+  },
+  "hook": {
+    "reference": {
+      "type": null,
+      "channels": [],
+      "openingEvent": null,
+      "viewerQuestion": null,
+      "payoff": null,
+      "evidenceIds": []
+    },
+    "recommended": {
+      "type": null,
+      "channels": [],
+      "openingEvent": null,
+      "viewerQuestion": null,
+      "payoff": null,
+      "reason": null
+    },
+    "otherMechanisms": []
+  },
+  "recipe": {
+    "invariants": [],
+    "variableElements": [],
+    "composition": {
+      "subjectPlacement": null,
+      "cameraAndMovement": null,
+      "depthAndScaleCues": null,
+      "layersAndTextSpace": null
+    },
+    "beats": [],
+    "transition": {
+      "type": null,
+      "motivatingVisual": null,
+      "sourceEndState": null,
+      "destinationStartState": null,
+      "continuityLocks": []
+    }
+  },
+  "commercialApplications": [],
+  "soundDesign": {
+    "reference": {
+      "status": "unreviewed",
+      "cues": [],
+      "music": null,
+      "speech": null,
+      "evidenceIds": []
+    },
+    "recommended": {
+      "cues": [],
+      "music": null,
+      "speech": null,
+      "silence": null,
+      "mutedReadability": null
+    }
+  },
+  "promptExamples": [],
+  "samples": [],
+  "libraryTags": {
+    "triggerFamilies": [],
+    "hookTypes": [],
+    "offerTypes": [],
+    "audienceSituations": [],
+    "goals": [],
+    "transitionTypes": [],
+    "productionNeeds": []
+  },
+  "visualPlan": {
+    "familyId": null,
+    "sourceEntryIds": [],
+    "status": "proposed-untested",
+    "anchor": null,
+    "disruption": null,
+    "progression": [],
+    "bridge": null,
+    "payoff": null,
+    "action": null,
+    "productRole": null,
+    "mutedReadability": null,
+    "soundOnRole": null
+  },
+  "referenceIntake": {
+    "state": "unresolved",
+    "productPage": null,
+    "skuVariant": null,
+    "exactBrandName": null,
+    "userDelegatedChoices": [],
+    "missingRequired": [],
+    "bindings": []
+  },
+  "variation": {
+    "parentRecipeId": null,
+    "changedAxis": null,
+    "invariants": [],
+    "hypothesis": null,
+    "comparison": null
+  },
+  "acceptance": {
+    "requiredEvents": [],
+    "identityChecks": [],
+    "transitionChecks": [],
+    "continuousMotionCoverage": "unreviewed",
+    "audioCoverage": "unreviewed",
+    "deviations": []
+  }
+}
