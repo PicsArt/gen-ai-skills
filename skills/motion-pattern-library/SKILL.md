@@ -144,6 +144,11 @@ period explicitly if the intended number of cycles must stay fixed, then recheck
 For text, inspect the available ambient text-animation presets; caption decorations and ordinary
 text layers have different authoring entry points (`scene-animation-reference`).
 
+## A still painted background that lives
+
+Painted tree crowns, grass or water (`mesh:auto` with `motion`), a drifting cloud and birds: read
+[references/painted-background-life.md](references/painted-background-life.md) when a still picture should move.
+
 ## Confetti, sparks and snow
 
 Many small copies of one thing, thrown and falling, are one layer with `particles`, not hand-copied

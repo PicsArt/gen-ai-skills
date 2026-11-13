@@ -9,8 +9,7 @@ Pass `sections` with names from that index, or the ones a skill gives: `easing`,
 then `look:<id>` for that one look in full. Never make a name from a word in the text: `easings`
 and `presets` are refused, and one wrong name fails the whole call. Never pass `["all"]`, because
 the whole document overflows the context; ask for a large section (`effects`, `looks`, `supports`)
-in a call of its own. When a call is refused, its error lists the valid names: take the name from
-there. The default `detail: "brief"` is complete for authoring (fields, types, ranges, enum values, required markers); `detail: "full"` only adds the long descriptions and examples, so ask for it on one entry whose brief row does not answer, never on a catalog or a `schema:<Name>` by habit. A read over about 30K characters is paged: pass its `nextOffset` as `offset` on the same call.
+in a call of its own. A refused call's error lists the valid names: take the name from there. The default `detail: "brief"` is complete for authoring (fields, types, ranges, enums, required markers); `detail: "full"` only adds long descriptions and examples: ask for it on one entry whose brief row does not answer, never on a catalog or `schema:<Name>` by habit. A read over about 30K characters is paged: pass its `nextOffset` as `offset` on the same call.
 
 **Probe a source before sizing around it.** `picsart_media_probe` gives a source's size and
 duration to size a composition, choose `fit`, set clip windows or check that an asset matches the

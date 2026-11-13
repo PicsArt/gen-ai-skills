@@ -68,8 +68,9 @@ The Claude Code package ships eight agents: `critic-roots`, `critic-radical`, `c
 agents (the plugin's name may come before a colon, as `picsart:critic-art`), the host has
 them. Start each with the `Agent` tool by that name, and start the six critics in one message so
 they run in parallel. Each prompt holds only the inputs the quality-review skill names, as file paths in
-the session's scratch directory or as links. Each agent returns its JSON note. When they are not
-in the list (the gen-ai-skills skills, and the Claude apps without the plugin's agents), run each
+the session's scratch directory or as links. Each agent returns its JSON note. The public
+plugins built from this one (gen-ai-skills, Media Studio) ship them too. When they are not in the
+list (another host reading those skills, or the Claude apps without the plugin's agents), run each
 from its brief in the quality-review skill, `references/agent-<name>.md`, as the quality-review skill says.
 
 ## When the upload is not drawn

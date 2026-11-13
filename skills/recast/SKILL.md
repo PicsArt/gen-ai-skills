@@ -86,8 +86,10 @@ The board's answer is `recast_feedback`; read it before the sentence around it.
   `shortfall` is there, say plainly how many versions could not be made (`versions`), or how many
   kept the model's own sound because the original could not be put back (`sound`).
 - **`status: "failed"`:** say in one line where it stopped, from `failedStep`: `words` is the check
-  of what they wrote, `copy` is preparing their video, `make` is making the new video, and `sound` is
-  putting the sound back. The board offers the other models.
+  of what they wrote, `copy` is preparing their video, `make` is making the new video, `sound` is
+  putting the sound back, and `join` is joining a long video's parts into one. When `said` is there,
+  it is the video model's own words on why: say what they mean in plain words, and never guess
+  another cause. Without it, say the cause is not known. The board offers the other models.
 - **`recast_post`:** they pressed Post. Open `picsart_social_post_preview` with that `video` in
   `media` (`[{ "type": "video", "url": <video> }]`), a caption you wrote for it, and as `platforms`
   the ones the user named, else `["instagram", "tiktok"]`: the preview lets them tick others.

@@ -198,7 +198,7 @@ Use cases, the entry points a user asks for:
 | [`edit-footage`](./skills/edit-footage) | Make videos from the user's own footage, or copy a reel's structure onto their script. |
 | [`generate-media`](./skills/generate-media) | Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo. |
 | [`get-started`](./skills/get-started) | Get started with Picsart Video. |
-| [`make-cartoon`](./skills/make-cartoon) | Make a short cartoon clip with a character the user picks or describes. |
+| [`make-cartoon`](./skills/make-cartoon) | Make a short cartoon with a character the user picks or describes. |
 | [`make-character`](./skills/make-character) | Make one AI character with no film. |
 | [`make-comics`](./skills/make-comics) | Turn a photo into a ComicMe creation. |
 | [`make-screen-videos`](./skills/make-screen-videos) | Turn a screen recording of an app or site into videos. |
