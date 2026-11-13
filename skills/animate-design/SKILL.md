@@ -183,8 +183,9 @@ Two families on this plugin's `picsart` connector, and they are wired differentl
   `docs/widget-specs/scene-editor.md`.
 
 **Show the motion in the scene editor — don't re-export a video each time.** After authoring
-a pair, open `picsart_scene_editor` **on the whole scene built so far** (title it for the current
-pair, e.g. "f3→f4", so the designer knows where to look), so they watch the pair play **in context**
+a pair, open `picsart_scene_editor` **on the whole scene built so far**, with `purpose: "motion"`
+(title it for the current pair, e.g. "f3→f4", so the designer knows where to look), so they watch
+the pair play **in context**, can move or resize an element by hand, add an image,
 and can scrub straight to it — never a 2-frame sub-scene. That panel is the viewing surface, free,
 and cheaper/faster than exporting
 just to see a result. It **renders no file** — do not look for a `videoUrl` or save anything to

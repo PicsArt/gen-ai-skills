@@ -89,8 +89,8 @@ bear declares `blink`, `aa`, `happy` and its body controls this way.
 captions `transcript` in `params`) into one track per viseme control the model declares and merges
 them into the layer's `content.parameters`. The lips shut on every m, b and p, so a model's `aa`..`oh`
 all at 0 must read as closed lips. Parameter tracks are layer-local: a character played as several
-layers (one per clip) gets one call per layer, with that layer's span as `start`/`end`, so the mouth
-carries across the cuts. A model with no mouth shape keys cannot lip-sync; a face texture slot (below)
+layers (one per clip) gets one call per layer, each with the same `start` (the scene second at which the
+transcript's 0 plays) and its own `end`, so the mouth carries across the cuts. `audio` (the id of the scene's audio layer carrying the voice) sets `start`, so do not pass both, and the voice's pauses are measured so the mouth closes in them; `silences` (spans in transcript seconds) replace that measurement. A model with no mouth shape keys cannot lip-sync; a face texture slot (below)
 can. The 2D cartoon rigs (`scene://rig-humanoid`, `scene://rig-face`) use the same names.
 
 ## A car without bones

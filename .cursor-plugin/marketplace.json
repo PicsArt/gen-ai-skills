@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "The official Picsart plugin: generate and edit images, video and audio with Picsart AI, and turn your recordings, designs and ideas into finished short videos you review before export.",
-    "version": "0.5.0"
+    "version": "0.6.0"
   },
   "plugins": [
     {
