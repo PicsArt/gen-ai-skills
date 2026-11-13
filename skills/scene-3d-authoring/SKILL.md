@@ -1,6 +1,6 @@
 ---
 name: scene-3d-authoring
-description: Build a 3D scene (a composition whose space is 3d) — models, camera, lighting presets, floor, groups and parenting, model parameters, 3D motion presets (drop_in, fly_in_arc, snap_settle, bounce, idle_bob, wiggle, turntable; camera orbit, dolly, push_in, crane, whip_pan) — then render and measure it. Use when making a product or toy showcase, a build-up sequence of parts, an object that builds itself and then moves (drives, walks, unfolds), a turntable, a 3D title or any 3D document, or when 3D motion lands wrong, sinks into the floor or fails to evaluate. Not for a 2D cartoon character, face or mascot (shapes and the cartoon rig templates, in character-rigging), nor for flat layers in depth (photo cards that flip, a camera orbiting cards or panels) — that is a 2D scene with layer depth and the composition camera, in scene-animation-reference.
+description: Build a 3D scene (a composition whose space is 3d) — models (imported, ready-made or built from your own Blender script), camera, lighting presets, floor, groups and parenting, model parameters, 3D motion presets (drop_in, fly_in_arc, snap_settle, bounce, idle_bob, wiggle, turntable; camera orbit, dolly, push_in, crane, whip_pan) — then render and measure it. Use when making a product or toy showcase, a build-up sequence of parts, an object that builds itself and then moves (drives, walks, unfolds), a turntable, a 3D title or any 3D document, or when 3D motion lands wrong, sinks into the floor or fails to evaluate. Not for a 2D cartoon character, face or mascot (shapes and the cartoon rig templates, in character-rigging), nor for flat layers in depth (photo cards that flip, a camera orbiting cards or panels) — that is a 2D scene with layer depth and the composition camera, in scene-animation-reference.
 metadata:
   category: authoring
   version: '1.1'
@@ -74,13 +74,11 @@ A model is a GLB `model` asset at a public https URL. Asset keys are identifiers
 - **Origin at the base.** The origin is what `position` places, what a turn pivots on and
   what a squash flattens toward. With the origin at the centre of the base the object stands on
   the floor at `[x, 0, z]` and squashes onto it. A model whose origin is elsewhere is lifted by its
-  height (the import report gives its bounds), or fixed in the file it came from.
+  height (the import and build reports give `bounds` as min, max and size in scene units, and `clipSeconds`), or fixed in the file it came from.
 - **Bring a model in.** `picsart_scene_import_model` takes a GLB, a glTF (buffers and images
   embedded as data: URIs) or a binary FBX from a public https URL, Draco or meshopt compressed
   included, and returns one uncompressed GLB plus a report of its nodes, bones, morph targets,
-  materials and clips, with the model parameters it proposes. Reference the `url` it returns (the
-  Drive copy when `driveUid` comes back; an `expiring` one must be re-imported before a scene
-  depends on it). `expose` picks the parameter kinds (`bones`, `morphs`, `materials`, `clips`);
+  materials and clips, with the model parameters it proposes. `expose` picks the parameter kinds (`bones`, `morphs`, `materials`, `clips`);
   a bone a clip already turns is proposed only when `bones` is named, so a walk clip still walks.
   Look at it with `picsart_scene_preview_model` (a still or a turntable) before building on it.
 - **A ready-made model.** `picsart_scene_build_model` builds one GLB: `character` (a rigged toy
@@ -89,6 +87,22 @@ A model is a GLB `model` asset at a public https URL. Asset keys are identifiers
   bunting, balloons, sky; the same arguments build the same model). `sky` is an unlit dome: give that
   layer `castShadow: false`. Build the far set (sky, hills, clouds) and the near one (trees, fence,
   flowers) as two models.
+- **A model nothing else has: write it.** When no import fits (a train, a chair, a logo in relief, a
+  machine part), `picsart_scene_build_model` with `script` runs your own Blender Python in an empty
+  scene and returns what it built as one GLB, like the other builds. There is no cap on
+  detail, only the build's time (about 600 s on one core), memory (12 GB) and disk (4 GB): a model that holds up close is a few hundred thousand to a million triangles, built in
+  parts with bmesh, turned profiles, bevels, booleans and real PBR materials. The script uses
+  `bpy`, `bmesh`, `math`, `mathutils` and `random` only and must not render, import or export.
+  How to plan, build and check such a model:
+  [references/model-from-script.md](references/model-from-script.md).
+- **A built or imported model is saved only when you save it.** Import and every GLB build answer
+  with the GLB `url` (on expiring storage) and the `jobId`; nothing goes to your scene library. In
+  this 3D scene, place `url` as a `model` asset and set its parameters and actions on that layer.
+  To keep it, or to use it in a 2D scene, call `picsart_scene_library_save` with `jobId` and a
+  `name`: it saves one model scene (kind `model`) that declares the model's parameters as its own,
+  and its `sceneUrl` goes in a 2D scene as a scene asset or `scene_ref`. Saving copies the GLB to
+  longer-lived storage (about four weeks, not permanent) and the saved scene carries that URL, so a
+  saved model outlives the expiring `url` of the build. Never re-upload the GLB to Drive.
 - **Materials.** `content.materials` overrides by material name, `"*"` for all of them.
 - **Model parameters.** A knob the model declares (a colour that makes the studs glow, a bone,
   a shape key) is set per layer through `content.parameters` — a constant or a track, so it can flash

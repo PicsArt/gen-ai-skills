@@ -173,8 +173,14 @@ by the same ×1.25 (shorten the vertical ones by ×0.8) so the widened body stay
   rig layer and in `params` the transcript (a `captions` `transcript`, as transcription returns it) and
   the face's `visemes`; it merges one track per control into the rig layer's `content.parameters`. It opens a syllable per vowel group, leads the sound by 50 ms,
   dips rather than shuts inside fast words, and closes on rests and on every m, b and p (60 ms shut up
-  to the release; `closures` lists them). `speaker` picks one singer's segments, `gain` scales the
-  opening, and `start`/`end` cut and rebase the tracks for a layer that plays only part of the song.
+  to the release; `closures` lists them). `params`: `transcript` the word timings in the voice's own
+  seconds; `visemes` the face's mouth controls; `start` the scene second at which the transcript's 0
+  plays (the voice layer's `start`, less its `trim.in`; default 0), so a word at 2.45 s in the
+  transcript keys at `start` + 2.45 s on the scene clock; `audio` the id of the scene's audio layer carrying the
+  voice: it sets `start` (do not pass both), and the voice's pauses are measured so the mouth closes in them;
+  `silences` spans in transcript seconds that replace that measurement; `analysisJob` the job id a refusal names
+  when that measurement is still running, passed verbatim to read it instead of starting another; `end` the scene second where keying stops;
+  `speaker` picks one singer's segments, `gain` scales the opening.
 - Replacement drawings: pass `mouthShapes` mapping each drawing's name to its number on a `mouth`
   dial (`{"rest": 0, "aa": 1, "oh": 2}`) and a `mouth` track of `step` keys, one drawing per frame,
   joins the others. A viseme without a drawing takes its nearest one.

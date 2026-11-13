@@ -186,7 +186,7 @@ drops the stages and their gates.
 Call `picsart_scene_editor` with `sceneUrl` when you hold the scene as a URL, otherwise with
 `scene` set to the scene document itself, as a parsed object, never a string. Before you open it:
 
-- expand every `scene_ref` layer with `picsart_scene_expand_ref`;
+- open the scene in the editor as it is. A scene_ref stays a reference. Change a placed scene through its parameters at the call site. Expand a reference (picsart_scene_expand_ref) only when the user asks to edit inside it; if the tool refuses (detach_reads_parameters, detach_plays_actions), keep the reference and say why;
 - make sure every media URL in the scene is Picsart-hosted (see Asset URLs);
 - run the use case's check (see Evaluation).
 

@@ -435,6 +435,8 @@ composition, `scene_ref` or track has its own camera and is drawn as ONE flat ca
 Camera moves ship as motion presets: `orbit`, `dolly` and `push_in`, each `appliesTo: ["camera"]`.
 `picsart_scene_apply_preset` with `motionPreset:<id>` and no `layerId` keys them onto the root composition's camera as editable
 tracks; their parameters are listed under `supports.motionPresets` in `picsart_scene_capabilities`.
+`push_in` with `centerX`/`centerY` (shares of the frame) frames a point: the view ends on it, centred,
+at `zoom`; it moves the pivot to where that point stays put as the view scales, so it needs a zoom other than 1.
 
 Depth is verified by measurement. `picsart_scene_query_layout` reports each projected layer's `quad`, `depth`
 (eye distance, larger is farther) and `zIndex` (this frame's paint order). In `picsart_scene_lint_layout`, a

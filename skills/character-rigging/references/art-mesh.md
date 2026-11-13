@@ -24,7 +24,8 @@ A layer's `mesh` draws its content over triangles, so a picture with no outline 
   At rest it draws exactly the plain layer.
 - **Mesh from transparency → `picsart_scene_apply_preset` with `preset` `mesh:auto`.** On a cut-out image
   layer it writes `vertices` + `triangles` that follow the visible outline, holes kept, into its `mesh`
-  (`params`: `spacing`, `margin`); then move outline points to bend.
+  (`params`: `spacing`, `margin`, and `motion` for a painted background that sways: see the
+  motion-pattern-library's painted-background reference); then move outline points to bend.
 
 The picture bends where a vertex's `point` differs from its `uv`. A `uv` outside the content shows
 nothing there, so a triangle can crop as well as bend.

@@ -16,10 +16,31 @@ For motion design we always open a **scene document**, not clips:
 ```ts
 picsart_scene_editor({
   scene:  <the WHOLE scene built so far — the parsed JSON object, never a URL or string>,
+  purpose: "motion",                 // ALWAYS for motion design — the motion tool set, see below
   title:  "f2 → f3",                 // heading — names the pair under review
   notes:  "Tell me what to change."  // one line under the title
 })
 ```
+
+**Always pass `purpose: "motion"`.** It gives the designer the motion tools and hides the footage
+tools (trim, split, speed and the rest), which have nothing to act on in a scene with no video.
+Left out, a scene with no video in it still opens as motion, but say it: a scene that carries a
+video layer would otherwise open as a cut.
+
+## What the designer can do in the editor
+
+Besides commenting, the designer edits the scene by hand, and the edit comes back in `documentUrl`:
+
+- **Transform** — pick any element on the picture, drag it to move it, drag a corner to resize it.
+  The edit is **for the moment the playhead is on**: on an animated element it changes the keyframe
+  at that moment, or adds one there, and the other keyframes keep their values, so the path now
+  passes through the new point. An element with no position or scale keyframes moves or resizes
+  for its whole span.
+- **Add image** — upload a picture, or pick one from their saved assets or Drive. It arrives as a
+  new top-level `media` layer over an `image` asset, drawn above everything, with no motion.
+
+So an edited document can hold keyframes you did not write and a layer you did not make. See
+"Reading the designer's own edits" below for what to do with them.
 
 **Open on the whole scene built so far, positioned at the current pair — not a 2-frame sub-scene.**
 The editor plays a timeline with a playhead, so the whole scene lets the designer watch the pair
@@ -31,10 +52,10 @@ yet). This matches the skill's rule that a shown result is always the reel, neve
   `documentUrl` — so the document is not written out again; otherwise pass `scene`. `scene` takes
   precedence over `sceneUrl`, `media` and `videoUrl` (`media`/`videoUrl` are the film/clip path —
   not ours).
-- **Expand any `scene_ref` layer first** (`picsart_scene_expand_ref`, or build with
-  `picsart_scene_apply_template` mode `bootstrap`) — the engine resolves `assets[]` and
-  `track` layers itself, but not a template reference, and rejects a scene it can't open, naming
-  each skipped layer.
+- **Open the scene as it is.** A `scene_ref` stays a reference; change a placed scene through its
+  parameters at the call site, and expand it (`picsart_scene_expand_ref`) only when the user asks
+  to edit inside it. The engine resolves `assets[]` and `track` layers itself, and rejects a scene
+  it can't open, naming each skipped layer.
 - A **sealed** document is rejected, not repaired. Author/edit as an open scene.
 - Every layer kind in the scene must be one the widget's engine build knows — a kind newer than
   that build boots to *"content kind X has no component"* (see `MOTION-TROUBLESHOOTING.md`).
@@ -102,6 +123,13 @@ Sent when the designer files a verdict:
   that was the old inspector; motion is authored by you and shown here to be judged.)
 - **On `needs_changes`**, apply each comment (a pin's `instruction`, a stretch's `text`) to
   `documentUrl` via `patch_scene`, then reopen the editor on the new scene.
+- **Reading the designer's own edits** (`edited: true`): the positions, sizes and keyframes in
+  `documentUrl` are the designer's decision. Build on them; never put an element back where your
+  copy had it, and never drop a keyframe or a layer because you did not author it. A layer that is
+  new to you is an image they added: keep it where they placed it, record it in `motion.json` as an
+  element of that frame, and ask what it should do only if no comment says. If a comment and a
+  hand edit disagree about the same element, the comment is the newer intent: apply it on top of
+  the edited document.
 - **Never re-export to "show" a result** — the editor already plays the scene live and free.
   Reserve `picsart_scene_export` for the final deliverable and the error fallback.
 

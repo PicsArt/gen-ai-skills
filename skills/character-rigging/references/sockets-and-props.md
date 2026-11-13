@@ -94,16 +94,19 @@ Set `held` and `heldBy` by merging them into the rig layer's `content.parameters
   from the side or three-quarter reaches the floor about one hand in front of its toes at full crouch and bow (`hipsRaise` −3,
   `spineLean` 3.5); facing the camera it reaches only its shins, so stand the prop on something there. Walk or carry on with `held`
   as usual.
-- **One character throws or hands the prop to another:** `picsart_scene_apply_preset` with `motionPreset:pass_prop` on the giver,
-  `{ "to": "<receiver layer>", "release": 1.2 }` (a throw: a wind-up, an arc `height` px high over a `flight` of 0.6 s, `spin`
-  turns) or `"style": "hand"` (both hands meet between the two, a flat 0.2 s pass). The giver's held copy steps off as the next copy
-  steps on (a flight layer between the grips, then the receiver's held copy in its `side` hand), so exactly one copy shows on every
-  frame. A reach on each hand's grip carries the arms, taking the larger of its mix and the hand's `HandIk`; apply it again on the
-  receiver to pass the prop back or on (each hand's `<layer>_<side>Reach` marker keeps its passes in the first line of its
-  expression). Stand the two close enough for a hand-over: each hand reaches about 1.3 head-to-chest lengths in front of its chest;
-  facing the camera, hand over with the hands nearer each other (the left kid's `left`). Pass round props: a mirrored character
-  (`scale` x negative) draws the prop mirrored. For a prop that flies in from the stage, step the held clip's opacity from 0 to 1 at
-  the contact frame, where the flying layer ends.
+- **One character hands or throws the prop to another:** `picsart_scene_apply_preset` with `motionPreset:pass_prop` on the giver,
+  `{ "to": "<receiver layer>", "release": 1.2 }` (a hand-over, the default: both near hands meet between the two at chest
+  height and hold the prop together for `flight` seconds, then the giver lets go and the receiver keeps it at its chest until
+  its next action) or `"style": "toss"` (a wind-up, an arc `height` px high over a `flight` of 0.6 s, `spin` turns). The giver's
+  held copy steps off as the next copy steps on (a flight layer between the grips, then the receiver's held copy in its `side`
+  hand), so exactly one copy shows on every frame. A reach on each hand's grip carries the arms, taking the larger of its mix and
+  the hand's `HandIk`; the receiver's next gesture eases that reach off. Apply it again on the receiver to pass the prop back or on
+  (each hand's `<layer>_<side>Reach` marker records its passes in `content.propPasses`). Stand the two close enough for a
+  hand-over: a pass whose hands cannot meet is refused with `prop_hands_apart`, naming how many px closer to step, and one whose
+  faces overlap where the hands meet (hair may touch) with `prop_heads_touch`, naming how many px farther apart to stand (a rig
+  whose arms are too short for both passes `style: "toss"`); facing the camera, hand over with the hands nearer each other (the
+  left kid's `left`). Pass round props: a mirrored character (`scale` x negative) draws the prop mirrored. For a prop that flies
+  in from the stage, step the held clip's opacity from 0 to 1 at the contact frame, where the flying layer ends.
 - A hand that carries the prop does not read its `HandToHeld`. `HandToHeld` turns the arm's IK on at least that much, so leave
   `<side>HandIk` at 0. The prop's animations, looks and effects ride along.
 - A rig built from SVG parts holds a prop the same way, with `heldBy` `right`, `left`, `chest` or `none` (no `mouth`): the prop sits over the torso and under the near arm and hand. Read its `heldBy` enum for the carriers its sheet gives it.
