@@ -28,6 +28,9 @@ with only `in` is a `missing_field` error. Mute a recording's own track (`muted:
 content) unless its sound is being kept. **If the scene schema ever lists no audio
 layer, say so and stop** — do not export a silent video and do not invent a mix.
 
+`animations.volume` is a percent, 0–100 (100 is full level), so `0.8` is near silent
+(`volume_near_silent`).
+
 ## Fonts
 
 **Fonts are declared assets.** Declare the font once in `assets` (`{ id, type: "font", uri }`) and
@@ -47,6 +50,10 @@ will do. For accents or another script (Cyrillic, Greek, Arabic, Devanagari, Chi
 Korean …), prefer a face whose name names that script, or search by the name of a family made for
 it. Then prove it on the first frame that carries the rarest characters; if any is missing, pick
 another face, build again, and tell the user which face you used.
+
+## Layer order
+
+Layers paint in list order: the last layer is on top. (A 3D scene has no paint order; depth decides.)
 
 ## Overlays
 

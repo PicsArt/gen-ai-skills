@@ -36,6 +36,8 @@ further, and check a `picsart_scene_contact_sheet` for the hand against the head
   half-step out of the rest pose and ends with the half-step back, so the layer carries `N` × `stride`
   (the half-steps count as one of the `N`); `from` `walking` (the default) starts on the first walking pose
   and adds the closing half-step. Both feet are planted whenever neither is lifted, in the half-steps too.
+  To walk to a mark, set `distance` (rig px) instead of `steps`: it takes the whole steps nearest at about
+  `stride` and adjusts the stride so the walk stops on the mark.
   Pitfall: never settle the rig by hand after a `steps` walk (a key on the same parameters is a second
   writer, and pops at the stop); the arms take 0.15 s longer than the feet to come to rest. Use a fresh
   `walk_cycle` for the next walk, `start` after the action. `steps` with `travel` `forward` needs the same
@@ -66,7 +68,7 @@ further, and check a `picsart_scene_contact_sheet` for the hand against the head
   `talk` (head nods, brow lifts and hand gestures on beats; the mouth is the visemes', keyed apart),
   `walk` (`walk_cycle` from a half step on the key, closing the feet with a step when it stops, so no
   planted foot slides; `stepDuration`, `stride`, `lift`, `armSwing`, `bob`, `lean`, `travel` as
-  `walk_cycle`'s). Its text parameter `<layer id>Action` selects a preset command; the `action` field in
+  `walk_cycle`'s), `hold` (still, no weight shift), `lean` (forward from the hips), `nod`, `lookUp`. Its text parameter `<layer id>Action` selects a preset command; the `action` field in
   `content.animation` selects a named action from the rig document. Any other text plays `idle`.
   Each switch crossfades over `fade` (0.2 s), longer for a joint with further to go, what was playing carrying on under it, the forearm, hand and head
   trailing by 2 frames or more:

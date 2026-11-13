@@ -10,6 +10,8 @@ Describe the template's actual parameter types first. A list of labels is not a 
 Use supported parameters for ordinary edits; bootstrap/inline an expand-only starter, or expand
 the intended reusable instance before structural edits. Inspect the result and patch returned
 addresses, keeping an original revision.
+A clip shorthand `{ assetId, duration }` takes its kind from the asset's `type`: a `scene` asset binds
+a `scene_ref` clip, any other a `media` clip.
 
 Identify the item owner, replaceable content, selection/decoration, and their geometry driver.
 Put new media inside the existing item container while retaining its bounds, placement and clock.

@@ -17,7 +17,7 @@ attached context.
 
 Full contract: `docs/widget-specs/scene-editor.md` (the `picsart_scene_editor` widget —
 the pair-review surface; **we always open it on a scene document — by `sceneUrl`, or inline as
-`scene` — never video/media**). Shape:
+`scene` — never video/media, and always with `purpose: "motion"`**). Shape:
 
 ```json
 {
@@ -48,6 +48,12 @@ the pair-review surface; **we always open it on a scene document — by `sceneUr
 - **Both comment sets absent on `needs_changes`** = they edited the scene without saying anything
   more (Submit needs an edit or a comment) → their document is the answer. Absent on `approved` is
   normal.
+- **What a hand edit looks like** (`edited: true`): the designer moved or resized elements with the
+  editor's Transform tool, or added an image. A move or resize is written for the moment the
+  playhead was on, so an animated element gains or changes ONE keyframe and a still one changes its
+  static `transform`; an added image is a new top-level `media` layer above the rest. Keep all of
+  it: build on `documentUrl`, never restore your own positions, and treat a layer you did not make
+  as theirs (full rule: `docs/widget-specs/scene-editor.md`, *Model protocol*).
 - **It renders NOTHING — there is no `videoUrl`.** Do not look for a file, claim a save, or save to
   Drive from this reply. Export with `picsart_scene_export` only when the designer wants a file.
   (`generalComment` is legacy and typically absent — read the comment arrays.)
