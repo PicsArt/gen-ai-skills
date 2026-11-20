@@ -19,9 +19,11 @@ for the one bar the story is about**; a single deeper grey `#8b94a1` marks the a
 
 - **Grow from the baseline:** each bar's length keys from 0 to its value over 0.7 s with an ease-out
   (`[0.2, 0.7, 0.2, 1]`), 0.12 s apart; anchor at the baseline so the base never moves.
-- **Numbers follow:** each label fades in and rises 8 px as its bar finishes. A counter that ticks up is a gap
-  today, so key the label's final value only.
-- **Pick the story:** after all bars land, the others fade to a lighter grey and the story bar turns red with a
+- **Numbers follow:** each label rises 8 px out of a clip (`mask.clip`) as its bar finishes, and its number counts up with the bar: one text
+  layer whose `text` is an expression (`mp.formatNumber` over the bar's own progress), in a face with tabular
+  figures so the digits do not jitter. See the counting-text pattern in
+  the `motion-pattern-library` skill.
+- **Pick the story:** after all bars land, the others shift to a lighter grey and the story bar turns red with a
   small scale pulse (`[0.4, 1.12, 0.5, 1]`).
 - **Average line** draws with `trim` last.
 - Cued layers use `timeMode: "layer"`.
@@ -47,6 +49,9 @@ numbers. Check the final frame with `picsart_scene_query_layout` for overlaps.
 
 - **Do** sort bars by value unless the categories have a natural order.
 - **Don't** use 3D bars, gradients, or truncated axes.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Arrivals: axis and gridlines draw on, bars grow from the baseline, the average line draws on with `trim`; value labels rise out of a clip as their bar finishes (no fade); title, subtitle and source line are in frame from the first frame; the only transition is a hard cut.
+  - True data: bar lengths, tip labels, the counting text and the average line all come from one data array in the script; the average is the mean of those bars, one bar is one category (the unit stated once in the subtitle), and the source line stays in frame from the first bar to the last frame; check with `picsart_scene_query_layout` as above.
 
 ## Originality guard
 
@@ -57,3 +62,5 @@ colours together, or a real report's figure. The one red story bar on a grey fie
 
 The orders-dataviz film (axis and grid drawing, bars growing in turn, values on tips, one bar picked out in red,
 an average line).
+
+**Not proven:** the label rise out of a clip was shown beside one bar, not on a full chart.

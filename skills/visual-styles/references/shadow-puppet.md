@@ -73,6 +73,10 @@ front wave); a jointed arm is a group with `anchor` and `position` at the should
 
 - **Do** let the lamp or paper carry the colour.
 - **Don't** add a second shape colour, an outline, or a drawn sky on the screen.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Rate split: puppets and idle pieces step on twos in the nested composition; the lamp flicker and the vignette stay at the root rate on the outer scene.
+  - Height is shadow: screen variant, the silhouette is the shadow and nothing is cast under it, with the lamp on one fixed side; red variant, the soft shadow stays thin at rest and grows to about `offset [8, 12]`, `blur 12` during the unfold, back to `[3, 5]`, `5` on the last key (ours, tune by render).
+  - Stop time (optional): freeze on the key beat by ending the puppets' keys at that time in their nested composition while the lamp flicker keeps its keys.
 
 ## On a part sheet
 

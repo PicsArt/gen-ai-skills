@@ -3,7 +3,10 @@
 A short animated tale of several scenes: a few rigged characters, painted sets, props, narration and
 voices. This is the order of work and the rules that keep the scenes one film. Characters are built as
 [rig-build.md](rig-build.md) and [cut-out-puppet.md](cut-out-puppet.md) describe and must pass
-[character-rules.md](character-rules.md). The join is `large-scene-assembly`'s "A film is a root of
+[character-rules.md](character-rules.md).
+A character or a set piece cut from one picture with `picsart_scene_cut_parts`: read "The first call" in
+[cut-from-one-picture.md](cut-from-one-picture.md) before the first call, and follow it.
+The join is `large-scene-assembly`'s "A film is a root of
 shots that share saved rigs" (`picsart_scene_recipe` `{name: "large-scene-assembly"}`).
 Voices are cast as the `voice-over-generation` skill says, and music is laid as `background-music` says.
 

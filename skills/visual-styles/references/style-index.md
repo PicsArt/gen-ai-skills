@@ -55,6 +55,7 @@ planned; an empty cell takes the defaults in [the film flow](film-flow.md), and 
 | `comic-panels` | Comic panels | Pop & Print | graphic |  |  |  |  | tinted dotted panels, balloons, a story across three panels | https://pcdn.picsart.com/templates-cdn/f49d3ddf-1bea-4b36-892e-bca4d65e6339.mp4 |
 | `silkscreen` | Silkscreen | Pop & Print | graphic |  |  |  |  | two inks multiply, off-register plates, stipple edges | https://pcdn.picsart.com/templates-cdn/4568e9e6-cff5-4845-a49d-3196dd3cd945.mp4 |
 | `riso-overprint` | Riso overprint | Pop & Print | graphic |  |  |  |  | pink and blue overprint, speckled edges, stepped misregistration | https://pcdn.picsart.com/templates-cdn/d847bca8-62a5-4b98-92d9-65b5263250f5.mp4 |
+| `print-dossier` | Print dossier | Pop & Print | graphic |  |  |  |  | an archive sheet toned in dots, two spot inks overprinting, tabs, a reference line and a red stamp that slams in | https://pcdn.picsart.com/templates-cdn/cf53b3ab-f3c2-4a0d-98c6-d48c77563fdd.mp4 |
 | `one-bit-dither` | One-bit dither | Retro & Neon | graphic |  |  |  |  | greys drawn first, then noise and levels give a dither | https://pcdn.picsart.com/templates-cdn/576e5db2-7891-460e-beab-b30b73c40677.mp4 |
 | `neon-tubes` | Neon tubes | Retro & Neon | graphic |  |  |  |  | white-core tubes, glow, stuttering flicker, a pink cat | https://pcdn.picsart.com/templates-cdn/ffd3ede1-e032-43bf-bc60-d436d6240d3c.mp4 |
 | `synthwave` | Synthwave | Retro & Neon | graphic |  |  |  |  | striped sun, neon grid rolling toward you, wire mountains, chrome title | https://pcdn.picsart.com/templates-cdn/750acd0a-b541-4850-a10a-e6f7d74e06fa.mp4 |
@@ -63,6 +64,8 @@ planned; an empty cell takes the defaults in [the film flow](film-flow.md), and 
 | `firefly-night` | Firefly night | Retro & Neon | graphic |  |  |  |  | particle fireflies, one glow, hills and foreground blades | https://pcdn.picsart.com/templates-cdn/834f009c-73be-4986-a60c-a4db9d35e34e.mp4 |
 | `chalkboard` | Chalkboard | Ink & Sketch | graphic |  |  |  |  | chalk strokes with stipple, outlines only, handwritten labels | https://pcdn.picsart.com/templates-cdn/824ab049-e4ec-43c4-aa31-0d4538348ae0.mp4 |
 | `pen-plotter` | Pen plotter | Ink & Sketch | graphic |  |  |  |  | one ink, hatch by repeater, clipped passes, drawn pass by pass | https://pcdn.picsart.com/templates-cdn/ca753dde-f585-4a3f-b1a3-6138e9c64607.mp4 |
+| `paper-map-comic` | Paper map comic | Paper, Clay & Craft | graphic |  |  |  |  | a comic page of cut-paper countries, a lighter patch slapped over a border, a stamp, panels that slide, a paper puppet with a bubble | https://pcdn.picsart.com/templates-cdn/d0b0a425-c945-4be0-ba61-229ec7c4d72a.mp4 |
+| `layered-lightbox` | Layered lightbox | Paper, Clay & Craft | graphic |  |  |  |  | paper sheets darker toward the front over a bright back glow, soft cast shadows, warm windows, a dolly that separates the sheets | https://pcdn.picsart.com/templates-cdn/0434df63-0b9d-4734-b338-e911e859e4d4.mp4 |
 | `paper-fold` | Paper fold | Paper, Clay & Craft | graphic |  |  |  |  | hinged flaps, perspective turn, motifs revealed edge-on | https://pcdn.picsart.com/templates-cdn/c7a7ed29-5f73-45f4-82b4-6b53389a70ef.mp4 |
 | `kinetic-type` | Kinetic typography | Pop & Print | graphic |  |  |  |  | one word per beat, flipping palettes, punch zoom, a stacked lockup | https://pcdn.picsart.com/templates-cdn/88c001d1-9a51-4aba-88a7-ee01793f8a06.mp4 |
 | `space-explainer` | Space explainer | Explainers & Data | graphic |  |  |  |  | navy sky, ringed planet, one red rocket, path-following craft | https://pcdn.picsart.com/templates-cdn/bf3970f8-1a87-492d-a1c8-70a140fb9df7.mp4 |
@@ -77,6 +80,7 @@ planned; an empty cell takes the defaults in [the film flow](film-flow.md), and 
 | `data-bars` | Infographic bars | Explainers & Data | graphic |  |  |  |  | grid, grey bars, one red story bar, values on tips, average line | https://pcdn.picsart.com/templates-cdn/c62f9864-0c4b-420d-ada0-7ff1b682da36.mp4 |
 | `spreadsheet` | Spreadsheet | Explainers & Data | graphic |  |  |  |  | light grid, green selection, formula bar, mono type | https://pcdn.picsart.com/templates-cdn/d4d66259-05c2-48e0-870e-2c57226fcc74.mp4 |
 | `sketchnote` | Sketchnote | Ink & Sketch | graphic |  |  |  |  | wobbly ink line, handwriting, line boil, yellow highlighter | https://pcdn.picsart.com/templates-cdn/ca7fcd24-9354-446b-835f-da784e1c841b.mp4 |
+| `one-pen-marker` | One pen marker | Ink & Sketch | graphic |  |  |  |  | one marker on blank sheets: black for structure, blue for the facts, red for the question and answer, camera moves between sheets | https://pcdn.picsart.com/templates-cdn/8b81b202-d8f0-47f6-98fe-00450115ca94.mp4 |
 | `telestrator` | Telestrator | Screen & Broadcast | graphic |  |  |  |  | striped pitch, marker yellow, pulse ring, dashed run line | https://pcdn.picsart.com/templates-cdn/6d6756f6-50ae-4e7d-b70e-952f794f7c05.mp4 |
 | `news-package` | News package | Screen & Broadcast | graphic |  |  |  |  | navy and white bars, red live badge, looping ticker, safe margins | https://pcdn.picsart.com/templates-cdn/1a53ef55-3caa-431a-b92e-40db850a7b31.mp4 |
 | `gameshow-countdown` | Gameshow countdown | Screen & Broadcast | graphic |  |  |  |  | pink ring, chasing bulbs, one text layer per second, gold answer | https://pcdn.picsart.com/templates-cdn/e3a80359-0d31-4b2c-9cd2-fbf74ef42657.mp4 |
@@ -89,6 +93,7 @@ planned; an empty cell takes the defaults in [the film flow](film-flow.md), and 
 | `audio-ring` | Audio ring | Screen & Broadcast | graphic |  |  |  |  | cyan to violet ring, beat pulse, drifting particles, no audio input | https://pcdn.picsart.com/templates-cdn/8e950347-e6a3-43e4-944c-901c59e5ed03.mp4 |
 | `mosaic-reveal` | Mosaic reveal | Retro & Neon | graphic |  |  |  |  | coarse grid, ripple start times, flip to picture, yellow origin | https://pcdn.picsart.com/templates-cdn/4750f3db-3738-4090-b5d9-570fc3e8db63.mp4 |
 | `math-explainer` | Math explainer | Explainers & Data | graphic |  |  |  |  | dark board, blue curve, serif equations, yellow result | https://pcdn.picsart.com/templates-cdn/81bc6caf-d551-44f9-a863-f9282e5d91a5.mp4 |
+| `station-cutaway` | Station cutaway | Explainers & Data | graphic |  |  |  |  | a production line as a cut-open building: numbered rooms, one colour per output through pipe, machine and tag, belts that never stop, a push into one room | https://pcdn.picsart.com/templates-cdn/59373ae1-f192-4a29-82a2-85ab5eec250a.mp4 |
 | `flat-explainer` | Flat explainer | Explainers & Data | graphic |  |  |  |  | flat people, no outlines, popping UI cards, a chart that builds itself | https://pcdn.picsart.com/templates-cdn/6b9cf8ed-e83d-454e-a2bf-62efaae065b7.mp4 |
 | `grain-editorial` | Grain editorial | Cartoon & TV | graphic |  |  |  |  | painted paper grain, no outlines, deadpan side-glancing people, one chalk word per beat | https://pcdn.picsart.com/templates-cdn/6817408f-bb84-4b5b-a55f-6f39431540b4.mp4 |
 | `pixel-hop` | Pixel art | Retro & Neon | film |  |  | shapes |  | whole-pixel steps, fixed palette, twos timing, circular iris | https://pcdn.picsart.com/templates-cdn/f5182692-a058-4c17-9cd2-9558fbb86b7a.mp4 |
@@ -128,7 +133,7 @@ The picker's chips. The first chip is `Recommended`, selected on open; then one 
 | Screen & Broadcast |  | Screen & Broadcast |
 
 Boards today, computed from the index: the story board (27 film rows) has Cartoon & Anime 12, Paper, Clay & Craft 7,
-Ink & Sketch 4, Other styles 4; the explainer board (48 graphic rows) has Pop & Print 11, Explainers & Data 11,
-Screen & Broadcast 9, Retro & Neon 7, Toy, 3D & Technical 5, Drawn & Handmade 5 and no Other styles.
+Ink & Sketch 4, Other styles 4; the explainer board (53 graphic rows) has Pop & Print 12, Explainers & Data 12,
+Screen & Broadcast 9, Retro & Neon 7, Toy, 3D & Technical 5, Drawn & Handmade 8 and no Other styles.
 
 The styles not listed here are not offered until they are proven in a rendered film.

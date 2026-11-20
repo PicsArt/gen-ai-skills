@@ -267,7 +267,7 @@ Skills the use cases load:
 | [`speech-aware-cutting`](./skills/speech-aware-cutting) | Choose the moments of talking footage worth keeping and cut them so no one is clipped mid-sentence. |
 | [`spoken-captions`](./skills/spoken-captions) | Put spoken words on screen from the transcript. |
 | [`visual-style`](./skills/visual-style) | A video's style, chosen by eye and kept. |
-| [`visual-styles`](./skills/visual-styles) | The animation-film and graphic drawing styles (75 recipes. |
+| [`visual-styles`](./skills/visual-styles) | The animation-film and graphic drawing styles (80 recipes. |
 | [`voice-over-generation`](./skills/voice-over-generation) | Generate a voice-over from written lines. |
 
 <!-- generated-skills:end -->

@@ -200,7 +200,10 @@ part as its sheet minus another (hair: the picture minus the bald sheet). `overl
 - **Pictures for a side rig** come from [picture-sheets.md](picture-sheets.md): every sheet a
   "Same picture ..." edit of the profile base (without arms, without the top, without hair), each thigh
   at most about two thirds as wide as the hip is deep, and always the sheet without the top. Paper
-  craft takes `edge: "light"`.
+  craft takes `edge: "light"`; no outline at all: `edge: "fill"`.
+- **Pivots on a flat-cut top.** A part cut flat at its top (a T-shirt sleeve at the shoulder, a leg at
+  the seat seam) has no round end above its pivot: put the pivot a half-width below the cut. A
+  `rig_refused` round-end refusal names a pivot both drawings cover when there is one: move it there.
 - **Seams per sheet.** Cut the seat on the sheet without the top by a seam across the hip just below
   the hip pivot, with the leg's seeds below it; cut a hand off the thigh by a seam round the hand on
   the picture only. Each as `{sheet, points}`, so the hip seam leaves the picture's hand whole and the
@@ -214,7 +217,8 @@ part as its sheet minus another (hair: the picture minus the bald sheet). `overl
   a limb one width from joint to joint, with round ends.
 - **Sheets for a side rig.** Ask for each edit as "Same picture, ..." with one change, so it aligns:
   the arms removed (the torso and both legs drawn whole where the arm lay); the top removed (trousers
-  or skirt drawn up to the waist, the seat whole); the hair removed (the head and ear whole). In the
+  or skirt drawn up to the waist, the seat whole), chained on the sheet without arms so no hand lies
+  over the seat or thigh; the hair removed (the head and ear whole). In the
   picture, draw the profile standing straight, the near arm hanging with the hand beside or on the
   thigh, the legs straight, and the top's hem a clear edge over the trousers. Ask for each thigh at
   most about two thirds as wide as the hip is deep, with the hip rounded behind it: a thigh as wide as
@@ -268,7 +272,8 @@ Plan the parts, dry-run every map, write the call, check it, then read the answe
 **How the cut sees a picture.**
 - **Areas.** The picture splits into areas of fill bounded by rims. `labels.regions.edge` says what a
   rim is: `dark` ink lines (the default), `light` a pale rim (paper craft, felt, a sticker's white
-  border), or `auto` when unsure ([cut-any-edge.md](cut-any-edge.md)).
+  border), `fill` no outline at all (pieces parted only by their fill colours: flat vector, a thin
+  faint rim, soft painted edges), or `auto` when unsure ([cut-any-edge.md](cut-any-edge.md)).
 - **Parts.** A part is the areas its seeds land in. An area no seed lands in goes to `rest`, or is
   reported as "N px around [x, y] are drawn by no part".
 - **Sheets.** A sheet is the same picture, aligned px for px, with one thing removed, so what it covered

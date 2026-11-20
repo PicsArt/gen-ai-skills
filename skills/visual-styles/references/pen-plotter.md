@@ -53,6 +53,13 @@ rotation as the layer's transform, and a keyed `trim`. Keep one repeater per gro
 
 - **Do** keep the gaps in simple ratios (16, 10, 8, 7) so the tones step cleanly.
 - **Don't** add grey fills, gradients or a second ink; don't hatch outside the clip.
+- **Single-line lettering is drawn.** No stroke or single-line font exists (`picsart_scene_fonts` finds none), so a
+  plotter label is a polyline you write from the script and draw on with `trim`; a mono face is the nearest typeset
+  option.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Line width.** no zoom, the 1.6 px hatch and 2.2 px contour stay fixed.
+  - **Nothing fades.** everything is drawn on (`trim`, pass by pass, outline first); the only transition is a hard cut; forbidden: any opacity ramp.
+  - **Hatch rides the object.** each hatch pass is parented to its solid's outline layer (or sits in its group) so the lines stay on the surface if the object turns or the camera moves; no screen-locked hatch.
 
 ## Originality guard
 

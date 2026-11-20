@@ -1,6 +1,6 @@
 ---
 name: visual-styles
-description: The animation-film and graphic drawing styles (75 recipes - the classic cartoon as default, simple shapes, cel anime, rubber hose, cut paper, shadow puppet, manga panels, stick figure, brick toy and more) each a palette with a hero colour, shape rules, motion habits and a frame checklist, plus the style index the picker serves and the styled-film flow. Use when a request names a look or era to draw in, or a film or scene needs a style chosen.
+description: The animation-film and graphic drawing styles (80 recipes - the classic cartoon as default, simple shapes, cel anime, rubber hose, cut paper, shadow puppet, manga panels, stick figure, brick toy and more) each a palette with a hero colour, shape rules, motion habits and a frame checklist, plus the style index the picker serves and the styled-film flow. Use when a request names a look or era to draw in, or a film or scene needs a style chosen.
 metadata:
   standalone: 'read as a recipe: the animated-story Style step reads its index with picsart_scene_recipe visual-styles, and no step loads it as a skill'
   category: authoring
@@ -54,6 +54,7 @@ Structure adapted from cth9191/animate (MIT); the content is our own.
 | `comic-panels` | dotted comic panels popping in one by one with balloons and a sound word | [comic-panels](references/comic-panels.md) |
 | `silkscreen` | overprinted flat inks that sit off register and jitter, with grain | [silkscreen](references/silkscreen.md) |
 | `riso-overprint` | a two-ink risograph poster whose plates overlap into violet and step off register | [riso-overprint](references/riso-overprint.md) |
+| `print-dossier` | an archive sheet toned in dots, two spot inks overprinting, tabs, a reference line and a red stamp that slams in | [print-dossier](references/print-dossier.md) |
 | `one-bit-dither` | a shaded night scene crushed to black and white by noise and a hard threshold | [one-bit-dither](references/one-bit-dither.md) |
 | `neon-tubes` | glass-tube signs buzzing on at night against a brick wall | [neon-tubes](references/neon-tubes.md) |
 | `synthwave` | an eighties night-drive title: a striped sun, neon wire mountains and a grid rolling toward the viewer | [synthwave](references/synthwave.md) |
@@ -62,12 +63,15 @@ Structure adapted from cth9191/animate (MIT); the content is our own.
 | `firefly-night` | a dark meadow with a drifting glow of lit insects and swaying grass | [firefly-night](references/firefly-night.md) |
 | `chalkboard` | a lesson drawn live in grainy chalk on a green board | [chalkboard](references/chalkboard.md) |
 | `pen-plotter` | an engraving of a sphere and a cube made only of clipped hatch lines in one ink | [pen-plotter](references/pen-plotter.md) |
+| `paper-map-comic` | a comic page of cut-paper countries, a lighter patch slapped over a border, a stamp, sliding panels, a paper puppet | [paper-map-comic](references/paper-map-comic.md) |
+| `layered-lightbox` | paper sheets lit from behind, darker toward the front, soft cast shadows, warm windows, a dolly that separates the sheets | [layered-lightbox](references/layered-lightbox.md) |
 | `paper-fold` | a square card whose four hinged flaps unfold in turn under a perspective camera | [paper-fold](references/paper-fold.md) |
 | `kinetic-type` | one word per beat on flashing grounds with a punch zoom and a final lockup | [kinetic-type](references/kinetic-type.md) |
 | `space-explainer` | a flat ringed planet and stars with a rocket that launches and spirals into orbit, nose along its path | [space-explainer](references/space-explainer.md) |
 | `glow-explainer` | a science explainer of glowing flat shapes and small people, zooming from a planet out to its star and its galaxy without a cut | [glow-explainer](references/glow-explainer.md) |
 | `isometric-town` | a fixed-angle town where blocks rise back to front, trees pop and a car loops the ring road | [isometric-town](references/isometric-town.md) |
 | `transit-map` | three coloured lines drawing on, stations popping as reached, hubs and trains at steady speed | [transit-map](references/transit-map.md) |
+| `station-cutaway` | a production line as a cut-open building, one colour per output through pipe, machine and tag, belts that never stop, a push into one room | [station-cutaway](references/station-cutaway.md) |
 | `route-map` | a made-up coast with a camera push, a dashed route drawing between towns and dropping pins | [route-map](references/route-map.md) |
 | `blueprint` | a drafting sheet where construction lines, an outline drawing, dimensions and a title block draw on | [blueprint](references/blueprint.md) |
 | `assembly-manual` | a flat-pack instruction sheet where parts explode along one axis and get numbered callouts | [assembly-manual](references/assembly-manual.md) |
@@ -76,6 +80,7 @@ Structure adapted from cth9191/animate (MIT); the content is our own.
 | `data-bars` | a clean bar chart that builds itself and picks out one bar in red | [data-bars](references/data-bars.md) |
 | `spreadsheet` | a grid filling with values, a selected cell, a typed formula, a highlighted range and a total | [spreadsheet](references/spreadsheet.md) |
 | `sketchnote` | a hand-lettered page where doodles draw on and a yellow highlighter sweeps a key word | [sketchnote](references/sketchnote.md) |
+| `one-pen-marker` | one marker on blank sheets, black for structure, blue for the facts, red for the question and answer, camera moves between sheets | [one-pen-marker](references/one-pen-marker.md) |
 | `telestrator` | sports analysis marker work over a pitch with arrows, circles, a pulse ring and a run line | [telestrator](references/telestrator.md) |
 | `news-package` | a broadcast package with a headline bar, lower third, ticker, location tag and live badge | [news-package](references/news-package.md) |
 | `gameshow-countdown` | a quiz countdown with an unwinding ring of lights, punching numbers, a buzzer and a confetti reveal | [gameshow-countdown](references/gameshow-countdown.md) |
@@ -102,7 +107,8 @@ Fetch a reference with `picsart_scene_recipe` (`name: "visual-styles"`, `referen
 - [shapes character](references/shapes-character.md): how a `cast: shapes` style builds, saves and talks with its figure.
 - [the style index](references/style-index.md): one row per style (`id`, `label`, `category`, `notes`, `previewUrl`) for the picker, each card carrying its row's `category`. For a film or cartoon the picker offers every row whose `use` is `film` with `category` set to the chip named in the use case's column of "Category chips each use case shows" in the index (else `Other styles`) and 4 to 6 cards `recommended`: the classic cartoon first, the rest in the table's chip order, `Other styles` last, never a shortlist. The rules live in that section. Graphic rows are for graphic or explainer requests;
 - [FRAME.md](references/FRAME.md): the checklist every shot passes, whatever the style;
-- [the film flow](references/film-flow.md): style columns, picker, rough cut, shots, score.
+- [the film flow](references/film-flow.md): intake and story, style columns, picker, rough cut, shots, score;
+- [the recipe template](references/recipe-template.md): the sections a recipe has, to write a new one or bring one up to date.
 - [brick parts](references/brick-parts.md): the part script the `brick-toy` style builds its bricks from;
 - [painted anime looks](references/painted-anime-looks.md): the character looks that go with the `painted-anime` style.
 
@@ -160,5 +166,24 @@ Other graphic styles (Swiss, pictogram and others) are not offered until they ar
   beats; song sections become scenes, and the chorus returns to its set and escalates.
   For a motion style: vary the transition kind cut to cut (never the same one three times running); add sound only
   where something happens.
+- **A torn or rough edge stays on its piece.** `roughen_edges` at a constant `evolution` is locked to the layer,
+  so the edge moves with a moving piece and does not crawl (measured on a piece travelling 600 px: the same
+  silhouette at both ends). Drive `evolution` when the edge should boil; no baking into path vertices is needed.
+- **Lettering faces.** Pixel and mono faces exist: find one with `picsart_scene_fonts` (Press Start 2P, Cutive Mono,
+  B612 Mono) and add its asset to the scene. No stroke or single-line face exists, so single-line lettering is drawn as paths.
+- **Many small pieces.** Four thousand live subpaths in one layer render, but at about 35 s a frame in the
+  command-line preview: far too slow for real-time playback. Draw fewer, larger paths, or bake the cluster to an
+  image.
+- **A swirl or a lens bend is a displacement map.** `displacement_map` moves one layer by another layer's
+  channels (hidden with opacity 0); a clean swirl needs a purpose-made map whose red and green channels hold the
+  offset, so build that map as its own layer and check it on its own before using it.
+- **A screen tone rides the layer it sits on.** `screentone` on a moving layer's own effects keeps its dots on
+  the piece (measured at a 150 px shift: the same dot pattern, moved with the piece); the same held for a
+  composition layer holding the piece. Whether an adjustment layer above locks the dots to the paper is not
+  measured: render it before a style relies on that.
+- **Reference a film, do not reskin it.** To build from a reference clip, map its beats and measure it first
+  (the `reference-fragment-matching` skill).
+- **Say what is not proven.** A recipe's "Proven on" line has a "Not proven" line beside it for what no render has
+  shown yet.
 - **Check the whole clip.** Frames across the window, never one still: `picsart_scene_contact_sheet`, then the motion checks
   in the `quality-review` recipe.

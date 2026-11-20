@@ -49,6 +49,9 @@ Build the trace as a polyline from computed samples (about 120 points); key the 
 
 - **Do** let the afterglow lag the beam by a small, fixed amount.
 - **Don't** add a rainbow of channels or a reflection of the room on the glass.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Line width under a zoom: no zoom, width fixed (5 px trace, 2 px core); a timebase or amplitude change resamples the points and never scales the stroke.
+  - True data: the readouts (frequency, amplitude) are written by counter text from the same generator values that compute the trace samples, never typed; a small `SIM` tag in a corner says the signal is synthetic (ours); check readout against trace with `picsart_scene_query_layout`.
 
 ## Originality guard
 

@@ -21,8 +21,8 @@ shirt front, the card's lettering) so the eye finds the joke.
   low crown and a stiff peak, dark grey with an ink outline), bodied limbs (each sleeve and trouser leg one closed tapered shape growing out of the coat, a hand one shape with its forearm) in groups pivoted at the
   hip and shoulder, and a **furled umbrella** in one hand (a thin shaft, a tight cone, a knob).
 - The reel is its own picture: build the whole film as one `scene` asset and place it with one `scene_ref`
-  carrying the `analog_film_finish` look (grain, paper, dust). The iris and the flicker sit inside the asset, so
-  the film look runs over them.
+  carrying the `analog_film_finish` look (grain, paper, dust). The picture (clerk and set) is a nested `composition` at the held rate; the iris, the flicker,
+  the scratches and any gate weave sit above it in the asset at the root rate, so the film look on the outer `scene_ref` runs over all of them.
 - **Flicker** is a full-frame white layer at low opacity; **scratches** are one or two thin pale vertical
   strokes that hop sideways.
 - **Iris** is an ellipse with a very thick ink stroke whose size keys open at the start and closed at the end;
@@ -41,9 +41,9 @@ Drawn from the style's own shapes, not a generated sheet (the mechanism, saving 
 
 ## Motion habits
 
-- Run the reel at 15 fps under a 30 fps root (12 under a 24 fps root): set it on the composition, or put the
-  picture in a nested `composition` layer at that `fps`. A rate that divides the root holds every frame for the same
-  time. Either way every move is stepped.
+- Put the picture (clerk and set) in a nested `composition` layer at 15 fps under a 30 fps root (12 under a 24 fps
+  root). A rate that divides the root holds every frame for the same time. Every drawn move is stepped; the iris,
+  flicker, scratches and weave run at the root rate.
 - The clerk **struts**: a high knee lift (alternating keyed leg rotations, a big forward swing and a short
   back swing), a hip bob of 20-25 px, the chin up and a slight backward lean. The gag is fast: the slip is a
   fast keyed rotation to flat, the umbrella pops open on the same beat (swap the furled drawing for an open
@@ -61,21 +61,24 @@ Intertitle only: a heavy display serif, cream on the black card, one line in quo
 ## Frame checklist (on top of [FRAME.md](FRAME.md))
 
 1. Greyscale throughout; the only light tones are the gag props.
-2. The reel runs at 15 fps under a 30 fps root (12 under 24), not at the root rate.
+2. The picture (clerk and set) runs at 15 fps under a 30 fps root (12 under 24); the iris, flicker and scratches run at the root rate.
 3. Film look, flicker and scratches are all on.
 4. There is one gag with a setup, a hit and a payoff.
 5. The iris opens at the start and closes at the end; a card sits in the middle.
 
 ## Build with the tools
 
-Build the set and the actors as shape layers inside a `scene` asset; add the flicker, scratches and iris inside
-it; place it with a `scene_ref` and the film-finish look. Apply `random_hold` and `wiggle` with
+Build the set and the actors as shape layers inside a `scene` asset; put the picture in a nested composition at the held rate and add the flicker, scratches and iris above it at the root rate
+inside the asset; place it with a `scene_ref` and the film-finish look. Apply `random_hold` and `wiggle` with
 `picsart_scene_apply_preset` to layer ids inside the asset.
 
 ## Do / don't
 
 - **Do** keep every move legible as a silhouette: a big stride, a big umbrella, a big cap.
 - **Don't** add colour, motion blur or smooth easing; don't fade the iris, drive it by size.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Rate split: the film look sits on the one outer `scene_ref`, as above; the clerk and the set step at the held rate in the nested composition, while the iris, flicker, scratches and weave stay at the root rate above it.
+  - Finish: the look's grain is the only grain, with no second `noise` layer; the scratches and the flicker are the film damage; the greyscale set has no gradients, so nothing needs a fixed `noise` under it.
 
 ## On a part sheet
 
@@ -92,3 +95,5 @@ and the iris are the style.
 
 The redrawn silent-reel film (iris in, a strutting clerk in a flat cap slips on a peel, his umbrella pops open,
 the cap lands on a lamp, an intertitle, the cap drops back, iris out; 15 fps, film grain).
+
+**Not proven:** the root-rate iris was shown on a flat grey picture, not over the clerk and set.

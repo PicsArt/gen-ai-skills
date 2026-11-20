@@ -33,7 +33,7 @@ reserved for the subject** and never used on the world. For a warm daytime film 
 Drawn from the style's own shapes, not a generated sheet (the mechanism, saving and talking are in [shapes-character](shapes-character.md)); build once, save once to the library, place it by its `uri` in every shot.
 
 - **Proportions:** about 4.5 heads tall: a paper doll.
-- **Shapes:** every part a closed polygon with a slightly ragged edge and a hard offset shadow copy under it; the joints are visible round pins (small circles) at shoulder, elbow, hip and knee.
+- **Shapes:** every part a closed polygon with a slightly ragged edge (drawn in the vertices, or the `roughen_edges` effect at a constant `evolution`, which stays on the piece as it moves) and a hard offset shadow copy under it; the joints are visible round pins (small circles) at shoulder, elbow, hip and knee.
 - **Face:** two black dots, a mouth cut as one small paper shape; `mouth` rest, `aa`, `oh` as three cut shapes.
 - **Controls:** act on fours (the 6 fps composition), so the figure steps like paper moved by hand.
 
@@ -71,6 +71,9 @@ Build each object as a shape layer with its shadow; group the stepped ones in a 
 - **Do** give every scene its own dominant colour so it reads on a contact sheet.
 - **Don't** fade a piece with opacity to hide it (the shadow reads as a ghost): move it off frame or cut it;
   don't blend two wall colours (mud).
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Rate split: the pieces step on twos in the nested composition (far pieces on sixes); the camera slide and the finish on the outer `scene_ref` run at the root rate.
+  - Hatch rides the object: no hatch in this style; a stripe or dot pattern is clipped inside its piece (see The medium), so it travels with the piece.
 
 ## On a part sheet
 

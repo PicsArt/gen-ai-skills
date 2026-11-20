@@ -69,6 +69,9 @@ Generate the wedge paths in a script (polar to points) and add each to the windo
 
 - **Do** keep the lead consistent so the window reads as one object.
 - **Don't** put gradients inside the panes (they read as plastic) or animate the lead.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Rate split.** as in Finish: nothing steps; the beams, glare and lighting all run at the root rate.
+  - **Stop time.** optional on the key beat (the last ring lit): the window group keeps its keys in a nested composition that ends at that time while the beams and glare keep theirs, so the glare crosses a still window.
 
 ## Originality guard
 

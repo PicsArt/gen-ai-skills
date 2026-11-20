@@ -21,7 +21,7 @@ everything else stays in cool greys.
 
 - **Stagger the pull:** parts leave the centre outwards, each delayed 0.12 s from its neighbour, moving a whole
   multiple of one gap with an ease-in-out (`[0.65, 0, 0.35, 1]`) over 0.9 s, with a slight overshoot at the end.
-- **Hold, then label:** dots pop, leaders draw with `trim`, labels fade in 0.15 s apart from the centre out.
+- **Hold, then label:** dots pop, leaders draw with `trim`, labels are written on with `typewriter`, 0.15 s apart from the centre out.
 - **Spin the rotor** while apart: rotation keys looped with `ctx:loopOut("cycle")`, slow, so it reads as a part
   not a blur.
 - **Return** in reverse order, leaders and labels leaving first.
@@ -48,6 +48,12 @@ text layers. Check the exploded frame with `picsart_scene_contact_sheet`.
 
 - **Do** let later parts start from the exact rest position the earlier ones left.
 - **Don't** add perspective, cast shadows or colour on the non-studied parts.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Arrivals: parts slide along the axis, leaders draw on with `trim`, dots pop in by `scale`; labels are written on with `typewriter` 0.15 s apart (the hold-then-label line); hard cuts only.
+  - Easing: `[0.65, 0, 0.35, 1]` for the pulls and returns (the return is the same ease reversed), linear for leader
+    draw-on and the rotor loop; nothing bounces.
+  - True data: the part count equals the label count, one part is one label and one leader that ends on that part;
+    the machine is invented, so a small "schematic" tag stays in frame; check leader ends with `picsart_scene_query_layout`.
 
 ## Originality guard
 
@@ -58,3 +64,5 @@ channel's graphics or a patent figure. The one axis, the stagger and the single 
 
 The exploded-view-teardown film (a motor pulling apart along its axis in steps, labelled parts, one amber
 coil, the parts returning).
+
+**Not proven:** the written-on labels were shown on three dots, not on an exploded assembly.

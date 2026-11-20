@@ -56,6 +56,12 @@ if two share a plane; see the coplanar line in the pop-up recipe.
 
 - **Do** put the first-opening flap on top of the stack.
 - **Don't** leave a motif visible through a flap that is flipped over; don't use a different shadow per flap.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Finish: if a paper tooth is added it is one fixed, low `noise` inside each flap's group, so it turns with the
+    flap; the typed lines stay sharp and there is no film damage.
+  - Height is shadow: one light from the top left; while a flap swings, its shadow offset and blur key up toward the
+    edge-on moment (about 1.6 times the resting values, ours, tune by render) and settle back; every flap uses the
+    same keys.
 
 ## Originality guard
 
