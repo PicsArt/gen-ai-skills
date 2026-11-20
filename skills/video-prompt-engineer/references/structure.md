@@ -1,46 +1,11 @@
-# Structure
+# Prompt structure
 
-A prompt is read start to finish, and earlier clauses frame the later ones. This order puts the decisions that cannot be undone first, and the exclusions last.
+For a single shot, lead with the subject/action and required visual outcome, then the relevant framing, camera, light, timing and constraints. Keep the user's settled choices. Follow the named endpoint's guidance where it differs; no clause order or universal word count guarantees adherence.
 
-## Clause order
+Use concrete visible directions without adding unsupported numeric precision. Duration and aspect ratio belong in supported settings as well as the brief when available; an arbitrary focal length or tempo is not automatically better than a clear description.
 
-1. Duration
-2. Aspect ratio
-3. Medium and style
-4. Shot size
-5. Camera angle
-6. Camera movement
-7. Lens and focal length
-8. Depth of field
-9. Lighting
-10. Colour and grade
-11. Subject motion
-12. Mood
-13. Audio bed
-14. Pacing and cuts
-15. Exclusions
+## Several shots
 
-One clause per decision, commas between them. A prompt is a list of decisions, not a paragraph of atmosphere. Prefer a number to an adjective wherever a number exists: 8 seconds over short, 85mm over flattering, 116 BPM over upbeat.
+For one multi-shot prompt, state shared context once, then label each shot's scene, camera, action and ending. For independent generation calls, repeat required shared context and provide the approved references in each call; the calls do not inherit an earlier prompt.
 
-Keep a single shot prompt under roughly 120 words. Past that, generators start dropping clauses, and the ones they drop are at the end, which is where the exclusions live.
-
-## More than one shot
-
-Use a labelled block per shot and repeat the shared lines byte identically. Paraphrasing the style line between shots is the single biggest cause of a sequence that will not cut together.
-
-```
-STYLE: <one string, identical in every block>
-NEGATIVE: <one string, identical in every block>
-
-SHOT 1
-SCENE: <what is in frame>
-CAMERA: <shot size, angle, one movement>
-MOTION: <one action, completed within the shot>
-
-SHOT 2
-SCENE: ...
-CAMERA: ...
-MOTION: ...
-```
-
-One action per shot. If a shot needs two things to happen, it is two shots.
+A short coherent action sequence can occupy one shot. Split where coverage, duration or reliability warrants it, not because every shot must contain exactly one verb. Repeated words support a brief but do not guarantee visual or audio continuity.
