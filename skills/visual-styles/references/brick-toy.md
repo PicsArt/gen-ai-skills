@@ -166,6 +166,8 @@ asset and name it in `environment.assetId`.
 - **Don't** smooth the steps: no eased object keys, no motion blur on objects.
 - **Don't** let a carried or placed part float or pass through another; check placements in motion, not on stills.
 - **Don't** model at real size: the seams vanish (the AO radius floor).
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - A finish belongs to the page: the desk grain is a texture on the desk plane so it travels with the desk; a fixed `noise` (about 2, `seedMode` fixed; ours, tune by render, check it renders in the 3D effects chain) after the grade keeps the dark backdrop gradient from banding; a title stays a sharp 2D scene on top.
 
 ## Originality guard
 

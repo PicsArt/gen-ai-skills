@@ -13,8 +13,8 @@ ripple's origin.
 
 - **A grid** of square tiles (24 by 36 on a portrait frame), each a rounded square with a 2 px gap, flat colour
   chosen from the picture by a script that samples the source at the tile's centre.
-- **Tile layers** are kept cheap: one shape layer per row with a repeater is not possible (copy index is a gap
-  today), so build one layer per tile in a script, or one layer per colour group.
+- **Tile layers** are kept cheap: a `$each` over the tile list gives every copy its own index (`{tile.@index}`)
+  for its flip delay and colour, so one layer per row or per colour group does the work of a layer per tile.
 - **The final picture** sits under the tiles at full resolution and is revealed as they flip.
 
 ## Motion habits

@@ -69,6 +69,11 @@ look (light grain, paper, dust); a look cannot sit on a shape layer.
 
 - **Do** change the silhouette until nobody can say who it resembles.
 - **Don't** use round mouse ears, a long-bodied cat, gloved hands, a sailor suit or a bow tie.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Rate split: the character, and any prop that bobs on the beat, on twos in the nested composition as above; the title card, the iris and any camera at the root rate; the finish look on the outer `scene_ref`.
+  - Boil: only the character's contour boils (`line_boil`, held rate about 12, small amplitude, fixed seed, ours, tune by render); props, ground, title card and paper stay still.
+  - Line width: no zoom, the tube width stays fixed at 15 to 17 px; a pan is allowed, a push-in is not.
+  - Finish: one light grain, the single look on the `scene_ref` as above; no second grain.
 
 ## On a part sheet
 

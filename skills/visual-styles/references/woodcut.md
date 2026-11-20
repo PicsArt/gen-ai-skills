@@ -43,7 +43,7 @@ Drawn from the style's own shapes, not a generated sheet (the mechanism, saving 
   layers in a nested `composition` with `fps` 6 so the marks arrive in jerks like cuts.
 - **Hand shake:** the `wiggle` preset on each sea line (small amount, `frequency` 8), a different `seed` per
   line. **Tremble** of the sun is the `line_boil` preset at a low amplitude.
-- The boat appears with a short opacity key, then moves with position keys; its rotation follows its path with
+- The boat enters from beyond the frame edge on position keys (no opacity key); the entry ends on the point the drift track already passes at that moment, so the boat neither jumps nor pauses, and it keeps moving on the drift; its rotation follows its path with
   the layer's `positionDirection()` expression (the one layer-level expression this style needs), and it bobs.
 - Cued layers use `timeMode: "layer"`.
 
@@ -71,6 +71,14 @@ above the nested composition.
 
 - **Do** vary line weight and length; uniform marks look like a pattern, not a cut.
 - **Don't** use grey, soft edges or a blur; don't animate the grain's seed.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Rate split: the carved marks step at 6 inside the nested composition; the boat's travel and the grain layer run at
+    the root rate.
+  - Nothing fades: marks and the title arrive carved, by a keyed `trim`; shots join on hard cuts only.
+  - Finish: the grain is one fixed layer, added once; there is no pan in this style, so it stays on the frame (if a
+    camera move is added, the grain moves into the moved group).
+  - Hatch rides the object: gouges carved into a character's silhouette are parented to its part; the sun, sky and sea
+    marks are background and stay put.
 
 ## Originality guard
 
@@ -81,3 +89,5 @@ a known book's illustration. The ink block, the tapered gouge and the stepped ca
 
 The sea-woodcut film (gouged sun rings, scattered sky marks, nine wave rows carved in, a boat that turns to
 its motion, paper grain on top).
+
+**Not proven:** the boat's entry from beyond the edge was shown on a plain page with one boat, not in the full scene.

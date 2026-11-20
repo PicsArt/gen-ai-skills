@@ -96,6 +96,9 @@ and step through the run frame by frame for sliding feet.
 - **Do** let the whole body act a beat: lean, arms and legs together.
 - **Don't** add a face, a gradient, a chart or a draw-on, or put the figure on white paper with a marker line
   (that is the whiteboard explainer).
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Rate split.** as in Finish: figures, props and speed lines step together on twos; the camera, breeze strokes and any caption stay at the root rate; no film finish.
+  - **Boil.** nothing boils: the twos stepping is the only life, and the set and props stay still.
 
 ## On a part sheet
 

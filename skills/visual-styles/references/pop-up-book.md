@@ -280,6 +280,9 @@ the gutter must show in all three.
   it appear (it must fold, not grow); don't zoom past 0.88 to "get closer".
 - **Don't** place the character on the table, in front of the book or at a `z` where it overlaps the front grass
   strip's base; it belongs to the page.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Finish: the paper edge is the finish, no film look and no grain layer; the table, planes and strips are world geometry, so they travel with the camera, and the grass blades stay coarse (14 to 36 px) so they do not shimmer.
+  - Height is shadow: a scenery card lying flat has only its paper edge; the character's flat page shadow grows with its fold-up (scale and opacity keyed to the `rotationX` keys, ours, tune by render), and its `drop_shadow` offset points the same way, one light for the whole book.
 
 ## Originality guard
 

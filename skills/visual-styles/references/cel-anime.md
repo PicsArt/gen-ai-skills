@@ -86,6 +86,8 @@ the fills and lines. Place any finish look on a `scene_ref` of the drawn scene.
 
 - **Do** share the outline weight and the sky's colour in the shade tone between character and place.
 - **Don't** add gradients to skin, blur to clouds or a second shade tone.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Rate split: characters, hair, cloth and grass blades on threes in the nested composition as above; clouds, the sun pulse, petals, the slow push on a face and the impact flash at the root rate; any finish look on the outer `scene_ref`.
 
 ## On a part sheet
 

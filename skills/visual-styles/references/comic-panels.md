@@ -11,10 +11,13 @@ reserved for the sound word's star in the last panel.**
 
 ## The medium
 
-- Each **panel** is a shape layer: an 8 px ink frame, its drawing inside, a **dot tone** over the ground (dots
-  7 px on a 14 px pitch, about 55 % opacity, built as a row group with a `repeater` inside a column group with
-  another), and a flat colour fill beneath. The panel's layer has a `mask.clip` of its own rectangle so nothing
+- Each **panel** is a shape layer: an 8 px ink frame, its drawing inside, a **dot tone** that overprints the
+  flat ground colour (halftone dots 14 px on a 28 px pitch at about three quarters strength (ours 0.75 layer opacity, tune by render: full strength reads heavy and busy against the character), in the panel's darker tone, `multiply`
+  blend, a pair of staggered row groups under a row `repeater`), and a flat colour fill beneath: a solid plate plus a dot screen, not a
+  tint. The dot tone sits a fixed 3 px off the ink frame. The panel's layer has a `mask.clip` of its own rectangle so nothing
   spills.
+- **Knockout:** a layer between the dot tone and the characters holds each character's silhouette in the ground
+  colour with a 44 px stroke of it (ours, 22 px each side of the edge, about 0.8 of a dot pitch, so the cut leaves a clean ring rather than a ragged line of half-dots), so dots stop short of the characters and the ink outline stays clean.
 - Characters are flat shapes with 6 px outlines: a hatted animal in a coat (head, nose, hat, coat), a small
   second animal, a magnifier (a thick ring and a handle), a plate. Original animals only.
 - **Speech:** a white balloon with a 5 px outline and a tail, or a caption box; lines are upper case in a
@@ -52,6 +55,10 @@ its start. Build the dot tone with nested repeaters. Use `picsart_scene_contact_
 
 - **Do** leave gutters of the page colour between panels.
 - **Don't** use gradients, shadows or panel borders of different weights; don't put the payoff in the first panel.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Finish.** each panel's dot tone is built inside the panel layer, so it travels with its panel, and holds steady; no page-wide overlay.
+  - **Print family.** flat ground plus an overprinting (`multiply`) halftone dot tone; a fixed small registration offset (ours 3 px) between the ink frame and the dot tone, never jittered; a knockout halo in the ground colour (ours 8 px per side) behind characters where they cross the dots, and speech sits on white balloons (the knockout under text).
+  - **Height is shadow.** as above: no shadows, so a panel has no height; a popping panel is shown by its scale alone.
 
 ## Originality guard
 
@@ -62,4 +69,4 @@ the style.
 ## Proven on
 
 The comic-mole-dossier film (three panels in turn: a hatted animal at night, a magnifier on crumbs, a small
-culprit and a GOTCHA burst).
+culprit and a GOTCHA burst). The overprinting dot tone and the knockout halo were also rendered on a one-panel test (1080 by 1080).

@@ -21,8 +21,8 @@ only warm thing in the frame is the sunset.
 - **The tape pass:** one adjustment layer with `gaussian_blur` (about 1.2) and `noise` (about 14) over everything
   below it. Over it, **scanlines** (a 2 px black bar with a `repeater`, 4 px pitch, about 28 % opacity) and a
   **tracking band**, a wide white strip at about 7 % opacity blurred by 6 px.
-- **The counter ticks:** text cannot be keyed, so write one text layer per second, each with `start` n and
-  `duration` 1, reading one second later than the last (`SP 0:00:14`, `SP 0:00:15`, …).
+- **The counter ticks:** one text layer whose `text` is an expression that formats the running time
+  (`SP 0:00:14`, `SP 0:00:15`, …), in a mono face so the digits keep their width.
 
 ## Motion habits
 

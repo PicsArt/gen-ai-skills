@@ -46,7 +46,10 @@ document inline and change it with `picsart_scene_patch`.
 
 - **Camera.** `eye` is where it stands, `target` what it looks at, both in metres; `lens.fov`
   is vertical degrees (default 35). Frame the subject by moving the eye, not by scaling the
-  subject. `shutterAngle` 180 with 8 samples is film motion blur for the whole frame.
+  subject. `shutterAngle` 180 with 8 samples is film motion blur for the whole frame. The lens is a
+  perspective lens only: `fov` runs 1 to 179 degrees and `fisheye` bends it, and there is no orthographic
+  camera. For a nearly flat, isometric-looking view set `fov` to a few degrees and put the eye far back (not
+  rendered here; check it on a contact sheet before relying on it).
 - **Light.** Set `composition.lighting` (`schema:Composition3D`): a `preset` — `studio`, `dark`,
   `sky` or `white_room` — then tune any one light over it (`key`, `fill`, `rim`, `ambient`: a key's
   `intensity`, `color`, `direction`, `shadow.softness`). `background`, `environment` and `ground`
