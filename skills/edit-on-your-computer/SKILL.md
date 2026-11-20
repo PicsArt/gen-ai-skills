@@ -9,7 +9,7 @@ user-invocable: false
 An edit runs the same way wherever its footage is: the stages, the record and the checks are the
 edit-pipeline skill's. This skill adds only what changes when the footage is on this computer and
 you can run commands here. Originals are large, and they are the user's masters: they never
-leave this computer and are never changed. What the server reads is small copies.
+leave this computer and are never changed. What Picsart reads is small copies.
 
 Load this skill only when the footage is a folder or paths on disk and the host runs commands.
 Footage given as Picsart Drive files, links or attached files is edited without it. When you
@@ -32,7 +32,7 @@ Quote every path you pass to a command; folder names often have spaces.
 ## ffmpeg first
 
 Everything below runs on `ffmpeg` and `ffprobe`. Before the proxies, check both:
-`command -v ffmpeg ffprobe`. When either is missing, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) how to go on. Recommended first:
+`command -v ffmpeg ffprobe`. When either is missing, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) how to go on. Recommended first:
 "Install ffmpeg-full, the full ffmpeg with subtitle support", saying exactly what: on a Mac with
 Homebrew, `brew install ffmpeg-full` (Homebrew's own formula, with libass for the captions; it
 installs beside any other ffmpeg without replacing it, so run it as
@@ -150,7 +150,7 @@ installed, confirm such a source before asking: `gyroflow "<original>" --export-
 "3:<abs project>/work/<name>.camera.json"`; a file with no gyroscope samples there is `gyro: false`,
 and a source left with none asks nothing.
 
-**When any source has gyro data**, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, before the log, whether to stabilise its handheld
+**When any source has gyro data**, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, before the log, whether to stabilise its handheld
 ranges with it; when every such source is still `"maybe": true`, say they may have gyro data.
 Recommended first: "Steady the handheld shots with the camera's gyro data: they
 come out steadier, with the frame cropped slightly (often about a tenth) so the moving edges never
@@ -163,7 +163,7 @@ the log's stabilising decision for each range reads the gyro data, not a shake s
 **When the user said yes and no stabiliser is installed**, check first: `gyroflow --version` (on
 macOS also the binary inside `Gyroflow.app/Contents/MacOS/`). Gyroflow is free and
 open source, reads Sony, GoPro, DJI and Insta360 motion data, and runs from the command line. When
-it is missing, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) separately before installing it. Recommended first: "Install Gyroflow, the
+it is missing, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) separately before installing it. Recommended first: "Install Gyroflow, the
 free open-source stabiliser", saying how: `brew install gyroflow` on a Mac
 with Homebrew, otherwise the download at https://gyroflow.xyz/download (the Microsoft Store on
 Windows; the `.tar.gz` or the Flatpak on Linux). The other option: "Don't install: keep the shots
@@ -237,7 +237,7 @@ so the brand's own font file is used. Two things first:
 - **This ffmpeg has the filter** (`ffmpeg -hide_banner -filters | grep subtitles`); many builds
   lack it and `drawtext` both. `python3` missing is the same case: no `.ass` can be written.
 
-When either is missing, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) separately how to finish. Recommended first: "Install
+When either is missing, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) separately how to finish. Recommended first: "Install
 ffmpeg-full, the full ffmpeg with subtitle support", the same package and command as in ffmpeg
 first, above (`brew install ffmpeg-full` on a Mac). The other options: "Deliver the free scene export with its captions instead", which exports
 the approved scene with `picsart_scene_export` at the delivery resolution (from the proxies, so

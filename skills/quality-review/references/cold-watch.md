@@ -61,6 +61,12 @@ Premise: what the video is, in at most 120 words, as its maker would pitch it.
   it must land by. Who each person is to the others, who is spoken to, and why someone decides are
   must-knows. A promise (what the video will show) is a must-know by 3 s. A caveat or a disclaimer
   is not one, unless the user asks for it.
+  For a short cut from longer footage, write them for someone new to its game, show and people
+  (the retention-hooks skill's `what-a-cut-is`, question 4): a name or a stake only the full
+  footage explains is a must-know the cut has to show, or the cut is wrong. Such a short also has
+  two must-knows of its own: what the viewer is waiting to find out, by 3 s, and who is speaking
+  and why they are worth hearing, by 6 s. A viewer who watches with the sound off must hit both
+  from the frames and the words on screen (the spoken-captions skill's muted pass).
 - **1 to 3 must-not-thinks**: the wrong beliefs this video invites, never a caveat.
 - **3 to 6 after-watch questions**, each with its answer. The user confirms them with the story or
   the script.
@@ -138,7 +144,7 @@ quote the viewer calls with `picsart_preflight`, each model they use. The watch 
 only when the preflight shows an explicit price of 0 credits for every planned call. Every other
 answer is a price to ask about, a null or missing price included: no price means the price is
 unknown, never that the call is free. Say calls × price, or "price unavailable, about N calls" with
-N = 3 × pieces + 3, and SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1, unless a spend limit the user stated covers it.
+N = 3 × pieces + 3, and SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1, unless a spend limit the user stated covers it.
 Nothing is sent to find out what it costs. The exports and the transcript are free.
 
 A credit or storage error stops the watch; never retry it. When the user says no, or the watch
@@ -146,7 +152,7 @@ stops, the review line says "no cold watch yet", and the draft still goes to the
 
 The yes covers the calls it was given for. Each round after it (a rebuild, the cards read again, a
 reply asked again) is covered only when the user's yes or stated limit covered its calls; otherwise
-quote that round the same way and SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) again.
+quote that round the same way and SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) again.
 
 ## The comparer
 

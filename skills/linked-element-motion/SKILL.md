@@ -1,10 +1,10 @@
 ---
 name: linked-element-motion
-description: Keep related scene elements aligned and moving together, including container resizing, shared fades, content reveals and sibling reflow. Use when labels detach, companions fade separately, panels fail to grow, content overflows, or an outside object must join a template at a particular time and remain attached.
+description: Keep related scene elements aligned and moving together, including container resizing, shared fades, content reveals and sibling reflow. Use when labels detach, companions fade separately, panels fail to grow, a box must fit its text, content overflows, or an outside object must join a template at a particular time and remain attached.
 metadata:
   category: authoring
-  version: '1.7'
-  ported-from: layout-choreography 1.7 at 55.75.0
+  version: '1.8'
+  ported-from: layout-choreography 1.8 at 58.5.0
 user-invocable: false
 ---
 
@@ -83,6 +83,9 @@ post-arrival ownership and same-time versus cross-time checks.
    These are different designs. Never make accidental clipping masquerade as a reveal.
 3. Measure final text using the actual font and wrap width; use `picsart_scene_query_layout`, not character count.
    Calculate required container extent from visible child bounds + padding in a consistent space.
+   When the container only has to fit one text block (a bubble, tag or badge), skip this: a
+   `captions` layer's `line` / `behind` box decoration fits the box to the shaped text. See
+   `app-ui-animation`'s "A box that fits its text" (`picsart_scene_recipe` `{name: "app-ui-animation"}`).
 4. Author a shared progress/timing schedule for background size, sibling reflow and reveal. With a fixed
    top edge, a height increase of Δh needs a center shift of Δh/2. With centered growth, no shift is needed.
    Animate the supported shape geometry or the background's own scale/position, not the text-bearing
@@ -191,6 +194,8 @@ One moment, one report. What its fields do and do not say:
   rendered frames before export.
 
 ### One-off checks and collision scanning
+
+A follower's offset or a distance between layers: compute it (the `computing-values` recipe), then write it live.
 
 After `picsart_scene_validate`, get actual ids/scopes with `picsart_scene_query_layout`. Then call `picsart_scene_lint_layout`
 with the scene, a narrow `t0`/`t1` window, a useful `step`, and explicit relationships, for example:

@@ -36,7 +36,9 @@ Scale them to the length:
 ## Choosing them from footage
 
 When the lines come from what people said (a reel, a short, highlights), the loops are chosen, not
-written. From the pool of moments:
+written. Read `references/what-a-cut-is.md` before you pick, challenge or judge a short cut from
+longer footage: its unit is one question answered on screen, never a quote, and its eight
+questions are the ones every check of a cut asks. From the pool of moments:
 
 - **Hook:** the sentence that raises the question the rest answers: a surprising result, a strong
   claim, a problem said plainly. A moment the watch rated `hook` is a candidate; it must still open
@@ -46,9 +48,41 @@ written. From the pool of moments:
   Place it at the middle even when the speaker said it earlier, as long as it stands on its own:
   a cold reader of the heard script says whether it does, not you (the speech-aware-cutting skill).
 - **Payoff:** the sentence that answers the hook. **Never use the payoff as the hook**: it closes
-  the loop before it opens. Lead with the question, end with the answer.
+  the loop before it opens. Lead with the question, end with the answer. The opener may show
+  *that* something happens, never *how* or *why*. A line moved to the front comes from the same
+  answer or the same event, runs under about 2 s, and could not mislead a viewer about what it
+  responds to, as `what-a-cut-is` says (question 6). One question is the unit: a rehook is only
+  for a clip whose answer raises a second one, and a clip that has answered its question is over,
+  whatever the target length.
 
 Clean sentence edges still come first. A loop never justifies a clip cut mid-sentence.
+
+### The opening contract
+
+A short cut from footage opens to a contract you can measure:
+
+- **The first word is heard within about 0.5 s.** No greeting, no name, no "so", no breath.
+- **The viewer's question is clear by 3 s**: the first sentence is the question or the claim.
+- **One hook line is on screen from frame 0**, at most 7 words, saying the same promise in other
+  words than the first spoken sentence.
+- **The first frame is a face mid-expression or the action under way**, never a wide shot settling.
+
+The speech-aware-cutting skill's `scripts/review_cuts.py` measures the first word in its
+`warnings`. These numbers are working ones, not a platform's: they warn, never block, and the
+user's own numbers (the quality-review skill's growth critic reads them) move them.
+
+### End on the peak
+
+The last line is the strongest line of the answer, or the event's last beat. The cut comes within
+about 1.5 s of its last word: one beat of reaction, then out. Nothing after it softens it ("so
+yeah", "if that makes sense", a laugh that dies). When a better last line comes earlier in the
+clip, end there. `review_cuts.py` measures the tail after the last word and flags a softener.
+
+### Earn the click
+
+A short that promotes a longer video still answers its own question. Its last line may then open
+a larger question that only the full video answers, in the speaker's own words. Never withhold
+the answer the hook promised: that is an unpaid tease, and it is bait.
 
 ## Writing them
 
@@ -111,7 +145,8 @@ Any one of these makes a short read as an ad, and the viewer scrolls past it:
 
 **The ending loops back.** When the video ends without a call to action, its last frame leads into
 the first, for instance by ending on the problem the hook opened on, now solved. A replay then
-reads as one continuous video.
+reads as one continuous video. Use it when the material gives it, as craft; never bend the words
+to make one.
 A serial exit follows drama-series-writing instead.
 
 The quality-review skill's cold watch tests a hook on the built draft: its first two pieces (to
@@ -122,7 +157,8 @@ The quality-review skill's cold watch tests a hook on the built draft: its first
 Before the plan goes to the user, list each loop in one line: what it opens, the second it opens,
 the second it closes. Then read it back:
 
-- Does a loop open in the first 2 s?
+- Does a loop open in the first 2 s? For a cut from footage, does it keep the opening contract?
+- Does it end on its peak, with nothing after it but one beat of reaction?
 - Is some loop open at every second until the payoff, or is there a stretch where the viewer has
   nothing left to wait for?
 - Does every loop close? A serial exit question may stay open.

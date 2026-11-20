@@ -67,7 +67,7 @@ JOIN_GAP = 0.2
 SPAN = 0.1
 # An overshoot, swing or anticipation counts from this share of the travel (or twice the tolerance).
 SWING = 0.01
-# The presets the scene engine names, as CSS defines them.
+# The presets a Picsart scene names, as CSS defines them.
 PRESETS = {"linear": (0.0, 0.0, 1.0, 1.0), "ease_in": (0.42, 0.0, 1.0, 1.0),
            "ease_out": (0.0, 0.0, 0.58, 1.0), "ease_in_out": (0.42, 0.0, 0.58, 1.0)}
 # What `compare` lets pass: start and duration within max(2 frames, the share), the peak speed's

@@ -8,7 +8,7 @@
 | Fit | slots 9; photos; any; trip, year-end, any; wow, upbeat |
 | Music | rising synth hit, 110–125 BPM |
 | Skin | the gaps take the skin's background colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/ef1f3200-bbde-4559-ab44-7e2518b4771c.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/a7feea41-a6b8-49db-9b4a-8d7e88af8b87.mp4 |
 | Proven | no |
 | Seams | none; one continuous pullback |
 | Motion | the hero photo pulls back into the middle cell, the others converge around it |

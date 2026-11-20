@@ -25,6 +25,8 @@ then read what it made.
 | 3. The board | ASK, SPEND | — |
 | 4. What it made | DELIVER | — |
 
+The Recast board's result is video a model generated, not a scene you built, so picsart-video-rules' "Every scene animation is reviewed in the editor" does not apply to it.
+
 ## 1. The video and the pictures
 
 Every file goes in as a Picsart-hosted URL, as picsart-video-rules's Asset URLs says. A video or a

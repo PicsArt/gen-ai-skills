@@ -11,7 +11,7 @@ action, lines and `extra` by it, and every prompt written by hand (an edit or ex
 run prompt still goes out verbatim.
 
 **Its questions go to the user as yours.** When `sd2-pe` or `sd25-pe` has something to confirm (its
-"multi-selection interaction", a picture's place in the frame, a grid image to split), ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) it:
+"multi-selection interaction", a picture's place in the frame, a grid image to split), ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) it:
 one question for each suggestion, its fix as the recommended option, and room for the user's own
 words. Never copy its sample message or its `- [ ]` checkboxes into the reply: some apps show them
 as raw characters.
@@ -39,7 +39,7 @@ Act on them before the quote:
 
 - **No `language` for a speaker:** copy it from their saved voice and compile again. Without it the
   model may answer in another language.
-- **A cut between whole seconds** (Seedance 2.5): the shot lengths are the user's. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether to
+- **A cut between whole seconds** (Seedance 2.5): the shot lengths are the user's. ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether to
   round them; 2.5 places cuts on whole seconds.
 - **Glowing-eye words** ("fanatical", "eyes blaze"): Seedance can light up the eyes on strong
   emotion words. Write the body instead, in plainer words. If the scene needs the intensity, add

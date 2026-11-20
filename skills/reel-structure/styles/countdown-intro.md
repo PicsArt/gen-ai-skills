@@ -8,7 +8,7 @@
 | Fit | slots 6–12; mixed; any, friends, place, solo; trip, party, New Year, sport, any; energetic, epic, bold |
 | Music | a build with a count-in and a drop, 120–140 BPM |
 | Skin | numbers in white; the skin sets the bed |
-| Preview | https://gcdn.picsart.com/picsart-mcp/66893a7b-fdaa-4d93-8e46-f6b3c2528b4e.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/6f3ddc6a-8eab-41ab-91ff-8ad0b9fb7160.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts |
 | Motion | the first clip plays 1.5 s; each number pops from 1.2 to 1 in 0.267 s; then slots at 0.467 s each with a channel split from 24 to 0 |

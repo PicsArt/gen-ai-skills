@@ -8,7 +8,7 @@
 | Fit | slots 1; clips; any, solo, couple, pet, place; any, everyday, trip, sport; wow, cinematic, dreamy |
 | Music | a slow build with one clear drop, 80–110 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/d4fc6cef-72a5-4a1f-b4cd-bd015f2ed378.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/75a2ffc7-4135-4c89-b564-5992e335c3fe.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts between the speed windows; `flash_cut` 0.267 s into the freeze |
 | Motion | one clip in four windows: 0.9 s at speed 1, 2.6 s at speed 0.25 pushing in 1 to 1.15, 0.7 s at speed 1.6 settling back, then a 1.1 s freeze (speed 0) |

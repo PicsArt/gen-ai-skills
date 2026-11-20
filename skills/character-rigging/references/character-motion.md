@@ -40,6 +40,11 @@ each limb's half-length is at most the limb's half-width × tan(angle / 2), so a
   about its pivot) and that bend's `angle` are solved so `end` lands on the target; out of reach the
   limb straightens toward it.
 - `end` — the limb's tip at rest, content px.
+  A limb whose chord dips on the way to straight (a leg squashed along its length, a hinge off its axis) does not reach its
+  target inside that dip: the guaranteed miss is the farthest the chords between the dip's opening and the
+  chosen bend lie from the target, not `reach − distance`, and on a deep dip that bound is tight, since a
+  continuous pose must cross the dip. A target beyond reach gets full extension. Do not promise that the
+  foot lands on its target near a dip; check the drawn foot.
 - `pole` — the side the joint folds to (a knee's front), content px, `[x, y]`; never along the line
   from the joint's `from` to `end`. Default: the side a positive `angle` folds to. A mirrored rig
   mirrors the pose. It is a side of the limb as DRAWN AT REST and turns with the limb, never a
@@ -178,6 +183,13 @@ The hair's rotation then reads `hairSwing()` ([Secondary motion](#secondary-moti
 **A jump**: anticipation squash on the body with the `squash` motion preset (`beats`, `pivot` at the
 feet), then the hips and the foot targets keyed along arcs (`inTangent`/`outTangent`).
 
+**Standing a character on a prop** (a stool, a box, a table): hop onto it, `{"preset":"motionPreset:jump","layerId":"kid","params":{"start":1,"height":60,"onto":"stool"}}`.
+The feet land on the middle of the prop's top edge, measured from the layout at the landing, so the prop's origin and anchor do not matter (placing
+a character at the prop's x and y by hand puts his feet beside it or on the floor). The character is listed after the prop, so he is drawn in front of it;
+hop off with a second jump whose `landY` is the seat's height. Move the prop with its own keys only while the character is not on it, and tilt it only after he has left.
+`picsart_scene_check_motion` `foot_support` flags a foot that holds still on nothing:
+`{"id":"stands","target":{"rig":"kid","parts":["FootTarget"]},"kind":"foot_support","floorY":1926}`.
+
 ## Parameter drivers
 
 Four presets write a number parameter's `default`, applied the same way (`"parameter": "<name>"`);
@@ -194,6 +206,14 @@ the track is bound on that layer, so each instance moves on its own. The rigs an
 | `random_pulse` | brief eased events at seeded random intervals (`minInterval`, `intervalSpread`, `attack`/`hold`/`release`, `burstChance`) | blinks (`eyeOpen` from 1 to 0), lamp flicker, twinkling stars, glitch hits |
 | `random_hold` | a seeded random value held, then a quick eased jump (`transition`) to the next, `minInterval` + `intervalSpread` apart; one `seed` shares the jump times, `channel` picks the value stream, `half` keeps its `positive` or `negative` side, `centerBias` gathers values mid-range | eyes looking around (`lookLeft`/`lookRight`/`lookUp`/`lookDown`), random pose or colour picks, a jittering needle |
 | `cycle` | a repeating `sine`/`triangle`/`saw`/`square` wave every `period` seconds | breathing (`breath`, sine ~3.5 s), bobbing, a pulsing glow, UI pulses, beacons |
+
+A rig's control is keyed by hand with `picsart_scene_patch` `animate` (`{op:"animate", layer:"kid", property:"hipsRaise", keys:[[0,0],[0.5,-1,"ease_out"],[1,0]]}`): a name that is not a layer track writes
+`content.parameters.hipsRaise` on the rig's own clock and drops a preset's binding of it (a control an
+`expression` drives is refused by name). `copyAnimation` with `properties:["hipsRaise"]` copies that track to
+other rigs as it is. Writing 8+ evenly spaced keys by hand, or the same keys on several rigs, gets a note:
+a sine, decay or ramp is one `expression`, and the same motion on several layers is one `copyAnimation`.
+If a render of such a rig fails, the error names the layer, the control and the second
+(`expression on layer 'kid', property 'parameter 'hipsRaise'', line 1 failed at t=2`); fix that expression.
 
 Drive eyelids or the eyes' y-scale from `eyeOpen`; drive chest or shoulder scale and a small head
 bob from `breath`. A different `seed` per character keeps two characters from blinking together.

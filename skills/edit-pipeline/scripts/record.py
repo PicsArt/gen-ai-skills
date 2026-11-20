@@ -5,9 +5,11 @@ Usage (the record is a JSON file; every command prints JSON):
   record.py init <record> --use-case <name> --job <job> --stages <id,id,...>
   record.py check <record>                     the record against the core schema
   record.py status <record>                    each stage done, stale or to do, and the next one
-  record.py done <record> <stage> [--artifact <file>]
+  record.py done <record> <stage> [--artifact <file>] [--verdict <json or text>]
+                                               story and plan need the challenger's verdict in `challenges`;
+                                               qc and critics need their `--verdict`; a user's skip stands for either
   record.py invalidate <record> <stage>        the stage and everything after it are to be redone
-  record.py add <record> <list> <json>         append to standing, approvals, rejected, locked, keepers, openDecisions
+  record.py add <record> <list> <json>         append to standing, approvals, rejected, locked, keepers, challenges, openDecisions
   record.py version <record> <json>            append a version (name, scene, render, parent, changed, gates)
   record.py lock-check <record> <plan>         a plan against the locked meaning map, the format and the pace
   record.py palette-check <record> <scene>     every colour a scene sets against the brand's palette
@@ -17,7 +19,7 @@ Usage (the record is a JSON file; every command prints JSON):
                                                record as edit-footage's, its done stages kept
 
 A stage is done when it was marked done and the inputs it read are unchanged: the record keys it
-reads, and what the stages before it produced. A change upstream makes every stage after it stale.
+reads, and what the stages before it produced. A change in an earlier stage makes every stage after it stale.
 """
 from __future__ import annotations
 
@@ -69,11 +71,21 @@ DELIVER_NEEDS = ['story', 'qc', 'critics', 'review']
 # The checks only the user may skip, never the agent on its own. A skip is recorded on the stage as
 # `skipped: user` with the risk said, and delivery accepts it.
 USER_SKIPPABLE = ('qc', 'critics', 'review')
+# The decisions the challenger judges before the run goes on from them (quality-review's
+# `references/challenger.md`): the stage cannot be passed until `challenges` holds its verdict, or
+# the user's own skip of it. The verdict is kept in a list no stage reads or writes, so writing one
+# never makes a finished stage stale.
+CHALLENGED = {'story': 'the moments, the map or the mapping', 'plan': 'the plan of the cut and its opener'}
+CHALLENGE_VERDICTS = ('keep', 'rethink', 'stop')
+# The checks that judge a draft: the stage cannot be passed until its entry holds the check's
+# `verdict` (the QC inspector's findings, the critic panel's must-fixes and choices), or the user's
+# skip. The verdict sits on the stage entry, outside every fingerprint, like `skipped` and `risk`.
+VERDICT_STAGES = {'qc': "the QC inspector's", 'critics': "the critic panel's"}
 # What story and review wrote before review owned `locked`: a record saved then still resumes as done.
 LEGACY_WRITES = {'story': ['locked'], 'review': ['approvals']}
 ORDER = [s['id'] for s in STAGES]
 
-LISTS = ['standing', 'approvals', 'rejected', 'locked', 'keepers', 'openDecisions', 'versions']
+LISTS = ['standing', 'approvals', 'rejected', 'locked', 'keepers', 'challenges', 'openDecisions', 'versions']
 # Required fields of each list's entries.
 FIELDS = {
     'standing': ['text', 'words', 'date'],
@@ -81,6 +93,7 @@ FIELDS = {
     'rejected': ['what', 'date'],
     'locked': ['phrase', 'job', 'shot'],
     'keepers': ['kind', 'what', 'version'],
+    'challenges': ['stage', 'decision'],
     'versions': ['name'],
 }
 # What each kind of keeper must say: a word and its picture, a moment, or the user's praise in their words.
@@ -182,6 +195,8 @@ def schema_errors(record: dict) -> list[str]:
                 for field in KEEPER_KINDS.get(kind, []):
                     if not entry.get(field):
                         errors.append(f'keepers[{i}] is a {kind} and needs "{field}"')
+            if name == 'challenges':
+                errors.extend(challenge_errors(i, entry))
             if name == 'approvals' and entry.get('session') and not entry.get('words'):
                 errors.append(f'approvals[{i}] was relayed from {entry["session"]} without the person\'s "words": a yes in a session\'s own words is not an approval')
     errors.extend(look_errors(record.get('look')))
@@ -196,6 +211,40 @@ def schema_errors(record: dict) -> list[str]:
             if rng.get('verdict') == 'pass' and rng.get('confidence') == 'none':
                 errors.append(f'sources[{i}].ranges[{r}] passes with no confidence: what could not be measured is "open"')
     return errors
+
+
+def challenge_errors(i: int, entry: dict) -> list[str]:
+    """A challenger's verdict on one decision, or the user's skip of it in their own words."""
+    if entry.get('skipped') is not None:
+        if entry['skipped'] != 'user':
+            return [f'challenges[{i}] is skipped by "{entry["skipped"]}": only the user may skip a challenge']
+        if not str(entry.get('words', '')).strip():
+            return [f'challenges[{i}] is skipped without the user\'s "words": a skip is theirs, quoted']
+        return []
+    if entry.get('verdict') not in CHALLENGE_VERDICTS:
+        return [f'challenges[{i}] needs a verdict ({", ".join(CHALLENGE_VERDICTS)}), or "skipped": "user" with their "words"']
+    if not str(entry.get('why', '')).strip():
+        return [f'challenges[{i}] needs the challenger\'s "why"']
+    return []
+
+
+def challenged(record: dict, stage: str) -> bool:
+    """The challenger's verdict on this stage's decision is in the record, or the user skipped it."""
+    return any(isinstance(c, dict) and c.get('stage') == stage and not challenge_errors(0, c)
+               for c in record.get('challenges') or [])
+
+
+def check_missing(record: dict, stage: str) -> str | None:
+    """What a stage still lacks before the run may go on from it: the challenger's verdict on its
+    decision, or the draft check's verdict. None when it has it, or the stage has no such check."""
+    if stage in CHALLENGED and not challenged(record, stage):
+        return (f'the challenger has not judged {CHALLENGED[stage]}: add its verdict to "challenges" '
+                f'(stage "{stage}"), or the user\'s skip of it in their words')
+    entry = record.get('stages', {}).get(stage, {})
+    if stage in VERDICT_STAGES and not entry.get('skipped') and entry.get('verdict') in (None, '', {}, []):
+        return (f'{VERDICT_STAGES[stage]} verdict is not in the record: mark {stage} done with it '
+                f'(--verdict), or record the user\'s skip')
+    return None
 
 
 def gyro_errors(record: dict, i: int, row) -> list[str]:
@@ -394,7 +443,19 @@ def status(record: dict) -> dict:
     why = None
     if nxt and states[nxt] == 'stale':
         why = 'it was done, but what it builds on changed since'
+    # a stage marked done without its check holds the run there: the states (and every fingerprint)
+    # stay as they are, so writing the verdict lets the run go on with nothing redone
+    # a stage `migrate` marked done was decided before its record knew the checks, and is kept
+    checks = {s: check_missing(record, s) for s in record['pipeline']
+              if states[s] == 'done' and not record['stages'].get(s, {}).get('migrated')}
+    checks = {s: m for s, m in checks.items() if m}
+    if checks:
+        first = next(s for s in record['pipeline'] if s in checks)
+        if nxt is None or record['pipeline'].index(first) < record['pipeline'].index(nxt):
+            nxt, why = first, checks[first]
     result = {'stages': states, 'next': nxt, 'why': why}
+    if checks:
+        result['checks'] = checks
     skipped = {s: e['skipped'] for s, e in record['stages'].items()
                if isinstance(e, dict) and e.get('skipped') and states.get(s) == 'done'}
     if skipped:
@@ -508,17 +569,24 @@ def done_error(record: dict, stage: str) -> str | None:
             if problems:
                 return 'the sheet does not pass sheet.py validate: ' + '; '.join(problems[:3])
         if isinstance(record.get('format'), dict):
-            problems = feasibility(record['format'])
+            problems = feasibility(record['format'], record.get('useCase'))
             if problems:
                 return 'the format is still open: ' + '; '.join(problems[:3])
         elif 'format' in record:
             return 'the format must be an object'
+    if stage in CHALLENGED:
+        missing = check_missing(record, stage)
+        if missing:
+            return missing
     if stage == 'deliver':
-        states = status(record)['stages']
+        current = status(record)
+        states = current['stages']
         missing = [s for s in DELIVER_NEEDS if states.get(s) != 'done']
         if missing:
             return (f'delivery needs {", ".join(missing)} done first, for any job; only the user may skip '
                     'one (record.py skip ... --by user --risk ...)')
+        if current.get('checks'):
+            return 'delivery needs every check in the record first: ' + '; '.join(current['checks'].values())
         if not map_approved(record):
             return ('delivery needs the map approved: its rows locked, or an approval with scope "map", '
                     '"moments" or "mapping"')
@@ -643,6 +711,7 @@ def main(argv: list[str]) -> int:
     for name in ('check', 'status'):
         sub.add_parser(name).add_argument('record')
     a = sub.add_parser('done'); a.add_argument('record'); a.add_argument('stage'); a.add_argument('--artifact')
+    a.add_argument('--verdict', help="qc and critics: the check's verdict, as JSON or a line of text")
     a = sub.add_parser('skip'); a.add_argument('record'); a.add_argument('stage', choices=USER_SKIPPABLE)
     a.add_argument('--by', required=True, choices=['user']); a.add_argument('--risk', required=True)
     a = sub.add_parser('invalidate'); a.add_argument('record'); a.add_argument('stage')
@@ -714,16 +783,40 @@ def main(argv: list[str]) -> int:
         late = [d for d in effective_after(record, args.stage) if status(record)['stages'][d] != 'done']
         if late:
             return out({'ok': False, 'error': f'{args.stage} builds on {", ".join(late)}, which is not done'}, 1)
+        verdict = None
+        if args.verdict is not None:
+            if args.stage not in VERDICT_STAGES:
+                return out({'ok': False, 'error': f'--verdict is for {", ".join(VERDICT_STAGES)}; a challenge goes into "challenges"'}, 1)
+            try:
+                verdict = json.loads(args.verdict)
+            except ValueError:
+                verdict = args.verdict.strip()
+            if verdict in (None, '', {}, []):
+                return out({'ok': False, 'error': 'the verdict is empty: give what the check found'}, 1)
+        elif args.stage in VERDICT_STAGES:
+            return out({'ok': False, 'error': f'{VERDICT_STAGES[args.stage]} verdict is not given: run the check, then mark '
+                        f'{args.stage} done with --verdict; only the user may skip it (record.py skip ... --by user)'}, 1)
         gate = done_error(record, args.stage)
         if gate:
             return out({'ok': False, 'error': gate}, 1)
         artifact_hash = file_digest(args.artifact) if args.artifact else None
         if args.artifact and artifact_hash is None:
             return out({'ok': False, 'error': f'artifact not found: {args.artifact}'}, 1)
+        current = record['stages'].get(args.stage) or {}
+        if not args.artifact and verdict is not None and current.get('status') == 'done' \
+                and status(record)['stages'][args.stage] == 'done':
+            # a verdict written for a stage already done: the entry is carried over as it is (its
+            # artifact, artifactHash and inputsHash), so its fingerprint and every stage after it
+            # stay current and nothing is redone
+            record['stages'][args.stage] = {**current, 'verdict': verdict}
+            save(args.record, record)
+            return out({'ok': True, **status(record)})
         entry = {'status': 'done', 'at': now(), 'inputsHash': inputs_hash(record, args.stage, {})}
         if args.artifact:
             entry['artifact'] = args.artifact
             entry['artifactHash'] = artifact_hash
+        if verdict is not None:
+            entry['verdict'] = verdict
         record['stages'][args.stage] = entry
         save(args.record, record)
         return out({'ok': True, **status(record)})

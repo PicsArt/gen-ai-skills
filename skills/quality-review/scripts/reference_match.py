@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Check a built scene against the reference's format (PI-11891): the layout, the caption position
+Check a built scene against the reference's format: the layout, the caption position
 and size, the hook's place, size and length, and the end card, read from the scene JSON alone.
 
     python3 scripts/reference_match.py scene.json edit-footage.json

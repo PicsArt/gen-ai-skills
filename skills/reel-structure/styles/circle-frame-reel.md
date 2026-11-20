@@ -8,7 +8,7 @@
 | Fit | slots 3–6; photos; couple, solo, friends, any; year-end, anniversary, love, memories, New Year, any; dreamy, romantic, nostalgic |
 | Music | soft dreamy pop or lounge, 80–95 BPM |
 | Skin | the ring repeats the skin's title with the year; the script line closes with the skin's ending words ("the end", "with love"); outline in a soft tint of the accent |
-| Preview | https://gcdn.picsart.com/picsart-mcp/032da137-37f9-4803-be7f-5be8360e8bea.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/b86b887b-8f71-4923-9f5b-6eaf0aaef5b5.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts on the beat inside the circle |
 | Motion | the circle window is 680×680, centred at x 540, y 800, and opens with `look:shape_window`; each photo a slow push inside it (100→104 %); the ring text turns slowly round |

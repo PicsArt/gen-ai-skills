@@ -44,7 +44,7 @@ wide.
 
 ## Fonts
 
-All are in the engine's font catalog (`font.family` keys):
+All are in Picsart's font catalog (`font.family` keys):
 - **Title**: `edwardianscriptitcstd-regular`, at least 150 px tall in the 1080 × 1920 frame, so it reads at
   phone size. For a title longer than 16 characters, use `kaufmannstd` at 130 px instead.
 - **Kicker and labels**: `baskervillemtstd-regular` in capitals, 34–40 px, letter-spaced 0.12 em.

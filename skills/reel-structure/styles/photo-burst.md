@@ -8,7 +8,7 @@
 | Fit | slots 7–12; photos; any; birthday, party, year-end, any; fun, energetic |
 | Music | bright party pop, 115–125 BPM |
 | Skin | the page takes the skin's background colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/f894b6e0-5711-4fc0-bd49-c26585be815a.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/2f60865e-35c3-4256-a733-fe1ec94f051d.mp4 |
 | Proven | no |
 | Seams | `transition:zoom_through(duration=0.267)` between photos |
 | Motion | the cards burst out from the hero; photos held still full screen |

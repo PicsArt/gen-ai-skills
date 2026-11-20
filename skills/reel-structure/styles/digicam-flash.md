@@ -8,7 +8,7 @@
 | Fit | slots 6–20; photos; friends, group, couple, any; party, night out, trip, any; fun, nostalgic |
 | Music | lo-fi pop with a snappy beat, 100–110 BPM |
 | Skin | the hand-written line under the camera is the skin's ("on my SD card" for everyday, "Thanksgiving dump", "The End 2026"); white |
-| Preview | https://gcdn.picsart.com/picsart-mcp/fabf9050-5a3f-4b0e-a409-173ca379cf2b.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/83895a48-5d75-4d2f-b373-612471370648.mp4 |
 | Proven | no |
 | Seams | hard cuts, no transition |
 | Motion | none; each photo sits still on the camera screen |

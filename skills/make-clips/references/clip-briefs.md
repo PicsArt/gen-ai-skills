@@ -39,7 +39,7 @@ rules, Discord and support links.
 The brief names where the clips get posted. Vertical feeds (TikTok, Reels, Shorts) mean 9:16. A
 YouTube-only campaign that wants long-form uploads means 16:9 at 1920×1080: the canvas, the
 reframe and the export all take it, and the look's layout is fitted to it. Say which you picked, and why, in
-the plan message.
+one line when you start.
 
 ## Photo campaigns
 

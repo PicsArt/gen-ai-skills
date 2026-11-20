@@ -21,8 +21,8 @@ editable layers for structural changes. Re-resolve after parameter edits to upda
 - `loadingDuration` L, `revealDuration` R, `holdDuration` H: loading [0,L], crossfade
   [L,L+R], reading [L+R,L+R+H], shared exit for 0.3s, then a transparent 0.1s tail.
 
-The loading pulse is one opacity cycle, not a gradient shimmer. This is an independent scene
-adaptation, not imported upstream markup or a promise of matching its pixels.
+The loading pulse is one opacity cycle, not a gradient shimmer. This is an original scene,
+not imported markup or a promise of matching another design's pixels.
 
 ## Validation after every edit
 

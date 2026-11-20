@@ -8,7 +8,7 @@
 | Fit | slots 4–8; photos; solo, friends, place, any; party, night out, trip, everyday, any; bold, stylish, energetic |
 | Music | driving house or electro, 118–128 BPM |
 | Skin | the repeated word is the first word of the skin's title in capitals (AUTUMN, BIRTHDAY, CHRISTMAS; for Travel the place); outline and fill white |
-| Preview | https://gcdn.picsart.com/picsart-mcp/10e23c51-553c-4f28-a44d-9fae8a3e9fbc.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/436ea4e9-f2aa-4775-a8cb-2d7cbb3b5b12.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts on the beat |
 | Motion | each photo a slow push; each row drifts sideways 180 px over the whole reel at a steady speed (linear), even rows left to right and odd rows right to left; rows fade in over 0.3 s, 0.1 s apart, top first |

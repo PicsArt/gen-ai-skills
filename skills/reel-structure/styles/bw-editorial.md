@@ -8,7 +8,7 @@
 | Fit | slots 4–6; photos; solo, couple, place, any; everyday, autumn, winter, memories, any; moody, cinematic, stylish |
 | Music | moody downtempo, 80–95 BPM |
 | Skin | the words are single words from the skin's title and the day; white |
-| Preview | https://gcdn.picsart.com/picsart-mcp/fb61498e-7291-4a7c-92bc-db3dc65f9aa8.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/e3f4b565-5173-41b3-bcc6-d128489a7552.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts on the beat |
 | Motion | each photo a slow push |

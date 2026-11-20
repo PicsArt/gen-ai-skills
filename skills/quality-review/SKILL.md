@@ -70,7 +70,7 @@ comparer that never saw the plan marks their words against the track.
 every must-know hit in time by two of the three, and no wrong ending. It is the one check of
 whether a stranger follows the video: nobody who knows the plan, you included, can judge that.
 Its viewer calls cost credits unless their quote shows 0 for every one: quote them as
-`references/cold-watch.md` says and SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before the first round; a credit or storage error
+`references/cold-watch.md` says and SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before the first round; a credit or storage error
 stops it, never retried. It is not a measure of retention, and it says so.
 
 **The critic panel.** The panel meets
@@ -92,6 +92,22 @@ its quote) it asks "why this?" and tries to show that the direction is wrong bef
 spent on it. It returns `keep`, `rethink` or `stop`, with the reason and the cheaper alternative.
 It also gets the source stills, so a design that drifts from the real app is caught as it is made.
 Its `rethink` of a shot the user saw and kept is a proposal too: an A/B, never a silent swap.
+Each check here is a gate the use case's flow names (CHALLENGE, CRITICS, QC), never a step to
+drop: where no agent can be started, run it yourself from its brief in this skill's references,
+and write its verdict into the project record as the edit-pipeline skill says.
+
+**The set.** When one delivery holds several shorts cut from the same footage, judge them together
+once each has passed alone, with the retention-hooks skill's `what-a-cut-is` question 8: is each a
+different kind of story from the others? Two that tell one story are one short: offer the other
+slot to a different question. Judge it as a series:
+
+- **A named kind per short**: a hot take, a story, a how-to, a number, a laugh or reaction, a
+  reveal. Write the set as a table (short, kind, question); no two rows share both. A set of three
+  has three kinds, or says why not.
+- **A posting order**: first the short a stranger needs the least context for; say which ones lean
+  on another.
+- **One constant format**: the same hook-line place, caption style and end card on every short, so
+  the second one is recognised.
 
 **The QC inspector.** An edit of the user's own footage is checked from its render by an
 inspector who did not make it and never sees why it was made that way: camera steadiness on every

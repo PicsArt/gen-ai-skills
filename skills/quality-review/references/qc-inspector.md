@@ -15,9 +15,9 @@ readable on a desk, and a camera drift a shake gate had passed on plain paper.
 
 ## What you give it
 
-Where the host has the inspector as an agent (its host notes say so), start the agent
-`qc-inspector` by name. On every host, its whole brief is in this skill as
-`references/agent-qc-inspector.md`. Give it only:
+Run it with a fresh reviewer that has not seen the conversation. When an agent named
+`qc-inspector` is in your list of agents, start it by name. Its whole brief is also in this skill
+as `references/agent-qc-inspector.md`. Give it only:
 
 - the render's URL (or its file, where you run commands) and its version name;
 - the render's transcript: `picsart_media_transcribe` on the exported file, with its words;
@@ -39,9 +39,9 @@ Where the host has the inspector as an agent (its host notes say so), start the 
 - the cold watch's gap list, when one ran on this draft.
 
 Never give it the conversation, your reasons for a choice, or a critic's note. Without the agent,
-run it as its own isolated worker where the host can, its prompt the whole text of
-`references/agent-qc-inspector.md`, the "Looking at an image" section of your host notes and the
-list above; inline otherwise, with its report written out in full before you go on.
+give a fresh reviewer the whole text of `references/agent-qc-inspector.md`, the "Looking at an
+image" section of picsart-video-rules's `references/HOST.md` and the list above; when you cannot
+start one, run it yourself with its report written out in full before you go on.
 
 ## What it returns, and what you do with it
 
@@ -63,4 +63,7 @@ Then:
    rendered A/B, and keep the locked row unless they choose otherwise.
 3. **`open`** goes to the user with the version: what could not be checked and why, with an A/B
    where a choice is involved. Never call it checked.
-4. Write the verdict into the version's `gates` in the record.
+4. Write the verdict into the version's `gates` in the record. In an edit run as the
+   edit-pipeline skill's stages, it is also the `qc` stage's `verdict`, given when the stage is
+   marked done (`record.py done <record> qc --verdict '<verdict, blocking, open>'`, or written on
+   the stage entry by hand): the record goes on to delivery only with it, or with the user's skip.

@@ -8,7 +8,7 @@
 | Fit | slots 5–12; photos; any; birthday, party, everyday, any; bold, fun |
 | Music | bright pop with handclaps, 110–120 BPM |
 | Skin | the page colour is a bright tint of the skin's accent; the title is the skin's, in capitals, near-black |
-| Preview | https://gcdn.picsart.com/picsart-mcp/caed2d0d-790f-45ec-9676-e3776a803b73.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/94655b83-f8bc-4bce-b3d0-681dc59a17dc.mp4 |
 | Proven | no |
 | Seams | hard cuts between cards, no transition |
 | Motion | each card pops in (`look:pop(length=0.333)`), slightly tilted, alternating left and right |

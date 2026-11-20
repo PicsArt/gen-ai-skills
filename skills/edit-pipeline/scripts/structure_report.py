@@ -18,11 +18,12 @@ The content rules, each passed, failed or not checked:
    caption line (2 or more words) of ours, or of the reference's On screen. A format label nobody
    owns (reuse_guard.GENRE_PHRASES: "get ready with me", "POV", ...) passes and is listed as
    "genre phrase, allowed"; `--allow` exempts any other phrase the user chose to keep;
-3. pictures: no still or clip of the reference is a generation input;
+3. pictures: no still or clip of the reference is among the media the new video is made from;
 4. sound: no audio or music of the reference is used.
 Rules 3 and 4 read `--media`, a JSON object: {"reference": [the reference's URL and every still,
-sheet or clip made from it], "generation_inputs": [every URL given to a generation],
-"audio": [every audio URL in the cut]}. Without it, or without the list a rule reads, they are
+sheet or clip made from it], "media_inputs": [every URL the new video's pictures and clips come from],
+"audio": [every audio URL in the cut]}. An older file that names the pictures list
+"generation_inputs" is read the same. Without it, or without the list a rule reads, they are
 not checked, and say so; only an explicit empty list says nothing was used. The reference list
 must identify the reference. With `--own-brand` the reference is the user's own channel: its
 on-screen copy passes as "own brand, allowed", and so does a URL also listed in the media's
@@ -421,10 +422,12 @@ def rules(sheet: Json, mapping: Json, transcript: Any = None, media: Optional[Js
             results.append({"rule": rule, "result": "not checked", "hits": [],
                             "detail": "no media list given; list the reference's URLs and ours to check it"})
         return results
+    if media.get("media_inputs") is None and media.get("generation_inputs") is not None:
+        media = {**media, "media_inputs": media["generation_inputs"]}  # the key's name before it was renamed
     reference = set(urls(media, "reference"))
     if not reference:
         raise sheets.InputError("media reference must list the reference video's URL and what was made from it")
-    for rule, key, what in (("pictures", "generation_inputs", "generation input"), ("sound", "audio", "audio")):
+    for rule, key, what in (("pictures", "media_inputs", "media input"), ("sound", "audio", "audio")):
         if media.get(key) is None:
             results.append({"rule": rule, "result": "not checked", "hits": [],
                             "detail": f"media has no {key} list; give [] when there is none"})

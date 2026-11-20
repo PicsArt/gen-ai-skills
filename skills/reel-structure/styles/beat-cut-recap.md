@@ -8,7 +8,7 @@
 | Fit | slots 12–30; mixed; any; party, trip, night out, any; energetic, fun |
 | Music | driving dance pop, 115–125 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/426d1c03-f0ed-46ed-b763-b11912354269.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/9a63c324-4305-4ace-98f8-5c0e64bb4c2e.mp4 |
 | Proven | no |
 | Seams | hard cuts on every beat, no transition |
 | Motion | every fourth shot punches in from 118 % to 100 % in 0.267 s; the rest as shot |

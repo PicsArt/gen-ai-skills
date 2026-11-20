@@ -85,6 +85,7 @@ Apply these checks to the rows below where the query measures the intended quant
   both rest-pose and near-zero velocity limits. Check intentionally still siblings separately.
 - Ambient motion and arcs: value/rate/acceleration limits constrain the permitted envelope and
   abrupt changes, not exact path shape, period, damping or perceived quality.
+- Tosses and orbits (`toss`, `orbit_around`): query the layer (`picsart_scene_query_layout`) at the result's `phases` times (`land`, `touch1`, ...): it is on the target's socket at `land` and on the floor at each `touch`; sample every frame for a step larger than the arc allows. An orbit's stars stay on one ellipse about the socket, evenly spaced, upright. Where the contacts are heard or answered by a reaction is a visual and audio gate.
 - Fades and resizes: constrain opacity or size and their rates; retain relationship checks for
   companions, fixed edges, padding and attachments. Painted clipping/alpha remains a visual gate.
 - Shared-element seams: include adjacent frame intervals across the seam on the same target;

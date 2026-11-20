@@ -8,7 +8,7 @@
 | Fit | slots 4–10; mixed; pet, couple, friends, solo, any; love, trip, birthday, everyday, any; cute, playful |
 | Music | sweet pop, 95–110 BPM |
 | Skin | the page takes the skin's background colour, at full strength; ticket and arch shapes for travel, hearts for love and birthday |
-| Preview | https://gcdn.picsart.com/picsart-mcp/3c25af29-6589-4670-8cc9-7d2a6df9df4b.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/0fab43cf-0ade-4124-b1f3-c03daee230db.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts between windows, no transition: every photo at full opacity |
 | Motion | each window opens on its photo or clip; clips play inside their window as shot, photos hold still |

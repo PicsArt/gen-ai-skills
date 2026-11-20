@@ -1,5 +1,5 @@
 """
-The split layout for reel_cut.py (PI-11892): two people stacked, one above the seam and one below,
+The split layout for reel_cut.py: two people stacked, one above the seam and one below,
 each a fixed crop of the source chosen by the shot type on screen, with full-frame emphasis
 pieces on the lines the locked map names. reel_cut.py calls it when its input has a `layout`
 whose mode is `split-v` or `stacked`; it is not run on its own.

@@ -34,7 +34,8 @@ The input is one JSON object:
   - `frame` is `crop` (the camera follows the subject; the default for a reframed source) or
     `full` (the whole frame; the default otherwise).
   - `crop` with `hold`, a centre across the source from 0 to 1, holds a still window there
-    instead of following the subject.
+    instead of following the subject. A video with no reframe takes it too: the window fills
+    the frame, at the height's centre.
   - `full` takes `background`: `blur` (the default, a blurred copy fills the margins; `dim`
     darkens it) or `black`.
 - `transition` is optional and plays on every seam. Without it, every seam is a hard cut.
@@ -286,12 +287,21 @@ def held_window(path: Json, clip: Json, hold: float, width: float, height: float
     return [round(x, 3), round(y, 3)], [round(s, 5), round(s, 5)]
 
 
+def fixed_window(size: Vec, hold: float, width: float, height: float) -> Tuple[List[float], List[float]]:
+    """A still window filling the reel, centred at `hold` across a source with no reframe."""
+    sw, sh = size
+    s = max(width / sw, height / sh)
+    half_w = sw * s / 2
+    x = min(max(width / 2 - (hold * sw - sw / 2) * s, width - half_w), half_w)
+    return [round(x, 3), round(height / 2, 3)], [round(s, 5), round(s, 5)]
+
+
 def crop_clip(source: Json, clip: Json, width: float, height: float, notes: List[str], i: int) -> Json:
     path = source['path']
-    if path is None:
+    if path is None and clip.get('hold') is None:
         raise InputError(f'clips[{i}] is "crop", but source "{source["id"]}" has no reframe; '
-                         'reframe it, or frame the clip "full"')
-    sw, sh = path['size']
+                         'give it a "hold", reframe it, or frame the clip "full"')
+    sw, sh = source['size']
     out: Json = {
         'duration': clip['duration'],
         'content': {'kind': 'media', 'assetId': source['id'], 'fit': 'none',
@@ -302,7 +312,8 @@ def crop_clip(source: Json, clip: Json, width: float, height: float, notes: List
         hold = number(clip['hold'], f'clips[{i}] hold', positive=False)
         if not 0 <= hold <= 1:
             raise InputError(f'clips[{i}] hold is a centre across the source, from 0 to 1')
-        position, scale = held_window(path, clip, hold, width, height)
+        position, scale = (held_window(path, clip, hold, width, height) if path
+                           else fixed_window((sw, sh), hold, width, height))
         out['transform'].update(position=position, scale=scale)
         return out
 

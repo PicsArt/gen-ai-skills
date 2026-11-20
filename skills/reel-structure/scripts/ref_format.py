@@ -4,7 +4,7 @@
     python3 scripts/ref_format.py from-sheet sheet.json [more.json ...] --source own-brand
                                   [--canvas 1080x1920] [--fps 30] [--out format.json]
     python3 scripts/ref_format.py check format.json
-    python3 scripts/ref_format.py feasibility format.json
+    python3 scripts/ref_format.py feasibility format.json [--use-case make-clips]
     python3 scripts/ref_format.py plan-check format.json plan.json [--approvals approvals.json]
 
 `from-sheet` drafts the block from one or more structure sheets (sheet.py): the `Layout` header,
@@ -15,7 +15,8 @@ card, the brand files) stays out until it is read from the stills and written in
 
 `check` lists every schema problem. `feasibility` refuses a block whose elements are not each
 answered as reproduced, approximated (with how, and the user's answer) or impossible (with the
-user's answer): the reference stage is not done before. `plan-check` compares a plan (a cut list
+user's answer), or, in make-clips only (`--use-case make-clips`, or the whole record, whose `useCase`
+says so), with `"decided": "agent"` instead of an answer: the reference stage is not done before. `plan-check` compares a plan (a cut list
 with rows, or reel_cut.py's input with clips) with the format's layout and caption position; a
 difference passes only with an approval scoped `format:<element>`.
 
@@ -212,8 +213,13 @@ def check(fmt: Any) -> List[str]:
     return problems
 
 
-def feasibility(fmt: Json) -> List[str]:
-    """What keeps the reference stage open: an element with no answer, or an answer it lacks."""
+# The one use case that answers feasibility itself and shows each approximation at the review.
+AGENT_DECIDES = ('make-clips',)
+
+
+def feasibility(fmt: Json, use_case: Optional[str] = None) -> List[str]:
+    """What keeps the reference stage open: an element with no answer, or an answer it lacks. In
+    make-clips a row marked `"decided": "agent"` needs no user answer; everywhere else it does."""
     problems = check(fmt)
     if problems:
         return problems
@@ -232,7 +238,8 @@ def feasibility(fmt: Json) -> List[str]:
                 problems.append(f'{element}: still open ({row.get("how") or "no answer"}); ask the user, with a mock beside the reference still')
             elif verdict == 'approximated' and unknown(row.get('how')):
                 problems.append(f'{element}: approximated, but not how')
-            if verdict in ('approximated', 'impossible') and unknown(row.get('answer')):
+            agent = use_case in AGENT_DECIDES and row.get('decided') == 'agent'
+            if verdict in ('approximated', 'impossible') and unknown(row.get('answer')) and not agent:
                 problems.append(f'{element}: {verdict} needs the user\'s answer to the ASK with a mock')
     return problems
 
@@ -333,7 +340,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     a.add_argument('--fps', type=float, default=30)
     a.add_argument('--out')
     sub.add_parser('check').add_argument('format')
-    sub.add_parser('feasibility').add_argument('format')
+    a = sub.add_parser('feasibility')
+    a.add_argument('format')
+    a.add_argument('--use-case', help="the record's use case, when FORMAT is the format alone")
     a = sub.add_parser('plan-check')
     a.add_argument('format')
     a.add_argument('plan')
@@ -357,13 +366,14 @@ def main(argv: Optional[List[str]] = None) -> int:
             problems = check(fmt)
             return out({'ok': not problems, 'format': fmt, 'problems': problems}, 1 if problems else 0)
         fmt = load(args.format)
+        use_case = fmt.get('useCase') if isinstance(fmt, dict) else None
         if isinstance(fmt, dict) and isinstance(fmt.get('format'), dict):
             fmt = fmt['format']  # the whole record
         if args.cmd == 'check':
             problems = check(fmt)
             return out({'ok': not problems, 'problems': problems}, 1 if problems else 0)
         if args.cmd == 'feasibility':
-            problems = feasibility(fmt)
+            problems = feasibility(fmt, args.use_case or use_case)
             return out({'ok': not problems, 'problems': problems}, 1 if problems else 0)
         problems = check(fmt)
         if problems:

@@ -8,7 +8,7 @@
 | Fit | slots 3–6; clips; any, solo, couple, friends, place; memories, wedding, anniversary, any; nostalgic, cinematic, emotional |
 | Music | soft piano or old-soul ballad, 60–85 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/68016032-77bc-49a9-9cf7-9cc1a1fa1b3c.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/68076933-86f1-46ed-9c82-c010de0da177.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | `crossfade` 0.5 s |
 | Motion | clips 2 s each at speed 0.5, as shot |

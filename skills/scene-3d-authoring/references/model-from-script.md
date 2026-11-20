@@ -14,7 +14,7 @@ reads 5 while your script runs, 45 while the model exports and 85 once it is exp
 A long script need not pass through your context. With a shell, write it to a `.py` file and upload
 it with `picsart_upload_local_files` (`type: "script"`), then pass the URL it prints as `scriptUrl` instead of
 `script`; after an edit, upload the file again. A script already at a public https URL goes
-straight into `scriptUrl`; the server fetches it.
+straight into `scriptUrl`; Picsart fetches it.
 
 The finished model's `report` gives its `vertices`, `triangles`, `meshes`, `materials` and `bytes`,
 and its `log` holds the end of the build's output, where your script's `print` lines land.
@@ -25,7 +25,7 @@ when `picsart_scene_build_model` is called with only `jobId` (the receipt's `job
 ## What the script may use
 
 - `bpy`, `bmesh`, `math`, `mathutils` and `random` only. No rendering, importing, exporting or
-  file operations: the server exports, without your lights or cameras (the scene brings them).
+  file operations: Picsart exports, without your lights or cameras (the scene brings them).
 - Modifiers (bevel, subdivision, array, mirror, solidify, boolean, ...), `bmesh` operators,
   materials and UVs. Every modifier left on an object is applied by the export.
 - Not available: `eval`, `exec`, `type`, `globals` and similar builtins. Seed `random` so the same
@@ -108,6 +108,12 @@ make("boiler_rivets", bm, green)
 The GLB carries a Principled BSDF's **Base Color, Metallic, Roughness, Emission** and image
 textures. Procedural texture nodes (noise, musgrave) do not export: get variation from geometry,
 from separate materials, or from an image built with `bpy.data.images.new` and its pixels.
+
+A real image (a photo, a decal, a label, a generated texture) goes in as `textures`: names to public
+https PNG, JPEG or WebP URLs, such as Drive or generation results:
+`"textures": {"concrete": "https://…/concrete.jpg"}`. The script loads one by its name with
+`bpy.data.images.load(textures["concrete"])` into an Image Texture node on the Base Color; the GLB
+embeds it. A name is 1 to 64 of `a-z`, `0-9`, `_` and `-`.
 
 | Look | Base color (linear) | Metallic | Roughness |
 |---|---|---|---|

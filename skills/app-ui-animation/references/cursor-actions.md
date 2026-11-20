@@ -19,8 +19,8 @@ Describe the selected template before applying.
 | Open, select and confirm a menu | `scene://cursor-context-menu`: coordinated composition |
 
 Do not add templates merely to rename position keyframes or wrap one preset. Add meaningful
-structure or behavior. These are animated compositions, not event handlers. The menu independently
-adapts an upstream idea; it imports neither implementation nor assets and performs no file operation.
+structure or behavior. These are animated compositions, not event handlers. The menu is an original
+scene built from a familiar idea; it uses no outside code or assets and performs no file operation.
 
 ## Curved position tracks: complete editable scene
 

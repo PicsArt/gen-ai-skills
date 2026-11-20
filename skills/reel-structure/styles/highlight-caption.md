@@ -8,7 +8,7 @@
 | Fit | slots 3–6; photos; any; everyday, trip, party, autumn, any; playful, fun, friendly |
 | Music | bright ukulele or indie pop, 100–115 BPM |
 | Skin | the bar is the skin's accent; captions are short everyday phrases, the first one the skin's title; near-black text |
-| Preview | https://gcdn.picsart.com/picsart-mcp/9cbae5e9-dbe7-4800-9c2a-ed8cba00829c.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/6f7f818a-4bed-48e9-8a22-ac9bef678ea8.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts on the beat |
 | Motion | each photo a slow push; the bar sweeps on by its width, slightly tilted, alternating |

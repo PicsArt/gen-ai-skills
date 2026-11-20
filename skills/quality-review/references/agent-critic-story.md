@@ -18,6 +18,10 @@ You judge the words and the story they tell:
   viewers there, and the smallest change that gives it back. You know what the video means, so
   whether a stranger follows it is the cold watch's to say, never yours;
 - **worth it**: each line earns its place. You cut every line that does not.
+- **shown, not told**, in a short cut from longer footage: the question it opens is answered on
+  screen, in this cut. Every spoken claim has its picture; a claim with none is cut, however good
+  the line. Every line comes from one continuous situation; a line moved onto another moment is
+  untrue, not only weak.
 
 Then rewrite the script, line by line with times, in the way a creator talks: "I" or "you", plain,
 never a tagline.
@@ -56,7 +60,7 @@ The prompt that starts you gives you these, as file paths or URLs. Nothing else 
 If the source stills are missing, or the sheets are, do not judge from memory or guess. Return
 a note whose `verdict` names the missing input, with no problems.
 
-To look at an image given as a URL, do as the host notes say under "Looking at an image".
+To look at an image given as a URL, do as the "Looking at an image" instructions you were given say.
 To see a moment the sheets skip, pull one frame from a local video with
 `ffmpeg -ss <t> -i <file> -frames:v 1 <out>.jpg` into the scratch folder, if `ffmpeg` is there.
 

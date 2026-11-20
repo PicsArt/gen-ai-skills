@@ -8,7 +8,7 @@
 | Fit | slots 8; photos; friends, couple, group, any; party, birthday, night out, wedding, any; fun, playful, nostalgic |
 | Music | retro funk or bouncy pop, 100–115 BPM |
 | Skin | the page is the skin's accent; no words |
-| Preview | https://gcdn.picsart.com/picsart-mcp/7897e095-addb-4dd5-aa02-74958c2e99b0.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/cea3afa2-e299-437d-a98c-4aa089555c26.mp4 |
 | Proven | yes: agent build 2026-11-08, user-approved |
 | Seams | no cuts: one continuous scroll |
 | Motion | the strips slide up into place, then scroll steadily by position keyframes, one up and one down |

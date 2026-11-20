@@ -8,7 +8,7 @@
 | Fit | slots 3–6; mixed; couple, friends, family, any; love, anniversary, memories, birthday, any; cute, romantic, warm |
 | Music | soft acoustic or bedroom pop, 80–100 BPM |
 | Skin | the send button is the skin's accent colour; the bar is white |
-| Preview | https://gcdn.picsart.com/picsart-mcp/7c08a81a-2020-49bd-800a-069810761237.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/824932c1-9807-44ed-8bc9-03ad3490b299.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | `transition:crossfade` between the answer photos, 0.3 s; a hard cut from the clip to the first photo |
 | Motion | the clip plays as shot under the bar; the bar fades in at 0.3 s and stays until the cut; the answer photos play as shot |

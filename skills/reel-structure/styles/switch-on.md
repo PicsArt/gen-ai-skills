@@ -8,7 +8,7 @@
 | Fit | slots 3–5; photos; any; autumn, winter, summer, spring, holiday, everyday, any; playful, fun, cute |
 | Music | bouncy pop with a click on each switch, 100–125 BPM |
 | Skin | the ground is the skin's light colour (#F3E6C8); the labels are dark brown #2B2118; the switch turns green when on |
-| Preview | https://gcdn.picsart.com/picsart-mcp/c5378eac-9065-4fec-8de4-1eed14ac1d6f.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/2e9307cb-3f49-44e8-8ff1-71088e142f4c.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts between each switch card and its photo |
 | Motion | the switch knob slides right and the track turns green over 0.3 s at 0.5 s into each card; each photo enters with `look:pop(length=0.6)` and then holds |

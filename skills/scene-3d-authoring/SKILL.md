@@ -1,14 +1,18 @@
 ---
 name: scene-3d-authoring
-description: Build a 3D scene (a composition whose space is 3d) — models (imported, ready-made or built from your own Blender script), camera, lighting presets, floor, groups and parenting, model parameters, 3D motion presets (drop_in, fly_in_arc, snap_settle, bounce, idle_bob, wiggle, turntable; camera orbit, dolly, push_in, crane, whip_pan) — then render and measure it. Use when making a product or toy showcase, a build-up sequence of parts, an object that builds itself and then moves (drives, walks, unfolds), a turntable, a 3D title or any 3D document, or when 3D motion lands wrong, sinks into the floor or fails to evaluate. Not for a 2D cartoon character, face or mascot (shapes and the cartoon rig templates, in character-rigging), nor for flat layers in depth (photo cards that flip, a camera orbiting cards or panels) — that is a 2D scene with layer depth and the composition camera, in scene-animation-reference.
+description: Build a 3D scene (a composition whose space is 3d) — models (imported, ready-made or built from your own Blender script), camera, lighting presets, floor, groups and parenting, model parameters, 3D motion presets (drop_in, fly_in_arc, snap_settle, bounce, idle_bob, wiggle, turntable; camera orbit, dolly, push_in, crane, whip_pan) — then render and measure it. Use when making a product or toy showcase, a build-up sequence of parts, an object that builds itself and then moves (drives, walks, unfolds), a turntable, a 3D title or any 3D document, or when 3D motion lands wrong, sinks into the floor or fails to evaluate. Not for a 2D cartoon character, face or mascot (shapes and the cartoon rig templates, in the character-rigging skill when it is among your skills), nor for flat layers in depth (photo cards that flip, a camera orbiting cards or panels) — that is a 2D scene with layer depth and the composition camera, in scene-animation-reference.
 metadata:
   category: authoring
   version: '1.1'
-  ported-from: 3d-authoring 1.1 at 55.91.0
+  ported-from: 3d-authoring 1.1 at 59.4.0
 user-invocable: false
 ---
 
 # 3D scenes — models, light, motion, render
+
+Pass `useCase: "scene-3d-authoring"` when you read `picsart_scene_capabilities` or the recipe index.
+
+Tools in order: `picsart_scene_import_model` or `picsart_scene_build_model`, `picsart_scene_preview_model` (a job: `picsart_job_status`), `picsart_scene_patch` / `picsart_scene_apply_preset`, `picsart_scene_validate`, `picsart_scene_contact_sheet`, `picsart_scene_export`.
 
 A 3D scene is a scene whose composition says `space: "3d"`: metres, y up, rotations in
 degrees about x then y then z (intrinsic). Its layers are objects (a `model`, a `media` or 2D-scene card,
@@ -75,9 +79,8 @@ A model is a GLB `model` asset at a public https URL. Asset keys are identifiers
   what a squash flattens toward. With the origin at the centre of the base the object stands on
   the floor at `[x, 0, z]` and squashes onto it. A model whose origin is elsewhere is lifted by its
   height (the import and build reports give `bounds` as min, max and size in scene units, and `clipSeconds`), or fixed in the file it came from.
-- **Bring a model in.** `picsart_scene_import_model` takes a GLB, a glTF (buffers and images
-  embedded as data: URIs) or a binary FBX from a public https URL, Draco or meshopt compressed
-  included, and returns one uncompressed GLB plus a report of its nodes, bones, morph targets,
+- **Bring a model in.** `picsart_scene_import_model` takes a model file (its description lists the
+  formats) from a public https URL and returns one uncompressed GLB plus a report of its nodes, bones, morph targets,
   materials and clips, with the model parameters it proposes. `expose` picks the parameter kinds (`bones`, `morphs`, `materials`, `clips`);
   a bone a clip already turns is proposed only when `bones` is named, so a walk clip still walks.
   Look at it with `picsart_scene_preview_model` (a still or a turntable) before building on it.
@@ -109,6 +112,8 @@ A model is a GLB `model` asset at a public https URL. Asset keys are identifiers
   on a beat. What a parameter binds, aggregate mode, response curves, several actions mixed in tiers,
   lip sync, the standard character control names and a car without bones:
   [references/model-parameters.md](references/model-parameters.md).
+- **Steam, smoke, a trail behind a mover, overhead wires and cables** are particles and a `wire` content:
+  [references/model-parameters.md](references/model-parameters.md), "Steam, smoke and wires".
 - **A face or screen on a model** is a material texture slot, not a card:
   [references/model-parameters.md](references/model-parameters.md), "Faces and screens on a model".
 
@@ -133,6 +138,53 @@ A model is a GLB `model` asset at a public https URL. Asset keys are identifiers
     { "id": "car", "parentId": "rig", "content": { "kind": "model", "assetId": "car" } }
   ]
   ```
+
+## Controls and actions on a group
+
+A character is a group built once and played many times: the scene declares **controls**
+(`parameters`), its parts read them in expressions, and **actions** key the controls over time.
+
+- **Controls are streams.** A 3D scene's `parameters` of type `number`, `boolean`, `vec2`, `vec3`, `color` or
+  `text` are live values of that scene (the root's too). A layer's expression reads one as
+  `ctx.composition:getParameters():swing()` and sees it change on the scene's clock. The same call in
+  a group's scene reads that scene's controls, never the root's.
+- **Parts at joints.** One `model` layer per part, each placed by an expression over the controls: an arm's
+  `rotation` is `Vec.v3(ctx.composition:getParameters():armSwing(), 0, 0)`, a leg's reads `legSwing()`, the body's
+  height reads `bounce()`. Proportions are controls too (`armLength`, `legLength`): another character is the
+  same scene with other values bound.
+- **One GLB, node-bound parameters.** A character exported as one model with its joints as nodes needs no part
+  layers: declare its parameters in the GLB (`bind: "node:upperarm.r.rotation.z"`) and bind each on the model layer in
+  the scene, as an expression over the control: `"parameters": { "armSwing": { "expression": "return
+  ctx.composition:getParameters():armSwing()" } }`. A binding is written in the scene, so `ctx.composition` is the
+  scene's controls (a group's own scene inside a group) and `ctx.layer` is the model's declarations. A control the
+  scene does not declare is `parameter_read_unknown`, naming the scene's; so is a suffixed read of one
+  (`swingVelocity()`, `swingDirection()`, `swingSince()`), which the sampler does not read there: read `swing`
+  itself. A read cycle through a control (a control computed from the model's parameter that reads it) is refused
+  by the sampler, naming both. A default inside the GLB
+  (`extras.mpParameters`) that reads `ctx.composition` is refused as `model_param_default_reads_scene` at the bake and export (validate does not read the GLB, so it
+  passes there): an asset names no scene's controls, so its scene binds them instead.
+- **Actions key controls.** The scene's `actions` carry `parameters` tracks (keyframes, like a 2D rig's):
+  `"actions": { "walk": { "duration": 1, "parameters": { "armSwing": { "keyframes": [...] }, "legSwing": {...} } } }`.
+  The same body plays on any character whose scene declares those controls. An action's `layers` tracks are refused
+  in a 3D scene (`action_layers_3d_unsupported`); key a control and read it instead.
+- **Play it on the group.** `content.animation` on the `scene_ref` is the stack, as on a 2D scene: `[ { "action": "walk",
+  "duration": 3 }, { "action": "wave", "start": 3, "fade": 0.25 } ]` is walk, then wave, with a
+  0.25 s fade. The entries run on the scene's own clock; `trim` and `speed` with `animation` are refused. A 2D scene
+  that plays a 3D scene refuses `animation` (`scene_ref_animation_3d_unsupported`: it is baked once as a picture), and
+  so does a 3D scene playing a 2D card; place the 3D scene as a group in a 3D scene instead.
+- **Who wins.** A control the caller binds on the `scene_ref` (`content.parameters`) to a constant or to
+  keyframes is the caller's: the actions leave it. Unbound, it is the mix of the actions that key it, resting at the
+  declared `default` where none plays. A binding written as an expression builds on the action's value, which it reads
+  as `value`: `{ "expression": "return value * 1.5" }` scales a playing walk, never replaces it. A binding or
+  `animation` weight written as an expression that reads `ctx` is refused (`scene_group_expression_reads_host`): it
+  would run in the group's scene, so bind a value, a track, or an expression of its own time. A track binding on a
+  group with `trim` or `speed` is refused (`scene_group_track_binding_clock`).
+- **The trap.** Binding a **constant** to a control `walk` keys switches that part **off**: `parameters: { "armSwing": 0 }`
+  freezes the arms under a playing walk, and the validator warns `scene_ref_parameter_overrides_action`. To change the
+  part, bind an expression over `value`; to leave it to the action, bind nothing.
+- **Not here.** Per-layer keyframes inside the scene do not mix with a stack; only controls do. A bound
+  scene's constant `$eval`s read the bound or default value, never the playing action; only a layer's expression
+  reading `getParameters()` follows it.
 
 ## Lights
 
@@ -226,6 +278,8 @@ off, the whole scene pulsing on the beat — are in [references/recipes.md](refe
 
 ## Render and verify
 
+Where a node or point lands under parenting and the camera, or an orbit or dolly position at time `t`: compute it (the `computing-values` recipe), then write the same text live.
+
 - **Validate.** `picsart_scene_validate`; a 3D document always carries a warning that a translated
   target cannot draw it — that warning is expected, nothing else is. Validation does not read a model
   at a URL: a `materials` override or `action` the model lacks shows up only when it renders, so take
@@ -273,6 +327,8 @@ off, the whole scene pulsing on the beat — are in [references/recipes.md](refe
   object is `turntable`, not a y keyframe.
 - **Final values exactly.** A landing pose written with rounded numbers lands a hair off its
   neighbours; write the same numbers as the resting `transform`.
+- **A constant bound to a keyed control stops the action.** `content.parameters: { "armSwing": 0 }` on a group
+  whose `walk` keys `armSwing` freezes that part; bind an expression over `value` to adjust a playing action.
 - **Something sinks into the floor.** Its origin is not at its base — lift it by its height.
 - **A squash lifts the object off the floor.** Same cause: a squash flattens toward the origin.
 - **The backdrop never shows.** The camera is looking down at a drawn floor; bring the horizon

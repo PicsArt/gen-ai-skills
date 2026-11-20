@@ -16,6 +16,7 @@
     "commands/cartoon.md",
     "commands/channel-clips.md",
     "commands/character.md",
+    "commands/clipper.md",
     "commands/clips.md",
     "commands/cut-footage-into-reel.md",
     "commands/edit.md",
@@ -40,6 +41,8 @@
     "commands/upscale-photo.md",
     "skills/ai-presenter",
     "skills/animate-design",
+    "skills/animated-explainer",
+    "skills/animated-story",
     "skills/app-ui-animation",
     "skills/asset-audit",
     "skills/assets",
@@ -66,8 +69,9 @@
     "skills/get-started",
     "skills/large-scene-assembly",
     "skills/linked-element-motion",
-    "skills/make-cartoon",
+    "skills/lip-sync-lines",
     "skills/make-character",
+    "skills/make-clips",
     "skills/make-comics",
     "skills/make-screen-videos",
     "skills/make-short-drama",
@@ -104,6 +108,7 @@
     "skills/speech-aware-cutting",
     "skills/spoken-captions",
     "skills/visual-style",
+    "skills/visual-styles",
     "skills/voice-over-generation"
   ]
 }

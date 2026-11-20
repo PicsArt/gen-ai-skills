@@ -19,9 +19,9 @@ For ordinary movement of one object use position tracks, not this template.
 }
 ```
 
-This independently adapts an upstream interaction idea; no implementation/assets are imported.
+This is an original scene built from a familiar interaction idea; no outside code or assets are used.
 It is not a live drag handler, arbitrary target tracker or complete kanban application.
-Badges, changing counters and upstream board chrome are outside this adaptation.
+Badges, changing counters and surrounding board chrome are outside this adaptation.
 
 ## Ownership before checking
 

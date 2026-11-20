@@ -28,6 +28,8 @@ with only `in` is a `missing_field` error. Mute a recording's own track (`muted:
 content) unless its sound is being kept. **If the scene schema ever lists no audio
 layer, say so and stop** — do not export a silent video and do not invent a mix.
 
+A `picsart_scene_validate` warning is fixed, or explained to the user, once. It is never left to repeat across rounds, and the scene reaches review with no repeated warning.
+
 `animations.volume` is a percent, 0–100 (100 is full level), so `0.8` is near silent
 (`volume_near_silent`).
 
@@ -61,6 +63,12 @@ Layers paint in list order: the last layer is on top. (A 3D scene has no paint o
 place, start it where the last one ends, and never let an overlay's opacity drop to 0 for a frame
 or two: a gap that short reads as a blink.
 
+**Captions are a `captions` layer, never text layers.** One layer takes the transcript's segments (word timings) and a
+`caption_style` preset by id; `picsart_scene_capabilities` with `sections: ["captions"]` lists the styles and decorations,
+and caption-decorations says how to choose. For a line you generated, get the timings from `picsart_media_transcribe` with
+`text` set to the script. **Music under speech is one `audio` layer** at volume 30 between lines and 15 under speech, dipping
+before each line and returning over 0.6 s: not a volume curve keyed by hand.
+
 ## Transitions
 
 When a panel replaces the one before it, a hard cut is fine and keeps the energy; a soft seam
@@ -86,6 +94,19 @@ layer 76,000 px wide or half a frame off shows there.
 **A scene written as a file** can go directly to tools that accept an inline `scene`: read the
 file's JSON and pass that object. When an actual scene edit returns a `sceneUrl`, use that URL
 for later calls. Do not make an unchanged edit just to obtain a URL.
+
+## Author compactly
+
+A scene that stays small stays editable. Prefer, in this order:
+
+- **Draw a set or prop as one SVG import** (`picsart_scene_import_svg_path` with `svg`), not many hand-made shapes: every `<path>` comes in with
+  its own paint, and a later SVG shape paints on top (the importer orders the items). Ids in the markup are not carried over; name layers yourself.
+- **Computed motion is a live `expression`**, not sampled keys: see the `computing-values` recipe (`picsart_scene_recipe`).
+- **The same motion on several layers**: `picsart_scene_patch` `copyAnimation` from one layer to the others, not a copy of each track.
+  **A retimed block**: `shift`, not an edit of every start.
+- **Hand-keyed motion goes in as `animate` pairs**: `picsart_scene_patch` `{"op":"animate","layer":"card","property":"opacity","keys":[[0,0],[0.4,1,"ease_out"]]}`
+  writes the same keyframes `set` does (`t` in seconds, rising; it replaces the whole track), in under half the bytes. Tangents and `by`/`at` keys stay on `set`.
+- **Named constants** (the floor line, a margin, a beat length) are root `parameters`, and **repeated elements** are `$each` over them.
 
 ## Reusable parts
 

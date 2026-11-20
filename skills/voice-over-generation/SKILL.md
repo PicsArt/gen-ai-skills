@@ -33,3 +33,18 @@ can be timed to.
   Probe every voice line's real length with `picsart_media_probe` before anything is timed to
   it. When a line is longer than the time it has, shorten the line; never stretch the picture to
   fit it. Only that line is generated again.
+- **A failed batch gets one retry, inside what the user approved.** When the voice batch (or some of its lines) fails
+  because the speech model itself errors (a server error, not a refusal), take the next speech models
+  `picsart_model_catalog` lists, with a voice of the same kind from each model's own voices (`picsart_model_params`),
+  and quote the whole retry on each: the failed lines plus any lines of the same character that must be made again. A
+  yes covers what was quoted, once (picsart-video-rules, SPEND rule 3), so a retry on another model is a new run and
+  needs a new yes, whether or not the first attempt charged. The one exception is a spend limit the user stated in
+  words: then switch automatically to the first model whose whole-retry quote is no higher than that limit minus
+  everything already spent on this request (the lines that succeeded included, and a charge counted unless the tool says
+  it was not made), generate the complete quoted set once, keep the lines that worked for the characters the failure did not touch, and say it in one line ("ElevenLabs
+  failed, so these lines were made on <model>, within your limit"). Otherwise SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says): ask once with the cheapest
+  quote and its price, and generate nothing until the user agrees. Never mix two models inside one character's lines: a character with a failed line has all of its lines made again on the new model, in that one quoted set and never twice.
+  Ask the user too when the
+  retry fails. A refusal for content, a credit error or a bad input is not a model error and is not retried this way.
+- **A `422 invalid_text` is the provider's content filter on that one line.** Reword only that line (a mnemonic or a blunt
+  phrase is the usual cause), say so to the user in one line with the new wording, and keep every other line as it is.

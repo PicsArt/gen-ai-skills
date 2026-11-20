@@ -8,7 +8,7 @@
 | Fit | slots 4–8; clips; any, solo, friends, couple, place; any, trip, summer, autumn, memories; dreamy, aesthetic, calm, warm |
 | Music | soft dreamy pop or lo-fi, 70–95 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/06d85a30-d71a-4be0-8cc6-ed1be768cf22.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/e546e835-8e9f-44a2-b9d8-0a26febc7ccc.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | `blur_dissolve` 0.467 s between clips |
 | Motion | each clip 1.9 s at speed 0.45 with a slow push from 1 to 1.06 |

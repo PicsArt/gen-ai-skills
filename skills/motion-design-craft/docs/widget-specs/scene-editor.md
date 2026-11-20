@@ -1,7 +1,7 @@
 # Widget spec — `picsart_scene_editor`
 
 The motion-review surface. It opens a **scene document
-played in the user's browser by the scene engine, exactly as authored** — masks, per-keyframe
+played in the user's browser exactly as authored** — masks, per-keyframe
 easing, corner radii, vector art and real glyph layout render as the format specifies, not as a
 translation approximates — with a verdict bar (**Approve** / **Send with notes**) and an
 edit-request layer (pins on the frame, marked stretches of the timeline).
@@ -62,7 +62,7 @@ yet). This matches the skill's rule that a shown result is always the reel, neve
 
 ## It renders NOTHING, and there is NO video file
 
-The scene plays and is edited **in the browser, through the scene engine**. It is **free**,
+The scene plays and is edited **in the browser**. It is **free**,
 spends no credits, and **produces no file**. Do **not** look for a `videoUrl`, do **not** claim
 anything was saved, and do **not** save anything to Drive on the strength of the reply. (An older
 film-review contract returned a rendered mp4 to save before it expired — that is a *different*

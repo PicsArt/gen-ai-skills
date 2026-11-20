@@ -8,7 +8,7 @@
 | Fit | slots 4–6; photos; any; birthday, memories, trip, autumn, any; nostalgic, warm, cosy |
 | Music | warm lo-fi or acoustic, 80–95 BPM |
 | Skin | the page is a light tint of the skin's background; notes are short typed lines, the last one the skin's title |
-| Preview | https://gcdn.picsart.com/picsart-mcp/46472472-47a6-44d2-bca8-c8a98835cacd.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/6c703757-e56c-410e-bd9f-e9975cf33161.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts: each new page rises in over the last |
 | Motion | each framed photo rises in with `look:slide` (up), tilted 3°, alternating; held still; no exit move (a moving photo_frame loses its frame) |

@@ -1,6 +1,6 @@
-# The reel jobs: reel, highlight, podcast-clips, split, montage, slideshow, lesson
+# The reel jobs: reel, highlight, montage, slideshow, lesson
 
-Read this whole file when the job is one of these seven (SKILL.md, The jobs). Its steps are the
+Read this whole file when the job is one of these five (SKILL.md, The jobs). Its steps are the
 reel steps of SKILL.md's flow table, in this order.
 
 ## Contents
@@ -36,15 +36,15 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 |---|---|---|
 | 1. Take the footage in | ASK | — |
 | 2. The interview | ASK | retention-hooks, reel-structure, motion-tracking-from-video (reference) |
-| 3. Read the footage | SPEND | footage-analysis, footage-reframing |
-| 4. Pick the moments | ASK | speech-aware-cutting, retention-hooks |
+| 3. Read the footage | CHALLENGE, SPEND | footage-analysis, footage-reframing |
+| 4. Pick the moments | CHALLENGE, ASK | speech-aware-cutting, retention-hooks |
 | 5. Agree the passes | ASK | — |
-| 6. Plan the cut | — | speech-aware-cutting |
+| 6. Plan the cut | CHALLENGE | speech-aware-cutting |
 | 7. Build the takes | SPEND | footage-reframing, scene-building-basics, spoken-captions, edit-on-your-computer (on-disk), photo-slideshow, quick-merge-and-export, face-hiding, motion-design-craft (style), motion-pattern-library (style), scene-template-remix (style), custom-transitions (style), linked-element-motion (style), caption-decorations (style), visual-style (style), motion-tracking-from-video (reference) |
-| 8. Check it: the framing, the QC inspector, the critics | ASK | footage-reframing, quality-review, resting-frame-rules (style), motion-review (style), motion-tracking-from-video (reference) |
+| 8. Check it: the framing, the QC inspector, the critics | QC, CRITICS, ASK | footage-reframing, quality-review, resting-frame-rules (style), motion-review (style), motion-tracking-from-video (reference) |
 | 9. The cut | REVIEW | — |
-| 10. Highlights, when wanted | ASK, REVIEW | spoken-captions, caption-decorations, screen-recording-layouts |
-| 11. Music, when wanted | ASK, SPEND, REVIEW | background-music |
+| 10. Highlights, when wanted | ASK, CHALLENGE, REVIEW | spoken-captions, caption-decorations, screen-recording-layouts |
+| 11. Music, when wanted | ASK, CHALLENGE, SPEND, REVIEW | background-music |
 | 12. Deliver | DELIVER | — |
 
 | Read this | Before you |
@@ -62,12 +62,25 @@ Every question here is asked as picsart-video-rules's Asking says: one per turn,
 first, each option saying what it changes. The stage names are your bookkeeping, never the
 user's.
 
-**The challenger at each decision.** Before you go on from a decision, quality-review's challenger (the
-`challenger` agent where the host has it) asks "why this?" of it: the moments you recommend (stage
-4), the plan of the cut and its opener (6), the highlight lines the first time they are placed (10),
-and every quote before its SPEND (3, 11). Act on its verdict as quality-review says. A `stop`, or a
-`rethink` of the user's own choice, goes to the user in the next ASK, the cheaper alternative first,
-before anything is spent.
+**The checks are gates.** CHALLENGE, QC and CRITICS in the table are agent checks, run before the
+row's other gates, never dropped because a step looks obvious:
+
+- **CHALLENGE**: quality-review's challenger asks "why this?" of the decision: the moments you
+  recommend (stage 4), the plan of the cut and its opener (6), the highlight lines the first time
+  they are placed (10), and every quote before its SPEND (3, 11). Start the `challenger` agent
+  when you have one; otherwise run it from its brief in the quality-review skill, as that skill's challenger
+  says, its answer written out in full. Write its verdict into the record's `challenges` (`stage`:
+  `story` at 4, `plan` at 6; the stage it is on for the others), then act on it as quality-review
+  says. **The ASK or SPEND it covers opens only after the verdict is in the record**, with it said
+  in one line ("Challenger: keep, the hook opens the question the short answers"). A `stop`, or a
+  `rethink` of the user's own choice, goes to the user in that ASK, the cheaper alternative first,
+  before anything is spent.
+- **QC** and **CRITICS** (stage 8): the QC inspector, then the critic panel, as stage 8 says, each
+  closing with its verdict on the record's `qc` and `critics` stage.
+
+The record will not go past the moments, the plan, the check or the critics without its verdict
+(the edit-pipeline skill). Only the user skips one, by name, after hearing its risk; record the
+skip in their words. With no user to ask, nothing is skipped.
 
 Each stage that ends in REVIEW waits for the user. The cut, the highlights and the music are
 judged one at a time, in that order, and an approval opens only the next stage: an approved cut is
@@ -84,15 +97,15 @@ jobs keep are in `references/reel-record.md`.
   before the first question, as picsart-video-rules's The user's own brief says. A brief sets the message, the
   audience and the must-shows.
 - **No footage yet → find it, or ask for it, in your first reply.** When the message carries no
-  file, no link and no Drive file named: where the host can search the user's own library (its
-  host notes say how) and they said where or when the footage is from — a trip, a holiday, a
+  file, no link and no Drive file named: where the host can search the user's own library (picsart-video-rules's
+  `references/HOST.md` says how) and they said where or when the footage is from — a trip, a holiday, a
   dated event — run that search, and ask for the footage only when it finds nothing. Otherwise call
   `picsart_drive_upload_ask({ purpose: 'the footage for your short' })` in that same turn, with
   one line on what happens once it is in. Leave `accept` out: videos and photos are both welcome.
-  If the host cannot show the upload, follow picsart-video-rules's host notes.
+  If the host cannot show the upload, follow picsart-video-rules's `references/HOST.md`.
 - A link the user pasted, or a file in their Picsart Drive: bring it in as picsart-video-rules's Asset URLs
   say. Every tool below reads the footage by the URL that comes back.
-- "My clips" without naming them: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which files, never guess. With several files and no hint of
+- "My clips" without naming them: ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which files, never guess. With several files and no hint of
   an order, ask nothing: the order is yours to choose.
 
 Sort the sources as they come in: each video is talking footage or not, and each photo is a beat.
@@ -100,14 +113,14 @@ Sort the sources as they come in: each video is talking footage or not, and each
 (stage 7), with a music bed as its sound, as the `slideshow` job says. With no reference and no
 other word on the cut, it is a Vibe Cut (Which cut, below).
 
-**Pick the job** from `references/reel-jobs.md` (a reel, podcast clips, a highlight, a montage, a
+**Pick the job** from `references/reel-jobs.md` (a reel, a highlight, a montage, a
 slideshow or a lesson), say it back in one line, and keep it in the record's `job`. Ask only
 when two jobs fit equally.
 
 ### Which cut
 
 A `reel`, `highlight`, `montage` or `slideshow` with no reference reel (and not the user's own
-channel as the spec) is made as one of three cuts, or matched to a reel the user sends. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) it
+channel as the spec) is made as one of three cuts, or matched to a reel the user sends. ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) it
 once, before the interview and before anything is made: in the first reply once the sources are
 sorted (their reads say whether anyone speaks), since the options depend on it. With no
 footage sent yet, the upload ask comes first and this question follows when the files land.
@@ -252,6 +265,19 @@ simple" or "no style" makes it a Clean Cut, at the job's default pace.
 
 ## 3. Read the footage
 
+The watch is how the moments are judged by their picture as well as their words, so it is never
+dropped silently: skipping it is the user's choice, made in the watch's SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) below. Run the challenger on
+the quote first. The quote line says what the No means: "No: skip it, pick from the transcript and
+stills", and in a few words what the stills miss (a reaction, a demonstration, a gesture between
+words). When the picture plainly carries nothing the words do not (one speaker to camera, a
+static frame), say so in that line and why; the user still chooses, in the same question, never an
+extra one. A spend limit the user stated that covers the watch is its yes. Write the choice into
+the record: a No into `rejected` with the user's words, and the cut's review line then says the
+moments came from the transcript and stills. With no user to ask and no limit that covers it,
+nothing is spent and the moments are not picked as if the watch had run: write the watch into
+`openDecisions` with the free path as `assumed` and why, pick from the transcript and stills, and
+say it on the review line.
+
 Quote every video's watch in one SPEND, as picsart-video-rules says. Apply that same rule to
 the billing contract of each required read.
 It gives no quote in advance, so say that it charges credits and that the amount is not known
@@ -265,11 +291,9 @@ brief's goal and audience in it:
 - every video's measurement for the reel's frame, as the footage-reframing skill says, when the frame
   differs from the source's; that skill also checks it and corrects what the tool gets wrong. It needs only the source and the shape, so it never waits for the
   plan; when its tool charges, it goes in the same quote.
-- for `split`, no measurement: the shots, one still per kind of shot, and the crops checked
-  against the faces, as the footage-reframing skill's split layout says.
 
 **The cut waits for every video's reads.** Each needs a transcript (or a clear "no speech") and a
-watch. If one file of several cannot be read, say which, and ASK whether to cut from the rest: that
+watch, or the recorded choice to pick from the transcript and stills. If one file of several cannot be read, say which, and ASK whether to cut from the rest: that
 is the user's call, since that footage may have been the point.
 
 **The watch and the measurement are critical.** When either fails, do as its skill says, and the
@@ -278,8 +302,15 @@ cut waits.
 ## 4. Pick the moments
 
 Make one pool of moments across every source, as the speech-aware-cutting skill says, snapped to whole
-thoughts and ranked for the brief's goal, audience and message. Then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which to build from, as a
-multi-select. Header "Moments".
+thoughts and ranked for the brief's goal, audience and message. Judge each as the retention-hooks
+skill's `what-a-cut-is` reference says: one question the viewer holds by second two, answered on
+screen in the cut, never the best line about it (its questions 1 to 3, with the proof its kind of
+footage needs); with several reels, each a different kind of story (question 8). Every moment
+offered has a `question` and an `answer_at` inside its range. Run the challenger on the moments you
+recommend (CHALLENGE), with the brief, the pool and why each is ranked where it is; it asks
+`what-a-cut-is` questions 1 to 3 and 6. Write its verdict into `challenges` with `stage: "story"`.
+Only then ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which to build from, as a multi-select. Header "Moments". Its verdict goes in one
+line above the question.
 
 - Each option is one moment: what is said in a few words, its length, and why it earns a place
   ("the hook: 'I quit on a Tuesday', 7 s, opens the question the short answers").
@@ -288,14 +319,15 @@ multi-select. Header "Moments".
 - Offer only moments that change the short: two that say the same thing are one option.
 
 A moment the user named in their request is in without asking; offer the rest around it. With
-fewer than three moments worth offering, skip the question, say which you will use, and why.
+fewer than three moments worth offering, skip the question, say which you will use, and why; the
+challenger still judges them first.
 
 ## 5. Agree the passes
 
 Before the first build, set how the work will go, as picsart-video-rules's Asking says. Say it in two
 lines: the passes (the cut, then the highlights and the music when wanted, then the export), what
 the user judges at each (the order, the edges and the framing; then the words on screen; then the
-sound), and any charged operations the planned build needs. Then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) the one thing open about it.
+sound), and any charged operations the planned build needs. Then ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) the one thing open about it.
 Header "First draft".
 
 - "Best take, played (Recommended)": the strongest take, built and opened in the editor; the other
@@ -311,7 +343,11 @@ With several reels, the passes run for one reel at a time, the strongest first. 
 ## 6. Plan the cut
 
 Plan as the speech-aware-cutting skill says, from the picked moments, and read the plan back with its
-`scripts/review_cuts.py` until it is clean. The ending the brief named is the last clip.
+`scripts/review_cuts.py` until it is clean, and fix or answer each of its `warnings`. The ending
+the brief named is the last clip, and the reel **ends on its peak**: the strongest line last, the
+cut within about 1.5 s of its last word, and nothing after it that softens it, as the
+retention-hooks skill says. Draft the hook line too: the moment's question or claim in at most 7
+words, for the screen from frame 0 (the opening contract). It is offered with the highlights.
 
 **Plan two or three takes**, unless the user asked for one specific cut: a tight one, the one at
 the target length, a longer one that breathes. They share every read, and a take is a clip list,
@@ -321,6 +357,10 @@ so it costs nothing.
 spoken-captions skill would pick. They ride on the cut's REVIEW line, and the highlights stage opens on
 them.
 
+Before the first take is built, or the shot list shown, run the challenger on the plan and its
+opener (CHALLENGE) and write its verdict into `challenges` with `stage: "plan"`; act on it as
+quality-review says.
+
 When the user chose the shot list first, show it now as one table, one row per clip (what it is,
 its range in its source, why it is in), and ASK the decision it leaves open: which clip opens the
 short, with two or three openers as the options. Build once that is settled.
@@ -328,18 +368,13 @@ short, with two or three openers as the options. Build once that is settled.
 ## 7. Build the takes
 
 Reuse assets already made for this footage. If the build needs new charged assets, such as
-cutouts or a different music bed, quote those operations and SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) as picsart-video-rules
+cutouts or a different music bed, quote those operations and SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) as picsart-video-rules
 says before making them. With no charged operations, build directly.
 
 Build each take with the footage-reframing skill's `scripts/reel_cut.py`, from the plan speech-aware-cutting
 wrote and the measurements kept in the record. Where you cannot run commands, stop here as
 picsart-video-rules says for a script that builds the scene. The footage-reframing skill says which clips follow their speaker, which
 show the whole frame, and how the seams are cut.
-
-A `split` short is built as the footage-reframing skill's split layout says, then its word cards
-on the seam and its hook card with the spoken-captions skill, all from the record's `format`.
-Its full-frame moments come from the locked map, never from the picture. Where you run commands
-and the episode is long, upload one window per short, as edit-on-your-computer says.
 
 A slideshow short, with no talking footage, is built as the photo-slideshow skill says when it is
 among your skills: the photos as a track of clips, a blurred fill behind each one off the reel's
@@ -402,14 +437,15 @@ A move passes when its `moveDev` (the deviation with the starting offset removed
 of position in a 1080-wide frame, 0.03 of scale and 3°, and `fit_motion.py compare` passes it. The
 placement (`startOffset`) is the layout, said beside it. Fix a move outside those limits and
 check again while corrections make progress. If the evidence or a tool limit prevents a match,
-report which part differs, by how much and why. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether to accept that approximation
+report which part differs, by how much and why. ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether to accept that approximation
 or change the approach before the cut's REVIEW; an unresolved difference is not a pass.
 
 Then run the QC inspector on the take's draft, as SKILL.md's step 9 says, and fix what it
-finds. Then run quality-review's critic panel (the six `critic-*` agents where the host has them) on the take the
+finds; write its findings as the `qc` stage's `verdict` (QC). Then run quality-review's critic panel (the six `critic-*` agents when you have them, or each critic from its brief, as quality-review's critic panel says) on the take the
 first draft named, with the transcript's lines as the words and a still of each clip in its source
-as the source stills, the reference stills beside them when a format was read. Make its must-fixes in the plan and build again. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) its `choices` before the
-cut's REVIEW, never applied silently.
+as the source stills, the reference stills beside them when a format was read, and the review's
+`warnings` and the brief's `analytics`, when there are any, for the growth critic. Make its must-fixes in the plan and build again, and write them and its choices as the `critics`
+stage's `verdict` (CRITICS). ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) its `choices` before the cut's REVIEW, never applied silently.
 
 ## 9. The cut
 
@@ -428,11 +464,11 @@ to nothing.
 
 ## 10. Highlights, when wanted
 
-With the cut approved, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which words go on screen, with the phrases already drafted. Header
+With the cut approved, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which words go on screen, with the phrases already drafted. Header
 "Highlights".
 
 - "<n> lines (Recommended)": each drafted phrase quoted with the moment it lands.
-- "Only the hook line": one phrase, the opening one, quoted.
+- "Only the hook line": the drafted hook line, quoted, from frame 0.
 - "Leave it clean": the voices carry it; no words on screen.
 
 On Clean Cut (Which cut) the same three options are asked, with "Leave it clean (Recommended)" first.
@@ -440,7 +476,8 @@ On Clean Cut (Which cut) the same three options are asked, with "Leave it clean 
 The phrases are verbatim, so a reworded one is a different line from the transcript, not an edit.
 A skip is settled for the session.
 
-On a yes, place them as the spoken-captions skill says, on the approved scene (the user's, if they edited
+On a yes, run the challenger on the lines and where they land the first time they are placed
+(CHALLENGE), write its verdict into `challenges` with `stage: "review"`, then place them as the spoken-captions skill says, on the approved scene (the user's, if they edited
 it), in the band `references/reel-platforms.md` gives. Check a frame at each phrase, then REVIEW, titled
 "<Topic> short — highlights". Running captions are a different job: offer them only when the user
 asks for captions, and then in their own band.
@@ -457,20 +494,21 @@ A music-first job whose bed is the user's own track (`references/reel-jobs.md`) 
 stage 4; here it is only laid under the approved scene and reviewed.
 
 **Offer it once the picture is settled**: the cut approved, and the highlights too when there are
-any. Never offer it bare. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with the options below, header "Music".
+any. Never offer it bare. ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with the options below, header "Music".
 Draft two briefs as the background-music skill says, each in one line that says what it sounds like
 under these voices, and that differ in feel.
 
 - "<brief one> (Recommended)": the one that fits the transcript's tone.
 - "<brief two>": a different energy, such as warmer or more driving.
-- "My own track": the user sends it, received with `picsart_drive_upload_ask`.
+- "My own track": the user sends it, received with `picsart_drive_upload_ask` (`accept: 'audio'`).
 - "No music": the speakers' own voices, as cut.
 
 A brief the user writes in their own words is drafted into the background-music skill's slots and asked
 again.
 A skip is settled for the session.
 
-On a pick, the bed is a SPEND, as picsart-video-rules says. Generate
+On a pick, the bed is a SPEND, as picsart-video-rules says, opened once the challenger's verdict
+on its quote is in `challenges` (`stage: "review"`). Generate
 it and lay it under the approved scene as the background-music skill says, then REVIEW, titled
 "<Topic> short — music", with one line on what to listen for: how the bed sits under the voices. A
 note on its level moves it as the background-music skill says; a different track goes back through the
@@ -489,8 +527,28 @@ recorded as the edit-pipeline skill says. Then DELIVER the scene the last stage 
 else the cut's. Say in one line what the short is and what it sounds like: the speakers' own
 voices, with a bed under them when there is one.
 Give the background-music skill's licence caveat with it.
-With more reels to go, the next one starts at its first pass. Then offer one next step: another
-platform's length, or another take.
+
+**With every reel, its title, cover and post copy**, as text beside the file. The title, the hook
+line on screen and the first spoken sentence are three angles of one promise, never one sentence
+three times:
+
+- **the title** is the viewer's question, under about 60 characters, promising only what the cut
+  pays;
+- **the hook line** is the claim, as the reel already shows it;
+- **the post copy's first sentence** is the speaker's own words, then one line of context.
+
+The cover is a frame of the reel with a face or the action, with any words inside the centre that
+survives the profile grid's crop. Say once that the feed rarely shows a cover; the profile, the
+channel page and search do.
+
+**When the reel promotes a longer video**, add one line to the delivery: on YouTube, set this
+short's related video to the full video in YouTube Studio (it must be on the same channel, public
+or unlisted). When the full video is on someone else's channel, name the show in the title and the
+first comment instead.
+
+When the brief has no `analytics`, offer once, in one line, to read the posted reel's numbers in
+about a week from screenshots. With more reels to go, the next one starts at its first pass. Then
+offer one next step: another platform's length, or another take.
 
 ## When something fails
 

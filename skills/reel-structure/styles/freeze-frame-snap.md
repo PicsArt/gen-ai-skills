@@ -8,7 +8,7 @@
 | Fit | slots 2–5; clips; any, solo, friends, couple, pet; any, everyday, trip, party, night out; fun, playful, stylish |
 | Music | punchy hip-hop or pop with stops, 90–110 BPM |
 | Skin | backdrop from the skin's background |
-| Preview | https://gcdn.picsart.com/picsart-mcp/98548362-46f6-4d58-a278-91964212404e.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/3fa3dfed-4521-4bbd-89b6-5a0092027396.mp4 |
 | Proven | yes: agent build 2026-11-08, user-approved |
 | Seams | `flash_cut` 0.2 s into each freeze; hard cuts out of it |
 | Motion | each clip plays 1.1 s, then freezes 1.1 s: scale 1 to 0.82 and rotation 0 to ±4° over 0.267 s (ease out), alternating sides |

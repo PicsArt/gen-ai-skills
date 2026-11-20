@@ -24,7 +24,7 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 1. Who they are | — | film-cast-design |
 | 2. Their look | ASK | film-cast-design |
 | 3. The quote | SPEND | film-cast-design |
-| 4. The sheet | REVIEW | film-cast-design |
+| 4. The sheet | ASK | film-cast-design |
 | 5. Save it | DELIVER | film-cast-design |
 
 ## 1. Who they are
@@ -63,13 +63,16 @@ the preset’s own name so the next pick reuses it. An unsaved `preset` and `per
    Never leave `look` out: a sheet with no style line is refused. Send the prompt and supported
    `aspectRatio` as returned, at the model's highest resolution. Send `negativePrompt` only
    when the model supports it.
-3. `picsart_preflight` the call and quote it, then SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says).
+3. `picsart_preflight` the call and quote it, then SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says).
 
 ## 4. The sheet
 
-Generate it with `picsart_generate` and follow the job. Then REVIEW it in
-`picsart_asset_approve`, and read the review as film-cast-design's Reading the review says: a
-change is surgical, and a new picture is quoted on its own.
+Generate it with `picsart_generate` and follow the job. The take's own card shows the sheet and
+takes the user's note on it, so it is the review: never open `picsart_asset_approve` for the
+sheet as well, which asks the same question twice. Where no card shows the take, show the sheet.
+Then ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) in one line whether to keep it as it is. Read a note on the take ("My note on the
+finished take …"), or a change typed in the chat, as film-cast-design's Reading the review says: a
+change is surgical, and a new picture is quoted on its own. A yes approves the sheet.
 
 ## 5. Save it
 

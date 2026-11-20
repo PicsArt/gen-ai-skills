@@ -166,7 +166,9 @@ by the same ×1.25 (shorten the vertical ones by ×0.8) so the widened body stay
 - Name mouth targets by the VRM presets: `aa`, `ih`, `ou`, `ee`, `oh`; eyes `blink`, `blinkLeft`,
   `blinkRight`; moods `happy`, `angry`, `sad`, `relaxed`, `surprised`. Consonants borrow the nearest
   vowel at a lower weight.
+- A listener with a mood (surprised, happy…) shows that mood's own mouth. To keep a listener's mouth closed, key `speech` to 1 for the listen span, or keep the mood under 0.25.
 - Mood geometry owns the corners, brows and lids; `aa`, `ih`, `ou`, `ee`, `oh` own the aperture and speech shape, whatever the mood strength. `speech` 1 reserves the aperture through the whole dialogue, pauses and closures included (a surprised O closes on m, b, p only inside that window); `speech` 0 restores the mood's resting mouth. Pass `visemes: ["aa","ih","ou","ee","oh","speech"]` to `lipSync:visemes` and merge every returned track into the rig instance's parameters. A mood change eases 0.4 s from the evaluated current weights: key the current values, then the next recipe 0.4 s later with `ease_in_out` on the outgoing keys, and clear the outgoing mood weights; never reset to neutral at the change or step-select a mouth drawing to change a vector mood.
+- On a rig built from a sheet, `happy` blends the closed mouth into the smile by morphing its outline (the smile is the closed mouth's own points moved, so a smile grows with the dial); `sad`, `angry` and `surprised` switch drawings at 0.25. A blink sweeps lids in the head's own skin colour down and up over the eye until they meet, with the lash line on the upper lid's edge, and the eye keeps its shape underneath. A turn slides the features over the head by up to 30% of its width and narrows them by the turn's cosine (never under 0.8), as the head narrows; a glance may carry the pupil 12% past the white's rim.
 - Visemes cross-fade: at any moment the viseme weights sum to about 1, each segment eased, with a
   short hold on a stressed vowel.
 - Lip sync from word timings: `picsart_scene_apply_preset` with `preset` `lipSync:visemes`, `layerId` the
@@ -190,6 +192,9 @@ by the same ×1.25 (shorten the vertical ones by ×0.8) so the widened body stay
 - Use `lipSync:visemes` on the rig to make the character say the line.
 - A blink is in fast (~0.08 s), held closed (~0.06 s), out slower (~0.12 s), and keeps the face's
   other targets running.
+- A cover patch (eyelids drawn in the head's colour) sits under every feature that has to stay visible
+  through it: brows and mouth marks are above the patch in draw order, or they vanish at the blink and
+  pop back. Step through a blink frame by frame and check each feature.
 - Talking while smiling = `happy` steady + visemes cycling + a corrective per viseme that dents or
   pinches under the smile (`happyAa`, `happyOh`). Shape each viseme on the mouth as it is seen, the
   held mood applied, then render every viseme at full weight with the mood on: a dent, a flat lip

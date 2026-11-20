@@ -1,5 +1,5 @@
-1. **Show the balance FIRST.** Call `picsart_credits` and tell the designer what they have (`balance`,
-   plus `nextResetDate` if the pool refills) **before** anything is chosen — this frames every cost
+1. **Show the balance FIRST.** Call `picsart_balance` and tell the designer what they have (the `amount`
+   in `balances`, already rounded down to 2 decimals, plus `resetsAt` when the plan credits refill) **before** anything is chosen — this frames every cost
    decision that follows.
 2. **Let the designer pick the model.** Narrow with `picsart_model_catalog` (`concise: false`) (plain
    data, no UI), then open **`picsart_model_choose`** with 2–3 candidates that fit the brief (exactly
@@ -8,7 +8,7 @@
 3. **Assemble params** with `picsart_model_params` (the model's schema) — prompt, duration, aspect,
    resolution.
 4. **Get the EXACT cost — `picsart_preflight`** (free): it validates the params *and* returns
-   `credits`, the dry-run price with no charge. Fix every `errors` entry before going on.
+   the price in credits, a dry run with no charge. Fix every `errors` entry before going on.
 5. **Ask for consent, showing the number.** State it plainly — *"this will cost ~N credits; you have
    M"* — and wait for an explicit **yes**. **No preflight cost shown + no explicit yes = no
    generation.** This is a hard gate: the only credit-spending action in the plugin, never run

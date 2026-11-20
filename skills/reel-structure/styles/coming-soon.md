@@ -8,7 +8,7 @@
 | Fit | slots 3–5; mixed; any; birthday, wedding, trip, party, announcement, any; bold, cinematic, wow, teaser |
 | Music | a tense build with a hit at each title, 90–120 BPM |
 | Skin | the titles are the skin's text colour on black; the date is the user's, and with no date from the user the date line is left out (never made up) |
-| Preview | https://gcdn.picsart.com/picsart-mcp/8c7ed536-698a-4c91-a45f-4745836daf90.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/aafc3917-a080-49c1-a0e8-53bb69888473.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | `transition:iris` into the first glimpse, `transition:blur_dissolve` between glimpses and into the closing black, 0.5 s |
 | Motion | each glimpse plays as shot for about 1.4 s; nothing else moves |

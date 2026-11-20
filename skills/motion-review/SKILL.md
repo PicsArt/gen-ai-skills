@@ -4,7 +4,7 @@ description: Review an existing scene for motion that is confusing, mistimed, di
 metadata:
   category: workflow
   version: '1.0'
-  ported-from: motion-review 1.0 at 55.128.2
+  ported-from: motion-review 1.0 at 59.2.0
 user-invocable: false
 ---
 
@@ -111,6 +111,22 @@ Keep a short ordered set of actionable changes; do not manufacture polish findin
 Apply this before you call any rendered scene, character, rig or acceptance video "working". The
 author of a render tends to confirm it; look for the ways it fails.
 
+**Pass 0, the viewer pass, comes before everything below.** Watch the whole clip once at normal speed
+before you extract a frame or take a measurement. Write down what a viewer notices within three
+seconds, most serious first:
+
+1. it does not read as the intended action;
+2. it is the wrong style for the brief;
+3. limbs are sticks or cut (character rules §7, in `references/character-rules.md` of the `character-rigging` skill when it is among your skills, names the rule);
+4. a still or empty stretch of more than about 1.5 s;
+5. the story is in the wrong order;
+6. something passes through something else;
+7. a character is in the wrong place.
+
+The measurements and frame crops below (the limb-join check, tracking, pixel checks) come after this, and
+only to confirm or locate what the viewer pass found. A small measured nit (a few pixels, a few percent
+a frame) is listed as minor and never blocks; a viewer-level defect can.
+
 1. **Name the intended action in one sentence** ("both hands hold the ball at chest height"). Judge
    the picture against that sentence, not against your previous draft or a metric.
 2. **Lint the shot's window before you show it** (`picsart_scene_lint_layout`; allow a pair meant to touch). The
@@ -139,6 +155,25 @@ author of a render tends to confirm it; look for the ways it fails.
    broken anatomy, a missed contact or a stated rule broken blocks it.
 7. **Deliver the moving result.** Send the labelled final video for motion, not a sheet of
    measurements; the sheet is your evidence, the video is the deliverable.
+8. **Check each limb join before shipping.** A clean continuous line does not make a limb right: stick
+   arms glued to the body, a cut line across a join, and a folded arm that floats off the torso all
+   passed a "the join is clean" look. For every character and every new pose drawing (a folded, raised
+   or swung arm, a bent leg):
+   - Crop each join (shoulder, elbow, hand, hip) in your render and in the reference, at the same
+     scale, side by side, and open the pair.
+   - Compare shape and thickness, not only continuity: does the limb grow out of a broad shoulder or
+     hip as part of the body's outline, and is it as thick as the reference's?
+   - Measure the limb's width against the torso's in the reference (for example the upper arm about
+     half the torso's width) and read the same ratio off your render. A limb far thinner than the
+     ratio, or a join with a line across it, is a defect.
+   - Measure both on frames at the same scale, or convert a coordinate read off a zoomed crop back to
+     frame scale (divide by the crop's zoom) before comparing: a forgotten ÷1.5 put an arm line 20 px off.
+   - Look for a leftover inner line on a side whose arm was drawn out of the outline: it reads as a cut.
+   - At every pose swap, open the frames on either side: both poses showing at once, or neither, is a
+     defect.
+   - Look at the hand and the forearm too: they are one shape with one outline, not two touching shapes.
+   The drawing rule this checks is §7 of the character rules (`references/character-rules.md` of the `character-rigging` skill, when it is among your skills),
+   "A limb is part of the body's silhouette".
 
 When the work matters (a change others will build on, a result shared with others), have someone other than the author
 review it with fresh eyes, applying this section.

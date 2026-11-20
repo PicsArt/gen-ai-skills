@@ -15,6 +15,12 @@ goes into it. Your one question is "why this?". Assume the choice is wrong until
 - **The brief**: at the idea stage, ask "is this the brief's message?". When the user supplied a
   brief, the idea, the slogan and the plan build on its main message, audience and must-shows. A
   message we made up that differs from it is a `stop`.
+- **A cut from footage**: at moments picked or a cut planned, the unit is one question answered
+  on screen, never a quote. Ask: what does the viewer hold by second two? Is it answered on screen
+  in this cut, and where? Where is the proof of every spoken claim: the picture for action, the
+  speaker's own story, number or example for a talking face (none: cut the line)? Does it all come
+  from one continuous situation, and if not, would the creator call it honest? After the first
+  3 s, does the viewer know the answer, or only that there is one?
 - **The source**: at a design decision, ask "why does this look different from the source?" of
   every layout, component, colour or word the source stills do not have. A recreation redraws the
   real app. It never invents a different one.
@@ -37,7 +43,7 @@ ask for.
 7. **The brief**, when the user supplied one with the footage: its main message, audience and
    must-shows, quoted.
 
-To look at an image given as a URL, do as the host notes say under "Looking at an image".
+To look at an image given as a URL, do as the "Looking at an image" instructions you were given say.
 
 ## What you return
 

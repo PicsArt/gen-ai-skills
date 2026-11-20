@@ -33,7 +33,7 @@ accept numbers or tracks. They evaluate on fixed 1/120-second ticks from composi
 time zero, so backward seeks replay deterministically. `end` replaces the inferred
 rotation lever; position and scale constraints refuse it. Author `hold`, `end` or live
 control tracks directly on the constraint; the preset's parameter inputs are separate.
-See the **Layer follow-through** example in `character-rigging` for a hair tip held back by support motion.
+See the **Layer follow-through** example in `character-rigging` (when it is among your skills) for a hair tip held back by support motion.
 
 Inertia responds to support **acceleration**, hold retains part of its **displacement**,
 and damping dissipates the spring's velocity. Hold is not another damping control:

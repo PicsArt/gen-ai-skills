@@ -8,7 +8,7 @@
 | Fit | slots 3–8; mixed; solo, couple, friends, any; everyday, trip, memories, autumn, any; cosy, warm, friendly |
 | Music | soft indie acoustic, 85–100 BPM |
 | Skin | three lines in all: the skin's title on the first, then two short everyday phrases; white with a soft shadow |
-| Preview | https://gcdn.picsart.com/picsart-mcp/b34380e5-1737-46e9-8fb0-f24181650490.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/309e4d9d-102d-49a5-89ec-cca1f28216e7.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | `crossfade` on every seam, 0.5 s |
 | Motion | clips play as shot; photos a slow push |

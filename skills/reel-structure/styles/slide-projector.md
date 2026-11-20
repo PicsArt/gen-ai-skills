@@ -8,7 +8,7 @@
 | Fit | slots 4–6; photos; family, couple, any; memories, Thanksgiving, Christmas, year-end, holiday, any; nostalgic, warm, calm |
 | Music | warm vintage jazz or soft piano, 70–90 BPM |
 | Skin | the counter reads "slide N / total" in mono, the skin's text colour; the room is near-black |
-| Preview | https://gcdn.picsart.com/picsart-mcp/f44a3812-dd47-4abf-82a3-6fb0de791a60.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/f59ddedf-656c-4f34-96d5-d4e67d592015.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | a beat of black between slides, hard cuts |
 | Motion | each slide flickers on with `look:flicker`, then a very slow push |

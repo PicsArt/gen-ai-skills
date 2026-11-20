@@ -8,7 +8,7 @@
 | Fit | slots 4–8; photos; any; birthday, trip, Thanksgiving, Friendsgiving, any; cosy, playful |
 | Music | playful acoustic, 95–105 BPM |
 | Skin | the title is the skin's; the paper takes a light tint of the skin's background |
-| Preview | https://gcdn.picsart.com/picsart-mcp/b2d74151-62af-4d0b-9aa7-7969238bba55.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/e0755890-5209-4976-8504-eca33fbb3473.mp4 |
 | Proven | no |
 | Seams | none; every photo stays on the page |
 | Motion | each photo lands in stepped stop-motion twists (`look:scrapbook(length=0.6)`) |

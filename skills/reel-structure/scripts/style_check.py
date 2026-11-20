@@ -1,10 +1,10 @@
-"""Checks a style entry's catalog calls and times against the scene engine, free and local.
+"""Checks a style entry's catalog calls and times against Picsart's catalog, free and local.
 
 A catalog call in a style is written in backticks as `kind:id(name=value, name=value)`, the kind
 one of look, motionPreset, effect, transition or textAnimation; the brackets are left out when the
 defaults are kept. A value is a number, a keyframed run of numbers (`32→0`, `1.08→1.2→1.08`), an
 enum word, a `#rrggbb` colour or a quoted text. Every name, enum word and number is checked
-against the catalog snapshot the skill ships (`data/catalog-<build>.json`).
+against the catalog snapshot the skill ships (`data/catalog-*.json`).
 
 Every time in seconds lands on the 30 fps frame grid (a multiple of 1/30 s, to 1 ms).
 """
@@ -29,7 +29,7 @@ FPS = 30
 
 
 def catalog() -> Dict[str, Dict]:
-    """The newest catalog snapshot in the skill's data folder."""
+    """The catalog snapshot in the skill's data folder (the newest when there are several)."""
     found = sorted(glob.glob(os.path.join(SKILL, "data", "catalog-*.json")))
     if not found:
         raise SystemExit(f"no catalog snapshot in {os.path.join(SKILL, 'data')}")
@@ -75,7 +75,7 @@ def check_calls(where: str, text: str, cat: Dict, bare_kind: str = "") -> List[s
     for kind, ident, args in CALL.findall(text):
         table = cat.get(kind, {})
         if ident not in table:
-            out.append(f"{where}: {kind}:{ident} is not in the {cat.get('build')} catalog")
+            out.append(f"{where}: {kind}:{ident} is not in the catalog")
             continue
         for part in [p for p in re.split(r",\s*(?=[A-Za-z_]+\s*=)", args or "") if p.strip()]:
             if "=" not in part:

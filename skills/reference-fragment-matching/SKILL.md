@@ -40,6 +40,7 @@ Read this before you need it:
    change it missed. A transition is real content and needs the densest work, never a gap to skip.
    Name each fragment by what happens in it ("the hero card shrinks and docks onto the input bar",
    never "fragment 3"), and work them in timeline order.
+   Study the reference at its full frame rate: stills of every frame of the window, not a coarse contact sheet. A sheet at 3 fps hides the in-betweens, the drawing's timing (on ones, twos or fours) and any line boil, so it cannot say how the motion is drawn. Survey the whole reference this way before matching any part of it.
 2. **Take the census.** Stills of the fragment at its `suggestedStep`. List everything that is
    there, not only what moves: each element's box, its fill or accent colour, its text, its corner
    radius. Motion checks cannot see a missing icon, a wrong accent or absent text, and those are the
@@ -104,6 +105,9 @@ window. Each check answers one question, and none of them alone says the fragmen
 
 ## Rules that bite
 
+- **Measure the reference before drawing anything.** Sample the palette from its frames, read every size and
+  position off the pixels in the reference's own coordinates, and build in those coordinates. A first pass built by
+  eye reads as unrefined; lay your render beside the reference at the same scale before calling it done.
 - **Never use the reference's own pixels as content.** A crop of the reference's photo in a content
   slot, or a whole frame, makes the appearance check score near perfect while proving nothing: the
   check compares your render with that same reference. Fill content slots with the user's own
@@ -112,7 +116,7 @@ window. Each check answers one question, and none of them alone says the fragmen
   build the picture and the mask. Decorations are the one exception: they may be cut from a template
   the user owns (below). Leave those out of the appearance score, since matching them proves nothing.
 - **Cutting a decoration out of the reference.** A still one is a cropped still: `picsart_media_video_stills`
-  at one time with `crop` set to its box, saved with `picsart_drive_upload` before it goes into a
+  at one time with `crop` set to its box, hosted with `picsart_upload_urls` before it goes into a
   scene, since a still sheet is not kept. A still has no transparency, so over anything but a flat
   background it takes its background box with it.
   Unless it goes through `picsart_image_remove_bg`,

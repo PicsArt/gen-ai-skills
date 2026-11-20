@@ -8,7 +8,7 @@
 | Fit | slots 10–16; photos; any, friends, family, couple, solo; year-end, New Year, memories, birthday, any; energetic, nostalgic, fun |
 | Music | upbeat pop with a fast pulse, 110–130 BPM |
 | Skin | title text is the skin's year or title; board colour from the skin's background |
-| Preview | https://gcdn.picsart.com/picsart-mcp/f794eab1-93bb-4b0e-9710-bd26a001d540.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/fffe39d2-a0dc-4d2c-b68d-c6e69a37330c.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts |
 | Motion | photos 0.3 s at scale 0.62 over a mats track flipping white and black; the end board drops six prints in, 0.133 s apart, each scale 0.44 to 0.34 in 0.2 s with a white edge and soft shadow |

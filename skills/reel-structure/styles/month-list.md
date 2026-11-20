@@ -8,7 +8,7 @@
 | Fit | slots 3–6; mixed; any; memories, everyday, autumn, winter, summer, spring, any; aesthetic, playful, nostalgic |
 | Music | light pop with a ticking pulse that lands on a drop, 100–120 BPM |
 | Skin | the pill is the skin's accent colour; the list and the month name are its text colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/0f26d3de-368c-4bde-aca8-fb966ffca0bc.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/d7dfbeb7-208f-4aef-8424-8bf09fce61ed.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts |
 | Motion | the pill slides down one row every 7 frames (ease out) from January to the current month and stops there until the list fades out at 3.8 s; the clip behind plays as shot; after the list, each shot plays as shot |
