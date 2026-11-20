@@ -8,7 +8,7 @@
 | Fit | slots 4–10; clips; solo, friends, couple, place, any; trip, night out, party, sport, any; energetic, bold, epic |
 | Music | hard-hitting trap or phonk with a clear drop, 120–140 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/39b47d78-7e16-44e7-ad26-b3035408b7c0.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/d060bea5-f423-4105-908b-647fbc67f907.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts, landing at the end of each fast part |
 | Motion | each clip in three windows over one source: 0.3 s at speed 3 with a focal zoom blur, 0.967 s at speed 0.3 starting on the beat, 0.267 s at speed 3 with the blur; motion blur on the whole track |

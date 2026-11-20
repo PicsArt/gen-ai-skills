@@ -8,7 +8,7 @@
 | Fit | slots 4–6; photos; any; party, birthday, sport, night out, New Year, any; bold, energetic, upbeat |
 | Music | punchy electro pop with a hard kick, 120–130 BPM |
 | Skin | five words in capitals, one per beat: the skin's title words first, then short words from the photos (places, things, the moment), the last a closer such as HOME or NOW; the duotone shadow is #1A120B and its highlight a light warm tone (#C9A27A), never the skin's accent, so white and accent words stay readable |
-| Preview | https://gcdn.picsart.com/picsart-mcp/fd1a723f-9eb9-40d6-85ec-d7df0a423815.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/e005ab97-1bf5-4f6c-b20a-51874794c692.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts on the beat |
 | Motion | photos used: no close-up faces: skip any photo whose face is taller than a quarter of the frame; each photo punches in from 112 % to 100 % over 0.367 s; words spring in and stay |

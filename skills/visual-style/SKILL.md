@@ -1,6 +1,6 @@
 ---
 name: visual-style
-description: A video's style, chosen by eye and kept - eight named styles as colour roles and text entrances, a brand's colours mapped onto one, the defaults that make a video look machine-made, and a check that a built scene keeps to its style. Use when choosing or applying the look of a built video (screen videos, promos, tutorials), or checking that one does not look generic.
+description: A video's style, chosen by eye and kept - eight named styles as colour roles and text entrances, a brand's colours mapped onto one, the defaults that make a video look machine-made, and a check that a built scene keeps to its style. Use when choosing or applying the look of a built video (screen videos, promos, tutorials), or checking that one does not look generic. Not for an animation film's drawing style (the `visual-styles` recipe).
 user-invocable: false
 ---
 
@@ -9,6 +9,10 @@ user-invocable: false
 A video looks made by hand when its colours, type and motion were chosen for it, and generic when
 they were left at a default. This skill holds the choice: a **style** is a palette by role and a
 text entrance per role, which a builder takes instead of colours of its own.
+
+This is the catalogue for videos built on recordings and screens. An animation film's style (classic cartoon, cel
+anime, rubber hose and the rest) is in the `visual-styles` recipe, read with `picsart_scene_recipe`. Both are one idea:
+a style is chosen by eye in the picker, recorded once and held through the video.
 
 ## The styles
 
@@ -36,7 +40,7 @@ entrance for titles, lines and the call to action.
    the product's category, the destination and the audience. Say the reason in one line: "a bright
    UI and beginners: paper-ink keeps it friendly and lets the app's colours lead".
 2. **Show three that differ**, on the user's own recording, before anything is rendered: the same
-   hook frame and one step frame built in each, side by side in `picsart_scene_picker` (free), each
+   hook frame and one step frame built in each, side by side in `picsart_scene_picker` (free, `selection: "one"`), each
    card labelled by how it looks to them ("paper and ink, friendly"), not by its id. Never ask for a
    style by its name alone and never pick it for them; go on from the one they keep and say which
    (picsart-video-rules, "A choice made by eye").

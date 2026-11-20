@@ -80,7 +80,7 @@ the cheaper alternative first, before anything is spent.
   (no attachment, no link, no Drive file named), call
   `picsart_drive_upload_ask({ accept: 'video', purpose: 'your screen recording' })` in that same turn,
   with one line on what happens once it is in, and ask the interview's first question beside it.
-  If the host cannot show the upload, follow picsart-video-rules's host notes.
+  If the host cannot show the upload, follow picsart-video-rules's `references/HOST.md`.
 - A link the user pasted, or a file in their Picsart Drive: bring it in as picsart-video-rules's Asset URLs
   say. Every tool below reads the recording by the URL that comes back.
 - **Several recordings** are one set of material: read each, and topics may come from any of them.
@@ -144,7 +144,7 @@ for an explainer, the steps that sell for a promo. **Every candidate comes from 
 A result that is only words in a chat reply, or that comes after the recording ends, is not on a
 still: leave that candidate out, and say in one line what footage would bring it back.
 
-SHOW one sheet of the candidates' results, then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which to make, as `references/interview.md`
+SHOW one sheet of the candidates' results, then ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which to make, as `references/interview.md`
 says: a multi-select, the most teachable first, each with what the viewer learns and where it is
 in the recording. A tutorial skips this stage: it keeps every step, and its outline is stage 7.
 
@@ -154,13 +154,13 @@ reference to another short.
 **Will the screens read?** For the vertical kinds, once the videos are chosen, measure each moment
 they will show with the screen-recording-layouts skill's `readability.py`: its box, the smallest text the viewer
 must read and the words in it (from the still sheets), its event's luma, and the recommended
-style's canvas. Then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) "The screens" (`references/interview.md`), its own question, with the
+style's canvas. Then ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) "The screens" (`references/interview.md`), its own question, with the
 measured reason: when a moment fails, or when the kind is a how-to or a promo where the UI is only
 the means. A tutorial keeps the recording: it teaches where to click in the real app.
 
 ## 5. How we iterate
 
-ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) what the user wants to see first (`references/interview.md`): stills of video 1 in three
+ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) what the user wants to see first (`references/interview.md`): stills of video 1 in three
 styles, video 1 finished, or the written plan of every video. Then say the agreed plan in one line,
 as picsart-video-rules's Asking says, with what costs: "Then: you pick a style on three stills, I build
 short 1, you review it (free, as many rounds as you like), then I build the other four in the same
@@ -172,7 +172,7 @@ and repeat its line at each pass.
 Choose it as the visual-style skill says. Recommend one from the recording and the brief, with its
 reason; build video 1's hook frame and one step frame in it and in two styles that differ, with the
 recording's colours as the brand where they fit; and SHOW them as three contact sheets on the user's
-own recording. Then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which style, the recommended one first. Building and the contact sheet are
+own recording. Then ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which style, the recommended one first. Building and the contact sheet are
 free. A mix ("the colours of one, the type of the other") comes through Other: build it and show
 it.
 
@@ -192,7 +192,7 @@ questions are shown with the rows, for correction.
 
 **Review the script before anyone sees the plan**, as quality-review's script review says: put its
 rewritten lines into the rows, and its why under the opening sentence. A `drop` is not planned:
-ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) what to do with that video, with the reason quoted: "Leave it out" (recommended: the
+ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) what to do with that video, with the reason quoted: "Leave it out" (recommended: the
 recording never shows its result) / "Teach the smaller lesson" (the one the review names) / "I'll
 record the result" (the footage its `rescue` names). The review is free, so it never asks to run.
 
@@ -237,7 +237,7 @@ Its key frames and its shot are compiled with `picsart_film_compile_prompt` (pic
 the size and lens the recording's own plan gives that shot.
 Footage the user supplies, received with `picsart_drive_upload_ask`, can open it too.
 
-The words' language is the user's own, unless the recording's words are in another: then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which.
+The words' language is the user's own, unless the recording's words are in another: then ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which.
 
 ## 8. The voice, when chosen
 
@@ -319,7 +319,7 @@ kind. Then the polish pass, which quality-review runs:
 - the first frame is a real moment (the payoff, or the problem it solves), not a login screen or
   an empty app;
 - a vertical video's draft gets quality-review's cold watch against its viewer track, quoted first
-  as it says, with its SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1 unless every call is quoted at 0 credits: its first
+  as it says, with its SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1 unless every call is quoted at 0 credits: its first
   two pieces test the hook, and its floor line goes in the review line. When the user says no, the
   review line says "no cold watch yet";
 - then quality-review's critic panel runs on every draft (the six `critic-*` agents where the host has
@@ -347,8 +347,8 @@ harder to fix a soft contact sheet (screen-recording-zoom).
 
 ## 11. The user reviews
 
-REVIEW the mask build, titled "<Product> <kind> — draft 1", opened cold as picsart-video-rules
-says: its length and the track's questions. Once the user has answered, give the checklist's
+REVIEW the mask build, titled "<Product> <kind> — draft 1", opened cold in `picsart_scene_editor` as picsart-video-rules
+says (picsart-video-rules, "Every scene animation is reviewed in the editor") (every draft, each revision, and the rest of the set open there; a preview video or contact sheet is not that review): its length and the track's questions. Once the user has answered, give the checklist's
 `summary`, the cold watch's floor line and the line `references/routes.md` gives for the kind ("Does
 the result land in the first two seconds? Is each click readable? Say where it drags"). Each new
 draft's number goes up by one. Comments apply
@@ -361,19 +361,19 @@ Build the other videos with video 1's approved style and with what the user's co
 taught (the pace, the words' tone, the moves). Plan and review each as stage 7 does, with every `drop` in the set asked in one turn, and its own hook asked
 only when the user chose to see plans; otherwise draft the hook yourself and list it as assumed.
 Their voice lines are one batch SPEND.
-REVIEW them one after another, and ask one "anything to
+REVIEW them one after another, each opened in `picsart_scene_editor`, reopened on the new version with the pins you addressed named, and ask one "anything to
 change?" for the set (picsart-video-rules).
 
 ## 13. Music, when wanted
 
 Offer it once, after the drafts are approved, unless the sound chosen was the user's own voice or
 the recording's own sound.
-ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with two drafted briefs that differ in feel, as the background-music skill
+ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with two drafted briefs that differ in feel, as the background-music skill
 says, and "No music". On a pick, the bed (and a promo's push sounds, `references/routes.md`) is one
-SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) for the set. Lay it under each video as the background-music skill says, validate and look as stage
+SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) for the set. Lay it under each video as the background-music skill says, validate and look as stage
 10 does, and REVIEW, titled "<Product> <kind> — music", with one line on what to listen for. If it
 fails or is declined, say so in one line and go on with the approved drafts.
-With a track of the user's own, received with `picsart_drive_upload_ask`, lay it under each video as
+With a track of the user's own, received with `picsart_drive_upload_ask` (`accept: 'audio'`), lay it under each video as
 an audio layer, validate and look as stage 10 does, and REVIEW, titled "<Product> <kind> — music";
 with none, go on with the approved drafts.
 

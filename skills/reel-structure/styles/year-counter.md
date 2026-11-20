@@ -8,7 +8,7 @@
 | Fit | slots 8–14; photos; any, friends, family, solo; year-end, New Year, memories, birthday; fun, upbeat, nostalgic |
 | Music | bright pop, 110–128 BPM |
 | Skin | title is the skin's year; the four figure colours stay fixed |
-| Preview | https://gcdn.picsart.com/picsart-mcp/36c78704-1467-49a8-be60-275df437dff9.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/da9a7a7f-b23b-43c4-a305-da170f0ed59c.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts |
 | Motion | the last figure rolls: each old figure slides up 120 px and out while the next slides up from below, 0.2 s each way; photos 0.4 s still |

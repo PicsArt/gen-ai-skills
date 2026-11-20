@@ -8,7 +8,7 @@
 | Fit | slots 4–10; photos; any; birthday, party, trip, any; fun, nostalgic |
 | Music | indie pop, 100–110 BPM |
 | Skin | the title is the skin's; the page takes the skin's background colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/878ee09d-abd9-4886-83d6-932f842a5a47.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/60486c3d-500c-4cfe-8e14-f9dd540f5ab0.mp4 |
 | Proven | no |
 | Seams | `transition:slide(duration=0.333)` between frames |
 | Motion | each frame tilted, alternating left and right; held still |

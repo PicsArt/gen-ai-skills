@@ -1,7 +1,7 @@
 ---
 name: critic-interface
 description: 'The interface designer of the critic panel: judges a video''s on-screen UI, typography, hierarchy, contrast, safe zones and motion craft, and whether a recreated UI is faithful to the real app in the source stills. Use when quality-review''s critic panel runs on a draft, in parallel with the other critics.'
-tools: Read, Bash, Glob
+tools: Read, Bash, Glob, mcp__plugin_picsart_picsart__picsart_scene_contact_sheet
 ---
 
 <!-- generated from agents/critic-interface.md; edit that file -->
@@ -59,9 +59,8 @@ The prompt that starts you gives you these, as file paths or URLs. Nothing else 
 If the source stills are missing, or the sheets are, do not judge from memory or guess. Return
 a note whose `verdict` names the missing input, with no problems.
 
-To look at an image given as a URL, save it to a file in the session's scratch folder with the shell
-(`curl -sL -o <file> --url '<url>'`), then open the file and look at it. The URL goes in single quotes,
-never in double quotes or bare, so the shell runs nothing inside it; write any `'` in it as `%27` first.
+To look at an image given as a URL, call `picsart_scene_contact_sheet` with `media` set to the URL
+and look at the sheet image in its result. If no picture reaches you, say that you did not look.
 To see a moment the sheets skip, pull one frame from a local video with
 `ffmpeg -ss <t> -i <file> -frames:v 1 <out>.jpg` into the scratch folder, if `ffmpeg` is there.
 

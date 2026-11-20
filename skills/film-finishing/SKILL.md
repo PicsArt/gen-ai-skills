@@ -17,7 +17,7 @@ grade → export once → masters → archive.** Read `references/delivery.md` b
 
 Runs are shot as drafts (film-shot-generation), so the approved cut is finished before colour.
 **The finish comes only after the user approves the draft cut, on its own quote and its own yes**:
-the draft batch's quote showed it as an estimate, never as bought. Ask once: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether the
+the draft batch's quote showed it as an estimate, never as bought. Ask once: ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether the
 drafts are good enough for where the film goes, with the finish of every approved take priced
 beside them: finish them, or keep the drafts. **That one question is the finish's quote and its
 yes**; keeping the drafts skips this section. Only a model shot at its finish settings (no draft
@@ -79,7 +79,7 @@ it cannot give: one voice timbre across takes, licensed music, a mix.
 - **A music bed is drafted and laid as the background-music skill says**: its brief takes the register
   from the film's look and the tempo from its cut, and it is laid under the takes' dialogue and the
   ambience, never in place of them.
-- **Music the user brings** comes in with `picsart_drive_upload_ask` and is laid under the takes'
+- **Music the user brings** comes in with `picsart_drive_upload_ask` (`accept: 'audio'`) and is laid under the takes'
   dialogue and the ambience, never in place of them.
 - A film going to festivals or dubbing needs a sound team: it gets the handoff package, never an
   imitation.

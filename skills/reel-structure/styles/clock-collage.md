@@ -8,7 +8,7 @@
 | Fit | slots 6–10; photos; any, family, couple, friends; memories, anniversary, birthday, year-end, any; nostalgic, warm, emotional |
 | Music | ticking piano or soft pop, 80–100 BPM |
 | Skin | title words from the skin; ring and numerals in a cream tone |
-| Preview | https://gcdn.picsart.com/picsart-mcp/c3e195e2-357d-48e6-b4ab-f8e9966baa6a.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/dcfb3428-6c01-47d9-b191-28117dc9d073.mp4 |
 | Proven | yes: agent build 2026-11-08, close |
 | Seams | `crossfade` 0.3 s inside the clock face |
 | Motion | photos 1 s each in a circle window at scale 0.54; minute hand two turns and hour hand a sixth of a turn over the reel, linear |

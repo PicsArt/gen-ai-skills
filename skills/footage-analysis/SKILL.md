@@ -43,7 +43,9 @@ When people speak, the two reads have different jobs:
   verbatim as `transcript-<source id>.json` and pass that file to the scripts that need it; keep
   only the segment list in mind, never every word.
 - **The watch says what is worth keeping**: the strong moments, the dead stretches, who is on
-  screen. Its sense of the audio is the gist, never a boundary.
+  screen. Its sense of the audio is the gist, never a boundary. What makes a moment is the
+  retention-hooks skill's `what-a-cut-is` reference: one question answered on screen, not the best
+  line about it.
 
 **An empty transcript means no speech**, not a failure to retry. Nor is a thin one a transcript
 to cut on: segments covering a sliver of the runtime, or none with word times. Say in one line

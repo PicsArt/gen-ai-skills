@@ -23,6 +23,8 @@ not heard, a stage direction or a row label.
 The tool's `notes` name any segment it returned without word times. Caption that segment as one
 block over its own start and end; it cannot carry a highlight.
 
+Per-word timing offsets (a word's start shifted by a lead, a stagger between words) are numbers to compute, not guess: the `computing-values` recipe.
+
 ## Captions on a voice-over
 
 Place each line as a `captions` layer through `picsart_scene_patch`:
@@ -125,5 +127,20 @@ Highlights are a few lines worth reading, not subtitles.
   1.5–3 s, and never past its clip or into the next phrase.
 - **Big, high-contrast, inside the platform's safe band and off the face.** The use case names
   the band. With captions on too, keep the two in different bands.
+
+### The muted pass and the context line
+
+A short cut from talking footage must work with the sound off:
+
+- **The question by 3 s, muted.** Read the frames of the first 3 s with only the words on screen
+  (the hook line, the captions, the highlights): a viewer must be able to say what they are
+  waiting to find out. When they cannot, the hook line is missing or says too little.
+- **One context line for a stranger.** A clip of someone the viewer does not know carries one
+  line for the first 3 s saying who is speaking in a way that makes the claim worth hearing ("ran
+  emergency rooms for 20 years"). Take it from the source (its title, its description, what the
+  speaker says about themselves), never invented. Skip it when the speaker is the user's own
+  channel and its viewers know them.
+- **Names and terms are right.** Check every name and term in the captions against the source's
+  title and description, so no misheard name reaches the screen.
 
 Check the result as the quality-review skill says, with a frame at each phrase's `start`.

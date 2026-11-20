@@ -8,7 +8,7 @@
 | Fit | slots 6–10; mixed; any, solo, friends, place; any, trip, summer, autumn, birthday; bold, energetic, stylish |
 | Music | a steady hip-hop or pop beat, 95–115 BPM |
 | Skin | the line is written from the skin's occasion, 3–6 words |
-| Preview | https://gcdn.picsart.com/picsart-mcp/ab6d421c-42e6-402a-b68a-a7f0159318fc.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/dc22f781-18bb-40fa-a30b-6b5ceef52564.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts on every word |
 | Motion | one word per 0.6 s shot, then slots 0.5 s, as shot |

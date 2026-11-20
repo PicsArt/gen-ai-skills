@@ -1,5 +1,5 @@
 ---
-description: "A vertical story episode, built in stages: slides, voice, video"
+description: "Vertical story episode. Drawn animation → animated-story"
 argument-hint: "[slides | voice | video] [script or story idea]"
 ---
 

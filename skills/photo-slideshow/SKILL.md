@@ -175,7 +175,7 @@ For a face the catalog lacks, the same `picsart_scene_fonts({ query })` call ret
 ready-made font asset: add it to `assets` under an id, and name that id:
 
 ```json
-"assets": { "display": { "type": "font", "name": "Casual Fonts", "uri": "https://cdn111.picsart.com/230454663055900.ttf" } },
+"assets": { "display": { "type": "font", "name": "Casual Fonts", "uri": "https://pcdn.picsart.com/templates-cdn/8c74c8f2-b9bd-4c5b-ad3f-6d46b8881d1c.ttf" } },
 … "font": { "family": "display", "size": 64 }
 ```
 
@@ -190,6 +190,9 @@ document. A patch returns the patched scene as `scene`: pass it as the next tool
 hand-edit.
 
 ## 8. Verify with one sweep
+
+To keep a layer aligned with another's placement over time (a title that follows a photo's drift), compute the offset (the `computing-values` recipe) and write it as a live `expression`.
+
 
 Ask for the decisive moments in as few calls as possible: `picsart_scene_contact_sheet` with `times: [t1, t2, …]` and `resolution` set to the scene's `composition.width` and `composition.height`. Without `resolution` the sheet returns downscaled thumbnails, which are not for judging position. The sheet image scales every frame to fit one picture; to judge full-resolution detail, open a frame's `url`.
 The example has twelve moments, so it takes two calls, both with `resolution: { width: 1080, height: 1920 }`:

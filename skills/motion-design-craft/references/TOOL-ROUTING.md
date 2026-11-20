@@ -10,7 +10,7 @@ request maps to a tool here, call it; do not substitute a guess for a fact the t
 Tool names are the connector's `picsart_scene_*` (scene authoring), `picsart_media_*` (media
 analysis) and `picsart_*`. These docs often use a short name (`validate_scene`, `patch_scene`) or
 an older `mp_<x>` one. No prefix rule turns a short name into the tool's name, because several
-tools changed their suffix in the 4.6.0 rename (`layout_lint` is now `picsart_scene_lint_layout`).
+tools were renamed with a new suffix (`layout_lint` is now `picsart_scene_lint_layout`).
 Look the short name up in this table. A short name that is not in the table is not a tool:
 do not guess a name for it.
 
@@ -51,15 +51,15 @@ do not guess a name for it.
 | `validate`, `validate_scene` | `picsart_scene_validate` |
 
 **This whole pipeline is free — it uses no
-paid tools.** Compose, query, validate, the panel, `contact_sheet` and `export` are all 0-credit
+paid tools.** Compose, query, validate, the panel, `contact_sheet` and `export` currently cost no credits
 (export/contact_sheet may show a "writes a file / charged"-looking badge from their `readOnlyHint:
-false` annotation — that is behavior, not price; credits are zero).
+false` annotation — that describes behavior, not price; if the host shows a charge, mention it plainly).
 The only tools that charge are
 **generative or analysis** tools (`picsart_generate`, the four `picsart_image_*` edits, and the paid
 media analyses such as `picsart_media_describe_video`; each says so in its description), and this
-flow calls none of them — so never warn the designer about cost.
+flow calls none of them — so report cost only as the tool or UI reports it.
 The paid **analysis** tools, such as `picsart_media_describe_video`, say so in their description, and this
-flow calls none of them — so never warn the designer about cost.
+flow calls none of them — so report cost only as the tool or UI reports it.
 
 ## The opening sequence — "add motion to this Figma design"
 
@@ -74,7 +74,7 @@ below are its tool-by-tool summary.
 
 **Phase 0 — orient (all free, one call each):**
 1. `picsart_scene_recipe` — with no `name`, the index of recipes; the `quick-merge-and-export`
-   recipe is the server's on-ramp for common jobs (prefer what a recipe says over this list if
+   recipe is the on-ramp for common jobs (prefer what a recipe says over this list if
    they disagree).
 2. `picsart_scene_capabilities`, schema sections — the scene shape you are about to author.
    **It is ~200KB in full — always narrow it:** ask for `["schemaSummary"]` (field names/types,
@@ -117,7 +117,7 @@ below are its tool-by-tool summary.
 **Phase 2 — create the scene (compose):**
 10. Build each frame as a **composition of scene layers** — one scene layer per imported
     design layer, placed by its `transform` — via `picsart_scene_patch` (`add` ops,
-    id-keyed layers + assets), or a compose recipe/template if the server offers one.
+    id-keyed layers + assets), or a compose recipe/template if one is offered.
     **Never** bind frames to `scene://montage` (that flattens them → slideshow). A
     matched element is **one continuous layer** with per-frame transform states.
 11. Font check against the `list_fonts` result — a missing font is **surfaced**, never
@@ -130,7 +130,7 @@ Only after 13 passes does motion begin: pair 1→2, the edit
 loop, pair by pair. (No Figma connector / flat images only → the flat-frame fallback in
 `design-layer-import`: say it will be a slideshow, offer layered.)
 
-The authoring methods that were once server-only recipes ship as skills of this plugin: read
+The authoring methods that were once recipes ship as skills of this plugin: read
 `figma-storyboard-animation` (the canonical Figma→scene flow), `motion-intent`, `motion-pattern-library`,
 `scene-animation-reference` and `custom-transitions` by name.
 
@@ -170,7 +170,7 @@ use the fallback — never assume they exist.
 | Preview as stills / a strip | `picsart_scene_contact_sheet` (a grid), `picsart_scene_export` (`mediaType: "png"` with `startTime`, one specific frame per call) |
 | Show the finished motion as a video | `picsart_scene_export` — the WHOLE reel, not one pair |
 | Bring in a user's file → an asset URL | `picsart_drive_upload_ask` |
-| **Generate video footage (SPENDS CREDITS — gated)** | Flow, in order: `picsart_credits` (show balance first) → `picsart_model_catalog` (`concise: false`) then `picsart_model_choose` (designer picks the model) → `picsart_model_params` (schema) → **`picsart_preflight` (exact dry-run cost, free)** → **quote the cost + SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says)** → `picsart_generate` (`async` for video, pass project `folderUid`) → its own card follows the job (watch) → place the clip as a `media` layer. **No preflight cost shown + no explicit yes = no generate.** Full gate in the `animate-design` skill *Video generation*. |
+| **Generate video footage (SPENDS CREDITS — gated)** | Flow, in order: `picsart_balance` (show balance first) → `picsart_model_catalog` (`concise: false`) then `picsart_model_choose` (designer picks the model) → `picsart_model_params` (schema) → **`picsart_preflight` (exact dry-run cost, free)** → **quote the cost + SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says)** → `picsart_generate` (`async` for video, pass project `folderUid`) → its own card follows the job (watch) → place the clip as a `media` layer. **No preflight cost shown + no explicit yes = no generate.** Full gate in the `animate-design` skill *Video generation*. |
 
 ## By user request — the common ones
 

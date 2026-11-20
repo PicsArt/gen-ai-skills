@@ -8,7 +8,7 @@ the record is kept: on disk, in Drive or in the conversation.
 |---|---|
 | `useCase`, `job` | the use case and the job it runs, said back to the user at intake |
 | `pipeline` | the stages this job runs, in the core order |
-| `stages` | per stage: `status` (`done` or `stale`), `at`, `skipped: "user"` with its `risk` when the user chose to skip the check, the critics or the review (`record.py skip`), and either `reads` (a copy of the keys it read, when marked by hand) or `inputsHash` (from `record.py`), and `artifact` with its `artifactHash` |
+| `stages` | per stage: `status` (`done` or `stale`), `at`, `skipped: "user"` with its `risk` when the user chose to skip the check, the critics or the review (`record.py skip`), `verdict` on `qc` and `critics` (what the QC inspector and the critic panel found; outside every fingerprint), and either `reads` (a copy of the keys it read, when marked by hand) or `inputsHash` (from `record.py`), and `artifact` with its `artifactHash` |
 | `brief` | `said`, `read` and `assumed`, kept apart |
 | `standing` | `text`, `words` (the user's own), `date`, and `reason` when given |
 | `approvals` | `what`, `by`, `date`, `scope` (`meaning:<phrase>` for a meaning change, with the `job` chosen; `keeper:<phrase>` for a keeper let go, with its `shot` or `what`; `map`, `moments` or `mapping` for the approved map; `format:<element>` for a plan that leaves the reference's format, `format:pace` for a pace other than the reference's, `format:rhythm` for a shape other than the rhythm's), and when it was relayed, `session` and `words` (the person's own, quoted). Never a SPEND. |
@@ -23,6 +23,7 @@ the record is kept: on disk, in Drive or in the conversation.
 | `takes` | the chosen take of each line |
 | `story` | the story stage's beats: for footage with no words and no brief, the arc inferred from it. Never in `brief`, which intake reads: a change there would make every stage stale |
 | `locked` | the meaning map: `phrase`, `job` (the picture's job), `shot`. Written when the user approves the map, at review with the first draft, so the approval leaves that draft current. A job changes only with an approval of it; a locked row changed then needs a new plan: `invalidate <record> plan` |
+| `challenges` | the challenger's verdicts, as quality-review's challenger returns them: `stage` (`story` or `plan` gate the run; any other stage, such as a SPEND's, is kept the same way), `decision`, `verdict` (`keep`, `rethink` or `stop`), `why`, `cheaper`, `date`; or the user's skip of one: `stage`, `decision`, `"skipped": "user"` and their `words`. No stage reads it, so a verdict written late makes nothing stale |
 | `keepers` | what worked in a version the user saw: `kind` (`pair` with `phrase` and `shot`, `moment` with `shot`, `praise` with the user's `words`), `what`, `version`, and why it works |
 | `versions` | `name`, `parent`, `plan`, `scene`, `render`, `changed`, `gates` |
 | `openDecisions`, `pendingReviews`, `pendingSpends` | as `picsart-video-rules` defines them |
@@ -32,7 +33,7 @@ the record is kept: on disk, in Drive or in the conversation.
 A stage marked done by hand keeps in its `reads` a copy of these keys: the ones it reads, and the
 ones the stages it builds on read or wrote. When one has changed since, the stage is stale, so a revised
 story or cut pace makes the plan and everything after it stale. `record.py` computes the same list (`hand_keys`).
-A snapshot saved before it kept upstream reads lacks them, so such a stage counts as stale once and is redone.
+A snapshot saved before it kept the reads of earlier stages lacks them, so such a stage counts as stale once and is redone.
 
 | Stage | Keeps |
 |---|---|

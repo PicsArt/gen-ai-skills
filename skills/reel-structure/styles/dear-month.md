@@ -8,7 +8,7 @@
 | Fit | slots 2; mixed; solo, couple, place, any; autumn, everyday, New Year, any; calm, dreamy, warm |
 | Music | soft acoustic or piano, 65–85 BPM |
 | Skin | the letter is the skin's text colour; the leaves are always autumn colours, whatever the skin: rust #B5471B, amber #E09A2D and brown #7A3E1D |
-| Preview | https://gcdn.picsart.com/picsart-mcp/6283197e-1eda-4b57-b294-c4d09439a3e1.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/ae964e3f-9f67-4bbb-8c1c-5354c36a8e14.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | `transition:crossfade`, 0.8 s |
 | Motion | the first shot plays as shot (a photo there gets the same slow push), the photo after it slowly pushes and drifts (scale 1 to 1.08); 14–20 small oval leaves (26–34 px long) in the three Skin colours fall at 70–120 px/s from above the frame all reel long, already on screen at 0 s, drifting sideways and spinning slowly (about 45°/s), drawn under the letter |

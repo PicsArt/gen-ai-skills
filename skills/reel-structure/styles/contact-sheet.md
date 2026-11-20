@@ -8,7 +8,7 @@
 | Fit | slots 6–9; photos; any; trip, everyday, memories, wedding, any; nostalgic, stylish, aesthetic |
 | Music | cool lo-fi hip hop or jazzy beat, 85–100 BPM |
 | Skin | the sheet is cream #F1E8D6; frame numbers, the pick circle and the pick labels in red #C8322B; the header and ink in #1C1611; the header reads "ROLL 07 · <skin title in capitals>"; the pick label reads "pick 1…" |
-| Preview | https://gcdn.picsart.com/picsart-mcp/0e9bbc23-3d7e-4c6f-99d6-b8de88df19b0.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/a4b29ac6-0e3e-4dec-9277-aea45b5c6c95.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts between the picks |
 | Motion | the sheet is a 3×3 grid of 300×300 cells centred at x 190/540/890, y 500/860/1220, filled in order, one cell every 0.133 s from 0.1 s with `look:pop`; with fewer than 9 photos the last cells stay empty cream (a short roll), never a repeated photo; at 1.6 s the circle pops on round the strongest photo's cell; at 2.4 s that photo grows out of its cell to full screen (scale 0.3 at the cell → 1 at the centre over 0.467 s, then a slow push to 1.05); then 3 more picks from the sheet cut in full frame, 1.5 s each, with a slow push. The picks are frames from the sheet shown again: that repeat is the style's device, not filler, and it is the only repeat allowed |

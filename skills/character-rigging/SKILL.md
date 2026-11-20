@@ -1,10 +1,10 @@
 ---
 name: character-rigging
-description: Build and animate a 2D cartoon character in a scene — rig-humanoid and rig-face and their controls, walk_cycle, acting and drivers on a rig, two-bone IK, draw order, tapered ink lines, lip sync, a cut-out puppet built from named SVG parts, sockets, reach and held props — and the craft of morphing a shape's outline — preparing two drawings so they morph without twisting, choosing between outline keyframes, morph targets and per-vertex tracks, blend-target hygiene, timing (anticipation, overshoot, holds), volume-keeping squash, face visemes and blinks, scene-to-scene morph transitions, bending a picture over an art mesh, and explicit skin weights. Use when a cartoon character, mascot or face walks, waves or talks; when a path's outline changes shape over time — one drawing becomes another; a jelly, blob or character squashes, stretches, bounces, wobbles or breathes; a cartoon face talks (lip sync, mouth shapes), smiles or blinks; a cut is hidden by a morph; or an image, text or composition has to bend.
+description: Build and animate a 2D cartoon character in a scene — rig-humanoid and rig-face and their controls, walk_cycle, acting and drivers on a rig, two-bone IK, draw order, tapered ink lines, lip sync, a cut-out puppet built from named SVG parts, sockets, reach and held props — and the craft of morphing a shape's outline — drawings that morph without twisting, outline keyframes vs morph targets or per-vertex tracks, blend-target hygiene, timing, volume-keeping squash, face visemes and blinks, scene-to-scene morph transitions, bending a picture over an art mesh, and explicit skin weights. Use when making a cartoon, a cartoon film or a character rig; when a cartoon character, mascot or face walks, waves or talks; when a path's outline becomes another drawing; a jelly, blob or character squashes, stretches, bounces, wobbles or breathes; a cartoon face talks (lip sync, mouth shapes), smiles or blinks; a cut is hidden by a morph; or an image, text or composition has to bend.
 metadata:
   category: authoring
-  version: '1.7'
-  ported-from: shape-morphing 1.7 at 55.130.0
+  version: '1.9'
+  ported-from: shape-morphing 1.8 at 59.2.0
 user-invocable: false
 ---
 
@@ -12,6 +12,15 @@ user-invocable: false
 
 Field names are the `path` item's (`picsart_scene_capabilities` with `sections: ["schema:ShapeContent"]`); the outline mechanics are in
 [references/outline-mechanics.md](references/outline-mechanics.md).
+
+## Making a cartoon: read first
+
+- [Character rules](references/character-rules.md): what a cut-out character must do before it acts
+  (clothes follow every joint, the shoulder rises with the arm, foot and shoe are one piece, a pose plan
+  and a cover map, real motion and reference videos).
+- [Faces without outlines](references/outline-free-faces.md): a pupil that cannot leave its eye, the lid patch, brows above it, brows that carry the mood
+- [A cartoon film](references/cartoon-film.md): plan before spending credits, one world for the film,
+  sets and props, staging, late layers on their own clock, one document per scene and the review loop.
 
 ## Named motions on a rig
 
@@ -38,9 +47,18 @@ A 2D cartoon character starts from a catalog rig (`scene://rig-humanoid`, `scene
 |---|---|---|
 | Build a character from an SVG sheet | `references/rig-build.md` | the sheet, `character: {svg, check, view, duration}`, parts, face and hands; the frozen sheet prompt is `references/part-sheet-prompt.md`; a cut-out puppet from one picture is `references/cut-out-puppet.md` |
 | Place a rig in a scene | `references/rig-place.md` | the two catalog rigs, `scene_ref` placement and size, sockets and held props, the bone map, draw order, head turn; sockets and held props in full are `references/sockets-and-props.md`, the 2D head turn `references/head-turn.md` |
+| Bring a rig made in Spine | `picsart_scene_import_spine` | the skeleton .json, its .atlas and PNG pages (or one .zip) become an editable rig scene with its animations as actions, a scene that plays it, and a report of what was approximated or left out; a binary .skel and unsupported attachments or constraints are refused by name; review `playbackUrl` in `picsart_scene_editor`; the cartoon flow is in the animated-story use case |
 | Know a rig's controls | `references/rig-controls.md` | the standard control names and ranges (visemes, moods, arms, hands, held props, head) |
 | Act: walk, gesture, act, drive | `references/rig-act.md` | IK, gesture arms and the wave rule, `walk_cycle`, gestures, `acting`, actions, parameter drivers, ink lines |
 | Hand-built limbs, skin, pins | `references/character-motion.md`, `references/skin-weights.md`, `references/live-pins.md` | a rig no template fits |
+| Plan a cut-out character, check it before it acts | `references/character-rules.md` | clothes at every joint, shoulder with a raised arm, foot and shoe, the pose plan and cover map, real motion |
+| Make a cartoon film of several scenes | `references/cartoon-film.md` | the scene table, one world, sets and props, staging, late layers, one document per scene, the review loop |
+
+A cut-out puppet or side rig cut from ONE finished picture, with drawn poses, is `references/cut-from-one-picture.md`
+(`picsart_scene_cut_parts`). The pictures it is cut from (the base, only the sheets this picture needs, a drawn pose per
+plot beat the cut cannot bend into) are `references/picture-sheets.md`, read before anything is generated.
+A light paper or felt rim is cut by the tool with `labels.regions.edge: "light"`. A picture bounded by neither (a
+coloured line, only a change of colour) is cut by hand along its own edge: `references/cut-any-edge.md`.
 
 Rules that hold on every step: animate only the rig's parameters (key them in the layer's `content.parameters`, or apply a rig preset); never write joint Lua by hand; verify a walk or a gesture on a `picsart_scene_contact_sheet`.
 

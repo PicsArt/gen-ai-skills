@@ -36,7 +36,7 @@ The input is one JSON object:
   `highlightStyle` (passed through as given) or, without one, big white text on a dark pill that
   the renderer fits to the measured words.
 
-- `cards` asks for word cards (PI-11892), one `captions` layer `captions` over the talk:
+- `cards` asks for word cards, one `captions` layer `captions` over the talk:
   `{"words": 3, "seam": 960, "style": { a caption style }}`. A card closes at `words` words (1 to 3)
   or on a word ending in `. , ? !`; the words are kept as spoken, only shifted onto the reel's
   clock. Each card holds toward the next, so they never blink: its end becomes

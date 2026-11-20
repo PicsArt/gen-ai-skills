@@ -1,6 +1,6 @@
 ---
 name: social-posting
-description: Post a finished video to the user's own TikTok, Instagram, YouTube or other connected accounts through the Picsart app's post preview - the connected accounts read first, a connect panel only for an account that is missing, then one preview per post whose own buttons post or schedule it. Use in edit-footage's channel-clips job, once it delivered its clips and the user says to post, publish or schedule them; never before delivery. Other jobs and use cases post as they always have, with their own steps or the social tools directly.
+description: Post a finished video to the user's own TikTok, Instagram, YouTube or other connected accounts through the Picsart app's post preview - the connected accounts read first, a connect panel only for an account that is missing, then one preview per post whose own buttons post or schedule it. Use in make-clips' channel-clips job, once it delivered its clips and the user says to post, publish or schedule them; never before delivery. Other jobs and use cases post as they always have, with their own steps or the social tools directly.
 user-invocable: false
 ---
 
@@ -13,7 +13,7 @@ credits.
 
 ## When it runs
 
-These steps are edit-footage's `channel-clips` job's. Every other job and use case keeps
+These steps are make-clips' `channel-clips` job's. Every other job and use case keeps
 posting as it always has:
  recast's own Post step, or
  the social tools called directly when the

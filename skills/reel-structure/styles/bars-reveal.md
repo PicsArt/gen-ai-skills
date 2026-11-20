@@ -8,7 +8,7 @@
 | Fit | slots 5–8; mixed; any, place, couple, friends; trip, wedding, anniversary, memories, any; cinematic, epic, stylish |
 | Music | cinematic swell or slow hip-hop, 80–100 BPM |
 | Skin | title word from the skin's occasion |
-| Preview | https://gcdn.picsart.com/picsart-mcp/d40e3fa1-bfe9-4eea-9b7c-1b1be4cfa2a7.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/1a5a0b8a-81df-41a6-a8f3-9d7e8a92a49e.mp4 |
 | Proven | yes: agent build 2026-11-08, user-approved |
 | Seams | hard cuts |
 | Motion | two black bars slide from closed to a widescreen strip in 0.9 s, hold, then slide off by 3 s; first clip 3 s, then slots 0.9 s |

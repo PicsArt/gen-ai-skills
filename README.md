@@ -194,12 +194,14 @@ Use cases, the entry points a user asks for:
 | Skill | Description |
 |---|---|
 | [`animate-design`](./skills/animate-design) | Turn static material into a real motion-designed video. |
+| [`animated-explainer`](./skills/animated-explainer) | Make an animated explainer you can edit afterwards: one idea made clear by narration and drawn or built 2D or 3D animation (a diagram, objects, numbers, a host character) that grows as each part is named, not generated video. |
+| [`animated-story`](./skills/animated-story) | Make an animated story you can edit afterwards: drawn or built 2D or 3D animation, with characters, objects or just shapes, played as a scene, not generated video. |
 | [`assets`](./skills/assets) | Open the Picsart Assets panel on what the user made with Picsart. |
 | [`edit-footage`](./skills/edit-footage) | Make videos from the user's own footage, or copy a reel's structure onto their script. |
 | [`generate-media`](./skills/generate-media) | Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo. |
 | [`get-started`](./skills/get-started) | Get started with Picsart Video. |
-| [`make-cartoon`](./skills/make-cartoon) | Make a short cartoon with a character the user picks or describes. |
 | [`make-character`](./skills/make-character) | Make one AI character with no film. |
+| [`make-clips`](./skills/make-clips) | Cut one long video into several standalone clips. |
 | [`make-comics`](./skills/make-comics) | Turn a photo into a ComicMe creation. |
 | [`make-screen-videos`](./skills/make-screen-videos) | Turn a screen recording of an app or site into videos. |
 | [`make-short-drama`](./skills/make-short-drama) | Make a vertical drama series, pilot or episode with a recurring cast. |
@@ -212,7 +214,7 @@ Skills the use cases load:
 | Skill | Description |
 |---|---|
 | [`ai-presenter`](./skills/ai-presenter) | Put a generated presenter on screen and keep them honest. |
-| [`app-ui-animation`](./skills/app-ui-animation) | Build a phone or web UI in a scene with scrolling, carousels, button feedback, cursor paths and clicks, context menus, drag-and-drop, synchronized controls, bottom sheets and frosted-glass panels. |
+| [`app-ui-animation`](./skills/app-ui-animation) | Build a phone or web UI in a scene with scrolling, carousels, button feedback, cursor paths and clicks, context menus, drag-and-drop, synchronized controls, bottom sheets, frosted-glass panels and boxes that fit their text (chat bubbles, tags, badges). |
 | [`asset-audit`](./skills/asset-audit) | Audit media assets BEFORE they enter scene cards, boxes or looks. |
 | [`background-music`](./skills/background-music) | Draft, generate and lay an instrumental music bed under a finished video's speech. |
 | [`caption-decorations`](./skills/caption-decorations) | Author and validate scene caption decorations, choosing between measured procedural decoration presets and arbitrary scene artwork. |
@@ -234,9 +236,10 @@ Skills the use cases load:
 | [`footage-reframing`](./skills/footage-reframing) | Put the user's own footage in a frame of another shape. |
 | [`large-scene-assembly`](./skills/large-scene-assembly) | Build large editable scenes by decomposing a timeline into bounded scenes and reusable components, defining timing and asset contracts, then assembling and safely consolidating them. |
 | [`linked-element-motion`](./skills/linked-element-motion) | Keep related scene elements aligned and moving together, including container resizing, shared fades, content reveals and sibling reflow. |
+| [`lip-sync-lines`](./skills/lip-sync-lines) | Make a rigged character's mouth move on its spoken lines. |
 | [`motion-design-craft`](./skills/motion-design-craft) | The craft of adding motion to any scene, whatever the video. |
 | [`motion-intent`](./skills/motion-intent) | Choose and diagnose scene motion from communication intent before selecting presets or keyframes. |
-| [`motion-pattern-library`](./skills/motion-pattern-library) | Worked scene motion patterns for entrances, exits, stagger, directional nudges, emphasis, ambient life, springs, arcs, layered beats, parenting, parallax, focus, wipes, drawn strokes, and cartoon fast motion (smears, multiples, speed lines). |
+| [`motion-pattern-library`](./skills/motion-pattern-library) | Worked scene motion patterns for entrances, exits, stagger, directional nudges, emphasis, ambient life, springs, arcs, layered beats, parenting, parallax, focus, wipes, drawn strokes, cartoon fast motion (smears, multiples, speed lines), slapstick props (a thrown or bounced prop landing on a socket, stars circling a head), and text that counts or swaps words (a price or score counter, a countdown, a timecode). |
 | [`motion-review`](./skills/motion-review) | Review an existing scene for motion that is confusing, mistimed, distracting, broken at a seam, or unnecessarily expensive. |
 | [`motion-scene-continuity`](./skills/motion-scene-continuity) | Plan and diagnose continuity across scene beats and scene boundaries—semantic handoffs, dominant direction, shared visual carriers, causal action/reaction, intentional resets, and seam verification. |
 | [`motion-tracking-from-video`](./skills/motion-tracking-from-video) | Measure what objects visibly do in a video. |
@@ -264,6 +267,7 @@ Skills the use cases load:
 | [`speech-aware-cutting`](./skills/speech-aware-cutting) | Choose the moments of talking footage worth keeping and cut them so no one is clipped mid-sentence. |
 | [`spoken-captions`](./skills/spoken-captions) | Put spoken words on screen from the transcript. |
 | [`visual-style`](./skills/visual-style) | A video's style, chosen by eye and kept. |
+| [`visual-styles`](./skills/visual-styles) | The animation-film and graphic drawing styles (75 recipes. |
 | [`voice-over-generation`](./skills/voice-over-generation) | Generate a voice-over from written lines. |
 
 <!-- generated-skills:end -->

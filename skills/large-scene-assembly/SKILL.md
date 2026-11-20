@@ -41,11 +41,13 @@ Ask `picsart_scene_capabilities` (`schema:<Name>` sections) for the exact releva
 uses its owning document's assets; a separately referenced scene owns its own asset scope. Do not
 rely on an undeclared parent asset, copied font id, or temporary URL being available in a child.
 
+Hand-keyed motion goes in as `animate` pairs (`picsart_scene_patch`, see scene-building-basics → Author compactly), not as a track of objects. The same motion on several layers is one `copyAnimation` from one layer to the others (a rig's controls too: `properties:["hipsRaise"]`), not a copy of each track; the patch notes the same keys written twice.
+
 ## Author → verify → assemble, incrementally
 
 1. Build each semantic component with editable shapes, text, assets, keyframes and stable ids. Validate it with `picsart_scene_validate` and query entry, event and exit geometry with `picsart_scene_query_layout`.
 2. Inspect full-resolution stills with `picsart_scene_contact_sheet`, setting `resolution` to the scene dimensions; watch continuous video for motion claims.
-3. Preserve the accepted source revision and record its returned source or handle. A held handle is local to its tool surface, not a portable published URL.
+3. Preserve the accepted source revision and record its returned source or handle. A held handle only works in the session that returned it, not as a portable published URL.
 4. Assemble a thin root that owns order, clip windows, seams and persistent carriers. Children own their internal layout and motion.
 5. Check just before, at and after joins. Rerun supported `picsart_scene_lint_layout` relationships against independently recorded intent. Rerun contract records with `picsart_scene_check_contracts`; record uncovered assertions as unchecked.
 6. Continue component by component; recheck affected joins and overall playback. Show meaningful milestones during authorized autonomous iteration.
@@ -70,9 +72,9 @@ Inspect shared definitions in their own asset scope. Editing a shared definition
 
 A film of N shots that act the same character is one root with N `scene_ref` layers, one per shot,
 each naming the shot's saved scene by URL; each shot names the character's saved rig the same way. Save
-the rig once and give every shot that one URL. An export renders the root as written and the worker
+the rig once and give every shot that one URL. An export renders the root as written and Picsart
 fetches each distinct URL from its allowed hosts, so a hosted rig costs one fetch however many shots use
-it. A re-saved rig is a new document with a new URL: point each affected shot at it, re-save those shots, then point the root at their new URLs, or the export renders the old revision. A URL on a host the worker does not
+it. A re-saved rig is a new document with a new URL: point each affected shot at it, re-save those shots, then point the root at their new URLs, or the export renders the old revision. A URL on a host Picsart does not
 allow fails the export by name; fix the URL, do not inline the rig to get past it.
 
 ## Consolidate without losing the sources

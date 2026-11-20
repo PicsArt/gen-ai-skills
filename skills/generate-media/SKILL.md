@@ -38,7 +38,7 @@ nothing.
 
 Read the request before you ask (picsart-video-rules's Asking). Most say all of it: the medium, the
 subject, and any picture or clip to start from. Say back what follows from it in one line ("a 9:16
-image for a story"). ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) only for what is open and changes the result: the medium when it is not
+image for a story"). ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) only for what is open and changes the result: the medium when it is not
 said, the frame when the destination does not set it, a voice or a song when "audio" is not said.
 
 An edit names its tool by what it does to the picture:
@@ -79,8 +79,8 @@ get a URL as above and call again.
 An edit skips this stage. For `picsart_generate`:
 
 1. **The model.** When the user named one, use it. When they want to pick,
-   ASK with `picsart_model_choose` where the host draws it, otherwise in text as the host notes
-   say: three candidates from `picsart_model_catalog` (`concise: false`), each with what it is best
+   ASK with `picsart_model_choose` where the host draws it, otherwise in text as picsart-video-rules's
+   `references/HOST.md` says: three candidates from `picsart_model_catalog` (`concise: false`), each with what it is best
    for here, one marked recommended. When they want to look through all of them, open
    `picsart_model_show` with the `mode` and `purpose: "generate"`. Otherwise choose it yourself:
    - an image: `gpt-image-2.6-sunburst`, as picsart-video-rules's Image generation and supplied
@@ -98,7 +98,7 @@ An edit skips this stage. For `picsart_generate`:
 2. **Its settings.** For anything beyond `prompt`, read `picsart_model_params` for that model,
    and set only the settings it lists, with values it allows. A model's own settings, such as a
    start frame or a voice, go in `extra`. Correct a value whose meaning is clear without asking
-   (`"1920x1080"` is `aspectRatio: "16:9"`); ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) when two readings give different results.
+   (`"1920x1080"` is `aspectRatio: "16:9"`); ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) when two readings give different results.
    Never take a setting from a model with a similar name. A start or end frame goes first in
    `imageUrls`, and the prompt names it: "IMAGE 1 - START FRAME". On a Seedance model (`seedance-…`), read
    the film-shot-generation skill's Seedance reference first: it says when a frame may use the
@@ -110,7 +110,7 @@ An edit skips this stage. For `picsart_generate`:
 
 ## 4. The quote
 
-Every generation and every edit charges credits. Quote it, then SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), as picsart-video-rules's SPEND
+Every generation and every edit charges credits. Quote it, then SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), as picsart-video-rules's SPEND
 says. `picsart_preflight` takes the model and the planned `picsart_generate` inputs as `params`,
 `prompt` included: it checks them against the model and estimates the price. Fix everything it
 reports before you quote. `credits: null` means the price is not known, never that it is free. The
@@ -118,7 +118,7 @@ edit tools give no quote of their own: to price one, preflight the model id you 
 `model` (the default may pick a different model). If that gives no number, say it charges credits
 and the amount is not known in advance.
 
-When the balance from `picsart_credits` is short of the quote, say by how much, and offer what
+When the balance from `picsart_balance` is short of the quote, say by how much, and offer what
 costs less: fewer outputs (`count`), a lower resolution or a shorter length, or a cheaper model.
 When the result carries a link to top up, give it exactly as returned.
 
@@ -135,8 +135,9 @@ When the result carries a link to top up, give it exactly as returned.
   timed out: it has usually finished and charged. Check the job, and for an `async: false` call
   look in their Drive first.
 - A result belongs to their Drive only when it says so (`drive`). With `folderUid`, a sync result
-  is filed there before it returns (`drive.uid`); save an async one there with
-  `picsart_drive_upload` once it completes.
+  is filed there before it returns (`drive.uid`); an async one is filed there by its card, which
+  reports each `driveUrl`. Only one you followed with `picsart_job_status` yourself is saved there
+  with `picsart_drive_upload` once it completes.
 
 ## 6. Show it
 
@@ -152,16 +153,16 @@ All of these are free. Answer in a few lines; never paste a whole list or table.
   instead.
 - **What a model can do:** read `picsart_model_params` and say the gist: what it takes and its
   limits.
-- **What something would cost:** `picsart_preflight` for the price, `picsart_credits` for the
+- **What something would cost:** `picsart_preflight` for the price, `picsart_balance` for the
   balance. Give both, and make nothing until they say yes (stage 4).
-- **Their balance:** `picsart_credits`. Give it exactly as returned.
+- **Their balance:** `picsart_balance`. Give it exactly as returned.
 - **Their Drive:** `picsart_drive_list` with no `folderUid` lists the top level. To open a folder,
   read its `uid` from `folders` in that result and pass it as `folderUid`, with `type` to keep one
   kind of file: `folderUid` takes a uid, never a folder name.
 
 ## When a call fails
 
-- **Not enough credits:** read `picsart_credits`, give the balance and what the call needed, and
+- **Not enough credits:** read `picsart_balance`, give the balance and what the call needed, and
   offer what costs less (stage 4). Never call it again until the user says they are ready.
 - **Not signed in:** making and editing need a signed-in Picsart account. Say so in one line and
   stop; the host asks them to sign in. Never retry.

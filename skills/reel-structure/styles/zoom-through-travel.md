@@ -8,7 +8,7 @@
 | Fit | slots 5–10; mixed; place, any, solo, friends; trip, holiday, summer, any; energetic, epic, wow |
 | Music | driving electronic or phonk, 120–140 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/d433e0a5-a0d0-47f7-9a63-0bd62d8f2290.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/7dfde6dc-6164-4e1d-87d8-d1f84c14b93d.mp4 |
 | Proven | yes: agent build 2026-11-08, user-approved |
 | Seams | hard cut on the beat, no transition: the punch through is the blur on both sides of the cut (the catalog `zoom_through` draws the next shot as a translucent box growing in, which reads as a broken frame) |
 | Motion | every slot 1.2 s pushing 1 to 1.12 (ease in); focal-zoom blur keyed per clip: 0 to 45 over the clip's last 0.3 s (ease in), and the next clip opens at 45 and clears to 0 over its first 0.2 s (ease out) while its own push starts; the first clip opens sharp; motion blur on the track |

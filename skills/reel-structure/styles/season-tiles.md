@@ -8,7 +8,7 @@
 | Fit | slots 7; photos; any; autumn, winter, summer, spring, year-end, memories, any; aesthetic, nostalgic, warm |
 | Music | warm indie or soft piano, 80–100 BPM |
 | Skin | the ground is the skin's light colour; the word tiles take the skin's accent and dark colours in turn; their words are its light text colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/3e87b677-ccf7-4c19-bfad-5f8bbc556308.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/07285370-f809-4902-83ca-cd4f74340619.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | none: one grid builds and holds |
 | Motion | the twelve tiles appear in reading order, one about every 10 frames, each scaling 0.7 to 1 and fading in over 7 frames; nothing moves once a tile has landed |

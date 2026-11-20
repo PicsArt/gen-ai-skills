@@ -1,7 +1,7 @@
 # Light: one setup per scene, and a colour kept back
 
 The light is chosen on the shot cards, from the board's setups (the card's `light` value). The
-sentence each setup compiles to is the server's; never write it yourself. What is here is how to
+sentence each setup compiles to is Picsart's; never write it yourself. What is here is how to
 choose one, and what stays the same across a scene's shots.
 
 ## Four layers, and where each one lives

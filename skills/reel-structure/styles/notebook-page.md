@@ -8,7 +8,7 @@
 | Fit | slots 3–5; photos; solo, friends, couple, any; everyday, trip, birthday, autumn, any; cute, cosy, friendly |
 | Music | light ukulele or bedroom pop, 90–105 BPM |
 | Skin | the hand-written lines are short everyday phrases, the first the skin's title; cream text |
-| Preview | https://gcdn.picsart.com/picsart-mcp/a1524a5c-e488-4bd5-aaa1-82ae0a286ffa.mp4 |
+| Preview | none yet |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts: each page slides in over the last |
 | Motion | each page slides in from the right with `look:slide`; held still |

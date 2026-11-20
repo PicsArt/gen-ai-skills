@@ -8,7 +8,7 @@
 | Fit | slots 6–12; photos; any; trip, year-end, everyday, any; calm, aesthetic |
 | Music | steady lo-fi, 85–95 BPM |
 | Skin | the background takes the skin's background colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/05439d33-894f-4347-a7a0-39c7ebd3e8f5.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/2180d0a5-6bbe-42b2-b488-99ea700e2306.mp4 |
 | Proven | no |
 | Seams | none; one continuous glide |
 | Motion | the strip moves at a steady speed; photos held still on it |

@@ -12,8 +12,8 @@ outside that file gets the frame its user names, and is said back the same way.
 
 - "Grow the audience (Recommended)": the moment a stranger would stop for, cut to stand on its
   own.
-- "Promote the full episode": a tease that leaves the best question open, and ends on where to
-  watch.
+- "Promote the full episode": the short answers its own question, then its last line opens a
+  larger one only the full episode answers, and it ends on where to watch.
 - "Sell something": the moment that proves the claim, and ends on the speaker's own ask.
 - "Show the speaker": their strongest lines back to back, for a profile or a pitch.
 
@@ -26,7 +26,7 @@ outside that file gets the frame its user names, and is said back the same way.
 **4. The message**, what the viewer should leave with. Header "Message". This is an idea, so it is
 asked with words, never generic options: draft two or three sentences that differ, each one the
 transcript can carry, with the line it rests on: "Quitting without a plan worked because she had saved a year of
-rent", from 06:12. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with those drafts as the options; the user picks one or writes their own.
+rent", from 06:12. ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with those drafts as the options; the user picks one or writes their own.
 With too little speech to draft from, ask it in words, with that example as the anchor.
 
 **5. How long**, only when the destination leaves a range and the user named none. Header
@@ -45,3 +45,16 @@ With too little speech to draft from, ask it in words, with that example as the 
 **7. How it ends.** Header "Ending". Offer the transcript's own closing lines that serve the goal,
 two or three, each quoted with its time and what it does, the recommended one first: the line that
 closes the hook's loop, as the retention-hooks skill says. Skip it when only one line can close.
+
+**8. Your numbers**, only when the reel is for a channel that already posts shorts, and asked once.
+Header "Your numbers". It is optional and never holds the work up. ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with these options:
+
+- "Skip (Recommended)": cut from the footage alone.
+- "I'll share screenshots": the analytics of their best and their weakest recent short: the
+  retention graph, the share that stayed to watch or swiped away, and the average share watched.
+
+Read what they send and map it to fixes: few viewers staying past the opening is the opening; a
+dip at a second is what is on screen there; high watch-through with few sends is the topic. Keep
+it in the record's brief as `analytics` (the values and where they came from), give it to the
+growth critic, and let it outrank the working thresholds of the speech-aware-cutting skill's
+review.

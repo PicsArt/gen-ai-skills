@@ -80,7 +80,7 @@ questions only if the export ALSO fails; the storyboard stays a markdown table. 
 no panel: it is asked in chat (`design-layer-import` *Set the format*).
 
 **The editor fallback is a degraded last resort, not the intended experience.** The real review
-surface is the **Cascade-styled panel** (`picsart_scene_editor`, live on the gen-ai server); a
+surface is the **review panel** (`picsart_scene_editor`); a
 bare ASK standing in for the *editor* means its call errored. Format questions are
 different — a plain ASK for a genuinely open output-scale choice is the right surface,
 not a fallback. Always call the editor first for review; fall back only when it actually fails.

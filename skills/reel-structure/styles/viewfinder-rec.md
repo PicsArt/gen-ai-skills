@@ -8,7 +8,7 @@
 | Fit | slots 4–8; mixed; any; everyday, trip, party, concert, any; nostalgic, fun, friendly |
 | Music | lo-fi indie or garage pop, 95–115 BPM |
 | Skin | the date is the footage's date; overlay white; the REC dot red |
-| Preview | https://gcdn.picsart.com/picsart-mcp/bb53f052-ca0f-457e-98e8-90caacad21dc.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/4b3ec43b-9424-4fea-865f-159d679ae7c8.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts on the beat under the fixed viewfinder |
 | Motion | clips play as shot; photos a slow push |

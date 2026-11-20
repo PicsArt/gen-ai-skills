@@ -1,11 +1,11 @@
 ---
 name: edit-footage
-description: Make videos from the user's own footage, or copy a reel's structure onto their script - a vertical reel, podcast clips, a highlight reel, a montage, a photo slideshow, a lesson filmed to camera, split-screen podcast shorts, channel clips from a long video or its link in the look of a short you bring, B-roll under a voice-over, an interview with B-roll, or a remix of a reference reel (a talking head or a skit included) - cut on the words, checked, choices shown as A/Bs. Use for "edit my footage", "edit my video", "make a reel from this", "clip this podcast like my shorts", "remix this reel with my script". Not for a screen recording, a short film from a script or idea with no reference reel, or rebuilding a reference's animation with the user's photos (recreate-video).
+description: Make videos from the user's own footage, or copy a reel's structure onto their script - a vertical reel, a highlight reel, a montage, a photo slideshow, a lesson filmed to camera, B-roll under a voice-over, an interview with B-roll, or a remix of a reference reel (a talking head or a skit included) - cut on the words, checked, choices shown as A/Bs. Use for "edit my footage", "edit my video", "make a reel from this", "remix this reel with my script". Not for several clips from one long video (make-clips), a screen recording, a short film from a script or idea with no reference reel, or rebuilding a reference's animation with the user's photos (recreate-video).
 metadata:
-  uses: edit-pipeline, reel-structure, footage-analysis, footage-reframing, speech-aware-cutting, retention-hooks, realistic-color-grade, background-music, scene-building-basics, spoken-captions, quality-review, film-finishing, edit-on-your-computer, screen-recording-layouts, face-hiding, photo-slideshow, caption-decorations, quick-merge-and-export, screen-recording-zoom, film-cast-design, film-shot-generation, film-cutting, ai-presenter, voice-over-generation, motion-design-craft, motion-pattern-library, scene-template-remix, custom-transitions, linked-element-motion, visual-style, resting-frame-rules, motion-review, motion-tracking-from-video, social-posting
-  optional: realistic-color-grade, background-music, spoken-captions, edit-on-your-computer, face-hiding, photo-slideshow, caption-decorations, quick-merge-and-export, screen-recording-zoom, film-cast-design, film-shot-generation, film-cutting, ai-presenter, voice-over-generation, motion-design-craft, motion-pattern-library, scene-template-remix, custom-transitions, linked-element-motion, visual-style, resting-frame-rules, motion-review, motion-tracking-from-video, social-posting
+  uses: edit-pipeline, reel-structure, footage-analysis, footage-reframing, speech-aware-cutting, retention-hooks, realistic-color-grade, background-music, scene-building-basics, spoken-captions, quality-review, film-finishing, edit-on-your-computer, screen-recording-layouts, face-hiding, photo-slideshow, caption-decorations, quick-merge-and-export, screen-recording-zoom, film-cast-design, film-shot-generation, film-cutting, ai-presenter, voice-over-generation, motion-design-craft, motion-pattern-library, scene-template-remix, custom-transitions, linked-element-motion, visual-style, resting-frame-rules, motion-review, motion-tracking-from-video
+  optional: realistic-color-grade, background-music, spoken-captions, edit-on-your-computer, face-hiding, photo-slideshow, caption-decorations, quick-merge-and-export, screen-recording-zoom, film-cast-design, film-shot-generation, film-cutting, ai-presenter, voice-over-generation, motion-design-craft, motion-pattern-library, scene-template-remix, custom-transitions, linked-element-motion, visual-style, resting-frame-rules, motion-review, motion-tracking-from-video
   title: Edit your footage
-  short-description: Edit your footage into a reel, clips or a finished video
+  short-description: Edit your footage into a reel or a finished video
   argument-hint: '[your footage or script, a reference, a brief]'
   starter-prompt: Cut my footage into a 30-second vertical reel.
 argument-hint: '[your footage or script, a reference, a brief]'
@@ -24,18 +24,17 @@ and what each one makes.
 
 Pick the job from the user's words, the footage, the reference and the brief, say it back in one
 line, and keep it in the record's `job`. Ask only when two jobs fit equally. A command such as
-/clips or /broll names its job; anything the user says wins over its preset.
+/reel or /broll names its job; anything the user says wins over its preset.
 
 | Job | What it makes | Its steps |
 |---|---|---|
-| `reel`, `highlight`, `podcast-clips`, `split`, `montage`, `slideshow`, `lesson` | one or several vertical shorts from talking footage, action or photos: the best moments, cut on the words; `split` stacks two speakers in a split screen, as the reference's format sets | `references/reel-flow.md`, with `references/reel-jobs.md` |
+| `reel`, `highlight`, `montage`, `slideshow`, `lesson` | one or several vertical shorts from talking footage, action or photos: the best moments, cut on the words | `references/reel-flow.md`, with `references/reel-jobs.md` |
 | `broll-voiceover`, `talking-broll`, `footage-story` | one finished video to a brief or a story found in it: B-roll under a voice-over, an interview with B-roll, footage with no words | the numbered sections below, with `references/jobs.md` |
 | `remix` | a reference reel's structure (beats, shots, caption pattern, pace, bed) on the user's own script or topic, as slides, voice and video | `references/remix-flow.md` |
-| `channel-clips` | several clips from one long video or a link to it, each in the look of a short the user brings (their channel's or anyone's): the moments, the frame, the hook card, the captions and the end card the look has, with a cover and post copy each, in one Drive folder, then the offer to post them; a reel job that asks two things at most | `references/clips-flow.md`, with `references/reel-jobs.md` and, for a pasted campaign brief, `references/clip-briefs.md` |
 
-`channel-clips` is picked only when your identity names it as your job, or its /channel-clips
-command names it. Otherwise it is never picked: a request for clips stays `podcast-clips` or
-`split`, run as their own rows say.
+Several standalone clips from one long video (podcast clips, split-screen podcast shorts, clips
+in a channel's look) are not a job here: they are the make-clips use case's. Say so in one line,
+and start that use case where you have it.
 
 **Read the job's file whole before its first step**, and again when the work resumes in it. Its
 steps are its own; never run another job's steps.
@@ -54,7 +53,7 @@ Every job runs these steps in this order. The row's number is the step in the ed
 below; in brackets are its record stage and the same step in the reel and remix texts, and a job
 with no number there leaves it out. A gate or skill with jobs in brackets is only theirs:
 `SPEND (remix)` opens for the remix job alone, `ASK (reel/remix)` for the reel jobs and the remix,
-`channel-clips` names the clips job alone, and `edit` names the edit jobs. `ASK (format-not-matched)` opens only when the footage cannot
+and `edit` names the edit jobs. `ASK (format-not-matched)` opens only when the footage cannot
 reproduce an element of the reference's format; one reproduced exactly goes straight on.
 `SPEND (someone-speaks)` opens only when someone speaks, for the heard script's cold read; a job
 with no speech goes straight on. `edit-on-your-computer (on-disk)` loads only for footage on
@@ -71,17 +70,29 @@ go: after each, go straight on unless its row has a gate for this job.
 |---|---|---|
 | 1. Intake and the record (`intake`; reel 1-2, remix 1) | ASK | edit-pipeline, edit-on-your-computer (on-disk), retention-hooks (reel) |
 | 2. The reference: its sheet, its format, what the footage can match (`reference`; reel 2, remix 2-3) | SPEND (remix), REVIEW (remix), ASK (format-not-matched) | reel-structure, footage-analysis (remix), motion-tracking-from-video (reference) |
-| 3. Read the footage (`log`; reel 3) | SPEND, ASK (gyro) | footage-analysis, footage-reframing, edit-on-your-computer (on-disk) |
+| 3. Read the footage (`log`; reel 3) | CHALLENGE (reel), SPEND, ASK (gyro) | footage-analysis, footage-reframing, edit-on-your-computer (on-disk) |
 | 4. Takes, when someone speaks (`takes`) | ASK | speech-aware-cutting |
 | 5. Look and sound (`look`) | ASK, SPEND | realistic-color-grade, background-music |
-| 6. The map: the meaning map, the moments, or the script on the beats (`story`; reel 4, remix 4) | REVIEW (edit), ASK (reel/remix) | retention-hooks, speech-aware-cutting (reel), reel-structure (remix) |
-| 7. Plan: the cut, the passes, the route (`plan`; reel 5-6, remix 5) | SPEND (someone-speaks), ASK (reel/remix) | edit-pipeline, speech-aware-cutting, screen-recording-layouts (remix), screen-recording-zoom (remix), ai-presenter (remix), photo-slideshow (remix), film-cast-design (remix) |
+| 6. The map: the meaning map, the moments, or the script on the beats (`story`; reel 4, remix 4) | CHALLENGE, REVIEW (edit), ASK (reel/remix) | retention-hooks, speech-aware-cutting (reel), reel-structure (remix) |
+| 7. Plan: the cut, the passes, the route (`plan`; reel 5-6, remix 5) | CHALLENGE, SPEND (someone-speaks), ASK (reel/remix) | edit-pipeline, speech-aware-cutting, screen-recording-layouts (remix), screen-recording-zoom (remix), ai-presenter (remix), photo-slideshow (remix), film-cast-design (remix) |
 | 8. Build (`build`; reel 7, remix 6-8) | SPEND (remix), REVIEW (remix) | footage-reframing, scene-building-basics, spoken-captions, photo-slideshow (reel/remix), quick-merge-and-export (reel), face-hiding (reel), film-shot-generation (remix), voice-over-generation (remix), film-cutting (remix), motion-design-craft (style), motion-pattern-library (style), scene-template-remix (style), custom-transitions (style), linked-element-motion (style), caption-decorations (style), visual-style (style), motion-tracking-from-video (reference) |
-| 9. The independent check and the reference match (`qc`; reel 8, remix 8) | SPEND, ASK (reel) | quality-review, footage-reframing (reel), resting-frame-rules (style), motion-review (style), motion-tracking-from-video (reference) |
-| 10. Critics, on the first full draft (`critics`; reel 8, remix 8) | — | quality-review |
-| 11. Review (`review`; reel 9-11, remix 6-9) | REVIEW, ASK (edit/reel), SPEND (reel) | spoken-captions (reel/remix), caption-decorations (reel), screen-recording-layouts (reel), background-music (reel) |
+| 9. The independent check and the reference match (`qc`; reel 8, remix 8) | SPEND, QC, ASK (reel) | quality-review, footage-reframing (reel), resting-frame-rules (style), motion-review (style), motion-tracking-from-video (reference) |
+| 10. Critics, on the first full draft (`critics`; reel 8, remix 8) | CRITICS | quality-review |
+| 11. Review (`review`; reel 9-11, remix 6-9) | CHALLENGE (reel), REVIEW, ASK (edit/reel), SPEND (reel) | spoken-captions (reel/remix), caption-decorations (reel), screen-recording-layouts (reel), background-music (reel) |
 | 12. Finish (`finish`; remix 9) | REVIEW (remix) | film-finishing, edit-on-your-computer (on-disk), background-music (remix) |
-| 13. Deliver (`deliver`; reel 12, remix 10) | DELIVER | reel-structure (remix), social-posting (channel-clips) |
+| 13. Deliver (`deliver`; reel 12, remix 10) | DELIVER | reel-structure (remix) |
+
+Three gates are checks by an agent, not questions: CHALLENGE is quality-review's challenger on
+the step's decision (the moments, the map or the mapping at stage 6; the plan of the cut and its
+opener at 7; for a reel, each quote before its SPEND at 3 and 11, and the highlight lines the first
+time they are placed at 11), QC is the QC inspector on the draft, and CRITICS the critic panel on
+the first full draft. Each runs before the step's other gates: an ASK or SPEND that a challenge
+covers opens only once the challenger's verdict is in the record's `challenges`, and the user sees
+it in one line with the question. QC and CRITICS end with their verdict on the stage, as the
+edit-pipeline skill says. The record refuses to go past `story`, `plan`, `qc` or `critics`
+without them; only the user may skip one, by name, and the skip is recorded. Where the host
+starts no agents, run each check yourself from its brief in quality-review's references, and
+write its verdict all the same.
 
 Every question is asked as picsart-video-rules's Asking says: one per turn, the recommended answer
 first, each option saying what it changes. The step names are your bookkeeping, never the user's.
@@ -100,6 +111,9 @@ it, and save it under the new name with `useCase: "edit-footage"`. That holds fo
 `client-edit.json`, `cut-footage-into-reel.json` and `remix-reel-structure.json`. Where commands
 run, the edit-pipeline skill's `record.py migrate` does it, and says which stages are done; by
 hand, mark done what the old record shows as done, as `references/jobs.md` says.
+
+A record whose `job` is `podcast-clips`, `split` or `channel-clips` is the make-clips use case's
+project: it is continued there, never here.
 
 ## The edit jobs: broll-voiceover, talking-broll, footage-story
 
@@ -133,7 +147,7 @@ memory. The user never has to drive the stages; they answer questions and choose
   footage and the brief disagree; when the footage turns out not to fit the job (a voice-over that
   is a separate take, a speaker on camera, no speech at all), say so and switch jobs, never force
   it, to another of these three or to a job above (The jobs). /edit is the front door to every
-  job: when the footage and the brief call for a reel, podcast clips or a remix, take that job and
+  job: when the footage and the brief call for a reel or a remix, take that job and
   say so, rather than forcing one of these three.
 - **Start the record** with the job's stages, as the edit-pipeline skill says, and the job's
   defaults from `references/jobs.md`.
@@ -148,11 +162,10 @@ memory. The user never has to drive the stages; they answer questions and choose
   the independent check finds them (stage 9). A rule goes into `standing` only in the user's own
   words.
 - **The reference.** When the brief, the brand pack and the user's channel give no reference for
-  the pace and the look, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, in the first reply: "What should guide the edit?" with the
+  the pace and the look, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, in the first reply: "What should guide the edit?" with the
   options my brand or channel, a reel I'll share, I'll describe it, and skip, you decide. It is the
   only question at intake. A `reel`, `highlight`, `montage` or `slideshow` asks its cut instead
-  (`references/reel-flow.md`, Which cut), whose Match a reel takes a reel to follow, and
-  `channel-clips` asks its look instead (`references/clips-flow.md`). Uploads and the free reads go on meanwhile; it never waits on the files.
+  (`references/reel-flow.md`, Which cut), whose Match a reel takes a reel to follow. Uploads and the free reads go on meanwhile; it never waits on the files.
   Which take of the voice or a line to use is never asked at intake: stage 4 picks it, and asks
   only when two takes tie.
   On "skip", say the direction you chose once, in one line, and go on. Whatever it gives goes into
@@ -181,12 +194,12 @@ for their **pace** and their **format**, never their content:
   rewritten; a file you cannot take is asked for with `picsart_drive_upload_ask`. Another
   creator's reel lends its format only.
 - what the footage can match: each element reproduced, approximated (say how) or impossible.
-  Anything not reproduced: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered mock, one free frame of their footage in the
+  Anything not reproduced: ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered mock, one free frame of their footage in the
   format (`picsart_scene_contact_sheet`) beside the reference still. Everything reproduced: say so in one line and go on.
 
 The step is done only with a sheet that passes and no element open, as the edit-pipeline skill's
 gates say, and nothing is built before it is done. `record.py` refuses to mark the reference done
-without its sheet and an answered format (`channel-clips`: the format alone); never mark it done by hand to get past that, since the
+without its sheet and an answered format; never mark it done by hand to get past that, since the
 look, the story and everything after build on it. When there is no reference, use the job's
 default pace and say so. A `highlight`, `montage` or `slideshow` on Vibe Cut is the exception: it
 is built in the one best-fitting style from the reel-structure skill's style library, picked by
@@ -229,14 +242,14 @@ Log every source as the footage-analysis skill says, and for each one write into
 - what the shot can mean for the story, and its role (a second camera's shots may be inserts);
 - whether the range needs stabilising. This is decided here, not after a check fails.
 
-A describe of the footage charges credits: quote it and SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), or say it is skipped and why.
+A describe of the footage charges credits: quote it and SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), or say it is skipped and why.
 The free reads never wait for it. The framing to the delivery shape is measured, checked and
 corrected as the footage-reframing skill says.
 
 ## 4. Takes, when someone speaks
 
 For a speaker, pick the best take of each line and the talking segments as the
-speech-aware-cutting skill says. For a voice-over, pick its take. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) only when two takes
+speech-aware-cutting skill says. For a voice-over, pick its take. ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) only when two takes
 are equally good and differ in what they say.
 
 ## 5. Look and sound
@@ -255,9 +268,9 @@ are equally good and differ in what they say.
 - **Sound**: mixed in the scene as audio layers, never outside it: the voice placed on its
   lines, every audio layer given an explicit duration (one without it repeats), room tone under
   the cuts. Music follows the job's default in `references/jobs.md`; when it is offered,
-  ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered A/B.
-  Quote any generation as the background-music skill says before its SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says).
-  A track the user brings is received with `picsart_drive_upload_ask`.
+  ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered A/B.
+  Quote any generation as the background-music skill says before its SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says).
+  A track the user brings is received with `picsart_drive_upload_ask` (`accept: 'audio'`).
 
 ## 6. The meaning map
 
@@ -268,6 +281,10 @@ questions to ask after watching; its questions are shown with the map, for corre
 `keepers` when there are any: a pairing the user saw work stays unless they chose otherwise. Show
 With no speech and no brief, the story is provisional: infer one from what the footage shows, as
 `references/jobs.md` says, and say it is a proposal.
+
+Before the map is shown or built on, run quality-review's challenger on it (the CHALLENGE gate):
+the map, the reason for it, and the other stories the footage supports. Record its verdict in
+`challenges` with `stage: "story"`, act on it as quality-review says, and only then go on.
 
 Whenever a map, the moments or a mapping is shown, for any job with a reference format, show one
 styleframe beside it: a free frame of the first beat built in the format, next to the reference
@@ -288,10 +305,11 @@ voice, and no two shots of one place and size are cut together. For a speaker, t
 segments are cut as the speech-aware-cutting skill says. A rebuild starts from the keepers
 ledger, never from zero. Every shot carries its reason, as the edit-pipeline skill says. Run the
 edit-pipeline skill's `lock-check` on the plan before building, and its meaning diff against the
-last version the user saw before showing anything.
+last version the user saw before showing anything. Before the plan is built or its SPEND is quoted,
+run the challenger on it and record its verdict with `stage: "plan"` (the CHALLENGE gate).
 When someone speaks, have the heard script read
 cold before the first build, as the speech-aware-cutting skill says, quoted first with its
-SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) (the row's `SPEND (someone-speaks)`; with no speech there is no read and nothing to ask): a story that does not survive
+SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) (the row's `SPEND (someone-speaks)`; with no speech there is no read and nothing to ask): a story that does not survive
 the read will not survive the build.
 
 ## 8. Build the drafts
@@ -304,7 +322,7 @@ one.
 ## 9. The independent check
 
 First the cold watch, as quality-review says, with `cuts: true` (the edit-pipeline skill's gate
-rules), its calls quoted first as it says and a SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1 unless every call is
+rules), its calls quoted first as it says and a SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1 unless every call is
 quoted at 0 credits (on a no, the review line says "no cold watch yet"): strangers who know nothing watch the render a few seconds at a time and
 say what they understood, who each person on screen is, and where a cut jumped.
 
@@ -316,7 +334,9 @@ the record it also gets the format, the reference stills and the reference match
 than the format's is critical. Fix its findings within the edit-pipeline skill's fix scope:
 a range moved, or a shot with the same job; a clash with a locked row or a keeper goes to the user
 as an A/B. Fix
-rounds are capped as picsart-video-rules says.
+rounds are capped as picsart-video-rules says. The QC gate closes with its findings written as the
+`qc` stage's `verdict`, as the edit-pipeline skill says; a check that did not run has none, and the
+record will not go on without it.
 
 A `legible-text` finding about someone else's private details (another person's name, address or
 case note readable on screen) is never fixed silently and never ignored: show it to the user
@@ -328,14 +348,15 @@ choose. Record the choice in `standing` with their words, so it is not raised ag
 Once, on the first full draft, run the critic panel as the quality-review skill says, with the
 reference stills and the format among its source stills when there are any. Its
 must-fixes go into the plan; its taste choices, and any shot it would swap, wait for stage 11 as
-rendered A/Bs, never a silent change.
+rendered A/Bs, never a silent change. The CRITICS gate closes with the must-fixes and choices
+written as the `critics` stage's `verdict`.
 
 ## 11. Review
 
 Show first the strongest complete draft that passed the check, never a partial or unchecked one,
 opened cold as picsart-video-rules says. Once the user has answered, the meaning map beside it when
 it is not yet approved, then the version: its name first, what changed (the meaning diff's lines, one per change, a dropped keeper always among them), the check's
-verdict and anything open. Every taste choice is two rendered drafts side by side; ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which,
+verdict and anything open. Every taste choice is two rendered drafts side by side; ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which,
 never in words alone. Ask only the choices that change the film; take the rest as stated
 defaults. A note
 that holds everywhere becomes a standing decision; a note that changes a shot's meaning needs its
@@ -352,7 +373,7 @@ On the finish chosen at intake:
   full resolution, as the edit-on-your-computer skill says, with the grade applied there. This is
   the finish for footage on this computer unless the user asks for the export: a scene export of
   the proxies is a draft, never the delivery. Upload nothing more for it than a check that runs
-  only on the server needs (a transcript of the master), and keep the master on this computer.
+  only Picsart needs (a transcript of the master), and keep the master on this computer.
 
 Then check the final master, whichever finish it is, before it is delivered:
 
@@ -383,4 +404,4 @@ removed only on a yes.
 
 - A stage's tool fails: say which stage and why, and stop there; the record keeps the place.
 - The footage cannot do what the brief asks (no shot for a beat): say which beat, with the
-  closest shots, and ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which to use.
+  closest shots, and ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which to use.

@@ -8,7 +8,7 @@
 | Fit | slots 3–5; mixed; solo, place, any; everyday, memories, New Year, any; calm, warm, aesthetic |
 | Music | soft piano or acoustic, 70–90 BPM |
 | Skin | the card is white at 95 %; the note is near-black (#1A120B) |
-| Preview | https://gcdn.picsart.com/picsart-mcp/030e1fd2-5a76-4b4f-8ea0-db4277284457.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/4322db51-21b1-44e6-b3b8-d582c68019bb.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | `transition:crossfade` on every seam, 0.4 s |
 | Motion | each shot a slow push and drift (scale 1 to 1.08); each card fades in over 7 frames from 3 frames after its shot starts, and out over 7 frames ending 6 frames before the shot ends |

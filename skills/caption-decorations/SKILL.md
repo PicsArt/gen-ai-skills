@@ -1,10 +1,10 @@
 ---
 name: caption-decorations
-description: Author and validate scene caption decorations, choosing between measured procedural decoration presets and arbitrary scene artwork. Use when adding caption highlights, boxes, stickers, animated artwork, custom decoration assets, or debugging why a caption decorator is missing or timed incorrectly.
+description: Author and validate scene caption decorations, choosing between measured procedural decoration presets and arbitrary scene artwork. Use when adding caption highlights, boxes, stickers, animated artwork, custom decoration assets, a box sized to any text (chat bubbles, tags, badges, not only spoken captions), or debugging why a caption decorator is missing or timed incorrectly.
 metadata:
   category: authoring
-  version: '1'
-  ported-from: caption-decoration-authoring 1 at 55.128.2
+  version: '1.1'
+  ported-from: caption-decoration-authoring 1.1 at 58.5.0
 user-invocable: false
 ---
 

@@ -8,7 +8,7 @@
 | Fit | slots 6–9; photos; any; everyday, trip, autumn, summer, any; upbeat, stylish, friendly |
 | Music | bright modern pop, 105–120 BPM |
 | Skin | the page is a light tint of the skin's background; no words |
-| Preview | https://gcdn.picsart.com/picsart-mcp/5a3d1cf5-140d-4da1-bf46-f426a5431856.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/d487a077-cd3b-4d49-ae64-8e56adc8b71c.mp4 |
 | Proven | yes: agent build 2026-11-08, user-approved |
 | Seams | hard cuts between mosaics |
 | Motion | the tall tile pops in over 0.7 s and the two small tiles over 0.367 s with `look:pop`, 0.133 s apart; the tall photo then grows to full screen by scale keyframes |

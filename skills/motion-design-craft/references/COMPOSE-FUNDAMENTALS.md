@@ -6,14 +6,14 @@ into a scene, these rules hold. Each path adds only its **source-specific ingest
 common base; everything below is identical for both.
 
 ## 1. Reach for the highest-level tool first
-You are an orchestrator; the Picsart media server is the engine. Before hand-building anything op-by-op,
+You are an orchestrator; Picsart's tools do the building. Before hand-building anything op-by-op,
 check for a **scene template** (`apply_scene_template`), a **motion preset** / **text animation**, or a
 **recipe** (`get_recipe`: its index with no name, `quick-merge-and-export` among them) that already does it. `patch_scene` is for
 *edits*, not for constructing whole scenes by hand when a template fits.
 
 ## 2. Every asset → a Picsart-hosted URL (the CSP trap)
 A scene asset's `uri` must be a Picsart-hosted `https://` URL (`pastatic`/`gcdn`, from
-`picsart_drive_upload_ask` / `picsart_drive_upload`) — **never** a `figma.com` URL, a `data:` URI, or a `blob:`
+`picsart_drive_upload_ask` / `picsart_upload_urls`) — **never** a `figma.com` URL, a `data:` URI, or a `blob:`
 object URL. The trap: server-side `export`/`contact_sheet` **can** fetch those, so they render and
 mislead you — but the **browser preview's Content-Security-Policy blocks them → blank**. So a clean
 `contact_sheet` is **not** proof it loads in the editor. Upload → author the returned Picsart URL.

@@ -161,7 +161,7 @@ motion checks and painted stability; rebase times and targets after nesting.
 ## Validate the customization, not just the default
 
 1. Validate the assembled host with `picsart_scene_validate`.
-2. Query actual ids/scopes and root-time geometry with `picsart_scene_query_layout`. Use `picsart_scene_lint_layout` for supported overlap, off-canvas and relationship checks.
+2. Query actual ids/scopes and root-time geometry with `picsart_scene_query_layout`; to align one layer to another's placement over time, compute the offset (the `computing-values` recipe) and write it live. Use `picsart_scene_lint_layout` for supported overlap, off-canvas and relationship checks.
 3. Derive expected relations and values from design intent, then bind actual targets and clock windows after nesting, retiming or count changes. Run those records with `picsart_scene_check_contracts` (a reusable `template` with `targets`, `numbers` and `clock` where intent repeats) and read pass, fail or inconclusive per contract; a verdict is not a whole-scene coverage report. Containment does not imply centering, and shared motion can preserve a wrong initial offset. Use the UI alignment negative-control method from `linked-element-motion`, then restore the intended scene.
 4. Inspect full-resolution `picsart_scene_contact_sheet` images at entrance, intermediate change, hold and exit; set `resolution` to the composition dimensions. Watch continuous video for motion and record checks not run as unverified.
 

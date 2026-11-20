@@ -8,7 +8,7 @@
 | Fit | slots 4–6; photos; any; everyday, trip, party, autumn, any; playful, fun, upbeat |
 | Music | bouncy indie pop, 105–120 BPM |
 | Skin | the page is the skin's accent, darkened; chip labels are one or two words per photo; chips use soft pastel tints |
-| Preview | https://gcdn.picsart.com/picsart-mcp/20c348e0-8f78-4669-99e3-7545f9a0f9a0.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/52a87398-07d6-4738-8e5e-f72435de8c86.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | no cuts: the cards stack on one page |
 | Motion | each card flies in from alternating top corners with `look:fling` and lands on the stack; the label chip pops on with `look:pop` |

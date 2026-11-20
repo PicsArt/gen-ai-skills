@@ -8,7 +8,7 @@
 | Fit | slots 15–40; mixed; group, friends, family, couple; party, holiday, trip, birthday, any; fun, energetic |
 | Music | upbeat pop with a steady beat, 90–100 BPM |
 | Skin | the title is "This was <skin title>", e.g. "This was Thanksgiving 2026"; white; nothing else on screen |
-| Preview | https://gcdn.picsart.com/picsart-mcp/53b0d101-f663-4596-9da3-1cc6fb3552b5.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/cd0557b1-3646-4661-8a17-bf4461871540.mp4 |
 | Proven | no |
 | Seams | hard cuts, no transition; about every second cut on a beat |
 | Motion | clips play as shot; photos held 0.2–0.5 s, no zoom |

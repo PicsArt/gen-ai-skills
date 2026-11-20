@@ -8,7 +8,7 @@
 | Fit | slots 2–3; clips; place, solo, couple, any; trip, everyday, holiday, any; cinematic, wow, aesthetic |
 | Music | a swelling cinematic or indie track that opens up at the turn, 80–110 BPM |
 | Skin | the note uses the skin's text colour; the ground is black |
-| Preview | https://gcdn.picsart.com/picsart-mcp/78de5b20-537e-4870-9dd2-90c14be9dfde.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/965ab9d0-914a-4f25-951e-d9063236266f.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | the turn itself: the first clip rotates 90° over 1.2 s while it scales up to keep the frame filled, then a hard cut to the second clip already lying on its side |
 | Motion | the first clip plays upright for 1.8 s, then rotates from 0° to 90° on an eased curve while its scale grows from 1 to about 2.05 at 45° and settles at 1.78 at 90° (always enough to cover the frame, so no corner shows); the second clip is placed at 90° and scaled to cover the whole frame (1.78 for an upright clip, about 1 for a 16:9 one) and plays as shot |

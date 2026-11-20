@@ -8,7 +8,7 @@
 | Fit | slots 6; mixed; place, food, pet; memories, trip, year-end, birthday, any; aesthetic, stylish, nostalgic |
 | Music | a steady beat with a hit every 1.2 s that opens up on the last photo, 100 BPM (a cut every two beats) |
 | Skin | the words are the skin's text colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/284770c1-dd17-4365-afd3-1972e542ac43.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/6b8f39c7-9bd3-4a2e-b80c-ee65f2195e21.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts, one a second |
 | Motion | every count shot plays as shot for 36 frames (1.2 s), so each number word is on screen at least 1.2 s; nothing moves but the cuts |

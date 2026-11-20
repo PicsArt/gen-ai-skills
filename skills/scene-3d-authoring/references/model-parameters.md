@@ -6,6 +6,7 @@
 - Playing the model's clips
 - Character control names
 - A car without bones
+- Steam, smoke and wires
 - Faces and screens on a model
 
 A model's parameters are declared inside its GLB. `picsart_scene_import_model` proposes them from
@@ -116,6 +117,51 @@ The layer moves the car with its `transform` and keys the same distance on `driv
 wheels roll with it: `"parameters": { "drive": { "keyframes": [{ "time": 0, "value": 0 },
 { "time": 3, "value": 4 }] }, "steer": { "keyframes": [{ "time": 1, "value": 0 }, { "time": 2,
 "value": 0.6 }] } }`.
+
+## Steam, smoke and wires
+
+**Particles** — `particles` on a media (or 2D `scene_ref`) card layer: the card is the sprite, drawn
+once per particle as a billboard that faces the camera. Metres, y up: `direction` is a vector
+(default up), `spread` the cone's full angle (360 is every way), `speed` m/s, `gravity` `[x, y, z]`
+m/s² (x and z are wind), `drag` (1/s: 1.2 stops a puff in about a second), `turbulence`
+`{ amplitude, frequency }` (a seeded wander of `amplitude` metres, at most 60 Hz), `size` a factor of
+the card's `width`, `sizeOverLife` and `opacityOverLife` curves. A puff is hidden by the models in
+front of it, drawn in the matte at its own opacity, and casts no shadow. Draw the sprite soft (a blurred
+white blob with alpha) and `lit: false` for steam; put the layer's `parentId` on what carries the cloud.
+
+**A trail** — `origin.target: { layer, node?, position? }` starts each particle where that layer (or
+a node of its model, `position` a point in its frame) stood at the instant the particle was born, then
+lets it go its own way: the plume stays in the air behind a mover. `inheritVelocity` (0 to 1) gives it
+that share of the mover's velocity. Begin emitting at the layer's start, so the first puffs have a
+target. Without `target` the cloud follows the layer's own placement.
+
+**Fire** — `colorOverLife: ["#fff2a0", "#ffb000", "#e03000", "#555555"]` tints the sprite over a particle's
+life (opaque `#rrggbb` stops spread evenly, blended in linear light, multiplied into the card: draw the sprite
+white or grey; transparency is `opacityOverLife`). `blend: "add"` makes the cloud light: the billboards add to
+what is behind, overlapping flame brightens, they are still hidden by models in front, and they feed `glow`
+(set its `threshold` under 1, say 0.8, so one flame glows; keep steam tinted grey so it does not). In the matte
+a flame covers by the light it adds, so it is not dimmed over a backdrop. Flame and smoke are two layers (one
+blend per cloud): a short bright flame cloud, a longer normal-blend grey one. Chimney sparks: small `add`
+particles with `gravity` `[0, -2.5, 0]` from the chimney node.
+
+**A wire** — `content: { kind: "wire", anchors, sag, width, color, lit }`: an opaque line through
+its anchors (`[x, y, z]` points, or `{ layer, node?, position? }` that it follows as they move), each span
+hanging as a catenary whose middle is `sag` metres below its chord, re-solved every frame. Overhead
+lines, cables, ropes, a train's pantograph wires. It writes depth (steam passes behind it and in front
+of it per pixel), casts and takes shadows as a model does, and is never drawn thinner than about a
+pixel, so a far wire does not flicker.
+
+```json
+{ "id": "steam", "duration": 6,
+  "content": { "kind": "media", "assetId": "puff", "width": 0.6, "lit": false },
+  "particles": { "emit": { "rate": 24, "duration": 5.5 }, "life": [1.4, 2.2], "speed": [0.3, 0.6],
+    "direction": [0, 1, 0], "spread": 25, "drag": 0.8, "gravity": [0, 0.35, 0.1],
+    "turbulence": { "amplitude": 0.25, "frequency": 0.8 }, "size": [0.6, 1],
+    "sizeOverLife": [0.4, 1.6], "opacityOverLife": [0, 0.7, 0],
+    "origin": { "target": { "layer": "loco", "node": "chimney" } }, "inheritVelocity": 0.3 } },
+{ "id": "overhead", "content": { "kind": "wire", "width": 0.03, "sag": 0.4, "lit": true,
+  "anchors": [[-12, 4.2, 0], { "layer": "pole1", "position": [0, 4.2, 0] }, [12, 4.2, 0]] } }
+```
 
 ## Faces and screens on a model
 

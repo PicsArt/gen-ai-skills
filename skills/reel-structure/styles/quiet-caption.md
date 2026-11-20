@@ -8,7 +8,7 @@
 | Fit | slots 3–6; mixed; solo, couple, place, any; everyday, trip, autumn, winter, memories, any; calm, minimal, cinematic |
 | Music | ambient piano or soft pads, 60–80 BPM |
 | Skin | the caption is a short lower-case version of the skin's title, then a closing line; the skin's text colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/f298a86d-64e6-4dd9-9c1e-a9595d84ad1a.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/dd243d6a-ef61-4c3c-8ccd-87d73d53f5f4.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | `crossfade` on every seam, 0.8 s |
 | Motion | clips as shot; photos a very slow push |

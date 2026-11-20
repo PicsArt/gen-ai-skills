@@ -8,7 +8,7 @@
 | Fit | slots 4–10; mixed; couple, family, friends, solo, any; trip, autumn, summer, any; warm, dreamy |
 | Music | dreamy indie pop, 85–100 BPM |
 | Skin | the title is the skin's, cream, low on screen |
-| Preview | https://gcdn.picsart.com/picsart-mcp/247c9e21-90c3-4eaf-8276-04e0b67427f3.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/85254265-be25-482c-bd93-b0ff8a4bb758.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | `transition:crossfade(duration=0.5)` and `transition:light_leak_burst(duration=0.5)` in turn |
 | Motion | each slot a slow drift, alternating direction: `look:ken_burns(motion=pan_left, scale=1.08)`, then `look:ken_burns(motion=pan_right, scale=1.08)` |

@@ -8,7 +8,7 @@
 | Fit | slots 3–5; photos; place, any; trip, holiday, summer, autumn, any; bold, stylish, upbeat |
 | Music | upbeat indie with a clear beat, 105–120 BPM |
 | Skin | the list is the places (from photo locations), else the day's parts; the poster is the skin's accent as a bright tint; list in near-black |
-| Preview | https://gcdn.picsart.com/picsart-mcp/9bde7dfa-0894-430e-afa5-c84794624c94.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/3d743bc6-d370-4240-ae4d-54af2a40fc39.mp4 |
 | Proven | yes: agent build 2026-11-08, user-approved |
 | Seams | hard cuts on the beat inside the border |
 | Motion | the first photo slides up with `look:slide`; each photo a slow push; the list items brighten and dim by opacity over 0.167 s |

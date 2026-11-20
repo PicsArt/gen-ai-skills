@@ -8,7 +8,7 @@
 | Fit | slots 3–6; photos; any; trip, everyday, autumn, memories, any; minimal, stylish, aesthetic |
 | Music | minimal chic electronic, 95–110 BPM |
 | Skin | the page is a light tint of the skin's background; numbers and titles in the skin's background colour; the caption is the skin's title |
-| Preview | https://gcdn.picsart.com/picsart-mcp/9b16333a-703c-4bb6-a646-b5e66c383dc5.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/850da27d-9c79-45c1-bfa5-6e9848ca99e3.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts between spreads; each new photo wipes up into the top half |
 | Motion | the photo wipes up with `look:wipe` and then pushes slowly |

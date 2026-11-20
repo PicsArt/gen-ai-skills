@@ -1,6 +1,6 @@
 # What each board sends back
 
-How a decision reaches you depends on the host; the host notes say how. This file says what each
+How a decision reaches you depends on the host; picsart-video-rules's `references/HOST.md` says how. This file says what each
 one holds and what to do with it. A board's first tool result is what the board will show, never
 the user's decision. Nothing is decided by silence: a board that needs a verdict on every item
 blocks its own send until it has one.
@@ -71,7 +71,7 @@ Only a row without a `jobId` is matched by the `label` you gave it.
 
 | Field | Use |
 |---|---|
-| `done[]` | `{ label, model, url, jobId }` per finished job, with `urls` too when it made several. Save them into the call's folder with one `picsart_drive_upload` (picsart-video-rules's SPEND rule 4), log each, look at it, and put it up for the user's verdict in this turn |
+| `done[]` | `{ label, model, url, jobId }` per finished job, with `urls` too when it made several. With `filedIn` set the card already saved them into the call's folder: use each `driveUrl` (`driveUrls` for several outputs) and make no `picsart_drive_upload` for them; save only an output it did not file (a take with neither field, or a URL under `unsavedUrls`), with one `picsart_drive_upload` (picsart-video-rules's SPEND rule 4). Log each, look at it, and put it up for the user's verdict in this turn |
 | `failed[]` | `{ label, model, error, jobId }`. Regenerate only these, each under a SPEND of its own, after reading the error |
 | `unchecked[]` | `{ label, model, job, jobId }`: jobs the card couldn't check, which may have finished. Follow SPEND rule 4 of the `picsart-video-rules` skill for them, never regenerate them |
 

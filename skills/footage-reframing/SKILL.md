@@ -123,7 +123,7 @@ the check again: what `after` still lists is either fixed in another pass or sai
 A correction the user did not ask for is shown, never described. Build the reel from both files
 (each build is free), and show one `picsart_scene_contact_sheet` of each at the same moments, the
 corrected one first. When the fix was a judgment call (which person to hold, a hold or a stack),
-ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which one to keep, with the two sheets as the options. A user who wants a stretch framed
+ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which one to keep, with the two sheets as the options. A user who wants a stretch framed
 otherwise moves it in `picsart_scene_editor`; read the window they chose back into a `hold` span
 and run the fix again, so the next re-cut keeps it.
 

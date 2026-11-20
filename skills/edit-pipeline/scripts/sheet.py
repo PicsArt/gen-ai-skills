@@ -14,7 +14,7 @@ The Markdown is one table, one row per beat, in the channel format:
 A shorter breakdown (`| Time | Beat | What happens |`) parses too: the quoted lines in What
 happens become Voice, or On screen when the words before them name a caption or a title. Header
 lines above the table (`- Format: talking head`, `- Length: 65.1 s`, `- Cut rate: ~19 cuts/min
-(note)`, `- Caption style: ...`, `- Bed: ...`, `- Loudness: ...`, `- Source: RB-44 (...)`) fill the
+(note)`, `- Caption style: ...`, `- Bed: ...`, `- Loudness: ...`, `- Source: <name or link> (...)`) fill the
 sheet's header; an indented line continues the one above it. Length, cut rate and loudness keep
 their number, and the line as written as `<key>_note`. A document may hold several sheets
 (`parse --all`): each table with a Time column, with the header lines since the table before it.

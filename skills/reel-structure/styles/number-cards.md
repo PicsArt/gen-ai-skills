@@ -8,7 +8,7 @@
 | Fit | slots 5–10; photos; any, friends, place, food, pet; any, trip, year-end, memories; fun, upbeat, playful |
 | Music | bouncy pop, 100–120 BPM |
 | Skin | numbers in the skin's accent; ground from the skin's background |
-| Preview | https://gcdn.picsart.com/picsart-mcp/5ba98850-28a3-4c49-8f45-e0111f011143.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/46558c35-67c8-4bfc-86b5-b3725fd7b3f5.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | cards stack; no cuts |
 | Motion | each card drops from scale 0.64 to 0.5 and rotation 0 to its tilt (±3–6°) in 0.3 s, one per second, with a white edge and shadow |

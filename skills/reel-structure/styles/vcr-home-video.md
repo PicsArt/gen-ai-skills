@@ -8,7 +8,7 @@
 | Fit | slots 5–15; mixed; family, friends, group, any; Thanksgiving, Christmas, birthday, party, any; nostalgic, fun |
 | Music | warm lo-fi with tape hiss, 85–100 BPM |
 | Skin | the timestamp is the event's own date and time from the footage (e.g. "PM 7:42\nNOV 27 2026" for Thanksgiving); no title |
-| Preview | https://gcdn.picsart.com/picsart-mcp/2a850649-81ed-455c-bca1-4f73b6608f3e.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/edd8ae92-1703-4271-a036-b94850c37d19.mp4 |
 | Proven | no |
 | Seams | hard cuts on the beat, no transition; a short tape glitch only at the start |
 | Motion | clips play as shot; photos held still |
