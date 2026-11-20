@@ -26,32 +26,15 @@ the product.
 
 ## Brand assets fail first
 
-Logos, labels, badges, embroidered marks and printed text are the first things a generator
-destroys, because they are fine geometry and text, and text is what these models are worst at.
+Fine text, logos, labels, badges and patterns can change during generation. Preserve approved assets and inspect them through the whole take. Where exact identity matters, plan tracked compositing from approved artwork as a separate finishing step. Do not hide or remove requested marks to make a shot easier, or claim prompt text guarantees preservation.
 
-Assume any lettering in frame will degrade over a clip. Three ways out, in order of
-reliability:
-
-1. **Composite the logo afterwards.** Generate the motion clean, add the mark in post. This is
-   what most production actually does and it is the only reliable answer.
-2. **Keep the mark small and briefly seen.** Damage is proportional to how long and how large.
-3. **Hold the mark still.** A logo on a surface that does not move survives far better than one
-   on a rotating or deforming surface.
-
-State it in the prompt either way: `the printed label stays sharp and unchanged throughout`
-works better than saying nothing, and pairs with a post composite.
 
 ## Product animation
 
 Animating a still product shot. The most common commercial request there is.
 
 **Specify**: what moves and what does not, camera movement, how long, where the light travels.
-**Keep short.** Four to six seconds. Drift grows with duration, and a product only needs one
-gesture.
-
-Prefer moving the **camera** over moving the **product**. A camera orbit around a still bottle
-is far more reliable than a bottle rotating in place, because the object never has to be
-re-drawn from an angle the reference never showed.
+Choose a duration supported by the endpoint and sufficient for the requested action; shorter is not a universal cure. A camera orbit and a rotating product can both expose surfaces absent from a single reference. Use approved multi-view references where supported, reduce the reveal if acceptable, or flag the uncertainty. Keep the requested motion rather than claiming camera travel avoids redrawing geometry.
 
 When the product itself must move, name one mechanical action and its limit: `the lid hinges
 open to forty-five degrees and stops`.
@@ -65,8 +48,8 @@ open to forty-five degrees and stops`.
 - `Condensation beads form and one drop runs down the side of the glass.`
 - `The fabric settles as though just placed, then holds completely still.`
 
-**Exclusions**: `No warping of the product silhouette, no changes to the label or printed text,
-no extra products appearing, no hands, no text, no watermarks.`
+**Possible constraints (only when compatible with the brief and model)**: `No warping of the product silhouette, no changes to the label or printed text,
+no extra products appearing, preserve approved hands and markings.`
 
 ## Apparel and garment swap
 
@@ -99,8 +82,8 @@ cannot.
 - `Identical pose, framing and lighting. Only the garment changes.`
 - `The check pattern stays aligned to the weave and does not distort at the seams.`
 
-**Exclusions**: `No changes to the garment pattern, seams, hem or fit, no logo distortion, no
-extra limbs, no warped hands, no text.`
+**Possible constraints (only when compatible with the brief and model)**: `No changes to the garment pattern, seams, hem or fit, no logo distortion, no
+extra limbs, preserve approved hands and markings.`
 
 ## Changing the model
 
@@ -115,21 +98,14 @@ becomes unusable as a campaign.
 
 ### Light for the skin
 
-This is a real production concern and not a courtesy. Darker skin needs more light and a
-different key-to-fill ratio to hold detail, and it needs a separating rim or the subject flattens
-against a dark background. Lighter skin blows out sooner and needs the key pulled back. A single
-lighting description reused across every skin tone will underexpose some versions and overexpose
-others, which is exactly the failure that makes these sets look careless.
-
-Name it: `exposed for the subject's skin, with a rim light separating them from the background`.
+Preserve the reference skin tone and expose for the desired facial detail, highlights and background separation. Do not prescribe more light, a fixed ratio or a mandatory rim by skin-tone category. Evaluate the actual scene, material response and exposure. Treat identity and lighting changes as distinct decisions, and disclose any deviation from a requested controlled comparison.
 
 ### Language and rights
 
 - Describe appearance in **plain, neutral, physical terms**. Skin tone, hair texture, age range,
   build. No ethnic shorthand standing in for a look, and no stereotyped wardrobe, setting or
   expression travelling along with the change.
-- **Do not generate a likeness of an identifiable real person.** If the user asks for one, say
-  plainly that it needs their permission and is a rights question, not a prompt question.
+- **Preserve approved identity references.** Do not substitute another person or infer permission for unrelated uses. Address consent, likeness rights and destination requirements when relevant to the requested use; a prompt-only repair does not authorize publication.
 - Many ad platforms now require **disclosure of synthetic media**, and some restrict synthetic
   humans in regulated categories such as health and finance. Flag it once when the work is an
   ad; it is the user's call, but it should be a decision rather than a surprise.
@@ -141,8 +117,8 @@ Name it: `exposed for the subject's skin, with a rim light separating them from 
 - `Mid forties, medium build, light olive skin, grey at the temples. Same wardrobe and pose as the reference.`
 - `Neutral confident expression, looking just off lens.`
 
-**Exclusions**: `No change to pose, garment or background, no extra limbs, no distorted faces,
-no warped hands, no text.`
+**Possible constraints (only when compatible with the brief and model)**: `No change to pose, garment or background, no extra limbs, no distorted faces,
+preserve approved hands and markings.`
 
 ## Jewellery and small reflective goods
 
@@ -156,8 +132,7 @@ the metal reads as metal, prong and setting count if it is visible, and a very s
 chain links merging, engraving dissolving, metal reading as plastic because the reflection is
 diffuse rather than sharp.
 
-Keep it slower and shorter than any other category. Three to five seconds. Every extra second
-is another opportunity to lose a facet.
+Use a pace and duration that make the required detail readable. Inspect facets, setting geometry and reflections; no fixed duration guarantees preservation.
 
 **Fragments**
 
@@ -167,8 +142,8 @@ is another opportunity to lose a facet.
 - `Polished yellow gold with a mirror finish, reflecting the room rather than glowing.`
 - `The prong setting holds four visible prongs throughout.`
 
-**Exclusions**: `No change to the stone shape or facet pattern, no change to the setting, no
-glowing or emissive gems, no plastic-looking metal, no hands, no text.`
+**Possible constraints (only when compatible with the brief and model)**: `No change to the stone shape or facet pattern, no change to the setting, no
+glowing or emissive gems, preserve the specified finish and approved markings.`
 
 ## Vehicles
 
@@ -183,8 +158,7 @@ the flank; a car lit by points shows blobs and looks synthetic.
 their axis, badges and grille patterns morphing, body proportions shifting through a rotation,
 reflections that do not match the environment, a panel gap appearing or closing.
 
-For a showroom rotation, favour **camera orbit with the car static**, for the same reason as the
-product: nothing has to be re-drawn.
+For a showroom view, specify whether the camera or the car moves. Both can reveal unseen geometry; obtain sufficient reference coverage and check every angle.
 
 **Fragments**
 
@@ -194,18 +168,12 @@ product: nothing has to be re-drawn.
 - `Wheels stationary, the car parked. Only the camera moves.`
 - `Badge and grille stay sharp and unchanged throughout.`
 
-**Exclusions**: `No change to the body shape or panel lines, no badge or grille distortion, no
-wheel wobble, no motion of the car itself, no people, no text.`
+**Possible constraints (only when compatible with the brief and model)**: `No change to the body shape or panel lines, no badge or grille distortion, no
+wheel wobble, preserve the specified car motion, people and markings.`
 
 ## Before you finish a commercial prompt
 
-- **Which platform is it for.** Ask, because it changes the framing. Every feed platform draws
-  its own interface over the video: a caption and a row of action buttons, usually along the
-  bottom and the right side. Anything important placed there is covered by the app, and you
-  cannot see that in the file you generated. Until the per-platform measurements are added
-  here, use the safe habit: keep the subject and any text well inside the centre of the frame,
-  leave the bottom third and the right edge clear of anything that has to be read, and check
-  the result in the app itself before signing it off.
+- **Which platform is it for.** Preserve the selected format and consult current official placement specifications when safe-zone measurements are needed. Do not assume a universal bottom-third or centred safe area; overlays vary by placement. Test the actual crop and UI.
 - **Does it survive a second crop.** A vertical clip is often shown as a square or a 4:5
   thumbnail elsewhere in the same app, so a composition that only works at 9:16 will be cut.
 - Is there a first frame worth stopping on, since that frame is the thumbnail.
