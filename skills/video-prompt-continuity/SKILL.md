@@ -28,6 +28,14 @@ Carry approved identity, wardrobe, product geometry and material references into
 
 For one multi-shot prompt, state shared context once; for independent calls, include the needed context in every prompt. Keep dialogue/audio continuity as a separate edit decision. Do not claim repeatedly generating the same music description yields one continuous score.
 
+## Coverage and editing handoff
+
+When revising a sequence, map each shot to an information beat: establish the action, reveal a relevant detail, or show a response. A dialogue-led explanation can use question → demonstration → reaction → next action, but this is optional structure, not a requirement to rewrite an approved script.
+
+Record action entry/exit states and the intended cut: which hand holds the object, how far an action has progressed, where each person looks, and which screen direction continues. Preserve the recurring cast, environment, palette and reference pack across separately generated views. Review a match at playback speed, not only as matching stills; a deliberate discontinuity should be labelled rather than automatically corrected.
+
+Return coverage notes and unresolved edit decisions outside the copyable generation prompts. Narration, exact UI/labels, continuous score and assembly can belong to editing; do not claim a repeated prompt creates those assets or that a source ad used a particular production technique. Do not expand a single-shot repair into a new film.
+
 ## Example
 
 Original: A sits left, B right. Cut to B looking right toward A.

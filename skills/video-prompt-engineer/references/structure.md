@@ -9,3 +9,5 @@ Use concrete visible directions without adding unsupported numeric precision. Du
 For one multi-shot prompt, state shared context once, then label each shot's scene, camera, action and ending. For independent generation calls, repeat required shared context and provide the approved references in each call; the calls do not inherit an earlier prompt.
 
 A short coherent action sequence can occupy one shot. Split where coverage, duration or reliability warrants it, not because every shot must contain exactly one verb. Repeated words support a brief but do not guarantee visual or audio continuity.
+
+For an explainer, connect each visible beat to a question, explanation, reaction or useful next action as appropriate. See [explainer and production guidance](explainer-and-production.md) for coverage fields and separate planning, generation, review and editing artifacts.

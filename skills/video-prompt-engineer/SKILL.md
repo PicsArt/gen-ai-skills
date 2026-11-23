@@ -65,6 +65,10 @@ Read supporting guidance only as needed:
 - [Structure](references/structure.md), [timing and format](references/timing-and-format.md), [audio](references/audio.md), [constraints](references/exclusions.md).
 - [Research scope and sources](references/craft-sources.md) for the recent findings. Physical principles and creator advice do not establish model success rates.
 
+## Explainers and production roles
+
+For explainer scripts or coverage plans, use [explainer structure and production handoffs](references/explainer-and-production.md). Give each beat a teaching purpose and each shot a reason to exist. Separate the script/shot plan, per-shot generation inputs, output review and editing handoff. Do not treat a planning tool as the renderer or editor without verified support. A camera-only repair does not authorize a new sequence.
+
 ## Multi-shot and audio handling
 
 For one multi-shot prompt, put shared context once above the shot blocks. For separately generated shots, include the necessary shared context in every call and use approved reference inputs where supported. Identical wording can reduce ambiguity; it cannot guarantee matching faces, materials, light or music.

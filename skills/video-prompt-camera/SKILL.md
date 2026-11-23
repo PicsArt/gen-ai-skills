@@ -30,6 +30,12 @@ Separate five decisions: framing, camera height and aim, physical path, focus, a
 
 Read [the 64-case terminology reference](references/camera-cases.md) only when selecting a name or resolving an alias. The examples are original directions, not universal crew commands.
 
+## Coverage when it is in scope
+
+A camera-only clause repair should not add shots. When the user requests coverage, choose views by the information they reveal: a shared view establishes geography, a detail clarifies an action, and a reaction shows its consequence. Do not force a wide–medium–close pattern or add movement to every shot.
+
+For each view, record its purpose, action entry/exit phase, framing, camera path or fixed position, focus target, required references and intended cut. Distinguish a visible viewpoint change from an inferred rig or focal length; sampled reference frames do not prove the path between them. Keep the coverage plan separate from per-shot generation prompts and from the edit assembly. Planning coverage does not generate it.
+
 ## Example
 
 Original: Camera pans closer to the cup.
