@@ -8,7 +8,7 @@
 | Fit | slots 8–14; mixed; friends, group, any; night out, party, Halloween, any; fun, energetic, bold |
 | Music | dark club or house beat, 120–130 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/92088096-6ba7-482b-9a9f-dcb3746c2aed.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/c0fd39fd-ae56-491d-aff4-ab2a2fa9ea49.mp4 |
 | Proven | yes: agent build 2026-11-08, user-approved |
 | Seams | hard cuts; `flash_cut` 0.167 s on every fourth cut |
 | Motion | every slot 0.5 s, as shot |

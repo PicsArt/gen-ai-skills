@@ -186,11 +186,11 @@ The full frame-diff procedure is in
 
 A Figma export and a `file://` path are both **unfetchable by the renderer**. So each
 layer asset that is not already an `https://` URL must be lifted onto one: `picsart_drive_upload_ask`
-(the drag-and-drop panel) or `picsart_drive_upload`, then **read back the resulting `https://` URL and
+(the drag-and-drop panel) or `picsart_upload_urls`, then **read back the resulting `https://` URL and
 author *that*.** Text and fills carry no asset and need no lift.
 
 **A scene asset's `uri` must be a Picsart-hosted `https://` URL (`pastatic`/`gcdn`, from
-`picsart_drive_upload_ask` / `picsart_drive_upload`) — never a base64 `data:` URI, and never a `figma.com`
+`picsart_drive_upload_ask` / `picsart_upload_urls`) — never a base64 `data:` URI, and never a `figma.com`
 URL.** The interactive **preview engine runs in a browser with a Content-Security-Policy** whose
 `connect-src` allowlist excludes both — they get **blocked → blank** in the editor preview
 (`csp: blocked connect-src … figma.com/….svg`), even though the scene *validates* and the
@@ -242,7 +242,7 @@ already knows into a user choice."*
 Reordering is **optional and designer-initiated**: it happens on the storyboard board
 (shown for a glance and a drag, never a mandatory confirm) or when the designer explicitly
 says "swap 2 and 3." Absent that, Figma order stands, silently. Never open an
-ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) to confirm the running order.
+ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) to confirm the running order.
 
 ## Set the format — ask the ratio and fps
 

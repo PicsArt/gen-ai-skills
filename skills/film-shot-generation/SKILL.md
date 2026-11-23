@@ -1,6 +1,6 @@
 ---
 name: film-shot-generation
-description: Shoot a film's shots as runs - narrowing the video models a film can use, packing shot cards into multi-shot generations, drafting key frames before footage is bought, compiling and verifying every prompt on the server, following the jobs, and routing notes to an edit, an extend or a re-roll. Use when a film's video models are narrowed, or its shots are planned into runs, pictured, generated, checked or repaired. A film the user makes step by step here is carried on by its own use case, which loads this skill when a step needs it.
+description: Shoot a film's shots as runs - narrowing the video models a film can use, packing shot cards into multi-shot generations, drafting key frames before footage is bought, compiling and verifying every prompt, following the jobs, and routing notes to an edit, an extend or a re-roll. Use when a film's video models are narrowed, or its shots are planned into runs, pictured, generated, checked or repaired. A film the user makes step by step here is carried on by its own use case, which loads this skill when a step needs it.
 user-invocable: false
 ---
 
@@ -97,7 +97,7 @@ generated beat has an approved still.
 
 ## Compile and verify
 
-Every prompt is compiled on the server and passed to `picsart_generate` **verbatim**. The camera,
+Every prompt is compiled by Picsart and passed to `picsart_generate` **verbatim**. The camera,
 lighting and acting language, the house lines and the templates are the compiler's; a paraphrase
 renders worse. This holds for one shot made for another use case too, such as a screen video's
 generated opening: it goes through these steps like a run.

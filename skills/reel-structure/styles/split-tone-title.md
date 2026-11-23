@@ -8,7 +8,7 @@
 | Fit | slots 4–6; photos; solo, couple, place, any; trip, autumn, everyday, any; cinematic, stylish, bold |
 | Music | cinematic indie pop, 95–110 BPM |
 | Skin | the title is the skin's title in tall condensed capitals, white; the sticker is the skin's accent with a short label (an issue number or the year) |
-| Preview | https://gcdn.picsart.com/picsart-mcp/a7f7c48d-1818-4b2a-b211-753a29277a83.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/123af7a1-401b-42a1-9e0c-3abc9c8f660f.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts on the beat |
 | Motion | the divider slides in on the first photo; each photo a slow push |

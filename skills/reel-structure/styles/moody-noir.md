@@ -8,7 +8,7 @@
 | Fit | slots 3–6; clips; solo, couple, place, any; any, night out, autumn, winter; moody, cinematic, emotional |
 | Music | slow dark R&B or ambient, 60–85 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/a2c06517-50db-4787-9d05-aa8814cd3ec0.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/a2b0872a-2726-4790-bc3a-978a9d61b8e2.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | `crossfade` 0.5 s |
 | Motion | clips 1.8 s at speed 0.7; the last photo at scale 0.8 closes into a circle window |

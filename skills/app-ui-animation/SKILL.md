@@ -1,10 +1,10 @@
 ---
 name: app-ui-animation
-description: Build a phone or web UI in a scene with scrolling, carousels, button feedback, cursor paths and clicks, context menus, drag-and-drop, synchronized controls, bottom sheets and frosted-glass panels. Use when animating an app mockup, UI walkthrough, slider or onboarding flow, frosted glass or glassmorphism cards, or when a mock renders correctly but reads as a picture rather than an app somebody is using.
+description: Build a phone or web UI in a scene with scrolling, carousels, button feedback, cursor paths and clicks, context menus, drag-and-drop, synchronized controls, bottom sheets, frosted-glass panels and boxes that fit their text (chat bubbles, tags, badges). Use when animating an app mockup, UI walkthrough, slider or onboarding flow, frosted glass or glassmorphism cards, or when a mock renders correctly but reads as a picture rather than an app somebody is using.
 metadata:
   category: authoring
-  version: '1.11'
-  ported-from: ui-motion 1.11 at 55.75.0
+  version: '1.12'
+  ported-from: ui-motion 1.12 at 58.5.0
 user-invocable: false
 ---
 
@@ -66,6 +66,32 @@ on that reference. Animate the reference once for shared motion and opacity. The
 when the instance is assembled; after expanding/baking the reference, its geometry is concrete and
 later parameter edits do not remain live. Re-resolve the source for a new size, or edit the expanded
 geometry coherently. Shared centers prevent independent drift, not text overflow or optical imbalance.
+
+### A box that fits its text
+
+A chat bubble, tag or badge whose box follows its text needs no measuring. A `captions` layer
+with a `line` / `behind` box decoration (`pill`, `pill_pop`, `colour_box`) draws a box fitted to
+the shaped text, wrapped lines included, in any alignment:
+
+```json
+{ "id": "bubble", "content": { "kind": "captions",
+  "style": { "font": { "family": "helvetica", "size": 33 }, "color": "#ffffffff",
+    "alignment": "left", "wrapWidth": 664, "offset": [0, 600], "reveal": false,
+    "decorations": [{ "target": "line", "place": "behind", "preset": "pill",
+      "params": { "color": "#0a84ffff", "cornerRadius": 0.5 }, "padding": [0.85, 0.73] }] },
+  "transcript": { "segments": [{ "start": 0.5, "end": 6, "text": "wait look" }] } } }
+```
+
+- One segment that spans the time the box shows; `start` is when it appears.
+- `cornerRadius` is a fraction of the box height, so 0.5 is a full pill and a four-line box gets
+  big round ends. Wrapped text reads better with a smaller value, such as 0.12.
+- `padding` is in em, horizontal then vertical.
+- The block centres on the composition centre plus `offset`. With `alignment: "left"` the text
+  starts at the column's left edge, `(width - wrapWidth) / 2`, and `"right"` mirrors it.
+  `alignment` also aligns the wrapped lines inside the box.
+- Other layers can't read the box size, so stacking boxes by height means giving each one its
+  line count.
+- In a template, the validator refuses `$eval` segment text outside a `$each` body.
 
 `roundness` is ONE number for all four corners — a `rect` has no per-corner radius,
 and neither does the `rounded_corners` look. Design around it rather than hunting for it.

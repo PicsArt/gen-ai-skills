@@ -8,7 +8,7 @@
 | Fit | slots 4–10; photos; any; trip, memories, everyday, any; calm, warm |
 | Music | soft indie pop, 90–100 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/f6565ae4-72d5-4e4e-a64c-fe7cbb1cf53e.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/2a08f45a-d609-48aa-8aea-e44fc2480949.mp4 |
 | Proven | no |
 | Seams | `transition:slide(duration=0.333)` between cards |
 | Motion | each card slightly tilted, alternating; held still |

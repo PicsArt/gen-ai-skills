@@ -63,10 +63,29 @@ Two stages are gates, for every job, by hand as by `record.py done`, which refus
   approved: its rows in `locked`, or an approval with `scope` `map`, `moments` or `mapping`.
   Record that approval when the user gives it.
 
+Four stages also need an agent check's verdict in the record before the run goes on from them,
+for every job, by hand as by `record.py`:
+
+- `story` and `plan`: the challenger's verdict on the decision (the moments, the map or the
+  mapping; the plan of the cut and its opener), as quality-review's challenger says. Write it into
+  `challenges`: `stage`, `decision`, `verdict` (`keep`, `rethink` or `stop`), `why` and `cheaper`
+  (`python3 scripts/record.py add edit-footage.json challenges '{"stage": "story", ...}'`). A
+  choice the use case asks the user about is asked only once that verdict is in.
+- `qc` and `critics`: the QC inspector's findings and the critic panel's must-fixes and choices, as
+  the stage entry's `verdict` (`python3 scripts/record.py done edit-footage.json qc --verdict
+  '<what it found>'`).
+
+`record.py done` refuses those stages without their verdict, `status` holds the run at the first
+done stage that lacks one (its `checks` say what is missing), and `done deliver` refuses while any
+is missing. A verdict sits outside every fingerprint, so writing it late makes nothing stale. With
+no agent to start, run the check yourself from its brief, as quality-review says, and record its
+verdict the same way. Where no script runs, write the same fields into the record by hand.
+
 **Never skip the check, the critics or the review on your own**, for any job. Only the user may
 skip one, and only when they ask for that one by name: say its risk in one line (what nobody will
 then catch), and on their yes record it with `record.py skip <record> <stage> --by user --risk
-"<that line>"`. Delivery then accepts it. A user in a hurry who asks only to be quick hears that
+"<that line>"`. Delivery then accepts it. A challenge the user skips by name goes into
+`challenges` as `"skipped": "user"` with their `words`. A user in a hurry who asks only to be quick hears that
 they are free and quick, and they run.
 
 ## Resume
@@ -216,7 +235,7 @@ Every check in the pipeline, measured or by eye, follows these:
    free. Write each check's result into the version's `gates`.
 9. **A stranger watches before the user does.** Each draft the user will see first gets a cold
    watch, as the quality-review skill says, with `cuts: true`, its calls quoted first and a
-   SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1 unless every call is quoted at 0 credits: each moment also asks where a cut
+   SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before round 1 unless every call is quoted at 0 credits: each moment also asks where a cut
    felt like a jump or too fast, and why. Each jump it lists is fixed, or kept with its reason in
    the version's `gates`. Nobody who knows the brief judges whether a stranger follows the cut.
 

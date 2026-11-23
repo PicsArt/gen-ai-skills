@@ -8,7 +8,7 @@
 | Fit | slots 6–9; mixed; any; trip, everyday, wedding, birthday, holiday, any; minimal, stylish, cinematic |
 | Music | light cinematic indie, 90–105 BPM |
 | Skin | chapter names come from the day ("morning", "afternoon", "night"), or the skin's title for the first card; the card is a light tint of the skin's background |
-| Preview | https://gcdn.picsart.com/picsart-mcp/141878a4-d85d-4a77-9d4c-4b432cb485c6.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/9de4ce46-7a8d-4f70-a9c8-e0c442bb0804.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts |
 | Motion | photos a slow push; clips as shot |

@@ -8,7 +8,7 @@
 | Fit | slots 3–6; mixed; couple, solo, any; love, anniversary, Valentine's, wedding, memories, any; dreamy, romantic, calm |
 | Music | dreamy pop, 80–95 BPM |
 | Skin | the line is the skin's title in serif italic, the skin's text colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/a0f60127-b7a3-4dc5-a9aa-7908a5d3a8d4.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/80c71141-b810-4880-8b46-5fe6d2e30380.mp4 |
 | Proven | no |
 | Seams | `crossfade` on every seam, 0.5 s |
 | Motion | each slot a slow push; the line glides along its arc by the text path offset |

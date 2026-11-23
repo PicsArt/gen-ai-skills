@@ -8,7 +8,7 @@
 | Fit | slots 3–5; photos; place, couple, any; trip, holiday, wedding, autumn, any; stylish, calm, aesthetic |
 | Music | elegant downtempo or soft house, 90–105 BPM |
 | Skin | the page is the skin's background; place names come from the photos, else the skin's title; a small spaced line under it with the season and year |
-| Preview | https://gcdn.picsart.com/picsart-mcp/6ff4c69e-f708-4155-977f-85ae9f98e7db.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/4a46a55f-8337-41c5-85d4-004a905a971b.mp4 |
 | Proven | yes: agent build 2026-11-08, user-approved |
 | Seams | hard cuts on the beat inside the arch |
 | Motion | the arch opens once with `look:shape_window`; each photo a slow push inside it |

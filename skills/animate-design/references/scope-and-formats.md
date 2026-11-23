@@ -10,7 +10,7 @@
   their choice), that's supported — but it spends credits, so it runs behind the cost-consent gate
   (see *Video generation*). It's a capability within the flow, not a separate phase.
 - **Phase 2 (later): generate a *new* video from a given one.** A video-to-video pass,
-  once the server's v2v path is wired. Don't build it yet; keep the hook
+  once Picsart offers it. Don't build it yet; keep the hook
   (`motion.json.source` can name a given video, not only a design).
 
 

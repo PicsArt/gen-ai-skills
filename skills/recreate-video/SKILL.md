@@ -46,7 +46,7 @@ generated character sheet alone is insufficient.
 
 ## 1. Take the reference in
 
-ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) for what is missing, in one question, with every file in one upload panel, as picsart-video-rules
+ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) for what is missing, in one question, with every file in one upload panel, as picsart-video-rules
 says (Asset URLs):
 
 - **the reference video**;
@@ -61,13 +61,13 @@ says (Asset URLs):
 recreation from the hosted reference in stage 7. When it is not, the reference's music is someone
 else's: offer no sound,
 a music bed made as the `background-music` skill says (a SPEND),
-or the user's own music, received with `picsart_drive_upload_ask`.
+or the user's own music, received with `picsart_drive_upload_ask` (`accept: 'audio'`).
 
 ## 1b. Map the content to the reference's slots
 
 Take stage 2's sheet of stills now and list the reference's content slots: each place
 it shows a photo, a clip, a logo or a block of text, in order. Match the user's content to them.
-When something does not fit, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) one question about it and recommend an answer:
+When something does not fit, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) one question about it and recommend an answer:
 
 - **a different count**: 4 clips for 3 photo slots, or 3 photos for 5 slots: which to drop, or which
   slot repeats;
@@ -76,14 +76,14 @@ When something does not fit, ASK (with your host's own question tool, such as As
 
 ## 1c. Where the decorations come from
 
-Decorations are what is not content: stickers, doodles, badges, shapes, frames. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, for all of
+Decorations are what is not content: stickers, doodles, badges, shapes, frames. ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, for all of
 them, with a recommendation:
 
 - **cut from the reference**, recommended when the reference is theirs, as reference-fragment-matching
   says;
 - **redrawn as vectors** from the stills: the only route when the reference is not theirs and
   nothing is generated;
-- **the user's own artwork**, a cut-out PNG or SVG they send with `picsart_drive_upload_ask`;
+- **the user's own artwork**, a cut-out PNG or SVG they send with `picsart_drive_upload_ask` (`accept: 'image'`);
 - **generated** with `picsart_generate` on an image model: the only route that always charges, so
   it is a SPEND, quoted for every decoration at once as picsart-video-rules says.
 
@@ -99,7 +99,7 @@ rebuilt, and stop unless the user still wants it.
 Split the reference and take the global census as the reference-fragment-matching skill says.
 Then show the user the plan in plain words:
 the fragments in order, each with its window and what happens in it, and the elements that recur.
-ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once whether it is right. A fragment the user merges, splits or drops changes the plan before
+ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once whether it is right. A fragment the user merges, splits or drops changes the plan before
 any measuring starts.
 
 **The plan is the project record.** Where the host gives you files, keep it as `recreation.md` in

@@ -8,7 +8,7 @@
 | Fit | slots 8–14; mixed; any, friends, solo, place; party, night out, sport, any; energetic, bold, epic |
 | Music | hard trap or phonk, 120–150 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/452067fe-755f-4550-810a-80dc2df0f022.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/3d84ab84-969d-40d3-b4c3-6ae3efa1087a.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts on every beat |
 | Motion | every slot 0.5 s: a position jolt of ±18 px settling in 0.2 s, a punch from 1.14 to 1 in 0.233 s, a channel split from 30 to 0 in 0.2 s; motion blur on the track |

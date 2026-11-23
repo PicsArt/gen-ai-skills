@@ -19,6 +19,7 @@ position per tick as the support moves. Damping dissipates spring motion; hold
 resists moving the far end. Inertia responds to support acceleration; hold responds
 to support displacement. Inertia (0..1, default 0.6), hold, frequency (0.5..10 Hz),
 and damping (0.1..2, a ratio) accept numbers or tracks. Tracks sample on 1/120-second
-ticks from composition time zero, so backward seeks replay deterministically.
+ticks from composition time zero, so backward seeks replay deterministically: the state of every second is
+kept and a seek resumes from the nearest one, and a long replay never spends the expression's budget or clock.
 Gravity and wind remain literal `[x,y]` accelerations, not tracks.
 

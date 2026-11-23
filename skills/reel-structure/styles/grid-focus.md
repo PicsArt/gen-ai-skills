@@ -8,7 +8,7 @@
 | Fit | slots 4–9; mixed; any; trip, everyday, any; calm, stylish |
 | Music | steady chill pop, 95–105 BPM |
 | Skin | the gaps take the skin's background colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/130d8b29-7be4-44bd-b710-e37a84679b5a.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/ebe43478-570c-41d5-9d25-afa2977d528e.mp4 |
 | Proven | no |
 | Seams | none; each cell zooms to full screen and back (the template's focus mode) |
 | Motion | clips play in their cells; each focused cell zooms in, holds and zooms out |

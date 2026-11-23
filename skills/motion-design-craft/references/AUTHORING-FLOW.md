@@ -171,7 +171,7 @@ Only for the layers that survive that triage as rasters:
   allowlist **excludes `figma.com`, `data:`, and `blob:`**, so the asset is **blocked → blank** in
   the editor preview (`csp: blocked connect-src … figma.com/….png`, `csp: blocked img-src … blob:`).
 
-So: **lift every RASTER asset to a Picsart-hosted URL** via `picsart_drive_upload_ask` / `picsart_drive_upload`
+So: **lift every RASTER asset to a Picsart-hosted URL** via `picsart_drive_upload_ask` / `picsart_upload_urls`
 (returns a `pastatic`/`gcdn` URL the preview CSP allows) and author **that** — **never a
 `figma.com` URL, a `data:` URI, or a `blob:` URL.** (A `blob:` is a transient browser object URL —
 it's never a valid scene asset; upload the file and use its Picsart URL.) One asset per moving

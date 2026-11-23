@@ -1,6 +1,6 @@
 ---
 name: film-cast-design
-description: Make a film's people, props and places consistent on pictures - line-keyed descriptors, one sheet per person and one plate per prop compiled by the server, reading an asset review, cutting each panel into its own view, locking the approved asset, and the user's own photos kept as they came. Use when a film needs its cast, props or places designed, pictured, locked or repaired.
+description: Make a film's people, props and places consistent on pictures - line-keyed descriptors, one sheet per person and one plate per prop compiled by Picsart, reading an asset review, cutting each panel into its own view, locking the approved asset, and the user's own photos kept as they came. Use when a film needs its cast, props or places designed, pictured, locked or repaired.
 user-invocable: false
 ---
 
@@ -34,7 +34,7 @@ fire, is a scene with its own pictures, never a state.
 
 ## The starting point
 
-Draft every descriptor first, as below. Then OFFER the cast board once: `picsart_asset_choose_characters`
+Only when the plan has a character: draft every descriptor first, as below. Then OFFER the cast board once: `picsart_asset_choose_characters`
 with the film's title as `film` and the whole cast (at most 12 a board), each character's
 descriptor lines as `story`. Every card opens on the ready-made characters; a card left with nothing
 picked keeps those lines, so a board sent untouched changes nothing. It is an offer, not a gate: it spends nothing, and a reply that ignores it keeps every

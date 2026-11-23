@@ -8,7 +8,7 @@
 | Fit | slots 5–8; mixed; solo, couple, group, family, pet; any; nostalgic, cinematic, warm |
 | Music | slow cinematic build, 90–100 BPM |
 | Skin | the numbers stay; an occasion word from the skin may be scattered once in the skin's accent |
-| Preview | https://gcdn.picsart.com/picsart-mcp/6865f4c8-dfcc-49b7-9ce5-3ac44c39a1b7.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/399df0ea-4048-4597-9e33-646f9e230d96.mp4 |
 | Proven | no |
 | Seams | `transition:light_leak_burst(duration=0.5)` on every seam |
 | Motion | each slot a slow push (`look:ken_burns(motion=zoom_in, scale=1.08)`) |

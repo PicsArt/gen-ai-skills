@@ -5,6 +5,8 @@ or changing one. The drawing's prompt, picture check and builder contract are in
 [part-sheet-prompt.md](part-sheet-prompt.md). The call replies `{scene, sockets}`: the rig scene and its published
 sockets ([sockets-and-props.md](sockets-and-props.md)); no 3D tool or model is involved.
 
+**Two pieces per limb, in every style.** Every arm and leg on a part sheet is an upper and a lower piece, each its own group, overlapping at the elbow or knee. The rig needs both, so no style recipe overrides it: a limb drawn as one tube, line or shape is refused on every view. A style says only how it hides the joint (its recipe's "On a part sheet"). The builder caps and joins outlined elbows and knees itself (it matches the width at the joint and keeps the ink on the limb's edge), so a style draws nothing extra there.
+
 ## Contents
 
 - [Host the rig](#host-the-rig)
@@ -25,8 +27,8 @@ acting. Hands stay rigid (no finger poses) unless the drawing carries a complete
 ## Standard control set
 
 Both views declare `rig-humanoid`'s names ([rig-controls.md](rig-controls.md)), so the
-catalogue presets drive a cut-out unchanged: `wave`, `point`, `think`, `walk_cycle`, `jog`, `jump`, `idle` and `acting`
-(`jog` takes `view: "front"` for the front view). No preset sits: key those dials yourself.
+catalogue presets drive a cut-out unchanged: `wave`, `point`, `think`, `walk_cycle`, `jog`, `run`, `jump`, `idle` and `acting`
+(`jog` and `run` take `view: "front"` for the front view). No preset sits: key those dials yourself. A listener with a mood (surprised, happy…) shows that mood's own mouth. To keep a listener's mouth closed, key `speech` to 1 for the listen span, or keep the mood under 0.25.
 
 - `headTilt` rolls the head; `headTurn` narrows the head by the turn's cosine and slides a `face` toward it, stopping where the
   far eye nears the outline (a flat approximation: no three-quarter drawing is swapped in and hair does not follow).
@@ -75,12 +77,19 @@ either draws the plain picture at rest.
   `garmentLegBack`, pivoted at the hip joint, each with a child `...Hang` bone one thigh length down that undoes its parent's turn so
   a hem below the knee hangs vertical. Rows above the thigh root follow `garmentUpper` (a child of `spine` that carries the breath
   scale), the pelvis band `hips`, the rows below the hip joint the helpers, split by the column's share from the front edge to the
-  back edge. The rig faces +x, so the front edge is the +x edge; a figure facing the other way is the host layer's mirror.
+  back edge. A turned skirt or coat sways with 0.3 of the thigh's swing up to 30° from the drawn rest; past that (a run's knee driven up, its heel
+  kicked back) it rides 0.9 of the further swing, so a raised thigh stays under the hem instead of sliding out of it.
+  The rig faces +x, so the front edge is the +x edge; a figure facing the other way is the host layer's mirror.
 - **Front view:** a helper per leg (`garmentLegLeft`, `garmentLegRight`) takes its thigh's sideways turn and drawn shortening,
   with a hang bone under a frame that undoes both; the left half of the garment follows the left helper, the right half the right,
   blended across the centre.
 - **Where it shows:** below a raised knee the hem spans both knees, so a long hem widens by about the gap between them. Keep the
   drawing wide enough for the stride it covers. A torso that sets its own `deformers` and also hangs over the legs is refused.
+- **A pose the skin cannot bend into** (a skirt seated at 90°, which wedges): draw the piece in that pose and swap it in mid-move
+  ([character-rules.md](character-rules.md) §6). On this SVG rig, place the drawn piece on its bone by hand, show it from 0.5 of
+  its control, and switch only where both drawings match or the piece is hidden.
+  A rig cut from one picture takes the drawing in `picsart_scene_cut_parts`' `poses`, which fits it onto its bone
+  ([cut-from-one-picture.md](cut-from-one-picture.md), "Drawn poses").
 
 ## Draw order
 
@@ -124,6 +133,11 @@ Run the pose set, then the checks; judge frames, never a mean pixel diff (it can
   clothing's half-width lies beside the clothing: review its placement against the drawing. A garment that paints above and below the
   resting hand names the source piece: split it at the hem. An explicit one-piece sleeve cannot interleave a torso `overArm` collar
   between the upper arm and the forearm: use segmented arms.
+- **Smooth edges.** A picture piece's edge is only as smooth as its pixels: draw it antialiased, no smaller than it plays, on a
+  transparent background (on a white one it keeps a light rim). Draw a part another part overlaps (an arm over the torso, a shoe
+  over the leg, the face over the hair) whole in its own group, never cut from under the overlap. Keep a limb one width from joint
+  to joint, with round ends: a change of width shows as a nub at the joint when it bends. Then zoom the wrist, elbow, knee and
+  ankle in several frames of the move: segments straight, outlines unbroken, no rim.
 - **By eye.** The shoulder and hip seam crops, both sides, at rest, at the extremes and at the walk's contact and passing frames; the hand
   crop (back and palm, thumb join); near and far hands of one design; the three views read as one person; the far arm moves in the
   three-quarter presets.

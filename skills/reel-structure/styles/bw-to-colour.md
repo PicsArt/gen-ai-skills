@@ -8,7 +8,7 @@
 | Fit | slots 4–8; photos; any; autumn, trip, year-end, any; cinematic, calm |
 | Music | cinematic build with a soft pulse, 80–95 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/05185161-e57f-4dc3-867a-b8f7e06158b5.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/119f0a23-378d-48d8-8b95-18509517c325.mp4 |
 | Proven | no |
 | Seams | each photo is placed twice, 0.8 s in black and white then 1.0 s in colour, joined by a `transition:crossfade(duration=0.5)`; hard cuts between photos |
 | Motion | none; photos held still |

@@ -1,5 +1,4 @@
 {
- "build": "55.104.0",
  "effect": {
   "adjust": {"brightness": {"max": 1, "min": -1, "type": "number"}, "contrast": {"max": 1, "min": -1, "type": "number"}, "exposure": {"max": 2, "min": -2, "type": "number"}, "fade": {"max": 100, "min": 0, "type": "number"}, "highlights": {"max": 1, "min": -1, "type": "number"}, "hue": {"max": 1, "min": -1, "type": "number"}, "saturation": {"max": 1, "min": -1, "type": "number"}, "shadows": {"max": 1, "min": -1, "type": "number"}, "temperature": {"max": 1, "min": -1, "type": "number"}, "tint": {"max": 1, "min": -1, "type": "number"}},
   "alpha_dissolve": {"density": {"max": 1, "min": 0, "type": "number"}, "fade": {"max": 100, "min": 0, "type": "number"}, "seed": {"max": 100, "min": 0, "type": "number"}, "seedMode": {"enum": ["fixed", "rolling"], "type": "text"}, "size": {"max": 10, "min": 1, "type": "number"}},

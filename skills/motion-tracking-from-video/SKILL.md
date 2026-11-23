@@ -262,7 +262,7 @@ linear: a linear move has no peak) and how big it is, the overshoot, the swings 
 name, and says which differ. `speed` writes each target's
 speed over time as CSV, to show the two side by side. Fix the measured differences and check
 again while each correction makes progress. If the evidence or a tool limit prevents a match,
-report the remaining difference with its numbers and cause. ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether to accept that
+report the remaining difference with its numbers and cause. ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether to accept that
 approximation or change the approach; never label it a pass.
 
 - **Like for like.** The same targets, the same boxes, the same window, the same tolerance and the

@@ -27,7 +27,7 @@ transcript added:
   reviewed, and the clips on either side of it still have to make sense.
 - Every other field is ignored, so reel_cut.py's input can be passed as it is.
 
-It prints one JSON line, `{clips, script, clean, duration, context}`:
+It prints one JSON line, `{clips, script, clean, duration, context, warnings}`:
 
 - `clips`, one per clip: `heard`, the words kept; `verdict`, `ok` or `fix`; `issues`, each
   `{check, problem}` where check is `integrity`, `substance`, `fluency` or `context`; `repairs`, each
@@ -42,6 +42,15 @@ It prints one JSON line, `{clips, script, clean, duration, context}`:
   for the first time; `pointer`, a word like "she" or "that" in the first words after a seam;
   `callback`, a phrase like "as I said"; `seam`, two clips of one source far apart or out of order.
   These are candidates, not faults: a cold reader's account says whether each one landed.
+- `warnings`: the pace of the opening, the middle and the end, measured, in play order, each
+  `{at, clip, kind, seconds, problem}`. Kinds: `first-word`, the reel's first word is heard later
+  than FIRST_WORD; `gap`, a stretch with no words inside a clip longer than GAP; `tail`, the reel
+  runs on longer than TAIL after its last word; `softener`, the reel's last words soften its last
+  line ("so yeah", "if that makes sense"). A clip may list `beats`, seconds on its source's clock
+  where the plan wants the viewer to watch something with no words (the reaction, the play, the
+  laugh): a gap or tail that holds one is not flagged. The thresholds are working numbers, not a
+  platform's, so these only warn: they never change a verdict or `clean`, and the user's own
+  retention numbers outrank them.
 
 Input it cannot read exits 1, with one line on stderr that says what is wrong.
 
@@ -89,6 +98,13 @@ CALLBACKS = [('like', 'i', 'said'), ('as', 'i', 'said'), ('as', 'i', 'mentioned'
 SEAM_CALLBACKS = [("that's", 'why'), ('which', 'is', 'why'), ('this', 'is', 'why')]
 # Two clips of one source further apart than this, or out of order, may not read as one thought.
 SEAM_JUMP = 20.0
+# The pace warnings, in seconds. Working numbers, not a platform's: they warn and never block.
+FIRST_WORD = 0.5
+GAP = 0.7
+TAIL = 1.5
+# Endings that soften the last line, matched on the reel's last words.
+SOFTENERS = [('so', 'yeah'), ('if', 'that', 'makes', 'sense'), ('or', 'whatever'), ('and', 'stuff'),
+             ('or', 'something'), ('kind', 'of', 'it'), ('that', 'kind', 'of', 'thing'), ('anyway',)]
 NOT_NAMES = {'I', "I'm", "I've", "I'll", "I'd", 'OK', 'Okay', 'January', 'February', 'March', 'April', 'May', 'June',
              'July', 'August', 'September', 'October', 'November', 'December', 'Monday', 'Tuesday', 'Wednesday',
              'Thursday', 'Friday', 'Saturday', 'Sunday'}
@@ -376,6 +392,50 @@ def context(spoken: List[Json], speech: Dict[str, Optional[Speech]]) -> List[Jso
     return sorted(found, key=lambda item: (item['at'], item['clip']))
 
 
+def pace(spoken: List[Json], last_clip: int) -> List[Json]:
+    """The measured pace warnings: when the first word lands, wordless gaps inside a clip, and how the
+    reel ends after its last word. Each spoken clip is as `context` takes it, with its `beats`."""
+    found: List[Json] = []
+    clips = [c for c in spoken if c['words']]
+    if not clips:
+        return found
+
+    def at(clip: Json, t: float) -> float:
+        return round(clip['at'] + max(0.0, t - clip['in']), 2)
+
+    def beat_in(clip: Json, start: float, end: float) -> bool:
+        return any(start - EDGE <= b <= end + EDGE for b in clip['beats'])
+
+    first = clips[0]
+    lead = at(first, first['words'][0]['s'])
+    if lead > FIRST_WORD:
+        found.append({'at': 0.0, 'clip': first['clip'], 'kind': 'first-word', 'seconds': lead,
+                      'problem': f'the first word is heard at {lead} s; open on the word, within about {FIRST_WORD} s'})
+    for clip in clips:
+        for prev, nxt in zip(clip['words'], clip['words'][1:]):
+            gap = round(nxt['s'] - prev['e'], 2)
+            if gap > GAP and not beat_in(clip, prev['e'], nxt['s']):
+                found.append({'at': at(clip, prev['e']), 'clip': clip['clip'], 'kind': 'gap', 'seconds': gap,
+                              'problem': f'{gap} s with no words after "{prev["w"]}"; tighten it, or name the beat '
+                                         'the viewer watches in it'})
+    last = clips[-1]
+    if last['clip'] == last_clip:
+        tail = round(last['out'] - last['words'][-1]['e'], 2)
+        if tail > TAIL and not beat_in(last, last['words'][-1]['e'], last['out']):
+            found.append({'at': at(last, last['words'][-1]['e']), 'clip': last['clip'], 'kind': 'tail',
+                          'seconds': tail, 'problem': f'the reel runs {tail} s past its last word; cut within '
+                                                      f'about {TAIL} s of the peak'})
+        bares = [b for b in (bare(t) for w in last['words'] for t in w['w'].split()) if b]
+        for phrase in SOFTENERS:
+            if len(bares) > len(phrase) and tuple(bares[-len(phrase):]) == phrase:
+                word = last['words'][-1]
+                found.append({'at': at(last, word['s']), 'clip': last['clip'], 'kind': 'softener', 'seconds': 0.0,
+                              'problem': f'it ends on "{" ".join(phrase)}", which softens the last line; '
+                                         'end on the line before it'})
+                break
+    return sorted(found, key=lambda item: (item['at'], item['clip']))
+
+
 def read_json_file(path: str, what: str) -> Any:
     try:
         with open(path, encoding='utf-8-sig') as f:
@@ -436,8 +496,12 @@ def review(data: Any, base: str = '.') -> Json:
                             **review_clip(speech[sid], t_in, t_out, first=not spoken, before=before,
                                           played=played, other_speech=other_speech))
                 words = speech[sid].kept(t_in, t_out)
+                beats = clip.get('beats') or []
+                if not isinstance(beats, list):
+                    raise InputError(f'clips[{i}] beats must be a list of seconds')
                 spoken.append({'clip': i, 'source': sid, 'in': t_in, 'out': t_out, 'at': duration, 'words': words,
-                               'carried': carries(speech[sid], words, before)})
+                               'carried': carries(speech[sid], words, before),
+                               'beats': [number(b, f'clips[{i}] beats[{k}]') for k, b in enumerate(beats)]})
                 script.append(item['heard'])
         duration += length
         out.append(item)
@@ -447,6 +511,7 @@ def review(data: Any, base: str = '.') -> Json:
         'clean': sum(1 for c in out if c['verdict'] != 'fix'),
         'duration': round(duration, 3),
         'context': context(spoken, speech),
+        'warnings': pace(spoken, len(clips) - 1),
     }
 
 

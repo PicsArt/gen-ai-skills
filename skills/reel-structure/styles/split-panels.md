@@ -8,7 +8,7 @@
 | Fit | slots 6–16; mixed; any; trip, everyday, any; stylish, calm |
 | Music | smooth house, 110–120 BPM |
 | Skin | the frame around the middle photo takes the skin's text colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/e24c8e59-9639-4bb2-8c6c-3c843835e59a.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/a364f781-cb33-4b32-b82b-41e2d18ced3b.mp4 |
 | Proven | no |
 | Seams | each panel crossfades on its own beat (the template's cycle mode) |
 | Motion | panels drift slowly; clips play inside them |

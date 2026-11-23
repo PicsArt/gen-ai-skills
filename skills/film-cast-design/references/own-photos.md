@@ -4,7 +4,7 @@ A photo of the real person, product or place **is** the asset, not inspiration f
 
 ## Taking it in
 
-- It comes in through `picsart_drive_upload_ask`, or from a link or Drive as picsart-video-rules's Asset URLs
+- It comes in through `picsart_drive_upload_ask` (`accept: 'image'`), or from a link or Drive as picsart-video-rules's Asset URLs
   say, and is saved as it came.
 - Probe the source and the saved file with `picsart_media_probe`: bytes, width, height and
   content type match, or it was changed on the way.

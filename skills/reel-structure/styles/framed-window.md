@@ -8,7 +8,7 @@
 | Fit | slots 4–8; photos; any; trip, Thanksgiving, Friendsgiving, any; warm, cosy |
 | Music | warm acoustic pop, 95–105 BPM |
 | Skin | the title is the skin's, in capitals; labels "DAY 1"… for a trip, the guests' names or the dishes for Thanksgiving; the page takes a light tint of the skin's background |
-| Preview | https://gcdn.picsart.com/picsart-mcp/421fa488-60a8-4c64-9734-3b7c6c9ae8e4.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/85459849-efbb-456c-9038-d6aca169ae92.mp4 |
 | Proven | no |
 | Seams | none; each photo pops into the same window (the template's own pop) |
 | Motion | a slow zoom inside the window |

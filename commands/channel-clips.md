@@ -3,7 +3,7 @@ description: "Clips from a long video or its link, in the look of a short you br
 argument-hint: "[a video or link] [a short in your look] [how many]"
 ---
 
-Run the `edit-footage` use case, starting from this preset: the channel-clips job: several clips from one long video, each in the look of the short the user brings (their channel's, else any reel), one plan message then the go, every clip with its cover and post copy in one folder, then the offer to post them.
+Run the `make-clips` use case, starting from this preset: the channel-clips job: several clips from one long video, each in the look of the short the user brings (their channel's, else any reel), the moments picked for the user and all clips reviewed at once, every clip with its cover and post copy in one folder, then the offer to post them.
 
 Anything the user says below wins over the preset. Ask only for what is still missing.
 

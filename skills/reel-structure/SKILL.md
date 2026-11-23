@@ -40,7 +40,7 @@ file, `styles/<id>.md`, never the whole folder. For a Thanksgiving or Friendsgiv
 
 **A reference video is read with the tools, and the read is required**: none of it is optional
 when the user sends a reel to follow. Run each required analysis below. Use the tool's billing
-contract and picsart-video-rules's SPEND rule: quote any charged call, then SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says).
+contract and picsart-video-rules's SPEND rule: quote any charged call, then SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says).
 Follow each job receipt as picsart-video-rules says.
 
 | Order | Tool | What it gives the sheet |
@@ -158,7 +158,7 @@ python3 scripts/sheet.py validate sheet.json
 python3 scripts/sheet.py markdown sheet.json --out sheet.md
 ```
 
-Show the user the sheet with the stills, and fix what they correct. Then ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether the sheet
+Show the user the sheet with the stills, and fix what they correct. Then ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether the sheet
 is the structure to copy, before anything is mapped onto it.
 
 ## 3. The format, and what the footage can match
@@ -175,9 +175,10 @@ python3 scripts/ref_format.py check format.json
 
 Then answer each element against the user's footage: reproduced, approximated (say how) or
 impossible. For a reference video, an element that moves (a text animation, a card's move, a frame
-that turns) says "measured" with its moves in its answer, never a look alone. Anything not reproduced: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered mock (one free frame of their
+that turns) says "measured" with its moves in its answer, never a look alone. Anything not reproduced: ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered mock (one free frame of their
 footage in the format) beside the reference still, and keep the answer in the block.
-`ref_format.py feasibility format.json` refuses while an element is open. The reference stage is
+`ref_format.py feasibility format.json` refuses while an element is open (where the `make-clips`
+skill answers feasibility itself, pass the whole record, or `--use-case` with the record's use case). The reference stage is
 done only with a sheet that passes `sheet.py validate` (with `--measured` for a reference video)
 and no open feasibility row.
 
@@ -220,7 +221,7 @@ or not checked:
 |---|---|
 | words | no run of 4 or more of the reference's spoken words in a voice line (`scripts/reuse_guard.py`) |
 | captions | the on-screen words are the user's own, short whole-caption copies included; only the caption pattern is copied |
-| pictures | no still or clip of the reference is a generation input |
+| pictures | no still or clip of the reference is among the new video's media inputs (`media_inputs`) |
 | sound | no audio or music of the reference is in the cut |
 
 The media list (`media.json` where you run commands, else kept in the record) lists the reference's URL and every still or clip made from it, the URLs given to
@@ -232,10 +233,10 @@ cells are `?` and no `--transcript` covers the speech.
 **A failed rule is fixed, not waived.** Rewrite the line, or change the input. A format label
 nobody owns ("get ready with me", "GRWM", "POV", "storytime") passes on screen, and the report
 names it "genre phrase, allowed"; show that line to the user. Any other phrase shared with the
-reference stays only when the user chooses it: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether to keep it, and pass it as
+reference stays only when the user chooses it: ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether to keep it, and pass it as
 `--allow "<phrase>"`. To check a whole script file
 on its own, `python3 scripts/reuse_guard.py transcript.json script.md` lists every shared run
 with its line.
 
-Show the user the report beside the sheet. When beats are changed or dropped, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether to
+Show the user the report beside the sheet. When beats are changed or dropped, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether to
 rework the script toward the reference or keep the changes, one beat at a time.

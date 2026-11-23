@@ -8,7 +8,7 @@
 | Fit | slots 4–8; mixed; couple, friends, place; birthday, trip, autumn, everyday, night out, any; stylish, bold, aesthetic |
 | Music | confident fashion pop, 100–115 BPM |
 | Skin | the masthead is the skin's title word in capitals ("AUTUMN", "BIRTHDAY"); the issue line under it uses the year; masthead white, cover lines the skin's text colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/63c54e8f-d763-4c9b-83bd-3a5af74c6796.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/63178f7e-69bb-4a51-b4d8-2d47d79308f9.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts on the beat, under the fixed cover |
 | Motion | photos used: no close-up faces and no solo selfies: keep photos where every head sits between y 640 and y 1330 and right of x 520, and drop the rest; each photo a slow push; the masthead settles down with `look:baseline`; held still under the cover lines |

@@ -8,7 +8,7 @@
 | Fit | slots 4–10; mixed; family, couple, solo, pet, any; Thanksgiving, Christmas, year-end, memories, any; nostalgic, calm, warm |
 | Music | gentle piano or acoustic, 70–85 BPM |
 | Skin | the title is the skin's, cream; nothing else on screen |
-| Preview | https://gcdn.picsart.com/picsart-mcp/11d27988-8298-490b-aaf9-29b582ca2f2d.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/f5a5b97e-6ddb-46ae-89ab-d653f318cd55.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | `transition:crossfade(duration=0.8)` on every seam |
 | Motion | each slot a slow push and drift, alternating direction: `look:ken_burns(motion=pan_left, scale=1.08)`, then `look:ken_burns(motion=pan_right, scale=1.08)` |

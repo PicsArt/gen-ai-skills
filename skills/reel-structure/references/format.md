@@ -53,7 +53,7 @@ the layout, the emphasis and the caption position from the sheet's `Layout` head
 
 - **`own-brand`**: the reference is the user's own channel, and **its format is the spec to
   reproduce**. Its logo, end card, fonts and end-card copy are the user's and are reused as they
-  are. When the files cannot be taken from the reference, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) for them with
+  are. When the files cannot be taken from the reference, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) for them with
   `picsart_drive_upload_ask`; never redraw a logo or invent copy. `structure_report.py
   --own-brand` reports their reuse as "own brand, allowed", with the files listed under `brand`
   in the media list.
@@ -68,10 +68,13 @@ other one becomes an open feasibility row; never make one reference a rule for a
 
 Before the reference stage is done, every element is answered: **reproduced** (exactly),
 **approximated** (with `how`: "the two in-studio guests stacked, the host above") or
-**impossible**. Anything not reproduced goes to the user before any cut: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered
+**impossible**. Anything not reproduced goes to the user before any cut: ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) with a rendered
 mock (one free contact-sheet frame of the footage in the format) beside the reference still, and
-keep their words in `answer`. `ref_format.py feasibility` refuses a block with an open row or a
-missing answer; without commands, check the same by hand.
+keep their words in `answer`. Only the `make-clips` skill asks nothing here: it marks each row it
+decided `"decided": "agent"`, with no `answer`, and says every element not reproduced in one line at
+the review; anywhere else that mark counts for nothing. `ref_format.py feasibility` refuses a block
+with an open row or a missing answer (there, on a row not decided by the agent: run it on the whole
+record, or with `--use-case` and the record's use case); without commands, check the same by hand.
 
 ## The plan against the format
 

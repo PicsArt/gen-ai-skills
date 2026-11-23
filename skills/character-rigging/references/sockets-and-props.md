@@ -14,14 +14,19 @@ Declared on `composition.sockets` beside the rig's parameters (a rig built from 
 | humanoid and front | `leftFoot`, `rightFoot` | Shoe interiors |
 | humanoid and front | `seat` | Underside of the pelvis, what rests on a seat |
 | humanoid and front | `mouth`, `held` | The lip centre (it slides with `headTurn`); the held prop's slot origin |
-| quadruped (dog, cat) | `head`, `mouth`, `held` | The skull's centre; the front lip of the short or long muzzle; the held prop's slot origin |
+| built from a part sheet | `crown` | The top of the painted head, where a worn prop sits (`heldBy: "head"`) |
+| quadruped (dog, cat; `picsart_scene_build_model` `character: {animal}`) | `head`, `mouth`, `held` | The skull's centre; the front lip of the short or long muzzle; the held prop's slot origin |
 | quadruped (dog, cat) | `leftHindFoot`, `leftForeFoot`, `rightHindFoot`, `rightForeFoot`, `body`, `tail` | Each paw's sole (a quadruped's sockets say Foot, never Paw); the body and tail pivots |
 | face | `head`, `chin` | Face interior and live chin outline |
 | place | `floor`, plus named prop anchors | Its support surface and attachment points |
 
+A held prop fades by its own layer's `animations.opacity`, never `transform.opacity` (one constant value):
+`"animations": {"opacity": {"keyframes": [{"time": 4, "value": 1}, {"time": 4.5, "value": 0}]}}`.
+
 `heldBy` is a carrier, not a socket name: `right` carries the prop at `rightGrip`, `mouth` at `mouth`. Read the rig's `heldBy` enum:
 it lists the carriers its body has (a dog: `mouth` and `none`).
-An SVG-built cut-out rig (`picsart_scene_build_model` with `character: {svg}`) takes `right`, `left`, `chest` and `none`, and `mouth` when its sheet draws a `socket_mouth` point: its `held` is the same clip and slot at the same sockets (`rightGrip`, `leftGrip`, `chest`, `mouth`, `held`), drawn over the torso and hips and under the near arm and hand, and a hand's `HandToHeld` reaches by IK.
+An SVG-built cut-out rig (`picsart_scene_build_model` with `character: {svg}`) takes `right`, `left`, `chest`, `head` and `none`, and `mouth` when its sheet draws a `socket_mouth` point: its `held` is the same clip and slot at the same sockets (`rightGrip`, `leftGrip`, `chest`, `crown`, `mouth`, `held`), drawn over the torso and hips and under the near arm and hand, and a hand's `HandToHeld` reaches by IK.
+Every built biped, from a part sheet, publishes `crown`, the top of its painted head.
 
 A parent targets `{ "layer": "leo", "socket": "rightGrip" }`; Lua reads `ctx.composition:getLayer("leo"):getSocket("rightGrip")` and
 `getSocketDirection`. The point and unit direction are in the reader's composition space. Optional time and constraint `lag` use the
@@ -55,7 +60,7 @@ rig's targets by hand:
 ## Hold a prop inside the character
 
 `rig-humanoid` and `rig-humanoid-front` (and a shape-built dog or cat, by its mouth) hold a prop themselves, drawn between the torso and
-the near arm, so a ball held in two hands sits in front of the body and behind the near hand. Bind the prop as a clip on the rig
+the near arm, so a ball held in two hands sits in front of the body and behind the near hand (a ball in the near hand sits over that hand's palm). Bind the prop as a clip on the rig
 instance and pick who carries it:
 
 ```json
@@ -84,6 +89,10 @@ Set `held` and `heldBy` by merging them into the rig layer's `content.parameters
   over the head. A humanoid takes all five carriers (`right`, `left`, `chest`, `mouth`, `none`); a dog or cat only `mouth` (its default)
   and `none`: `heldBy: "right"` on one is refused at bind, naming `right`. The animal's `held` is the same clip; it carries a stick
   crosswise in the jaws, behind the nose, so give a long prop `rotation: 90` (at 0 it lies along the muzzle).
+- **Worn on the head** (a hat, a paper crane, a crown): `heldBy: "head"` on a built character. The prop rides the `crown` socket, turns and
+  nods with the head, and draws over the hair. Anchor the clip at its bottom centre (its brim) so it sits on the crown; no walk, nod or startle
+  slides it. A raised near hand still draws over it in a turned view. The catalog rigs have no crown: they do not declare `head`.
+  Minimal call: `{ "heldBy": "head", "held": { "duration": 3, "transform": { "anchor": [70, 60] }, "content": { …the hat… } } }`.
 - **A hug:** `heldBy: "chest"`; the prop rides the chest and both arms wrap it with `HandToHeld`.
 - **A character picks a prop up** (round props): two copies swap on the touch frame `t`. The prop stands on the stage as its own
   layer whose `duration` ends at `t`; the picker's `held` is the same drawing (its scale divided by the picker's on-screen scale)
@@ -91,9 +100,24 @@ Set `held` and `heldBy` by merging them into the rig layer's `content.parameters
   spot on the floor, `mix` keyed 0 at `t` − 0.6, 1 from `t` − 0.1 to `t` + 0.1 and 0 at `t` + 0.7; the body crouches and bows by
   keys on `hipsRaise` (− down) and `spineLean` (+ forward) over the same span. A reach stops a few px short, so query the grip with
   `picsart_scene_query_layout` at `t` and lay the prop where it lands (the reach's target stays the floor spot). A cut-out rig seen
-  from the side or three-quarter reaches the floor about one hand in front of its toes at full crouch and bow (`hipsRaise` −3,
-  `spineLean` 3.5); facing the camera it reaches only its shins, so stand the prop on something there. Walk or carry on with `held`
-  as usual.
+  from the side or three-quarter bends its knees only as far as the knee folds (`hipsRaise` about −0.4 of the leg's length in 60 px
+  units: sink further and the feet slide out) and bows to `spineLean` 3.5, so with its feet planted its palm reaches a shoe's height
+  or two above the floor in front of its toes (a ball, not a coin); facing the camera it reaches only its shins, so stand the prop
+  on something there. Walk or carry on with `held` as usual.
+  The `pick_up` preset (tag `rig-motion`) keys all of that at once: `start`, `duration` (2.2 s), `side`, the spot as `aimAt` (a layer
+  id) or `targetX`, `targetY` (rig px from the resting wrist, + down), and `crouch` (a cut-out rig takes the planted-feet depth from
+  its own legs) and `bow` 3.5 as above; the palm, a tenth of the arm past the wrist, lands on the spot. The grip closes at `start` +
+  `duration` / 2, the touch: swap the two copies on that frame. Apply a run or walk first and `pick_up` over it (the reverse order is
+  refused: both drive `hipsRaise`); `pick_up` takes its names for its window and gives them back. Hand-keyed keys before `start` stay.
+  A string or rope the character holds is a line from the hand's socket (`rightGrip`) to the prop, so it follows the hand through the
+  pick-up and the run.
+- **Run or jog with a prop:** pick it up first, then apply `run` or `jog` with `start` after the pick-up's last
+  key (`heldBy` stays the carrying hand). The holding arm keeps its hold and only the free arm pumps; the
+  crouch keys on `hipsRaise` and `spineLean` that end before `start` stay and play ahead of the stride. Move
+  the body at stride × steps: `steps` above 0 makes the run stop after that many steps (every track eases to a
+  standing rest over 0.3 s; 0 loops), and the layer travels `steps` × `stride` on the same clock (or `ground_scroll`
+  with the same `stride`, `stepDuration` and `start`). A gesture such as `point` follows at the stop. A run that
+  starts inside the pick-up's keys replaces them. Check the hand on the handle on every frame.
 - **One character hands or throws the prop to another:** `picsart_scene_apply_preset` with `motionPreset:pass_prop` on the giver,
   `{ "to": "<receiver layer>", "release": 1.2 }` (a hand-over, the default: both near hands meet between the two at chest
   height and hold the prop together for `flight` seconds, then the giver lets go and the receiver keeps it at its chest until
@@ -109,4 +133,4 @@ Set `held` and `heldBy` by merging them into the rig layer's `content.parameters
   in from the stage, step the held clip's opacity from 0 to 1 at the contact frame, where the flying layer ends.
 - A hand that carries the prop does not read its `HandToHeld`. `HandToHeld` turns the arm's IK on at least that much, so leave
   `<side>HandIk` at 0. The prop's animations, looks and effects ride along.
-- A rig built from SVG parts holds a prop the same way, with `heldBy` `right`, `left`, `chest` or `none` (no `mouth`): the prop sits over the torso and under the near arm and hand. Read its `heldBy` enum for the carriers its sheet gives it.
+- A rig built from SVG parts holds a prop the same way, with `heldBy` `right`, `left`, `chest`, `head` or `none` (`mouth` only when its sheet draws a mouth socket): a prop in the near hand (`right`) is gripped as a sandwich: the hand behind it, and a copy of the hand cut to the half past the grip (`rightHandFingersArt`, drawn only while that hand carries it) over it, so it shows above the fingers and is never over them (size it to sit inside the hand; a hand drawn with curves is not cut, and its prop stays under the whole hand); a prop at the chest is over the torso and under the whole near arm, so a jar hugged there is behind the arm that hugs it. On the side `rig-humanoid` the near hand grips it the same way, over the palm and under the fingers and thumb (`rightHandFingers`). Read its `heldBy` enum for the carriers its sheet gives it.

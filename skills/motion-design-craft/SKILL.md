@@ -292,11 +292,13 @@ The tuner moves what the scene declares (root `parameters`, and `actions` that a
 
 A scene that already declares its parameters needs only step 3.
 
+**Stagger, offsets, path points, a spring.** Compute them (the `computing-values` recipe), then write the same text as a live `expression`: a stagger's per-item delay, a point on a path or a rotated host, whether a spring overshoots by the amount you meant.
+
 **Motion that has no knob yet.** A preset's numbers are literals in the layer's tracks, so there is nothing to tune: declare the knob and read it in that track's expression. "Slower" on a rig action is a knob too: declare it and bind `content.animation[i].speed` with `{"$eval":"<knob>"}`.
 
 Any scalar field takes `{"$eval":"<knob>"}`, so a knob can sit on timing, effects, colours or transitions. For a transition, offer its own params (`picsart_scene_capabilities` lists them).
 
-Extracted parts follow the `character-rigging` skill (placement, clipping).
+Extracted parts follow the `character-rigging` skill (placement, clipping) when it is among your skills.
 
 ## Suggesting motion
 

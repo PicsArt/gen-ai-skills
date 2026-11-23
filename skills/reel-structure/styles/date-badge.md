@@ -8,7 +8,7 @@
 | Fit | slots 4–8; mixed; solo, couple, place, any; everyday, memories, autumn, any; aesthetic, calm, cute |
 | Music | soft lo-fi or acoustic, 80–100 BPM |
 | Skin | the badge top is red (#E2231A) with the month in white; the line is the skin's text colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/bc7183da-0c3e-4c25-b758-91c576d95579.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/82aa6958-f279-4091-9d70-6ae513ffdfc6.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts |
 | Motion | each shot plays as shot for 1.5 s (the last for 2.2 s); the badge holds still and only its date changes at each cut (the month too when the weeks cross into the next month) |

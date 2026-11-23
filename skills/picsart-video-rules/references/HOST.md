@@ -1,13 +1,13 @@
-# Host notes: Claude
+# How each interaction runs in Claude
 
 How this host performs the five interactions in `picsart-video-rules`.
 
 | Interaction | How |
 |---|---|
-| **ASK** | The host's own question tool, so the options show as buttons the user taps: `AskUserQuestion` in Claude Code, and in the Claude apps (claude.ai, the desktop and mobile apps, Cowork) the tool they offer for tappable options. Never type options as a list in chat where the tool exists. One question per call unless picsart-video-rules allows two; 2–4 options each, the recommended one first with " (Recommended)" at the end of its label, and each option's `description` saying what it changes. `header` is at most 12 characters. A choice of several items (which shorts, which steps) uses `multiSelect: true`; more than four go as two questions in one call, or a numbered list in text. The tool adds an "Other" answer itself. A question for words (a message, a hook in the user's own words) is plain text, not the tool. Only when the host offers no such tool: one message with numbered options |
+| **ASK** | `picsart_ask` for any closed choice, a multi-select included (look it up as picsart-video-rules says before deciding it is absent), so the options show as buttons the user taps; then the host's own question tool: `AskUserQuestion` in Claude Code, and in the Claude apps (claude.ai, the desktop and mobile apps, Cowork) the tool they offer for tappable options. Never type options as a list in chat where either tool exists. One question per call unless picsart-video-rules allows two; 2–4 options each, the recommended one first with " (Recommended)" at the end of its label, and each option's `description` saying what it changes. `header` is at most 12 characters. A choice of several items (which shorts, which steps) uses `multiSelect: true`; more than four go as two questions in one call, or a numbered list in text. The tool adds an "Other" answer itself. A question for words (a message, a hook in the user's own words) is plain text, not the tool. Only when the host offers no such tool: one message with numbered options |
 | **REVIEW** | The scene editor board the use case names. Where the app draws it, the user reviews there. The decision and the fallback are below |
 | **SHOW** | The URL as a Markdown link, with one line on what it is |
-| **SPEND** | The quote in one line, then `AskUserQuestion` with "Yes, go ahead", "Yes, up to N credits for this task" and "No". Never as a typed question ("Should I go ahead?"). Within a spend limit the user stated, no question: quote in one line, call, then say what it spent and what remains (picsart-video-rules, SPEND rule 3) |
+| **SPEND** | The quote in one line, then `picsart_ask` (else `AskUserQuestion`) with "Yes, go ahead", "Yes, up to N credits for this task" and "No". Never as a typed question ("Should I go ahead?"). Within a spend limit the user stated, no question: quote in one line, call, then say what it spent and what remains (picsart-video-rules, SPEND rule 3) |
 | **DELIVER** | `picsart_scene_export`, then the link |
 
 ## What a board sends back
@@ -44,11 +44,10 @@ A preview exported here is a draft. Export the approved version again to DELIVER
 
 ## Looking at an image
 
-Save the image to a file in the session's scratch directory with the `Bash` tool
-(`curl -sL -o <file> --url '<url>'`), then open the file with the `Read` tool, which shows it to you.
-The URL goes in single quotes, never in double quotes or bare, so the shell runs nothing inside it;
-write any `'` in it as `%27` first. One file per image. Open only images this way, never a video or
-audio file.
+To see an image, or what a video shows, call `picsart_scene_contact_sheet`. It is free, and its
+result shows you the frames as one sheet image. An image: `media` set to its URL. A video, or a part
+of it: `media` set to its URL, with `times` set to the seconds you need, at most 8 per call. If no
+picture reaches you (`sheet` is null), say that you did not look, as `picsart-video-rules` says.
 
 ## Running a skill's script
 
@@ -63,15 +62,14 @@ to install it.
 
 ## The critics and the challenger as agents
 
-The Claude Code package ships eight agents: `critic-roots`, `critic-radical`, `critic-interface`,
-`critic-story`, `critic-growth`, `critic-art`, `challenger` and `qc-inspector`. When they are in your list of
-agents (the plugin's name may come before a colon, as `picsart:critic-art`), the host has
-them. Start each with the `Agent` tool by that name, and start the six critics in one message so
-they run in parallel. Each prompt holds only the inputs the quality-review skill names, as file paths in
-the session's scratch directory or as links. Each agent returns its JSON note. The public
-plugins built from this one (gen-ai-skills, Media Studio) ship them too. When they are not in the
-list (another host reading those skills, or the Claude apps without the plugin's agents), run each
-from its brief in the quality-review skill, `references/agent-<name>.md`, as the quality-review skill says.
+Each review runs with a fresh reviewer that has not seen the work. When an agent by one of these
+names is in your list of agents (`critic-roots`, `critic-radical`, `critic-interface`,
+`critic-story`, `critic-growth`, `critic-art`, `challenger` or `qc-inspector`; a plugin's name may
+come before a colon, as `picsart:critic-art`), start it with the `Agent` tool by that name, and start the
+six critics in one message so they run in parallel. Each prompt holds only the inputs the
+quality-review skill names, as file paths in the session's scratch directory or as links. Each
+agent returns its JSON note. When no agent has that name, run each from its brief in the
+quality-review skill, `references/agent-<name>.md`, as the quality-review skill says.
 
 ## When the upload is not drawn
 

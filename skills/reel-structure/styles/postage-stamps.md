@@ -8,7 +8,7 @@
 | Fit | slots 4; photos; place, any; trip, holiday, autumn, summer, any; nostalgic, playful, warm |
 | Music | playful acoustic or swing, 95–115 BPM |
 | Skin | the postmark reads the place or the skin's title with the year; the line under it is "greetings from <place or season>"; the envelope is a light tint of the skin's background |
-| Preview | https://gcdn.picsart.com/picsart-mcp/6ae65468-b237-4503-9a5b-dff6fa72e611.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/001539a8-34e0-4310-891f-ecca62cfc258.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | no cuts: all four stamps stay on one envelope |
 | Motion | each stamp slams down with `look:stomp`, at a small angle; the postmark ring pops with `look:pop` |

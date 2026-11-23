@@ -8,7 +8,7 @@
 | Fit | slots 8–14; mixed; solo, couple, friends, any; autumn, trip, everyday, any; cosy, aesthetic |
 | Music | cosy lo-fi, 80–95 BPM |
 | Skin | the page takes a light tint of the skin's background; no title |
-| Preview | https://gcdn.picsart.com/picsart-mcp/257be226-58cc-4d8b-8be4-b3b02dd45af3.mp4 |
+| Preview | none yet |
 | Proven | no |
 | Seams | the template's own drops and slides; no transition |
 | Motion | the moodboard scrolls slowly; clips play in their windows |

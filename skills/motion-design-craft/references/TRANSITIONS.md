@@ -125,7 +125,7 @@ moving the world under a fixed viewport:
 Set `transition` and `transitionDuration` where the montage fallback applies; `""` is a
 hard cut.
 
-The scene engine's transitions change between releases; resolve the live set + params from `get_capabilities`.
+Picsart's transitions change between releases; resolve the live set + params from `get_capabilities`.
 The everyday ones:
 
 | id | What it does | Window |

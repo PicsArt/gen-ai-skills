@@ -62,7 +62,7 @@ A layer meant to *cover* moving content (sticky header, modal backdrop, overlay)
 ## "A layer is blank in the preview — but the scene validates (and export looks fine)"
 The asset is blocked in the **browser preview**, even though `validate_scene` passes and server-side
 `contact_sheet`/`export` render it (**validates ≠ works; server ≠ browser preview**):
-- **`csp: blocked connect-src … figma.com/….svg`** → the asset `uri` is a `figma.com` URL. The preview engine's Content-Security-Policy allowlist excludes it. For an icon/logo, the better fix is to **drop the asset**: rebuild it as a live shape — a shape layer added with `picsart_scene_patch`, its outline appended with `picsart_scene_import_svg_path` (from the Figma node's path data or the uploaded SVG's `d`), and a Figma node's paint applied to that layer with `picsart_scene_import_figma_paint` (no URL, so nothing to block). Otherwise **lift it to a Picsart-hosted URL** (`picsart_drive_upload_ask`/`picsart_drive_upload` → `pastatic`/`gcdn`) and author that.
+- **`csp: blocked connect-src … figma.com/….svg`** → the asset `uri` is a `figma.com` URL. The browser preview's Content-Security-Policy allowlist excludes it. For an icon/logo, the better fix is to **drop the asset**: rebuild it as a live shape — a shape layer added with `picsart_scene_patch`, its outline appended with `picsart_scene_import_svg_path` (from the Figma node's path data or the uploaded SVG's `d`), and a Figma node's paint applied to that layer with `picsart_scene_import_figma_paint` (no URL, so nothing to block). Otherwise **lift it to a Picsart-hosted URL** (`picsart_drive_upload_ask`/`picsart_drive_upload` → `pastatic`/`gcdn`) and author that.
 - **`csp: blocked img-src … blob:`** → the asset `uri` is a `blob:` object URL (a transient browser handle, never a valid scene asset). **Upload the underlying file** (`picsart_drive_upload_ask`/`picsart_drive_upload`) and author its `pastatic`/`gcdn` URL.
 - **base64 `data:` URI** → same story: blocked/unsupported in the preview (esp. SVG). Use a Picsart-hosted URL, not `data:`.
 - **`file://` or an expired short-lived link** → lift to a durable Picsart-hosted URL.
@@ -72,11 +72,11 @@ The asset is blocked in the **browser preview**, even though `validate_scene` pa
 
 ## "Engine failed to boot: content kind X has no component … not known to this build"
 The scene uses a layer `content.kind` the **browser player's "standard surface" has no component
-for** (seen live with `composition`), while the server render path considers it valid — so
-`validate_scene` passes and server-side `contact_sheet`/`export` render it (**validation ≠ boot**,
+for** (seen live with `composition`), while Picsart's render considers it valid — so
+`validate_scene` passes and `contact_sheet`/`export` render it (**validation ≠ boot**,
 the same class of gap as the CSP-blocked assets above). It is **not** simply a stale widget: the content-kind →
-component registry the browser player consumes can be pinned *newer* than the server capabilities
-build — so `composition` looks like a **render-path capability gap** (server renders it; the browser
+component registry the browser player consumes can support *fewer* content kinds than the tools do
+— so `composition` looks like a **render-path capability gap** (export renders it; the browser
 standard surface doesn't), not a version lag.
 - **Do now:** the export/still fallback is correct — show the exported result and keep working.
 - **Author around it:** for editor-bound scenes prefer a kind the browser surface renders

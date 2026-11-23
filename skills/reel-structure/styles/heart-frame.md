@@ -8,7 +8,7 @@
 | Fit | slots 4–8; photos; couple, family, friends; love, anniversary, Christmas, everyday; romantic, warm |
 | Music | soft romantic piano and strings, 70–85 BPM |
 | Skin | the title is short ("Us", "Our Christmas", "The End 2026"); the page takes a deep tint of the skin's background |
-| Preview | https://gcdn.picsart.com/picsart-mcp/b1c4716d-6e66-46a8-9d2e-cdaacf9b7bdd.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/ae88922c-f362-4ce1-9d63-356ac9ee0397.mp4 |
 | Proven | no |
 | Seams | `transition:crossfade(duration=0.6)` between photos |
 | Motion | photos held still, a little light leak over them |

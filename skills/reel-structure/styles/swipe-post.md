@@ -8,7 +8,7 @@
 | Fit | slots 4–8; photos; any; trip, Thanksgiving, everyday, any; calm, friendly |
 | Music | light acoustic pop, 95–105 BPM |
 | Skin | the title is the skin's; captions are the user's own words for each photo, or the places for a trip |
-| Preview | https://gcdn.picsart.com/picsart-mcp/2984f5d7-d1ca-44c7-9c7a-71287bed86a7.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/14bcfc64-d794-464b-b1d9-45bdf0d2c562.mp4 |
 | Proven | no |
 | Seams | none; each card swipes in (the template's paged mode) |
 | Motion | cards swipe and hold |

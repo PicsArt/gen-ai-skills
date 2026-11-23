@@ -8,7 +8,7 @@
 | Fit | slots 3–5; mixed; couple, solo, place, any; love, anniversary, winter, Christmas, everyday, any; dreamy, romantic, calm |
 | Music | slow dreamy pop or soft piano, 65–85 BPM |
 | Skin | the line is the skin's text colour; the tint is always navy to ice blue |
-| Preview | https://gcdn.picsart.com/picsart-mcp/25d9a461-f0db-461b-a941-fb7854dcef3f.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/9f2c91d5-dec7-4960-a8af-99dc23500849.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | `transition:blur_dissolve` on every seam, 0.6 s |
 | Motion | each shot a slow push and drift (scale 1 to 1.08); a star field of 12–20 small white dots (6–14 px) and 4–6 larger four-point sparkles (40–60 px) fills the frame all reel long, each one twinkling in and out over about one second, not moving |

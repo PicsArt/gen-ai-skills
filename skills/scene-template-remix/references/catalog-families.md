@@ -41,8 +41,9 @@ definition is newly authored behavior, not a verified clone of a shipped impleme
 Start with `picsart_scene_looks` with `facetsOnly:true`, then filter by exact `category`, `tags` or `appliesTo` (the full `looks` capability section can overflow a result), then request `look:<id>` for a candidate. Read the returned content restrictions, parameters and roles before applying it. Timing roles are distinct: `in`/`out` are selectable roles, `loop` spans the layer and `static` has no motion. An animated look need not support every role. Filters belong to `picsart_scene_looks`; do not invent filters on the capability tool.
 
 Inspect the selected entry with `picsart_scene_capabilities({sections:["look:<id>"]})`
-for full parameter/role details before applying. Existing `looksCompact` and `looks`
-capability sections remain available for whole-catalog consumers. The scene-template
+for full parameter/role details before applying. The `looksCompact` capability section
+alone lists the look categories; add a `category:<name>` token for that category's
+compact entries. `looks` remains available for whole-catalog consumers. The scene-template
 `referencePolicy` filter does not apply to looks; use their existing reference,
 expand and resolve operations below. Filtering does not prove a look fits the host.
 

@@ -69,8 +69,9 @@ The montage is sequential: each clip starts where the one before it ends. For la
 the same time, as in picture-in-picture, write overlapping layers with
 `picsart_scene_patch` instead.
 
-The rendered length is not snapped to the frame grid, so a montage of exact decimal trims can land
-a frame or two short of the target. That is expected, not an error.
+The bootstrap snaps each clip's `duration` down to a whole frame of the scene's frame rate (taken
+from the clips), so the length is on the frame grid. A trim that is not a whole number of frames
+comes out up to a frame short of the target. That is expected, not an error.
 
 ## Sample frames from a scene
 

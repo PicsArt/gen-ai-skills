@@ -32,20 +32,19 @@ One economic law runs underneath: **the motion loop is free.**
 generation, and it is always credit-gated.**
 Every tool the compose/motion/preview loop touches —
 layer ingest, compose/`patch_scene`, layout queries, `validate`, the panel, and the renders
-themselves (`picsart_scene_export`, `picsart_scene_contact_sheet`) — is on the connector's
-zero-credit list (verified against live billing), so for all of that: **never tell the designer an
-action will cost credits, and never hesitate to render for cost reasons — there is no cost.**
+themselves (`picsart_scene_export`, `picsart_scene_contact_sheet`) — currently costs no credits.
+Report cost exactly as the tool or the UI reports it. If a tool result or the UI shows a charge, or a
+credit amount you did not expect, tell the designer plainly.
 The **sole exception** is **generating video** (`picsart_generate` and the generative tools), which spends
 credits — and it **never runs without the designer's explicit, informed consent**: show the balance,
-quote the exact cost and SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) (full gate in *Video generation* below). No other part of this
-pipeline charges.
+quote the exact cost and SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) (full gate in *Video generation* below). No other part of this
+pipeline currently charges.
 
-**Ignore the "charged"-looking badge on `export` / `contact_sheet`.** Both dispatch a real GPU
+**About the "writes" / "charged" badge on `export` / `contact_sheet`.** Both dispatch a real GPU
 render and leave a Drive-saved file, so they carry a *behavioral* annotation (`readOnlyHint:
 false`, artifact-producing) that a connector UI or permission prompt may surface as "writes" /
-"charged." That flag is about **behavior, not price** — the credit cost is still **zero**
-(they're in the server's `FREE_TOOLS`). Do not read that badge as a credit charge or warn the
-designer about it. Still author with care: a render costs *time* even when it costs nothing, so
+"charged." That flag describes behavior (a file is written), not a credit price; these tools
+currently cost no credits. If the host shows a charge, mention it plainly. Still author with care: a render costs *time* even when it costs nothing, so
 decide on the panel's free previews and render the export when the reel is worth rendering.
 
 ## When to read which reference (mandatory, lazy)
@@ -68,7 +67,7 @@ step**, not "if you happen to need it":
 | author a seam between two frames | `references/TRANSITIONS.md` |
 | stagger/sequence multiple elements in one beat | `references/CHOREOGRAPHY.md` |
 | choose ANY motion, or author scene JSON — the full menu of **layer kinds, motion presets, text animations, looks, effects, transitions, masks** (Figma AND from-scratch alike) | `references/SCENE-VOCABULARY.md` — enumerate it via `get_capabilities`; don't hand-roll what a preset/look/effect already does |
-| act on any widget/panel response | `references/WIDGET-FEEDBACK.md` |
+| act on any widget/panel response | `skills/motion-design-craft/references/WIDGET-FEEDBACK.md` |
 | validate a scene — before showing ANY render, or when "it validates but looks wrong" | `references/SCENE-VALIDATION.md` — schema ≠ correct; the eye is the real check, ground truth branches by route |
 | a render/preview looks wrong or a tool errors | `references/MOTION-TROUBLESHOOTING.md` |
 | write the first keyframe / nested comp / zoom math / opacity from Figma | `references/ENGINE-GOTCHAS.md` — silent-bug rules (local clocks, sRGB→linear opacity, fixed-point zoom) |
@@ -135,7 +134,7 @@ inventing a concept is the *job* — but you still **offer 2–3 options and get
 never run off and build one unasked. Both postures meet at one rule: **a concrete plan is agreed
 before motion is authored** — a matching plan in fidelity mode, a chosen concept in proposal mode.
 
-**If the page holds SEVERAL distinct sequences/storyboards, list them and ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which to animate
+**If the page holds SEVERAL distinct sequences/storyboards, list them and ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which to animate
 first.** A Figma page routinely carries multiple reels side by side; don't silently start on the first
 cluster. Group the frames into their sequences (by spacing/section/naming) from the cheap frame index,
 name what you found, and let the designer pick the running order before composing anything
@@ -170,9 +169,8 @@ Two families on this plugin's `picsart` connector, and they are wired differentl
   export, contact-sheet: the scene tools are surfaced under the `picsart_scene_` prefix, and the
   media-analysis tools under `picsart_media_`. To turn a short name in these docs into a tool
   name, use the table in `skills/motion-design-craft/references/TOOL-ROUTING.md`, never a prefix rule.
-- **Panel tools — gen-ai-native and new, each named in full below.** The widget-opening tools
-  are **not** media-tools proxies — they are registered directly in the gen-ai server,
-  each bound to a `ui://` widget resource. This plugin's review panel is **`picsart_scene_editor`** (the
+- **Panel tools — new, each named in full below.** The tools that open a panel
+  show it inside the chat and take the designer's reply from it, unlike the scene tools above. This plugin's review panel is **`picsart_scene_editor`** (the
   scene editor — the pair-review surface: it **plays** the scene document in the browser, free,
   and returns the designer's verdict + edit-request comments; **pass it the document as `sceneUrl`
   whenever you have one, otherwise as `scene`, never video/media**). It is a *review* surface — motion is authored by you through
@@ -180,9 +178,9 @@ Two families on this plugin's `picsart` connector, and they are wired differentl
   **replaces the old scene inspector** and its motion-suggestion drafts, which no longer exist. There is
   no setup panel: the video format (ratio and fps) is asked in chat once at the start (see
   `design-layer-import` *Set the format*). Full contract of the editor:
-  `docs/widget-specs/scene-editor.md`.
+  `skills/motion-design-craft/docs/widget-specs/scene-editor.md`.
 
-**Show the motion in the scene editor — don't re-export a video each time.** After authoring
+**Show the motion in the scene editor — don't re-export a video each time** (picsart-video-rules, "Every scene animation is reviewed in the editor"): a preview video or contact sheet never replaces it, and after fixing the designer's pins you reopen it on the new version and say which pins you addressed. After authoring
 a pair, open `picsart_scene_editor` **on the whole scene built so far**, with `purpose: "motion"`
 (title it for the current pair, e.g. "f3→f4", so the designer knows where to look), so they watch
 the pair play **in context**, can move or resize an element by hand, add an image,
@@ -199,7 +197,7 @@ exception — do not leave the designer with nothing.** Export the **whole scene
 reel end to end, **not** just the current pair's A→B window) with `picsart_scene_export` and
 **show the result video** so they can still see the motion play, then continue the
 pair-by-pair flow once the panel recovers. Exporting a preview render is free
-(`picsart_scene_export` is 0-credit), so this costs nothing. The panel itself already falls
+(`picsart_scene_export` is 0-credit), so this should cost nothing. The panel itself already falls
 back to a video on a render error; this is the same move at the tool level. The
 contact-sheet + ask path is the **last resort** — reach for it only if the
 export also fails, and never stall because of a panel error.
@@ -252,13 +250,13 @@ If a tool you genuinely need is unavailable (not connected, or it errors), **say
 — never silently fall back to doing the work yourself and proceeding as if you had the real data.
 
 **Do the least work yourself — reach for the highest-level tool that does the job.** You are an 
-orchestrator; the Picsart media server is the engine. Before assembling anything by hand out of
-many low-level ops, check whether the server already does it in one call: a **scene template**
+orchestrator; Picsart's tools do the building. Before assembling anything by hand out of
+many low-level ops, check whether one tool call already does it: a **scene template**
 (`apply_scene_template` — montage/collage/title families) before hand-building a composition; a
 **motion preset** or **text animation** (`apply_preset`) before
 hand-keyframing; the **recipes** (`get_recipe`, `quick-merge-and-export` first) before inventing a step sequence; `patch_scene`
 for *edits*, not for constructing whole scenes op by op. The chat's judgment goes into WHAT to
-do (which layer, which motion, what timing — with the designer); the server does the HOW.
+do (which layer, which motion, what timing — with the designer); the tools do the HOW.
 
 ## The edit loop — every designer instruction is a tool round-trip
 
@@ -296,7 +294,7 @@ them rather than hardcoding:
 - `picsart_scene_recipe` with `name: "quick-merge-and-export"` — the on-ramp for common jobs.
 - The authoring skills, **read before hand-authoring:** **`figma-storyboard-animation`** (the
   canonical Figma→scene flow), **`motion-intent`** / **`motion-pattern-library`** /
-  **`scene-animation-reference`** (craft), **`custom-transitions`**, and the `character-rigging` skill for a
+  **`scene-animation-reference`** (craft), **`custom-transitions`**, and, when the `character-rigging` skill is among your skills, it for a
   cartoon character or mascot that walks, waves, acts or talks, and for outline morphs.
 - `scene-3d-authoring` for a real 3D scene (models, lighting, a product or toy showcase, a turntable,
   a build-up of parts); flat cards in depth stay 2D (`scene-animation-reference`).
@@ -326,7 +324,7 @@ for social ads, plain for corporate).
 - **Rendering:** "Rendering your video…" / "Putting it all together…" / "Almost there, finishing frames…"
 
 You may write your own message in the same style if it fits better, e.g. naming the pair:
-"Moving the headline into frame 3…". **Never mention tool names, layer ids or internal steps**
+"Moving the headline into frame 3…". Talk about the design, not tool names, layer ids or internal steps, unless the designer asks how it was made
 (no "calling patch_scene", no "validating the sceneRef").
 
 ## The pipeline — 5 stages, gates between them
@@ -334,7 +332,7 @@ You may write your own message in the same style if it fits better, e.g. naming 
 | Stage | Does | Skill | Gate to pass |
 |---|---|---|---|
 | 1 · Import | Figma design → each frame's **layer tree** (elements + transforms + assets); matched elements tagged; format set | `design-layer-import` | every animatable layer has an asset/content + transform; matched elements tagged; format set |
-| 2 · Compose | rebuild each frame as a **layered scene** (elements placed by transform), verified to match the design | this skill | each composed frame `validate`s clean **and** renders identical to its design |
+| 2 · Compose | rebuild each frame as a **layered scene** (elements placed by transform), verified to match the design | this skill | each composed frame `validate`s clean **and** renders matching its design closely (list any differences) |
 | 3 · Motion (interactive) | author real motion **one pair at a time** — per-element animation + matched-element smart-animate for frames A→B | `motion-design-craft`, `resting-frame-rules` | **every pair** approved on a moving preview, not a still |
 | 4 · Preview | filmstrip across each pair and the whole cut | this skill | motion reviewed on real frames before the deliverable is rendered |
 | 5 · Deliver | from the scene: `export → mp4` for the final video (free); the scene itself stays the editable source | this skill | mp4 exported and verified once |
@@ -392,7 +390,7 @@ Do **not** bind frames to `scene://montage` — that treats a frame as one flat 
 throws away every element. Instead **rebuild each frame as a composition of scene
 layers**: one scene layer per imported design layer, positioned by its `transform`
 (x, y, w, h, rotation, opacity, z-order). Author this with `picsart_scene_patch`
-(or a compose recipe if the server exposes one), never the montage template.
+(or a compose recipe if one is offered), never the montage template.
 
 Read `references/stage-2-compose.md` before composing the first frame: it holds the live-layer,
 hosting, font, alignment, duration and preview-per-frame rules that `validate_scene` does not
@@ -401,11 +399,11 @@ catch.
 ## Stage 3 — the real motion design (the whole point)
 
 This is where a slideshow becomes an ad. You **author** the motion through
-`picsart_scene_patch` / the apply tools, then **show** it in `picsart_scene_editor` (a
-gen-ai widget tool, despite the `picsart_scene_` prefix, not an engine proxy): it plays the pair's scene document in
+`picsart_scene_patch` / the apply tools, then **show** it in `picsart_scene_editor` (the
+review panel, despite the `picsart_scene_` prefix: it opens in the chat): it plays the pair's scene document in
 the browser, free, and the designer approves it or sends it back with edit-request comments (pins
 and marked stretches, each with its own instruction). Full contract in
-`docs/widget-specs/scene-editor.md` and `references/WIDGET-FEEDBACK.md`; the authoring
+`skills/motion-design-craft/docs/widget-specs/scene-editor.md` and `skills/motion-design-craft/references/WIDGET-FEEDBACK.md`; the authoring
 craft is in the `motion-design-craft` skill.
 
 The motion vocabulary (entrances, continuous, interaction, smart-animate, kinetic type, camera,
@@ -523,8 +521,8 @@ monitor, place. **No preflight cost shown and no explicit yes or covering spend 
 
 ## The state — `motion.json`
 
-Keep project state in `motion.json`, updated whole at every milestone. **Never print it
-in chat** — a request to *see* something opens the panel, not the data.
+Keep project state in `motion.json`, updated whole at every milestone. Open the panel when the
+designer asks to see the project; share the raw data if they ask for it.
 
 Its shape, and how each `motion[].kind` label maps to a preset or keyframes, are in
 `references/motion-state.md`.
@@ -533,8 +531,8 @@ Its shape, and how each `motion[].kind` label maps to a preset or keyframes, are
 
 | Free (everything in this plugin's loop) | Charged, no rollback |
 |---|---|
-| layer import, compose, `validate`, layout queries, the panel and its motion previews, filmstrip, **and the renders** — `picsart_scene_export`, `picsart_scene_contact_sheet` (GPU renders that move no credits) | **generative** tools only — image/video/audio generation, remove-bg and kin |
-Everything in this plugin's loop is free: layer import, compose, `validate`, layout queries, the panel and its motion previews, filmstrip, **and the renders** — `picsart_scene_export`, `picsart_scene_contact_sheet`, which are GPU renders that move no credits.
+| layer import, compose, `validate`, layout queries, the panel and its motion previews, filmstrip, **and the renders** — `picsart_scene_export`, `picsart_scene_contact_sheet` (GPU renders that currently move no credits) | **generative** tools only — image/video/audio generation, remove-bg and kin |
+Everything in this plugin's loop currently costs no credits: layer import, compose, `validate`, layout queries, the panel and its motion previews, filmstrip, **and the renders** — `picsart_scene_export`, `picsart_scene_contact_sheet`, which are GPU renders that currently move no credits.
 
 **A dropped call is never a failed render.** An export usually completed even when the
 connection dropped — check first (`picsart_job_status`, recent Drive files), never

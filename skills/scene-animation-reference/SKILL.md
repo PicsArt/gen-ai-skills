@@ -4,7 +4,7 @@ description: How a scene expresses motion — preset catalogs, layer animations 
 metadata:
   category: authoring
   version: '1.19'
-  ported-from: motion-mechanics 1.19 at 55.128.2
+  ported-from: motion-mechanics 1.19 at 59.2.0
 user-invocable: false
 ---
 
@@ -87,7 +87,7 @@ appended (a multi-decorator preset like `slide_up_lines` appends two).
 Two places, and the choice is not stylistic.
 
 **`animations`** — the layer's own Placement tracks (`position`, `scale`, `rotation`, `z`,
-`rotationX`, `rotationY`, `opacity`, `anchor`). Pivots about the layer's own anchor. Always available.
+`rotationX`, `rotationY`, `opacity`, `anchor`). Pivots about the layer's own anchor. Always available. Write its keys with `picsart_scene_patch` `animate` pairs: `{"op":"animate","layer":"card","property":"opacity","keys":[[0,0],[0.4,1,"ease_out"]]}` is shorthand for the keyframes `set` writes; tangents use `set`.
 
 **`transforms[]`** — an ordered stack of motion components applied *outside* Placement, each with its
 own `id` and `animations` (`translation` / `scale` / `rotation` / `z` / `rotationX` / `rotationY` /
@@ -162,6 +162,8 @@ track, not two nested layers.
 The list has exactly one entry per component, and `step` is never an entry (a hold keeps the whole
 value). A number or a colour takes one easing.
 
+**Show/hide keys keep one frame apart.** A show/hide opacity pair needs its keys at least `1/fps` apart (0.001 s lands on the same frame and blends every window): `[k(a,0,"step"), k(a+1/fps,1)]`, and the same on the way out.
+
 ## Path, separately from timing
 
 `inTangent` / `outTangent` on a `position` or `anchor` keyframe are `[x, y]` velocity handles
@@ -233,7 +235,7 @@ schema for available getters; there is no arbitrary live shape-size or text-metr
 Unlike `$eval`, this is a per-frame dependency. Validate and query the actual delayed/nested instance;
 local `time` formulas on separately started layers need clock mapping even when their text matches.
 
-A value that follows a parameter through drawn poses is a `by` track (see `character-rigging`, "Poses keyed to a dial"),
+A value that follows a parameter through drawn poses is a `by` track (see `character-rigging`, "Poses keyed to a dial", when it is among your skills),
 not an expression that reads the parameter and interpolates by hand.
 
 Two compact time-expression uses:
@@ -305,7 +307,13 @@ second. `ctx.composition:getLayer(id):getPlacement():position([t])` / `rotation(
 layer's placement at `t`, seconds on the reader's clock with the layer's own clock applied:
 `position(time - 0.2)` trails it by 0.2 s. The layer is one of the same composition; a timed read
 of a layer that plays on another composition's clock fails the frame. Without `t` it reads this
-same instant (see "Bind a supported property instead of copying its track"). `getSocket` and `getSocketDirection` on a layer read a placed character's published sockets (`character-rigging` "Standard sockets").
+same instant (see "Bind a supported property instead of copying its track"). `getSocket` and `getSocketDirection` on a layer read a placed character's published sockets (`character-rigging` "Standard sockets", when it is among your skills).
+`getPlacement():position()` is the position track alone, in the layer's parent's space. For where a layer
+really is in the composition, through its parent chain and `transforms[]` (a walk's travel, a slide), read
+`L:getWorldPoint(x, y[, t])`: a point of the layer's own space (its anchor, `getPlacement():anchorPoint()`, is
+where `position` lands) carried to composition coordinates. `L:toParentSpace(x, y[, t])` goes the other way: a
+composition point into the space the layer's `position` is written in (its parent's; the composition's with no
+parent), so an expression that places a layer by composition numbers also works under a parent.
 
 **In a DEFINITION** (a look, a transition, a decoration) `{param}` splices the definition's own
 scope into the expression text, so the shape stays parametric:
@@ -327,7 +335,7 @@ every part that shares it.
 On a cartoon rig (a `scene_ref` layer drawing `scene://rig-humanoid` or `rig-face`), pass the rig
 layer as `layerId` and its control as `parameter` (`random_pulse` on `blink`, `cycle` on `breath`):
 the track is bound on that layer, so each instance moves on its own. The rigs and `walk_cycle` are in
-`character-rigging`.
+`character-rigging` when it is among your skills.
 
 | Preset | The value | Typical uses |
 |---|---|---|
@@ -335,6 +343,14 @@ the track is bound on that layer, so each instance moves on its own. The rigs an
 | `random_pulse` | brief eased events at seeded random intervals (`minInterval`, `intervalSpread`, `attack`/`hold`/`release`, `burstChance`) | blinks (`eyeOpen` from 1 to 0), lamp flicker, twinkling stars, glitch hits |
 | `random_hold` | a seeded random value held, then a quick eased jump (`transition`) to the next, `minInterval` + `intervalSpread` apart; one `seed` shares the jump times, `channel` picks the value stream, `half` keeps its `positive` or `negative` side, `centerBias` gathers values mid-range | eyes looking around (`lookLeft`/`lookRight`/`lookUp`/`lookDown`), random pose or colour picks, a jittering needle |
 | `cycle` | a repeating `sine`/`triangle`/`saw`/`square` wave every `period` seconds | breathing (`breath`, sine ~3.5 s), bobbing, a pulsing glow, UI pulses, beacons |
+
+A rig's control is keyed by hand with `picsart_scene_patch` `animate` (`{op:"animate", layer:"kid", property:"hipsRaise", keys:[[0,0],[0.5,-1,"ease_out"],[1,0]]}`): a name that is not a layer track writes
+`content.parameters.hipsRaise` on the rig's own clock and drops a preset's binding of it (a control an
+`expression` drives is refused by name). `copyAnimation` with `properties:["hipsRaise"]` copies that track to
+other rigs as it is. Writing 8+ evenly spaced keys by hand, or the same keys on several rigs, gets a note:
+a sine, decay or ramp is one `expression`, and the same motion on several layers is one `copyAnimation`.
+If a render of such a rig fails, the error names the layer, the control and the second
+(`expression on layer 'kid', property 'parameter 'hipsRaise'', line 1 failed at t=2`); fix that expression.
 
 Drive eyelids or the eyes' y-scale from `eyeOpen`; drive chest or shoulder scale and a small head
 bob from `breath`. A different `seed` per character keeps two characters from blinking together.
@@ -365,8 +381,7 @@ Hair, ears, a tail or an antenna that lag a turning head are one parameter follo
 damped spring: apply `follow_through` to the PARAMETER (`"follow"` lists the driving parameters with
 their weights; `frequency` and `damping` set the lag), never write the spring yourself. Its value is
 the swing, 0 while the drivers hold still. A chain of any length takes one value per piece through
-`segments`. The full recipe, with the parameter wiring and the units, is in `character-rigging`
-(fetch with `picsart_scene_recipe`, name `character-rigging`).
+`segments`. The full recipe, with the parameter wiring and the units, is in `character-rigging`, when it is among your skills (fetch with `picsart_scene_recipe`, name `character-rigging`).
 
 A sketchy, hand-inked look comes from the `line_boil` preset on a shape's `path` items: each outline
 point sits up to `amplitude` px off its place and takes a new one `rate` times a second, where `shake`
@@ -375,33 +390,15 @@ refusals: [references/line-boil.md](references/line-boil.md).
 
 A character that walks, waves or jumps from a few looped keys, a shape's outline that morphs, bends or
 is swapped (`vertices` tracks, `deformers`, outline expressions), bent limbs and two-bone `ik` foot
-targets are all in `character-rigging` as well. Pose the catalog rig (`rig-humanoid`, `rig-face`) when it
-fits; build by hand only when it does not. A humanoid rig holds a prop itself through its `held` parameter, and a `reach` constraint on its instance layer (`{"type": "reach", "socket": "rightHand", "target": {"layer": "ball"}, "mix": 1}`) puts a hand, foot or the `seat` on a stage point: both in `character-rigging`. Within a shape's `items`, and a group's `contents`, the
+targets are all in `character-rigging` as well, when it is among your skills. Pose the catalog rig (`rig-humanoid`, `rig-face`) when it
+fits; build by hand only when it does not. A humanoid rig holds a prop itself through its `held` parameter, and a `reach` constraint on its instance layer (`{"type": "reach", "socket": "rightHand", "target": {"layer": "ball"}, "mix": 1}`) puts a hand, foot or the `seat` on a stage point: both in `character-rigging`, when it is among your skills. Within a shape's `items`, and a group's `contents`, the
 first item paints on top, as After Effects stacks layers: list a face's mouth and eyes before the head
-they sit on.
+they sit on. A `fill`, `stroke` or text content can take a `brush`; read [references/brushed-paint.md](references/brushed-paint.md). A number substituted into generated Lua goes in parentheses, because a bare negative after `a-` reads as a `--` comment.
 
 ## Held drawings: animating on twos
 
-A nested composition (an inline `composition` or a `scene_ref` body) whose `composition.fps` is
-LOWER than its host's rate draws on its own frame grid: every host frame shows the start of the
-nested frame it falls in. `"fps": 12` inside a 24 fps scene is animation on twos, the stepped look of
-hand-drawn animation, without duplicating a keyframe. The hold covers the whole composition:
-keyframes, expressions (their `time` is the held one, so a wobble boils on twos), media, Lottie and
-nested playback, which of its layers are live and reads between its own layers. A held frame keeps the
-motion blur of its own instant. An effect's rolling seed follows the host clock (the grain is the
-film, not the drawing), and sound is not held: audio inside plays on the host clock.
-
-```json
-{"id": "character", "content": {"kind": "composition",
-  "composition": {"width": 1080, "height": 1080, "fps": 12},
-  "layers": [{"id": "ball", "content": {"kind": "shape", "items": ["..."]},
-    "animations": {"position": {"keyframes": [{"time": 0, "value": [100, 500]}, {"time": 1, "value": [900, 500]}]}}}]}}
-```
-
-An equal or higher rate, or none, holds nothing. A rate that does not divide the host's holds
-unevenly (24 in 30 is a pulldown), so pick a divisor of the output rate. Put whatever must stay
-smooth, such as a camera move, outside the held composition. Measure the result per frame: the ink
-centroid moves only on the nested frames.
+A nested composition whose `composition.fps` is lower than its host's draws on its own frame grid (`"fps": 12` in a 24 fps
+scene is animation on twos): read [references/held-drawings.md](references/held-drawings.md).
 
 ## Depth and the camera
 
@@ -424,7 +421,7 @@ stay `[x, y]`. All six layer/camera depth fields animate like any track; a layer
 flip a card in depth.
 
 Layers in one run of camera-participating, non-adjustment layers draw **far to near**, re-sorted
-every frame; equal depth keeps document order. `cameraExempt: true` on a root keeps its subtree flat
+every frame; equal depth (within a thousandth of a pixel) keeps document order, so exactly coplanar layers, such as pop-up pieces folded flat on one page, keep their order under a swaying camera: anything meant to sit over another goes later in the document or a pixel nearer. `cameraExempt: true` on a root keeps its subtree flat
 and in place (a HUD). A mask follows its host's plane and carries no depth of its own. A nested
 composition, `scene_ref` or track has its own camera and is drawn as ONE flat card at its layer's
 `z` and tilt — put layers that must interleave in depth in the same composition. A look (such as
@@ -435,8 +432,11 @@ composition, `scene_ref` or track has its own camera and is drawn as ONE flat ca
 Camera moves ship as motion presets: `orbit`, `dolly` and `push_in`, each `appliesTo: ["camera"]`.
 `picsart_scene_apply_preset` with `motionPreset:<id>` and no `layerId` keys them onto the root composition's camera as editable
 tracks; their parameters are listed under `supports.motionPresets` in `picsart_scene_capabilities`.
-`push_in` with `centerX`/`centerY` (shares of the frame) frames a point: the view ends on it, centred,
+`push_in` runs from `start` for `duration` seconds (default: to the composition's end); with `centerX`/`centerY` (shares of the frame) it frames a point: the view ends on it, centred,
 at `zoom`; it moves the pivot to where that point stays put as the view scales, so it needs a zoom other than 1.
+The view never leaves the composition: a point nearer an edge than half the zoomed view is moved in until the
+view's edge meets the composition's edge (no black strip), so `centerX` 0.57 at zoom 1.1 frames less far right
+than asked; on an axis the zoomed view is wider than the composition (a pull-out, or a turned view) it centres on the composition, whatever the camera's roll.
 
 Depth is verified by measurement. `picsart_scene_query_layout` reports each projected layer's `quad`, `depth`
 (eye distance, larger is farther) and `zIndex` (this frame's paint order). In `picsart_scene_lint_layout`, a
@@ -479,10 +479,9 @@ not decode on iOS).
 ## Validate the mechanism and its result
 
 For reversals, jumps, overshoot, acceleration peaks or settling, inspect the actual output-frame times. Read [Frame-complete motion validation](references/frame-motion-validation.md) for independent thresholds and coverage limits. Run `picsart_scene_check_motion` with an explicit root-time window and the actual export FPS; explicit queries cover only the times actually requested. Do not claim frame-complete evidence unless every relevant frame and channel was compared. Construct rigid relationships with a shared owner or supported binding first; numerical checks do not replace ownership or visual inspection.
+For painted results (a label centered in its box, padding around ink, a region that must hold still) read [Rendered pixel assertions](references/pixel-validation.md) after the geometry and motion checks pass.
 
-Read `picsart_scene_recipe motion-pattern-library` and fetch its **Validation by pattern** reference
-before accepting a motion. Use its **mechanics**
-rows for pivots/transform order, easing, local clocks, expressions, text selectors, and motion blur;
+Read `picsart_scene_recipe motion-pattern-library` and fetch its **Validation by pattern** reference before accepting a motion. Use its **mechanics** rows for pivots/transform order, easing, local clocks, expressions, text selectors, and motion blur;
 use its pattern rows for the intended beat. `picsart_scene_validate` accepts structure, not choreography.
 Query evaluated geometry at the decisive events and extrema; run supported relationship contracts;
 inspect rendered frames and playback for paint-only effects and perceived timing. Never substitute

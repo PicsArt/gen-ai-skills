@@ -8,7 +8,7 @@
 | Fit | slots 6–10; photos; any; birthday, Christmas, everyday, any; fun, warm |
 | Music | playful pop, 105–115 BPM |
 | Skin | the title is the skin's; the page takes the skin's background colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/69935b7b-d0a8-41fd-952b-fc63a20240a4.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/71a0a6df-e3e8-48c5-b5c5-a3d04d79a59a.mp4 |
 | Proven | no |
 | Seams | `transition:slide(duration=0.3)` between photos |
 | Motion | the cards fan open and close; photos held still full screen |

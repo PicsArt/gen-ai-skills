@@ -8,7 +8,7 @@
 | Fit | slots 7–12; mixed; friends, group, any, couple; party, night out, trip, concert, wedding, any; energetic, upbeat, fun |
 | Music | upbeat house or pop, 115–128 BPM |
 | Skin | title words from the skin's occasion (our / weekend / recap) |
-| Preview | https://gcdn.picsart.com/picsart-mcp/db61580e-f8f0-4a7c-b072-a7d85475262f.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/80f41dab-cdc7-4ae8-8913-4f26db5ca381.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts |
 | Motion | first clip 2.2 s; then slots 0.567 s, each punching from 1.1 to 1 in 0.2 s |

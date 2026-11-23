@@ -8,7 +8,7 @@
 | Fit | slots 4–8; photos; any; trip, everyday, autumn, summer, any; upbeat, friendly, stylish |
 | Music | smooth upbeat pop, 100–115 BPM |
 | Skin | no words; the slice outline is white |
-| Preview | https://gcdn.picsart.com/picsart-mcp/dd6c9942-fa84-48f0-a3bc-51a4425e55ec.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/cd6d384c-c09c-40cb-9ab6-e0bc74e23027.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | `transition:slide` on every seam, 0.3 s, to the left |
 | Motion | each photo a slow push; 0.767 s before the seam a rounded slice of the next photo slides in at the right edge with `look:slide` |

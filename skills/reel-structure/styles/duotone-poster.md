@@ -8,7 +8,7 @@
 | Fit | slots 6–16; mixed; solo, friends, pet, any; party, birthday, year-end, any; bold, energetic |
 | Music | punchy electro pop, 120–130 BPM |
 | Skin | the title is the skin's, in capitals, white; the four colour pairs use the skin's background and accent as the first pair |
-| Preview | https://gcdn.picsart.com/picsart-mcp/88f1141a-781a-4570-85d7-c9275bb959a4.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/814ec4c8-3011-4fa3-bc53-4c72b69f3ee2.mp4 |
 | Proven | no |
 | Seams | hard cuts on the beat, no transition |
 | Motion | each photo punches in from 118 % to 100 % in 0.267 s |

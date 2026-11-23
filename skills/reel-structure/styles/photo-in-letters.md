@@ -8,7 +8,7 @@
 | Fit | slots 3–8; photos; place, any; trip, holiday, autumn, summer, any; bold, wow, stylish |
 | Music | upbeat indie pop with a build, 105–120 BPM |
 | Skin | the word is the skin's title word in capitals (the place for travel); the ground is the skin's background |
-| Preview | https://gcdn.picsart.com/picsart-mcp/ce4322bf-f1b1-416e-a225-7e35c06ec3d4.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/94c47875-7a15-490c-b875-2c5075b40220.mp4 |
 | Proven | yes: agent build 2026-11-07, close |
 | Seams | hard cuts on the beat after the reveal |
 | Motion | the photo masked by the word pushes slowly, the letters grow until the photo fills the screen; then a slow push on each photo |

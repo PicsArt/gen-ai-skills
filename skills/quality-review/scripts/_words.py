@@ -32,7 +32,7 @@ def _caption_segments(content: Dict[str, Any], assets: Dict[str, Any]) -> List[T
     """Resolve caption styles and split stacked segments into visible runs."""
     preset = content.get('stylePreset')
     asset = assets.get(preset) if preset else None
-    # A preset the scene declares lies under the content's style. A shipped one lives in the engine's
+    # A preset the scene declares lies under the content's style. A shipped one lives in Picsart's
     # catalog, out of reach here, so the content's own style is read as before.
     declared = isinstance(asset, dict) and asset.get('type') == 'caption_style'
     definition = (asset.get('captionStyle') or {}) if declared else {}

@@ -8,7 +8,7 @@
 | Fit | slots 6–10; mixed; any, place, friends, solo; trip, autumn, summer, holiday, any; stylish, wow, bold |
 | Music | cinematic pop with a whoosh build, 100–120 BPM |
 | Skin | the word from the skin's occasion; ground from the skin's background |
-| Preview | https://gcdn.picsart.com/picsart-mcp/38ed76e9-286a-4eba-9042-a94fd2a226a9.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/8e2f961c-dee1-4111-908d-a233f90302b7.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | `crossfade` 0.4 s from the word into the full photo; hard cuts after |
 | Motion | the photo is masked by the word; the mask scales 1 to 1.08 over 1.2 s, then to 9 by 2.6 s (ease in); then slots 0.7 s |

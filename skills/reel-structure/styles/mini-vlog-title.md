@@ -8,7 +8,7 @@
 | Fit | slots 8–14; mixed; solo, any, friends, pet, food; everyday, trip, Thanksgiving, Friendsgiving, any; cosy, aesthetic, friendly |
 | Music | light lo-fi or acoustic pop, 85–105 BPM |
 | Skin | title words and date from the skin and the day |
-| Preview | https://gcdn.picsart.com/picsart-mcp/57dd7f3c-afce-490e-8830-64b7d9a83997.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/314c75dd-3074-47e0-bfb1-ae81e5bc75b3.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts |
 | Motion | every slot 0.767 s, as shot |

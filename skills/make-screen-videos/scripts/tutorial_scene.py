@@ -8,7 +8,7 @@ Build a screen tutorial's scene from its outline and the recording's moments.
 The input is one JSON object, `{spec, moments, transcript?, lines?}` (references/outline.md):
 `spec` the approved outline, `moments` the result of `picsart_media_screen_moments`, whole,
 `transcript` the `picsart_media_transcribe` result when the user's own voice is kept, and `lines`
-the generated voice lines, `{step, url, duration}`, when a voice-over is.
+the voice lines, `{step, url, duration}`, when the narration is a voice-over.
 
 It prints one JSON line, `{scene, duration, timeline, chapters, diagnostics}`, and exits 0, also
 when a diagnostic is an error: the diagnostics say what to change in the outline.
@@ -236,7 +236,7 @@ def diagnose(spec, actions, built, edits, timeline, description, duration, speec
             add('warning', 'speech_spans', f"{s['id']}: the user's voice runs over its action, so the action plays at 1x under it, in step {before}", f"put {field}.actions into spec.steps[{i - 1}].actions, one step for both, or keep them and tell the user at REVIEW", s['id'])
         line = lines.get(s['id'])
         if line is not None and line['duration'] > edit['duration'] + 1e-6:
-            add('error', 'line_cut', f"{s['id']}: its voice line runs {line['duration']} s, past the step's {edit['duration']} s", f"shorten the line for {s['id']} and generate it again", s['id'])
+            add('error', 'line_cut', f"{s['id']}: its voice line runs {line['duration']} s, past the step's {edit['duration']} s", f"shorten the line for {s['id']} and make its voice line again", s['id'])
         peak = max(k['value'][0] for k in b['zoom']['scale']) / b['zoom']['scale'][0]['value'][0]
         reads = b['zoom']['textPx'] * peak
         if len(b['zoom']['scale']) > 1 and reads < ZOOM['textFloor'] - 0.5:

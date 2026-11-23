@@ -30,19 +30,19 @@ a clip's `duration`, a transition's `id`/`params`, or the title's `content/text`
     },
     "p2": {
       "type": "image",
-      "uri": "https://cdn271.picsart.com/eeb0e80a-922e-4fa5-8a62-098ccb60b369/507090463024201.jpg",
+      "uri": "https://pcdn.picsart.com/templates-cdn/abcddd70-5682-43aa-a20b-bd1da3f6a5c5.jpg",
       "width": 2494,
       "height": 2560
     },
     "p3": {
       "type": "image",
-      "uri": "https://cdn271.picsart.com/cb4e8a70-c67a-426c-b4b3-29c8ba6e296f/510780436010201.jpg",
+      "uri": "https://pcdn.picsart.com/templates-cdn/1e89c5ed-e98a-4c66-8674-2f7bcb10a864.jpg",
       "width": 2296,
       "height": 4080
     },
     "p4": {
       "type": "image",
-      "uri": "https://cdn271.picsart.com/ae9038f4-bb9e-4f67-99b1-2f8b21aaaa80/493136808021201.jpg",
+      "uri": "https://pcdn.picsart.com/templates-cdn/14858327-68b0-4478-9694-2112497a0804.jpg",
       "width": 2308,
       "height": 3462
     }

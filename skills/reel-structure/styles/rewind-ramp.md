@@ -8,7 +8,7 @@
 | Fit | slots 2–5; clips; any, solo, friends, pet, place; any, sport, everyday, party; fun, playful, wow |
 | Music | playful hip-hop with a scratch-like stop, 90–110 BPM |
 | Skin | no words; the skin only sets the bed's mood |
-| Preview | https://gcdn.picsart.com/picsart-mcp/705e6343-ab5e-44b0-ad49-71df354c09e9.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/a591db9b-b2f0-48d7-a523-c48073fe06af.mp4 |
 | Proven | yes: agent build 2026-11-07, match |
 | Seams | hard cuts |
 | Motion | each clip: 1 s at speed 1, 0.467 s at speed −2.4 with a channel split and lower saturation, then 0.9 s at speed 1 from the same point; motion blur on the track |

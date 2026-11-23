@@ -8,7 +8,7 @@
 | Fit | slots 6–12; photos; any; trip, year-end, everyday, any; fun, upbeat |
 | Music | upbeat pop, 110–120 BPM |
 | Skin | the page takes the skin's background colour |
-| Preview | https://gcdn.picsart.com/picsart-mcp/b3e3c9bd-577f-4b53-a776-7cbadd2ba585.mp4 |
+| Preview | https://pcdn.picsart.com/templates-cdn/11f99060-961a-4c4d-a67f-f9d417b960c6.mp4 |
 | Proven | no |
 | Seams | `transition:zoom_through(duration=0.267)` from the grid into each photo and between photos |
 | Motion | tiles pop in one by one; photos held still full screen |

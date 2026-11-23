@@ -97,19 +97,19 @@ no problems; it never invents one to fill the note.
 
 ## Run each critic on its own
 
-**Where the host has the critics as agents** (its host notes say so), start the six by name, all
+**When the critics are in your list of agents**, start the six by name, all
 at once: `critic-roots`, `critic-radical`, `critic-interface`, `critic-story`, `critic-growth`
 and `critic-art`. Each agent holds its own lens, temper and note shape. Give each only what the
 section above gives: the sheets, the source stills, the words, the goal, the destination, and the
 brief, the look board and the gap list when they exist, as files or links. Each returns its note as JSON, ready
 for `notes`.
 
-**Otherwise**, run them apart: where the host can run isolated workers in parallel, run each
-critic as its own worker, all six at once. Each worker's prompt is the whole text of its `references/agent-critic-<id>.md`, then the
-"Looking at an image" section of your host notes (the worker has no host notes of its own), then
+**Otherwise**, run them apart: give each critic to its own fresh reviewer, all six at once. Each
+reviewer's prompt is the whole text of its `references/agent-critic-<id>.md`, then the
+"Looking at an image" section of picsart-video-rules's `references/HOST.md`, then
 what the section above gives, as files or links, and nothing else. Each returns only its JSON note.
-Where it cannot, run the critics inline, one after another, the first-principles critic first,
-each from its file, with its note written out in full before the next starts.
+When you cannot start reviewers, run the critics yourself, one after another, the first-principles
+critic first, each from its file, with its note written out in full before the next starts.
 
 Never give a critic the plan, this skill's other files or another critic's note.
 
@@ -145,7 +145,11 @@ line with the side you took.
    the rest of this skill's checks again on the new build.
 2. Hand the `choices` to the use case's gate, as above. A choice that changes the concept goes
    back to the use case's plan.
-3. The review line opens with the `summary`, then the core sentence, the must-fixes made, the
+3. In an edit run as the edit-pipeline skill's stages, write the core sentence, the must-fixes
+   and the `choices` as the `critics` stage's `verdict` when it is marked done
+   (`record.py done <record> critics --verdict '...'`, or by hand on the stage entry): the record
+   goes on to delivery only with it, or with the user's skip.
+4. The review line opens with the `summary`, then the core sentence, the must-fixes made, the
    conflicts and how each was decided, and what was dropped.
 
 The rounds are picsart-video-rules's (Evaluation). Run the critics again only on a new concept, not on

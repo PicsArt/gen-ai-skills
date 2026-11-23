@@ -30,7 +30,7 @@ Call `picsart_asset_show`, read-only and free:
   its name among the projects it returns; while none fits and the reply says `hasNext`, call it
   again with the next `page`. Then call it with that project's `uid` as `projectUid`, and with
   `type` too when they asked for one kind of that film ("the characters of the garage film").
-  When two films fit the name, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which one, with their names as the options. When no page
+  When two films fit the name, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which one, with their names as the options. When no page
   has it, say in one line that no film has that name, and stop.
 
 Pass a `projectUid` only as a `type: "project"` reply gave it: the panel refuses any other folder.

@@ -1,10 +1,10 @@
 ---
 name: motion-pattern-library
-description: Worked scene motion patterns for entrances, exits, stagger, directional nudges, emphasis, ambient life, springs, arcs, layered beats, parenting, parallax, focus, wipes, drawn strokes, and cartoon fast motion (smears, multiples, speed lines). Use when the motion intent is known and you need supported scene properties and keyframe structures to adapt; values are starting points, not universal timing rules.
+description: Worked scene motion patterns for entrances, exits, stagger, directional nudges, emphasis, ambient life, springs, arcs, layered beats, parenting, parallax, focus, wipes, drawn strokes, cartoon fast motion (smears, multiples, speed lines), slapstick props (a thrown or bounced prop landing on a socket, stars circling a head), and text that counts or swaps words (a price or score counter, a countdown, a timecode). Use when the motion intent is known and you need supported scene properties and keyframe structures to adapt, or when a prop, lid, ball or character drops, falls, bounces and lands with a thud (the `toss` preset); values are starting points, not universal timing rules.
 metadata:
   category: authoring
-  version: '1.6'
-  ported-from: motion-patterns 1.6 at 55.104.0
+  version: '1.9'
+  ported-from: motion-patterns 1.9 at 59.4.0
 user-invocable: false
 ---
 
@@ -142,7 +142,7 @@ The literal `4` is a four-second period: changing the beat's duration does not r
 period explicitly if the intended number of cycles must stay fixed, then recheck the loop and ending.
 
 For text, inspect the available ambient text-animation presets; caption decorations and ordinary
-text layers have different authoring entry points (`scene-animation-reference`).
+text layers have different authoring entry points (`scene-animation-reference`). A counter, countdown, timecode or word swap is ONE text layer whose `text` is string keys or an `expression` (`picsart.formatNumber` writes a number): [Counting text](references/counting-text.md). N copies of art are a `repeater`; N layers that each move on their own are `$each` over a count, and each copy reads its index (`crate.@index`): [Copy index](references/copy-index.md).
 
 ## A still painted background that lives
 
@@ -151,26 +151,7 @@ Painted tree crowns, grass or water (`mesh:auto` with `motion`), a drifting clou
 
 ## Confetti, sparks and snow
 
-Many small copies of one thing, thrown and falling, are one layer with `particles`, not hand-copied
-layers. The layer's `content` is the particle; its `transform.position` places the emitter:
-
-```json
-{ "id": "confetti", "transform": { "position": [540, 1080] },
-  "content": { "kind": "shape", "items": [{ "type": "rect", "size": [22, 12] }, { "type": "fill", "color": "#ff3b6b" }] },
-  "particles": { "seed": 1, "emit": { "bursts": [{ "time": 0, "count": 120 }] },
-    "life": [2, 3.2], "direction": -90, "spread": 40, "speed": [1100, 2300], "gravity": [0, 1500],
-    "spin": [-450, 450], "opacityOverLife": [1, 0.3] } }
-```
-
-Every particle draws the layer's content, so several colours are several such layers, each with its
-own colour and `seed`. Each burst releases `count` particles at its `time`; a stream is
-`"emit": { "rate": 40 }`, which emits until the layer ends (or for its `"duration"`), and a negative
-`start` has it already running at the layer's first frame. Snow streams from a wide
-`"origin": { "shape": "line", "size": [1400, 1] }` on a layer placed above the frame, with
-`"direction": 90`, a small `"spread": 30` and little `gravity`: a directed throw needs a small spread,
-since the default 360 throws every way. Two layers with different particle sizes, speeds and
-opacities read as depth. Change `seed` for another throw of the same effect; the same seed always
-draws the same frames.
+Many small copies of one thing are one layer with `particles`: [references/confetti-sparks-snow.md](references/confetti-sparks-snow.md).
 
 ## An arc instead of a straight line
 
@@ -490,7 +471,7 @@ bar. This lives at the shape-`items` level, which layer presets don't reach, so 
 than a preset. Preview the start, partial stroke and completion; verify the intended path direction.
 
 An ink line that writes on — a signature, a doodle, a character's outline — is the same trim track with a
-tapered stroke (`character-rigging`, `references/rig-act.md` "Ink lines"). The taper is laid along the drawn part, so the moving
+tapered stroke (`character-rigging` "Ink lines", when it is among your skills). The taper is laid along the drawn part, so the moving
 end keeps its point as it writes on.
 
 ## Cartoon fast motion: smears, multiples and speed lines
@@ -499,3 +480,22 @@ A dash, a fast wave or a zip exit reads as a cartoon when its fast frames are dr
 `smear`, `multiple` and `speed_lines` motion presets read the layer's real motion and draw only above a
 speed threshold, along the motion. Which layer each goes on, frame counts, the exit zip and how they
 combine with motion blur are in [references/cartoon-fast-motion.md](references/cartoon-fast-motion.md).
+
+## Slapstick: which preset for which beat
+
+A cartoon gag is a few beats from a short list. Take the first row that fits, in this order: a
+**preset**, then a live **expression**, then a few **eased keys**; never keys sampled every frame.
+
+| The beat | Use |
+|---|---|
+| a wobble that dies | `settle`, `spring` |
+| a rattle | `shake` |
+| breath or bob | `breathe`, `float`, or `cycle` on a rig control |
+| a blink | `random_pulse` on `blink` |
+| a landing on the spot of a layer you keep still (a squash-and-stretch of its own) | `squash` |
+| falls, is dropped, drops and bounces, lands with a thud, plops: a prop, a held prop let go of a hand, a whole character | `toss` (the one drop preset; squashes on contact itself, `footY`; do not add `squash` on top) |
+| parts that trail the body | `follow_through` |
+| a thrown prop | `toss` |
+| circling stars, birds, a halo | `orbit_around` |
+
+A thrown prop and circling stars, their parameters, `toss`'s contact times and the checks: [references/slapstick-props.md](references/slapstick-props.md). A part that appears as the narration says its word (cue parameters read by `start`, how to resolve them, the checks): [references/reveal-on-word.md](references/reveal-on-word.md).

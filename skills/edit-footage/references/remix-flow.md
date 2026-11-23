@@ -33,14 +33,14 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 1. Take in the reference, the script or topic, and the house style | ASK | — |
 | 2. Read the structure, or parse a breakdown for free | SPEND | reel-structure, footage-analysis |
 | 3. The structure sheet and the content rules | REVIEW | reel-structure |
-| 4. Map the script onto the beats, with the matched/changed report | ASK | reel-structure, retention-hooks |
-| 5. Route by format | ASK | screen-recording-layouts, screen-recording-zoom, ai-presenter, photo-slideshow, film-cast-design |
+| 4. Map the script onto the beats, with the matched/changed report | CHALLENGE, ASK | reel-structure, retention-hooks |
+| 5. Route by format | CHALLENGE, ASK | screen-recording-layouts, screen-recording-zoom, ai-presenter, photo-slideshow, film-cast-design |
 | 6. `slides`: a still per beat, captions in the reference's pattern and the house style, no sound | SPEND, REVIEW | film-shot-generation, scene-building-basics, spoken-captions |
 | 7. `voice`: locked voices, paced to the sheet's words per second | SPEND, REVIEW | voice-over-generation |
-| 5. Route by format, from the user's own media | ASK | screen-recording-layouts, screen-recording-zoom, photo-slideshow, footage-analysis |
+| 5. Route by format, from the user's own media | CHALLENGE, ASK | screen-recording-layouts, screen-recording-zoom, photo-slideshow, footage-analysis |
 | 6. `slides` from the user's stills or frames, captions in the reference's pattern and the house style, no sound | REVIEW | scene-building-basics, spoken-captions |
 | 7. `voice` from the user's recording, laid on the approved slides | REVIEW | speech-aware-cutting |
-| 8. `video`: the format's shots, cut on the beats, allowed spans kept | SPEND, REVIEW | film-cutting, quality-review |
+| 8. `video`: the format's shots, cut on the beats, allowed spans kept | SPEND, QC, CRITICS, REVIEW | film-cutting, quality-review |
 | 9. Finish: grade, the sound bed as the sheet says, loudness, cover | REVIEW | film-finishing, background-music |
 | 10. Final report (matched, changed, checked) and deliver | DELIVER | reel-structure |
 
@@ -82,7 +82,7 @@ to check is reported as not checked, never as passed.
 
 ## 1. Take it in
 
-ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) for what is missing, in one question, with every file in one upload panel, as
+ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) for what is missing, in one question, with every file in one upload panel, as
 picsart-video-rules says (Asset URLs):
 
 - the reference: the video, or a written beat-by-beat breakdown of it;
@@ -104,7 +104,7 @@ recorded.
 **A written breakdown skips the read, and is free.** Parse it as reel-structure says.
 
 **A video is read with the tools** as reel-structure says. Quote what the read costs, then
-SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says). Read the reference's speech only for its timing and pace, never to reuse it.
+SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says). Read the reference's speech only for its timing and pace, never to reuse it.
 
 **Exit:** a sheet with every beat timed and named, and the read's cost recorded.
 
@@ -127,7 +127,9 @@ Map the script onto the beats and run the report as reel-structure says. Show th
 reference beat matched, changed or dropped with its reason, each added row of the user's own, and
 each content rule. A failed rule is fixed in the script before this stage closes.
 
-When a beat is changed or dropped, ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) one beat at a time whether to rework the script toward
+Before the report is shown, run quality-review's challenger on the mapping (CHALLENGE) and write
+its verdict into the record's `challenges` with `stage: "story"`, as SKILL.md's flow says. Then,
+when a beat is changed or dropped, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) one beat at a time whether to rework the script toward
 the reference or keep the change. Keep the others in `openDecisions`.
 
 **Exit:** the script and its mapping approved, every content rule passed or not checked with its
@@ -135,7 +137,9 @@ reason, and the report saved in the record.
 
 ## 5. Route by format
 
-The sheet's format chooses where the shots come from. None of these is a new pipeline:
+The sheet's format chooses where the shots come from. Before the route is asked or built, run the
+challenger on it (CHALLENGE) and write its verdict into `challenges` with `stage: "plan"`. None of
+these is a new pipeline:
 
 | Reference format | Shots come from | Skills |
 |---|---|---|
@@ -149,7 +153,7 @@ The sheet's format chooses where the shots come from. None of these is a new pip
 | List or countdown, from the user's media | their shot or still per item, with text cards | photo-slideshow, spoken-captions |
 | Reaction, filmed by the user | their recorded reaction and the clip reacted to | as a talking head filmed by the user |
 
-A reaction's clip must be the user's own or licensed: ASK (with your host's own question tool, such as AskUserQuestion, so the options are buttons the user taps, the recommended one first; only where the host has none, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether they hold the right to show
+A reaction's clip must be the user's own or licensed: ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) whether they hold the right to show
 it before it is placed. Never put the reference itself in as the reacted-to clip.
 
 Record the route. A format the table does not name takes the nearest row, said in one line.
@@ -172,25 +176,25 @@ and offers to show that stage again. Without a named stage, the reel runs straig
 
 ### 6. Slides
 
-Draft the stills as film-shot-generation's key frames say, a still per beat; SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the batch.
+Draft the stills as film-shot-generation's key frames say, a still per beat; SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the batch.
 Slides from the user's media take one of their stills, or a frame of their footage, per beat.
 Build the slides as a scene, as scene-building-basics says, the text placed as spoken-captions says
 in the house style (font, plate, safe area). REVIEW it, titled "<Reel> - slides".
 
 ### 7. Voice
 
-SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the lines as one batch, voiced as voice-over-generation says, in the locked voices.
-A voice from the user's recording is received with `picsart_drive_upload_ask`, and its lines are found
+SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the lines as one batch, voiced as voice-over-generation says, in the locked voices.
+A voice from the user's recording is received with `picsart_drive_upload_ask` (`accept: 'audio'`), and its lines are found
 with `picsart_media_transcribe`.
 A line's real length moves its still, never the words. REVIEW the voiced slides.
 
 ### 8. Video
 
-Build the route's shots as its skills say, every paid call quoted first under SPEND (quote it in one line, then get the yes with your host's own question tool, such as AskUserQuestion, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", never as a typed question; only where the host has no such tool, those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says). Cut them on
+Build the route's shots as its skills say, every paid call quoted first under SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says). Cut them on
 the beats as film-cutting says. Place the user's screen clips first, write `allowed-spans.json` from
 where each lands, and never cut, re-time or zoom inside one. Check the cut with quality-review: the
 QC inspector with the reference match, then the critic panel once with the reference stills, as
-SKILL.md's steps 9 and 10 say. Then REVIEW it.
+SKILL.md's steps 9 and 10 say, each verdict written on its stage (QC, CRITICS). Then REVIEW it.
 
 ### 9. Finish
 
