@@ -279,6 +279,14 @@ Skills the use cases load:
 | [`picsart-add-media`](./skills/picsart-add-media) | Turn the user's own files into hosted URLs with the gen-ai MCP's upload tools. |
 | [`style-guide-builder`](./skills/style-guide-builder) | Build a reusable visual style guide from reference images. |
 | [`video-prompt-engineer`](./skills/video-prompt-engineer) | Write and fix prompts for AI video generation. |
+| [`video-prompt-camera`](./skills/video-prompt-camera) | Refine camera in an existing prompt. |
+| [`video-prompt-motion-timing`](./skills/video-prompt-motion-timing) | Refine motion timing in an existing prompt. |
+| [`video-prompt-lighting`](./skills/video-prompt-lighting) | Refine lighting in an existing prompt. |
+| [`video-prompt-film-look`](./skills/video-prompt-film-look) | Refine film look in an existing prompt. |
+| [`video-prompt-skin-detail`](./skills/video-prompt-skin-detail) | Refine skin detail in an existing prompt. |
+| [`video-prompt-performance`](./skills/video-prompt-performance) | Refine performance in an existing prompt. |
+| [`video-prompt-continuity`](./skills/video-prompt-continuity) | Refine continuity in an existing prompt. |
+| [`video-prompt-product-detail`](./skills/video-prompt-product-detail) | Refine product detail in an existing prompt. |
 
 ## How it's built
 
