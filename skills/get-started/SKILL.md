@@ -82,7 +82,7 @@ are here: look at the skills you have, not at this list. Today they can include:
   tutorial;
 - `animate-design`: a design or the user's own images and clips become an animated ad or reel;
 - `movie-producer`: a story becomes a short film with recurring characters, one look and several
-  scenes;
+  scenes, or a video ad, promo or commercial from generated footage on a lighter path;
 - `edit-footage`: the user's own footage becomes a tight vertical short or a finished
   edit, the best moments in order, with captions and music if they want them;
 - `make-clips`: one long video (a podcast, an interview, a stream) becomes several standalone

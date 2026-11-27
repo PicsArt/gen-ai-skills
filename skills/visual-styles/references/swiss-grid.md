@@ -25,7 +25,7 @@ index number** and used nowhere else. Grid hairlines are ink at about 18 % opaci
   a hold of about a second between jumps, the bar wipes in from off-frame, turns 90 degrees about its centre and
   returns, and the headline rises 170 px in 0.7 s.
 - The circle pops in with a small overshoot (`[0.3, 1.6, 0.5, 1]`) and shrinks to a dot at the end.
-- Grid lines draw on first, staggered by 0.1 s, then the elements; labels fade in with a 30 px slide.
+- Grid lines draw on first, staggered by 0.1 s, then the elements; labels slide up 30 px out of a clip band (hard edge).
 - Cued layers use `timeMode: "layer"`.
 
 ## Type
@@ -51,6 +51,9 @@ edges land on the grid.
 
 - **Do** let the one circle cross the whole grid; its path is the motion.
 - **Don't** add shadows, gradients, rounded corners on the bar or a second hue.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Arrivals.** labels slide up 30 px out of a clip band (hard edge); nothing fades: hairlines are drawn on (`trim`), the bar wipes in, the headline slides up under its hard edge, the circle snaps; allowed between beats: a hard cut.
+  - **Arrivals settle.** easing set: the snap `[0.7, 0, 0.15, 1]` for moves and linear for the hairline draw-on, as in Motion habits.
 
 ## Originality guard
 
@@ -61,3 +64,5 @@ a museum's identity. The visible grid, the snap, the single red and the huge flu
 
 The swiss-form film (a five-by-three grid drawing on, a red circle jumping cells, a bar turning upright, a
 FORM headline).
+
+**Not proven:** the clip-band slide was shown on one label, not in the full grid layout.

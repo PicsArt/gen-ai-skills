@@ -138,6 +138,12 @@ Run the pose set, then the checks; judge frames, never a mean pixel diff (it can
   over the leg, the face over the hair) whole in its own group, never cut from under the overlap. Keep a limb one width from joint
   to joint, with round ends: a change of width shows as a nub at the joint when it bends. Then zoom the wrist, elbow, knee and
   ankle in several frames of the move: segments straight, outlines unbroken, no rim.
+- **Long hair goes with the head.** Hair that hangs below the chin is all in the head piece, its outline and soft edge too. If
+  the body keeps any of it, a head tilt shows the hair twice with doubled edges. Fill the body where the hair was, under the
+  head. Bend the hanging hair toward the head bone with skin weights that ramp down it, the face rigid, so it does not swing
+  as a plank.
+- **Keys stay in range.** Every key on a `scene_ref` parameter lies in that parameter's `min`..`max`, or the scene is
+  refused. Clamp generated curves (an overshoot, a spring) before writing them.
 - **By eye.** The shoulder and hip seam crops, both sides, at rest, at the extremes and at the walk's contact and passing frames; the hand
   crop (back and palm, thumb join); near and far hands of one design; the three views read as one person; the far arm moves in the
   three-quarter presets.

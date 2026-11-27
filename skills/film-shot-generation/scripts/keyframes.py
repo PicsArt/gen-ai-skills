@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """
 Plan a video's key frames, the stills drafted before any footage is bought, and check them before
-the video is quoted.
+the video is quoted. It covers key frames only: cast sheets and location references (a recurring
+place's wide and room map) are planned by their own skills. Only a video drafted as an animatic (over
+30 s, recommended and taken, or asked for by the user) has key frames:
+a video of 30 s or less, or a longer one going straight to video, goes to its cheapest draft video
+with no stills, and the script says so with `stills: false` and `ready: true`.
 
     python3 scripts/keyframes.py input.json
     python3 scripts/keyframes.py < input.json
@@ -13,30 +17,42 @@ The input is one JSON object:
                {"id": "steps", "start": 3, "end": 12, "source": "recording", "at": 188.5},
                {"id": "payoff", "start": 12, "end": 17, "source": "generated"},
                {"id": "outro", "start": 17, "end": 19, "source": "card"}],
+     "animatic": true,
      "stills": {"hook": {"width": 1080, "height": 1920, "approved": true}}}
 
 - `frame`: the video's frame in pixels.
 - `beats`: the plan, in order, in video seconds. `source` is `generated` (footage to be bought),
   `recording` (the user's own footage; `at` is the source time it shows) or `card` (words or
   graphics only, which need no key frame).
+- `animatic`, optional: true when the user took the recommended animatic for a video over 30 s (many
+  scenes, dialogue whose timing matters, or a high spend), or asked for one. Left out or false, no
+  stills are planned.
+- `requested`, optional: true when the user asked for the animatic, which a video of 30 s or less
+  then gets too. It implies `animatic: true`, and says so with a `requested_animatic` finding when
+  `animatic` was left out.
 - `stills`, optional: the key frames made so far, by beat id, each with its `width`, `height` and
   whether the user `approved` the idea it shows.
 
 The key points are the hook (the first beat that is not a card), the payoff (the last one) and the
-turn (the beat between them at the middle of the time). Every generated beat also gets a key frame
-at its opening, because its generation starts from it. Each key frame says how the video reuses it:
+turn (the beat between them at the middle of the time); they are shown together first, for the idea.
+Every other generated beat also gets a key frame at its opening (role `opening`): it is the
+animatic's panel for that shot, and its generation starts from it, so an animatic of many generated
+beats has that many key frames. Each key frame says how the video reuses it:
 a generated beat's still is its generation's start frame, picture 1 of `imageUrls`; a recording
 beat's still is the recording itself at `at`, shown and never generated.
 
-It prints one JSON line, `{keyframes, generate, findings, ready}`. `generate` counts the stills to
-buy. `ready` is true when every generated beat has an approved still, so its video may be quoted.
-Each finding has a `code`, the `beat`, a `message` and a `fix`:
+It prints one JSON line, `{length, stills, keyframes, generate, findings, ready}`. `length` is the
+video's planned seconds (the last beat's end). `stills` is false when no key frames are drafted: then
+`keyframes` is empty, `generate` is 0 and `ready` is true, because the first look is the draft video.
+Otherwise `generate` counts the stills to buy, and `ready` is true when every generated beat has an
+approved still, so its video may be quoted. Each finding has a `code`, the `beat`, a `message` and a `fix`:
 
+- `short_animatic`: an animatic on a video of 30 s or less that the user did not ask for.
+- `requested_animatic`: `requested: true` without `animatic: true`, read as an animatic request.
 - `missing`, `unapproved`: a generated beat without an approved still. These keep `ready` false.
 - `small`: a still smaller than the frame, which caps how sharp the video can be.
 - `aspect`: a still in another shape than the frame, which the model crops or pads.
 - `unused`: a still for a beat that is not a key frame, which nothing in the video would use.
-- `too_many`: more than four key frames, more than a concept can show at once.
 
 Input it cannot read exits 1, with one line on stderr that says what is wrong.
 
@@ -49,7 +65,7 @@ import sys
 from typing import Any, Dict, List, Optional
 
 SOURCES = ('generated', 'recording', 'card')
-MAX_KEYFRAMES = 4
+SHORT_SECONDS = 30.0
 ASPECT_TOLERANCE = 0.02
 
 USAGE = 'usage: keyframes.py [input.json]; with no file, the input is read from stdin'
@@ -141,14 +157,29 @@ def run(data: Any) -> Dict[str, Any]:
     stills = data.get('stills') or {}
     if not isinstance(stills, dict):
         raise InputError('stills: must be an object keyed by beat id')
+    animatic = data.get('animatic', False)
+    if not isinstance(animatic, bool):
+        raise InputError('animatic: must be true or false')
+    requested = data.get('requested', False)
+    if not isinstance(requested, bool):
+        raise InputError('requested: must be true or false')
+    length = beats[-1]['end']
+    early: List[Dict[str, Any]] = []
+    if requested and not animatic:
+        animatic = True
+        early.append(_finding('requested_animatic', None, 'requested: true without animatic: true; read as the user asking for an animatic',
+                              'pass animatic: true with requested: true, or leave requested out if the user did not ask'))
+
+    if not animatic or (length <= SHORT_SECONDS + 1e-6 and not requested):
+        findings_short: List[Dict[str, Any]] = []
+        if animatic:
+            findings_short.append(_finding('short_animatic', None, f'an animatic for a {length:g} s video; 30 s or less gets one only when the user asks',
+                                           'go straight to the cheapest draft video with no stills, or pass requested: true if the user asked'))
+        return {'length': length, 'stills': False, 'keyframes': [], 'generate': 0, 'findings': findings_short, 'ready': True}
 
     keyframes = [_keyframe(p) for p in _points(beats)]
     generated = [k for k in keyframes if k['source'] == 'generate']
-    findings: List[Dict[str, Any]] = []
-
-    if len(keyframes) > MAX_KEYFRAMES:
-        findings.append(_finding('too_many', None, f'{len(keyframes)} key frames; a concept is seen at once in three or four',
-                                 'plan fewer generated beats, or join neighbouring ones into one shot'))
+    findings: List[Dict[str, Any]] = list(early)
 
     keyed = {k['beat'] for k in keyframes}
     for beat_id, still in stills.items():
@@ -177,7 +208,7 @@ def run(data: Any) -> Dict[str, Any]:
                                      "say in the quote that it caps sharpness, or make it at the frame's size; never upscale it silently"))
 
     ready = not any(f['code'] in ('missing', 'unapproved') for f in findings)
-    return {'keyframes': keyframes, 'generate': sum(f['code'] == 'missing' for f in findings), 'findings': findings, 'ready': ready}
+    return {'length': length, 'stills': True, 'keyframes': keyframes, 'generate': sum(f['code'] == 'missing' for f in findings), 'findings': findings, 'ready': ready}
 
 
 def main(argv: List[str]) -> int:

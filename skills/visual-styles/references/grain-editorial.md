@@ -106,6 +106,8 @@ part-sheet rig; all of it sits in one `scene` asset whose `scene_ref` carries th
 
 - **Do** keep the camera still and the acting small.
 - **Don't** add outlines, glows, gradients, bouncy pops or a second hot colour.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Finish.** the tooth, brush marks and chalk dust all live inside the one `scene` asset; the camera is still, so nothing pans; the grain is added once on the one `scene_ref`, held steady (render two frames and compare the grain); the painted chalk word takes the tooth as paint on the board.
 
 ## Originality guard
 

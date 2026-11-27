@@ -14,9 +14,11 @@ an exact frame passed on its own shuts the references out, and a frame shows onl
 - **Every prop the film gave a plate**, as its own image, named by number where it appears. Every
   object is named once, in one place: a flask on her strap and in her hand in one prompt is two
   flasks.
-- **The place:** its map, always, and its wide whenever a cut opens wider than a tight frame. An edit
-  that reveals more of the setting than the clip showed adds them too.
-- **The scene picture**, as `START FRAME`, on the scene's first run only.
+- **The place**, when it has place pictures (a place in 2 or more runs, or whose scene cuts between
+  walls, with or without an animatic, `references/scene-pictures.md`): its wide and its map, on every
+  run in that place. An edit that reveals more of the setting than the clip showed adds them too. A
+  place in one run without them is its descriptor in the prompt, or a photo of it the user brought.
+- **The scene picture**, as `START FRAME`, on the scene's first run only, when the film has an animatic.
 - **An approved still or a carried frame**, as `FRAME REFERENCE for shot N`, only for the cut that
   uses it.
 
@@ -28,12 +30,14 @@ The prompt's header names every image by number and role, once, in the order of 
 `IMAGE 1 — START FRAME`, `IDENTITY @cal`, `WARDROBE @cal`, `PROP: the wrench`, `SCENE PICTURE`,
 `SPACE map`, `SPACE wide`. After the header, people are called by name, never re-described. The
 compiler writes the header from `images`; record the ordered list and the roles, since every shot's
-references are numbers into it. Label the scene's opening image `START FRAME`, the location wide
-`SPACE wide`, and the map `SPACE map`. The opening frame carries composition and scene appearance.
-Match the START FRAME’s visual appearance in every shot. Follow the specified video camera
-movement and focus behaviour.
+references are numbers into it. Label the scene's opening image `START FRAME` (a scene picture
+with an animatic, or the last frame of the take a run continues), the location wide `SPACE wide`,
+and the map `SPACE map`. When a run has a START FRAME, it carries composition and scene appearance,
+and every shot matches its visual appearance; a run without one (no animatic, a scene's first run)
+names none, and the compiler leaves the START FRAME lines out: the wide and the cast's views carry
+the appearance. Follow the specified video camera movement and focus behaviour.
 The wide carries location appearance and geography; the map carries geometry only, never a visual
-style or a frame to reproduce. Pass the same locked `look` as the scene pictures so camera texture,
+style or a frame to reproduce. Pass the same locked `look` as the place pictures so camera texture,
 colour and rendering continue through the video. Appearance-only restrictions apply to identity,
 wardrobe and prop views, not to the approved scene frame or location wide.
 

@@ -21,8 +21,8 @@ the ring pink `#ff4fa3`, reserved for the countdown ring and the final flash.**
 
 - **The ring unwinds:** `trim` end keys 1 to 0 over the whole count, linear, so the pace is steady.
 - **Each second punches the number:** scale keys `[1.5, 0.9, 1]` over 0.35 s with a fade of the previous digit;
-  the digits are separate text layers shown for exactly one second each. A counter layer is a gap today, so cue
-  one text layer per number.
+  the number is one text layer whose `text` is an expression returning the whole second (`mp.formatNumber`), so
+  it changes exactly on each second; use a face with tabular figures so the digits keep their width.
 - **Bulbs chase:** each bulb's opacity pulses in turn, with offsets 1/24 of the period, looping.
 - **Buzzer:** the flash keys 0 to 0.8 to 0 over 0.25 s; the number shakes with the `wiggle` preset for 0.4 s.
 - **Reveal:** the answer panel scales in with an overshoot while the confetti fires.
@@ -42,13 +42,15 @@ A heavy display face for numbers and the answer; a clean grotesque for the quest
 
 ## Build with the tools
 
-Cue one text layer per digit with `start` and `duration`; key the ring `trim` linearly; apply `wiggle` to the
+Write the number as one counting text layer (an expression on `text`); key the ring `trim` linearly; apply `wiggle` to the
 number layer for the shake; build confetti with the particle field. Check each second with `picsart_scene_contact_sheet`.
 
 ## Do / don't
 
 - **Do** keep the ring thick enough to read on a phone.
 - **Don't** reuse a real show's set, logo, sound cues or format name.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Height is shadow: no cast shadows on this stage; the number and the answer panel read as nearer only by the scale punch and the overshoot above, and nothing sits on a surface that would shade it.
 
 ## Originality guard
 

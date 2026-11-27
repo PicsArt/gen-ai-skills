@@ -5,6 +5,11 @@ The pictures a side-view character needs before `picsart_scene_cut_parts` cuts i
 drawn pose for each beat of the plot that the cut parts cannot bend into. Every picture after the base is an
 edit of the base, so all of them line up at 0 px and share one hand.
 
+The cut only cuts what a picture draws, and it never says which sheets a character needs: a missing sheet shows
+up late, as a refusal (`rig_refused`, `pivot_outside_part`) or as a joint in the wrong place. Plan the sheets
+from this page before the first cut. A side character takes about 8 to 11 pictures; say so, with the cost, when
+the user picks a style whose `cast` is `pictures`.
+
 Model: Nano Banana 2 (`gemini-3.1-flash-image`), 9:16, 2K, `extra.thinkingLevel: "high"`, 4 credits a picture.
 Quote every batch with `picsart_preflight` and SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) before generating.
 
@@ -45,13 +50,15 @@ Quote every batch with `picsart_preflight` and SPEND (quote it in one line, then
 
 Draw it twice and keep the one with the pure white background and the cleanest lines:
 
-> Same drawing style as this <first character>: <who, in a few words: age, build, hair, clothes>, full body,
+> Same drawing style as this <first character>: <who, in a few words: age, build, hair, clothes with their colours>, full body,
 > side view facing right, standing straight, legs straight, the near arm hanging with the hand beside the
 > thigh, the top's hem a clear edge over the trousers, slim thighs and a rounded hip behind them, plain
 > clothes with no folds, plain white background. For a cut-out animation rig.
 
 - The first character of a film names the drawing style in words; every later one passes the first one's base
   picture as the reference ("Same drawing style as this boy").
+- Each garment named with its colour, from the look the user gave or chose. Each character in a film has its own
+  main outfit colour from the style's palette; blue is never the default.
 - Plain clothes with no folds; a hem, a sleeve seam, a waistband and a shoe top drawn as lines; hair short, tied
   back or under headwear. A loose scarf, a stick or a bag is a prop, drawn on its own.
 - A character bent by age stands "a little bent forward", never leaning on anything.
@@ -66,6 +73,10 @@ Look at the base picture first. A sheet is ordered only when, in this picture, s
 a move in the plot shows what is under it; write that reason beside each prompt in the plan. A side rig always
 gets the sheet without the top: its seat (the trousers or skirt over the hip) is cut from it, stays rigid, and
 the thigh turns under it. Without it, the top over the hip is fitted as a garment, which blocky thighs fail.
+A skirt or dress over the hip needs the leggings sheet for any side rig, not only one that walks. Without it no
+leg is drawn under the hem, so the hip pivot cannot sit at the hip: the rig is refused (`rig_refused`, the leg's
+round end short of 95%), and a hip moved down to the hem to pass that swings the leg from mid-thigh, which reads
+as a bent thigh.
 A rolled trouser cuff that already covers the ankle needs no socks sheet; a character who never speaks needs no
 mouth sheets.
 What each sheet can give:
@@ -75,7 +86,7 @@ What each sheet can give:
 | stand, idle, breathe | `Same picture without arms.` | the torso and both legs, drawn whole where the arm lay |
 | any side rig | `Same picture without the jumper: a plain white vest tucked in, the trousers drawn whole up to the waist.` (name the top it has; a vest colour unlike the trousers; for a skirt, `the skirt drawn whole up to the waist`) | the seat, cut across the hip below the hip pivot by a seam on this sheet |
 | walk | `Same picture, with white socks instead of shoes.` | the foot under the shoe |
-| walk, in a skirt or long dress | `Same picture, with skin-coloured leggings instead of the skirt.` (a colour unlike the skirt; for a dark dress `dark grey leggings`), then on that sheet `Same picture without arms.` and `Same picture, with white socks instead of shoes.` | the legs to the hips; the skirt is the base minus the legs |
+| any side rig in a skirt or dress | `Same picture, with skin-coloured leggings instead of the skirt.` (a colour unlike the skirt; for a dark dress `dark grey leggings`), then on that sheet `Same picture without arms.`, and for a walk `Same picture, with white socks instead of shoes.` | the legs to the hips; the skirt is the base minus the legs |
 | head moves | `Same picture without hair.`; under headwear `Same picture without the headscarf, her thin grey hair in a small bun.` | the head and neck; the hair or headwear is the base minus that sheet |
 | blink | `Same picture with eyes closed.` | the blink swap |
 | talk | `Same picture with mouth open.` and `Same picture with mouth in a small o.` | the mouth swaps |

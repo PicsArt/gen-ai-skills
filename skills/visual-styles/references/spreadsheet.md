@@ -49,6 +49,11 @@ highlight as shape layers with keyed rectangles. Check alignment with `picsart_s
 
 - **Do** make the total equal the sum of the highlighted cells.
 - **Don't** animate the grid lines or add a real application's chrome or logo.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Line width: no zoom, width fixed (1 px grid, 3 px selection frame).
+  - True data: every cell value and the total come from one data array in the script, the total is a counter text
+    (a text track expression with `mp.formatNumber`) over the highlighted range, a small "sample data" tag stays in
+    frame, and the unit is stated once in a header; check cell positions and the total with `picsart_scene_query_layout`.
 
 ## Originality guard
 

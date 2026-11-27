@@ -26,13 +26,17 @@ Named values; every block face is one of them with a few small texels in a secon
 ## The medium
 
 - **One merged mesh.** Blocks are 1 m; only faces open to air are built; one 64×16 px atlas of 8×8-texel tiles.
-- **Nearest filtering** (`Closest` in the Blender material, a `nearest` sampler in the glTF) so texels stay hard
-  at every distance.
-- **The world route.** Build the world with `picsart_scene_build_model` `script` (Blender Python: `bpy`, `bmesh` and
-  `math` only; the atlas arrives as a public PNG url in `textures["atlas"]`). The reply's `.glb` url expires and
-  the public host refuses a `.glb`, so embed it as a single `.gltf`, upload that, and point the scene's `model`
-  asset at the public `.gltf` url (about a third bigger, plays the same). A texture change alone needs no rebuild:
-  replace the atlas PNG inside the `.glb`, then embed again.
+- **Nearest filtering** (a `nearest` sampler in the glTF) so texels stay hard at every distance.
+- **The world route.** Build the world with `picsart_scene_build_model` `script`, a list of calls, not Python (see
+  `scene-3d-authoring`, `references/model-from-script.md`): a `cube` of size 1 per block (or a scaled one per run of
+  blocks), a `duplicate` per repeat, one `material` per block type, a `join` per material. The script has no loops, so
+  write the blocks out, leave out every block hidden inside the terrain, and use `ARRAY` (up to 50) for a straight
+  run. A `textures` image covers a whole material and the script cannot unwrap a tile atlas onto the faces or set a
+  texture's filtering, so the script builds flat-colour blocks (one material per named colour above); the specks and
+  the blossom pair need a model that is already textured. The reply's `.glb` url expires: save the
+  model with `picsart_scene_library_save` (`jobId`, `name`), which files the `.glb` in the user's Drive as it is. A shipped
+  template on the public template host cannot take a `.glb`, so embed it as a single `.gltf`, upload that, and point the
+  template's `model` asset at the public `.gltf` url (about a third bigger, plays the same).
 - **Lighting**, `sky` preset, one hard sun: `key` `intensity` 2.6, `color` `#ffe8b0`, `direction`
   `[-0.45, -1, -0.55]`, `shadow.softness` 0.04; `ambient` `intensity` 0.55, `color` `#efe2c4`, `groundColor`
   `#d8c9a8`; `environment` `{"preset": "studio", "intensity": 0.3}`. Lower the ambient or the environment and the
@@ -72,7 +76,7 @@ Both are built of 1/16 m voxels, face +z with feet on y = 0, and their palette i
   `#e6c660`, grey trousers and boots, a beard stub; legs of 4 voxels, so his walk reads mostly in the arms and the
   smock.
 - **The model** is one `.gltf` per character with six part meshes (`head`, `torso`, `armL`, `armR`, `legL`, `legR`),
-  each at the character origin, written by a Blender script (`bpy` and `math` only). Each part has a boolean
+  each at the character origin, built from cubes by a script of calls. Each part has a boolean
   parameter `showHead` … `showLegR` bound to `node:<part>.visible`. Tilo
   `https://pcdn.picsart.com/templates-cdn/88274af8-466b-48aa-a50e-db582c2e4b76.gltf`, Boro
   `https://pcdn.picsart.com/templates-cdn/09ca1851-ed1e-4e74-811e-b79691f4066f.gltf`.

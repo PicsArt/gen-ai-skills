@@ -112,12 +112,14 @@ A face drawn as separate pieces (eye, brow, mouth) is cut by colour:
 - **Mouth:** the pink line.
 
 Fill the skin under each with the face's own skin colour and grain. Hang each piece on the head from an empty
-layer at its centre:
-- **Blink:** the eye squashes to a tenth of its height for 0.07 s, every few seconds.
-- **Sees something:** the brows rise about 16 px with a small tilt, then settle at about 9.
-- **Happy:** the mouth widens (x 1.35) and keeps its thickness (y 1.1), and the eye squints a little (y 0.7). A
-  mouth grown in height thickens into a sneer.
-- **Looks at it:** the head turns toward what it sees, on the neck pivot inside the collar.
+layer at its centre, so it can be squashed, raised or widened on its own:
+- **Blink:** the eye squashes to a tenth of its height for 0.07 s.
+- **Brows:** they rise and tilt a little.
+- **Mouth:** a smile widens it (x 1.35) and keeps its thickness (y 1.1). A mouth grown in height thickens
+  into a sneer.
+
+What the face shows, and when, is the general acting rule: [cartoon-film.md](cartoon-film.md) §4 "Acting
+from the plot". The head turns on the neck pivot inside the collar.
 
 ## Animals
 

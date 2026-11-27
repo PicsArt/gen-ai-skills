@@ -1,171 +1,162 @@
 # Brick parts script
 
-The Blender Python that builds one part of the [brick toy](brick-toy.md) style as one GLB. Copy the whole block
-below, set its `PART` line, and pass it as `script` to `picsart_scene_build_model`; one call builds one part. On a
-machine with Blender, run the same code there and export the scene as GLB.
+The scripts that build one part of the [brick toy](brick-toy.md) style as one GLB. Copy the script of the part you
+need, change its numbers as shown, and pass it as `script` to `picsart_scene_build_model`; one call builds one part.
+The script is a list of calls, one per line, not Python: there are no loops, no arithmetic and no variables for
+sizes, so every number is written out. The calls and limits are in `scene-3d-authoring`
+(`references/model-from-script.md`).
 
 - Sizes are 10 times real toy bricks, in metres: stud pitch 0.08, brick 0.096 (3 plates), plate 0.032, studs 0.048
-  across and 0.017 tall with a rounded lip, every edge bevelled by 0.045 of a stud.
-- Blender's -Y is the front (it exports as +z). Every part's origin is the centre of its base, except a `limb`,
-  whose origin is its top, the joint it swings from.
-- Every part has one material, `main` (the desk: `wood`); colour it per layer with `content.materials`.
-- The model-building sandbox imports only `bpy`, `bmesh` and `math` and refuses file members such as
-  `image.pack()`: keep any edit inside that.
+  across and 0.017 tall, every edge bevelled by 0.0036 (0.045 of a stud) with 3 segments.
+- A part is 0.002 smaller than its grid cell on each side (a 1 stud brick is 0.078, not 0.08), so neighbours show a
+  seam.
+- Blender's -Y is the front (it exports as +z). A part sits on the scene origin with its base at z = 0, except a
+  `limb`, which hangs from it: its top, the joint it swings from, is at z = 0.
+- Every part has one material, `main` (the desk: `wood`); colour it per layer with `content.materials`. The colour
+  in the script is only a placeholder.
 
-| `PART` | Builds |
+| Part | Script |
 |---|---|
-| `{"kind": "brick", "w": 2, "d": 4, "plates": 3, "studs": True}` | `w` studs across (x), `d` deep (z), `plates` high; `plates` 1 is a plate, `studs` False a tile |
-| `{"kind": "round", "studs_across": 1, "plates": 3, "studs": True}` | a round brick, 1 or 2 studs across |
-| `{"kind": "limb", "w": 1, "d": 1, "bricks": 3, "foot": True}` | a column of bricks hanging from its top, with a foot plate pointing forward |
-| `{"kind": "desk", "width": 9, "depth": 6}` | a wooden desk top at y = 0, in metres |
+| A brick: `w` studs across (x), `d` deep (y), 3 plates high | [A brick](#a-brick) |
+| A plate (1 plate high) or a tile (no studs) | [A tile or plate](#a-tile-or-plate) |
+| A round brick, 1 or 2 studs across | [A round brick](#a-round-brick) |
+| A column of bricks hanging from its top, with a foot plate pointing forward | [A limb](#a-limb) |
+| A wooden desk top at y = 0 | [The desk](#the-desk) |
 
-```python
-import math
+## Changing the numbers
 
-import bmesh
-import bpy
+Work the numbers out by hand before you write them (the script cannot compute):
 
-PART = {"kind": "brick", "w": 2, "d": 4, "plates": 3, "studs": True}
+- **Body size:** `w` times 0.08 minus 0.002 across (x), `d` times 0.08 minus 0.002 deep (y), and the height is the
+  number of plates times 0.032. The body's `location` is (0, 0, half the height), because a cube is centred.
+- **Stud positions:** studs sit at multiples of 0.08 from the centre, so a row of `n` studs is at
+  (i - (n - 1) / 2) times 0.08 for i from 0 to n - 1: a row of 2 is at -0.04 and 0.04, a row of 3 at -0.08, 0 and
+  0.08, a row of 4 at -0.12, -0.04, 0.04 and 0.12. Their z is the body's height plus 0.0085.
+- **One stud per line:** make the first stud, then `duplicate` it at each other position. A long row can be one stud
+  with an `ARRAY` modifier (`count`, and a `relative_offset` of about 1.667 along the row's axis, since the offset is
+  in stud widths); check the pitch in a preview, then `duplicate` the row for the next row.
+- **Joining:** `join` takes up to 64 objects, so a brick with more than 63 studs joins its studs in two steps.
 
-P, PH = 0.08, 0.032                  # stud pitch, plate height
-SR, SH = 0.024, 0.017                # stud radius, stud height
-BEV = 0.045 * P                      # edge bevel
-GAP = 0.002                          # a part is this much smaller than its grid cell, so neighbours show a seam
+## A brick
 
+A 2x4 brick, 3 plates high. For another size, change the body's `scale` and `location`, and add or remove stud
+lines and their `join` entries as shown above. For a plate, use a body height of 0.032 (location z 0.016, stud z
+0.0405).
 
-def clear():
-    for o in list(bpy.data.objects):
-        bpy.data.objects.remove(o, do_unlink=True)
-
-
-def material(name):
-    return bpy.data.materials.get(name) or bpy.data.materials.new(name)
-
-
-def mesh_object(bm, m):
-    me = bpy.data.meshes.new("part")
-    bm.to_mesh(me)
-    bm.free()
-    o = bpy.data.objects.new("part", me)
-    bpy.context.collection.objects.link(o)
-    me.materials.append(material(m))
-    return o
-
-
-def bevelled(o, width, segments=3):
-    mod = o.modifiers.new("bevel", "BEVEL")
-    mod.width, mod.segments, mod.limit_method = width, segments, "ANGLE"
-    bpy.context.view_layer.objects.active = o
-    o.select_set(True)
-    bpy.ops.object.modifier_apply(modifier="bevel")
-    o.select_set(False)
-    return o
-
-
-def box(sx, sy, sz, at, m="main"):
-    bm = bmesh.new()
-    bmesh.ops.create_cube(bm, size=1)
-    bmesh.ops.scale(bm, vec=(sx, sy, sz), verts=bm.verts)
-    bmesh.ops.translate(bm, vec=(at[0], at[1], at[2] + sz / 2), verts=bm.verts)
-    o = bevelled(mesh_object(bm, m), BEV)
-    for p in o.data.polygons:
-        p.use_smooth = False
-    return o
-
-
-def cylinder(r, h, at, m="main", segments=40, bevel=BEV):
-    bm = bmesh.new()
-    bmesh.ops.create_cone(bm, cap_ends=True, segments=segments, radius1=r, radius2=r, depth=h)
-    bmesh.ops.translate(bm, vec=(at[0], at[1], at[2] + h / 2), verts=bm.verts)
-    o = bevelled(mesh_object(bm, m), bevel)
-    for p in o.data.polygons:
-        p.use_smooth = len(p.vertices) == 4      # smooth side, flat caps
-    return o
-
-
-def studs(w, d, z):
-    # the small bevel on each stud's top edge is its lip
-    return [cylinder(SR, SH, ((i - (w - 1) / 2) * P, (j - (d - 1) / 2) * P, z), segments=32, bevel=0.0022)
-            for i in range(w) for j in range(d)]
-
-
-def brick(w, d, plates, top=True, z0=0.0):
-    h = plates * PH
-    parts = [box(w * P - GAP, d * P - GAP, h, (0, 0, z0))]
-    return parts + (studs(w, d, z0 + h) if top else [])
-
-
-def round_brick(n, plates, top=True):
-    h = plates * PH
-    parts = [cylinder(n * P / 2 - GAP / 2, h, (0, 0, 0))]
-    return parts + (studs(n, n, h) if top else [])
-
-
-def limb(w, d, bricks, foot):
-    parts = []
-    for k in range(bricks):
-        parts += brick(w, d, 3, False, -3 * PH * (k + 1))
-    if foot:
-        parts.append(box(w * P - GAP, (d + 1) * P - GAP, PH, (0, -P / 2, -3 * PH * bricks - PH)))
-    return parts
-
-
-def desk(width, depth):
-    # wood grain in plain Python (the stage sandbox imports only bpy, bmesh and math)
-    W, H = 1024, 512
-    rnd = [0.37, 0.81, 0.13, 0.66, 0.29, 0.92]
-    dark, light = (0.30, 0.16, 0.07), (0.62, 0.40, 0.22)
-    px = [0.0] * (W * H * 4)
-    for r in range(H):
-        y = r / (H - 1)
-        for c in range(W):
-            x = c / (W - 1)
-            warp = sum(math.sin(2 * math.pi * (f * y + rnd[i]) + 3 * x * rnd[i + 3]) / f
-                       for i, f in enumerate((1, 2.3, 5.1)))
-            rings = 0.5 + 0.5 * math.sin(2 * math.pi * (38 * y + 0.9 * warp + 0.15 * math.sin(9 * x)))
-            fine = 0.25 * math.sin(2 * math.pi * 260 * y + 4 * warp) + 0.12
-            t = min(1.0, max(0.0, 0.55 * rings + 0.3 * fine + 0.15))
-            k = (r * W + c) * 4
-            for ch in range(3):
-                px[k + ch] = (dark[ch] + (light[ch] - dark[ch]) * t) ** 2.2
-            px[k + 3] = 1.0
-    img = bpy.data.images.new("wood", W, H)
-    img.pixels.foreach_set(px)
-    bpy.ops.mesh.primitive_plane_add(size=1)
-    o = bpy.context.active_object
-    o.scale = (width, depth, 1)
-    o.location = (0, -depth / 6, 0)               # more desk behind the subject than in front of it
-    bpy.ops.object.transform_apply(scale=True, location=True)
-    m = material("wood")
-    m.use_nodes = True
-    bsdf = m.node_tree.nodes["Principled BSDF"]
-    tex = m.node_tree.nodes.new("ShaderNodeTexImage")
-    tex.image = img
-    m.node_tree.links.new(tex.outputs["Color"], bsdf.inputs["Base Color"])
-    bsdf.inputs["Roughness"].default_value = 0.6
-    o.data.materials.append(m)
-    return [o]
-
-
-def build(part):
-    kind = part["kind"]
-    if kind == "brick":
-        return brick(part.get("w", 2), part.get("d", 4), part.get("plates", 3), part.get("studs", True))
-    if kind == "round":
-        return round_brick(part.get("studs_across", 1), part.get("plates", 3), part.get("studs", True))
-    if kind == "limb":
-        return limb(part.get("w", 1), part.get("d", 1), part.get("bricks", 3), part.get("foot", True))
-    if kind == "desk":
-        return desk(part.get("width", 9), part.get("depth", 6))
-    raise ValueError(f"unknown part kind {kind!r}: brick, round, limb or desk")
-
-
-clear()
-objs = build(PART)
-for o in bpy.context.collection.objects:
-    o.select_set(o in objs)
-bpy.context.view_layer.objects.active = objs[0]
-if len(objs) > 1:
-    bpy.ops.object.join()
-bpy.context.view_layer.objects.active.name = PART["kind"]
 ```
+# A 2x4 brick, 3 plates high, with its 8 studs.
+body = cube(size=1, location=(0, 0, 0.048), scale=(0.158, 0.318, 0.096), name="body")
+modifier(obj=body, kind="BEVEL", width=0.0036, segments=3, limit_method="ANGLE")
+apply_modifiers(obj=body)
+shade_flat(obj=body)
+stud1 = cylinder(radius=0.024, depth=0.017, vertices=32, location=(-0.04, -0.12, 0.1045), name="stud")
+modifier(obj=stud1, kind="BEVEL", width=0.0022, segments=1, limit_method="ANGLE")
+apply_modifiers(obj=stud1)
+shade_smooth(obj=stud1, auto_angle=30)
+stud2 = duplicate(obj=stud1, location=(-0.04, -0.04, 0.1045))
+stud3 = duplicate(obj=stud1, location=(-0.04, 0.04, 0.1045))
+stud4 = duplicate(obj=stud1, location=(-0.04, 0.12, 0.1045))
+stud5 = duplicate(obj=stud1, location=(0.04, -0.12, 0.1045))
+stud6 = duplicate(obj=stud1, location=(0.04, -0.04, 0.1045))
+stud7 = duplicate(obj=stud1, location=(0.04, 0.04, 0.1045))
+stud8 = duplicate(obj=stud1, location=(0.04, 0.12, 0.1045))
+part = join(objects=[body, stud1, stud2, stud3, stud4, stud5, stud6, stud7, stud8])
+main = material(name="main", base_color="#c8c8c8", roughness=0.3)
+assign(obj=part, mat=main)
+part.name = "brick"
+```
+
+## A tile or plate
+
+A tile has no studs: the body alone, with no `join`. This one is a 1x2 plate, 1 plate high.
+
+```
+# A 1x2 plate (1 plate high) with no studs, the shape of a tile.
+body = cube(size=1, location=(0, 0, 0.016), scale=(0.078, 0.158, 0.032), name="body")
+modifier(obj=body, kind="BEVEL", width=0.0036, segments=3, limit_method="ANGLE")
+apply_modifiers(obj=body)
+shade_flat(obj=body)
+main = material(name="main", base_color="#c8c8c8", roughness=0.3)
+assign(obj=body, mat=main)
+body.name = "brick"
+```
+
+## A round brick
+
+The body is a cylinder of radius `n` times 0.04 minus 0.001. With 1 stud across it has one stud in the middle:
+
+```
+# A round brick, 1 stud across, 3 plates high, with one stud.
+body = cylinder(radius=0.039, depth=0.096, vertices=40, location=(0, 0, 0.048), name="body")
+modifier(obj=body, kind="BEVEL", width=0.0036, segments=3, limit_method="ANGLE")
+apply_modifiers(obj=body)
+shade_smooth(obj=body, auto_angle=30)
+stud = cylinder(radius=0.024, depth=0.017, vertices=32, location=(0, 0, 0.1045), name="stud")
+modifier(obj=stud, kind="BEVEL", width=0.0022, segments=1, limit_method="ANGLE")
+apply_modifiers(obj=stud)
+shade_smooth(obj=stud, auto_angle=30)
+part = join(objects=[body, stud])
+main = material(name="main", base_color="#c8c8c8", roughness=0.3)
+assign(obj=part, mat=main)
+part.name = "round"
+```
+
+With 2 studs across it has four studs:
+
+```
+# A round brick, 2 studs across, 3 plates high, with four studs.
+body = cylinder(radius=0.079, depth=0.096, vertices=48, location=(0, 0, 0.048), name="body")
+modifier(obj=body, kind="BEVEL", width=0.0036, segments=3, limit_method="ANGLE")
+apply_modifiers(obj=body)
+shade_smooth(obj=body, auto_angle=30)
+stud1 = cylinder(radius=0.024, depth=0.017, vertices=32, location=(-0.04, -0.04, 0.1045), name="stud")
+modifier(obj=stud1, kind="BEVEL", width=0.0022, segments=1, limit_method="ANGLE")
+apply_modifiers(obj=stud1)
+shade_smooth(obj=stud1, auto_angle=30)
+stud2 = duplicate(obj=stud1, location=(-0.04, 0.04, 0.1045))
+stud3 = duplicate(obj=stud1, location=(0.04, -0.04, 0.1045))
+stud4 = duplicate(obj=stud1, location=(0.04, 0.04, 0.1045))
+part = join(objects=[body, stud1, stud2, stud3, stud4])
+main = material(name="main", base_color="#c8c8c8", roughness=0.3)
+assign(obj=part, mat=main)
+part.name = "round"
+```
+
+## A limb
+
+A column of 1x1 bricks hanging from the origin, with a foot plate one stud longer than the column is wide, pointing
+forward (-y). Each brick is 0.096 lower than the last: add a `duplicate` line for each extra brick, lower the foot
+by the same step, and add the new names to the `join`. For a wider column, widen the bricks and the foot as shown
+above.
+
+```
+# A limb: three 1x1 bricks hanging from the origin (the joint), and a foot plate pointing forward.
+top = cube(size=1, location=(0, 0, -0.048), scale=(0.078, 0.078, 0.096), name="brick")
+mid = duplicate(obj=top, location=(0, 0, -0.144))
+low = duplicate(obj=top, location=(0, 0, -0.24))
+foot = cube(size=1, location=(0, -0.04, -0.304), scale=(0.078, 0.158, 0.032), name="foot")
+part = join(objects=[top, mid, low, foot])
+modifier(obj=part, kind="BEVEL", width=0.0036, segments=3, limit_method="ANGLE")
+apply_modifiers(obj=part)
+shade_flat(obj=part)
+main = material(name="main", base_color="#c8c8c8", roughness=0.3)
+assign(obj=part, mat=main)
+part.name = "limb"
+```
+
+## The desk
+
+A flat top, 9 m wide and 6 m deep, with more desk behind the subject than in front of it (its centre sits at
+y = -1, a sixth of the depth). Change the plane's `scale` for another size and `location` y to a sixth of the new
+depth.
+
+```
+# A wooden desk top, 9 m wide and 6 m deep, its surface at y = 0 and more of it behind the subject.
+top = plane(size=1, location=(0, -1, 0), scale=(9, 6, 1), name="desk")
+wood = material(name="wood", base_color=(0.45, 0.27, 0.13), roughness=0.6)
+assign(obj=top, mat=wood)
+top.name = "desk"
+```
+
+The script draws no wood grain. To get a grain, pass a wood image as an input texture and give the material
+`texture="wood_grain"` (the name of that input) with a `texture_scale`; without one the desk is a plain wood brown.

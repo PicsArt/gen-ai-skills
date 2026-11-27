@@ -22,7 +22,7 @@ same line (the sun)** and used on nothing else.
 - Small features that cannot be on the line (an eye) are their own short stroke, drawn after the face and
   blinking.
 - The accent is a second path, a loop of the same weight, as if the line had been lifted once.
-- A caption, if any, is small lowercase and fades in under the drawing.
+- A caption, if any, is small lowercase and is written on under the drawing with `typewriter`.
 
 ## The character
 
@@ -68,6 +68,10 @@ see that the line is continuous.
 - **Do** let the line cross itself where the body needs it; one stroke may overlap.
 - **Don't** lift the pen (a second path for the cat), add shading, or taper the stroke; tapering is a different
   style.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Line width under a zoom: no zoom, width fixed at 6 px everywhere (see The medium).
+  - Arrivals: the caption, if any, is written on under the drawing with `typewriter` (no fade, no exception); the drawing arrives by `trim` end and leaves by `trim` start; there are no transitions, and a next drawing starts on blank paper.
+  - A finish belongs to the page: the paper is flat with no tooth or grain, and there is no camera, so nothing needs anchoring.
 
 ## On a part sheet
 
@@ -81,3 +85,5 @@ or a well-known logo drawn in one stroke. The single continuous stroke and the d
 ## Proven on
 
 The one-line cat film (a seated cat and a sun in one line, a blinking eye, a held breath, a draw-off).
+
+**Not proven:** the written-on arrival was shown on a plain page with one label, not beside the single-line cat.

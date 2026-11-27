@@ -4,7 +4,7 @@ description: Build and animate a 2D cartoon character in a scene — rig-humanoi
 metadata:
   category: authoring
   version: '1.9'
-  ported-from: shape-morphing 1.8 at 59.2.0
+  ported-from: shape-morphing 1.8 at 59.45.0
 user-invocable: false
 ---
 

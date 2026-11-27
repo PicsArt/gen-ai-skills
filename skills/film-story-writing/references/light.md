@@ -10,7 +10,7 @@ choose one, and what stays the same across a scene's shots.
 |---|---|---|
 | The film's colour | The colours of the whole film | The look, locked on the console, and carried into every place's descriptor (`references/look.md`) |
 | The scene's light | One setup for the scene, set once: the source, its direction, its colour temperature, the dark side | Every card of the scene, as below |
-| The scene's key picture | What that light looks like in this place | The approved scene picture: the scene's shots match it |
+| The scene's key picture | What that light looks like in this place | The approved scene picture (or, without an animatic, the scene's first approved take): the scene's shots match it |
 | A shot's change | One shot made darker, brighter or harder | How much light falls on whom, never where it comes from |
 
 Plan the scenes' light against the story, not one scene at a time: the peak's scene reads against
@@ -63,7 +63,8 @@ Say the change in plain words for that shot, and only for a reason the story giv
 
 ## The scene picture is the scene's light
 
-Once approved, the scene picture is the light every shot of the scene matches. A picture carries
+A film with an animatic has scene pictures; without one, the scene's first approved take holds
+its light the same way. Once approved, the scene picture is the light every shot of the scene matches. A picture carries
 light more firmly than any sentence, so a light changed after approval is a new scene picture, not
 a new sentence.
 

@@ -23,6 +23,7 @@ uses substage ids 5a–5f. Namespace scene, shot and run ids by episode to preve
 | `scenes` | Geography, approved picture URLs, shots with values, status, run, reference indices and trims |
 | `runs` | Planned and actual cuts, shot/scene ids, joins, ordered references and roles, prompt versions/tokens, takes and pieces |
 | `spend` | Every quote, its yes, and job workflow/id; follow dropped calls by this handle |
+| `animaticChoice` | `"animatic"`, `"straight"` or null: the series' one answer to 5c's animatic question, asked at the first episode over 30 s where one pays off; once set, a later episode or a resume never asks again |
 | `gates`, `overrides` | Evidence and any user override with gate, line and reason |
 | `cut` | Last approved scene document and final flag; user trims/splits stay theirs |
 | `attempts`, `blockedOn`, `openDecisions` | Failure counters and outstanding facts or choices |

@@ -61,7 +61,7 @@ it, check:
 
 These are your checks as the writer, never a stranger's read. Then write the film's viewer track
 (`references/story.md`): what a viewer who knows nothing must get, and by when. Whether a stranger
-gets it is decided by quality-review's cold watch on the animatic and the cut, never by you or a
+gets it is decided by quality-review's cold watch on the cut (and on the animatic, when the film has one), never by you or a
 critic who has read the story.
 
 State the identity budget you inferred ("two faces and one garage"); never ask the user to choose

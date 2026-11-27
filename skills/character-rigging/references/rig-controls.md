@@ -31,3 +31,8 @@ and ranges, so a preset or a keyed track moves every one of them.
 | humanoid | `hairBack`, `accessory`, `accessoryColor` | 0..1 / 0..1 / colour | back hair and accessory shown (1) or not (0, the default); the accessory's fill |
 
 `<side>` is `left` (the far side, behind the body) or `right` (the near side).
+
+**The face has no mouth curl or skew.** `rig-face` moves its mouth with the visemes, `happy`, `sad`, `angry`,
+`surprised`, `relaxed` and `speech`; `happy` and `sad` lift or drop both corners together, and nothing moves one
+corner or tilts the mouth. A lopsided smirk or a skewed mouth is a custom `mouth` path chart with its own
+outlines (see the `shapes` character's mouth in the visual-styles `shapes-character` reference).

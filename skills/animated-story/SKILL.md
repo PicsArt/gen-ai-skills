@@ -30,9 +30,7 @@ Read picsart-video-rules first. The film's style is fixed first (stage 1), then 
 The mode follows the shape of the request, never its size: a length or a number of characters does not make a clip an episode. Words on cards or captions do not make one either: a style whose `words` puts them there (`captions`, `intertitles`, `sound-words`) is made without a lip-synced voice, and an episode in it carries those words.
 
 Nothing here turns, hugs, claps or hands a prop to another character: reword such a beat or say
-"not yet". A character can sit: `motionPreset:sit` seats a side-view character on a seat or bench (`seat` 0.5 to 1, how
-far down it settles); only the side view is covered, so reword a sit in another view. A clip
-with a second place or a second shot is an episode. Cutting front pieces out of a set picture (cartoon-film §3) is not done here: stage a character clear of what it would stand behind. A pose the skin cannot bend into (a seated skirt, a fist) is reworded on a part-sheet or ready-made rig. A clip has no length or cast limit, and an edit the user asks for is done as asked, such as slowing the ending.
+"not yet". For a side-view character that sits down and stands up in place, use `motionPreset:sit`. Its numeric `seat` is the pelvis height as a fraction of standing hip height (0.5 to 1). For a named seat on painted furniture, use `sit_on` as in stage 3. A clip with a second place or a second shot is an episode. A set picture's front pieces are cut as objects with `picsart_scene_cut_parts` `bands` and the character is stood on the place's floor with `on_floor` (character-rigging, cut-from-one-picture): a bench or a table's near edge is cut as an object, the character is not staged clear of it. A pose the skin cannot bend into (a seated skirt, a fist) is reworded on a part-sheet or ready-made rig. A clip has no length or cast limit, and an edit the user asks for is done as asked, such as slowing the ending.
 Everything below is for both modes; **Episode** notes mark what only an episode adds.
 
 Before acting on a stage, load the available skills in its row that apply to this job, also when the work resumes there.
@@ -68,13 +66,13 @@ picsart-video-rules' "A choice made by eye" says:
   default when the user skips. Once the story is told the style stays as picked.
 
 Read the chosen row, which is already in hand, for `words`, `rows`, `cast` and `score`; an empty cell, or an index that has not got
-these columns yet, takes the defaults: `words` voice-over or captions for a clip and `lip-sync` for an episode, `rows` shots,
+these columns yet, takes the defaults: `words` `voice-over, captions` for a clip (a narrator's voice offered, with the captions) and `lip-sync` for an episode, `rows` shots,
 `cast` rig, `score` last. A default never overrides the chosen style's own recipe
 (`references/<id>.md`): where it says how its words are carried (cards, captions, no voice), that its characters are drawn
 as shapes, or that its music is planned first, the recipe is followed, so a silent style gets no voice or lip-sync. They decide the rest of the flow: `words` how the plan's words reach the viewer (a comma-separated set
 of `voice-over`, `lip-sync`, `captions` (which covers speech balloons), `intertitles`, `sound-words`; `none` means no words), `rows` what a row of the plan
 is (`shots`, `panels` or `drawing`), `cast` whether stage 2 builds a rig (`rig`), the characters are drawn as shapes
-(`shapes`, no rig build; `lip-sync` needs `rig`) or every character is cut from pictures (`pictures`), and `score` whether the music (score) is planned before the shots (`first`)
+(`shapes`, no rig build; `lip-sync` needs `rig`) every character is cut from pictures (`pictures`), or every key pose is its own whole picture held and cut to the next (`poses`, no rig and no part cuts), and `score` whether the music (score) is planned before the shots (`first`)
 or laid after the picture (`last`).
 
 **The style's finish is part of the style, built in from the first render, never an add-on.** The chosen recipe names it
@@ -85,7 +83,7 @@ optional extra or wait for the user to ask. A finish the recipe names and the to
 **Every scene animation shown to the user opens in `picsart_scene_editor`** (picsart-video-rules, "Every scene animation is reviewed in the editor"): a character test render, each revision and the film's rounds, not only stage 6. A preview video or contact sheet does not
 replace it. After the pins are fixed, reopen the editor on the new version and say which pins you addressed.
 
-**An episode is reviewed by round, on the whole film: one card on the joiner per round, never one per shot.** Round 1 is not an editor card: before any spend, show the episode as a plain-text table, one row per shot with its name, its length (its words ÷ 2.3 + 0.4 s) and its lines, and ask OK or what to edit, in plain text, never `picsart_scene_editor`; round 2 has every shot built, silent, with the captions timed; round 3 is the same film with the voice. The user pins or comments anywhere; map each pin's time to the shot that holds it and fix those shots. After each card ask with the question tool and two buttons, **OK** and **I pinned changes**, never end the turn silent. A single shot over about 15 s that is the riskiest may get its own early card.
+**An episode is reviewed by round, on the whole film: one card on the joiner per round, never one per shot.** Round 1 is not an editor card: before any spend, show the episode as a plain-text table, one row per shot with its name, its length (its words ÷ 2.3 + 0.4 s) and its lines, and ask OK or what to edit, in plain text, never `picsart_scene_editor`; round 2 has every shot built, silent, with the captions timed; round 3 is the same film with the voice. Open each round with `tools: ["comments", "trim", "delete", "add_shot"]` (picsart-video-rules, "Open the editor"). The user pins or comments anywhere; map each pin's time to the shot that holds it and fix those shots. After each card ask with the question tool and two buttons, **OK** and **I pinned changes**, never end the turn silent. A single shot over about 15 s that is the riskiest may get its own early card.
 
 Follow the chosen style's own recipe (`references/<id>.md`) and `film-flow.md` for the rest: the plain-text shot table
 first, every landing re-saves the joiner and posts the fresh link, and the final export refuses while a name card
@@ -93,19 +91,21 @@ remains (a name card is only a placeholder for a shot not built yet, never opene
 
 ## 1b. The plan
 
-Choose the mode: a clip is one shot in one place; an episode is several shots or places, or characters who talk with a lip-synced voice. Turn the request into one short paragraph and ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) the user to approve or edit it in one turn, with the style and how its words are carried (from `words`) shown beside it: who (any number of characters), where (a clip: one place), what happens, as a guide in 3 to 5 beats and never a limit, the words the style's `words` carries (narration lines, captions, intertitles or sound words, and no voice line where `words` has none), the palette (the style's own, or the brand's colours keeping the style's one hero colour), the length, and the facts the film must state. In the same ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says), in plain text, suggest the sound with a yes or no for each, never as a separate question: a narrator or character voices, only where the style's `words` carries a voice (`voice-over` or `lip-sync`; a style with none offers no voice), and a music bed under the cut. Each says what it costs, the user is free to say no to either, and no audio is made or paid for without that yes and the credit quote. A beat is
+Choose the mode: a clip is one shot in one place; an episode is several shots or places, or characters who talk with a lip-synced voice. Turn the request into one short paragraph and ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) the user to approve or edit it in one turn, with the style and how its words are carried (from `words`) shown beside it: who (any number of characters), where (a clip: one place), what happens, as a guide in 3 to 5 beats and never a limit, the words the style's `words` carries (narration lines, captions, intertitles or sound words, and no voice line where `words` has none), the palette (the style's own, or the brand's colours keeping the style's one hero colour), the length, and the facts the film must state. In the same ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says), in plain text, suggest the sound with a yes or no for each, never as a separate question: a narrator or character voices, only where the style's `words` carries a voice (`voice-over` or `lip-sync`; a style with none offers no voice), and a music bed under the cut. Each says what it costs, the user is free to say no to either, and no audio is made or paid for without that yes and the credit quote. A clip with narration lines always offers them read by a narrator's voice when its `words` has `voice-over`; captions alone are the user's choice, never yours. The narrator's voice is soft and calm, and a little different from every character's voice (another timbre or age), so narration never sounds like a character speaking. Offer the music bed when the story's mood carries one (a playful walk, a happy meeting, a gentle ending), chosen to fit that mood, and leave it out where silence or the voice alone serves the beat better; never add it by habit. A beat is
 one of: walk in or out, idle, wave, reach, pick up, hold or carry a prop, put it down, jump, jog.
 Think and hand-over join the list when `picsart_scene_capabilities` shows them. Read the allowed actions
 from `picsart_scene_capabilities`, not from memory: a beat it does not list is reworded or refused.
 
 **Plan before building** (character-rigging `references/cartoon-film.md` §1): every story question that changes a
-drawing (who waves to whom, which way they walk) is settled in the same turn.
+drawing (who waves to whom, which way they walk) is settled in the same turn. Each beat also carries every
+character's mood and reaction, worked out from the plot (cartoon-film §4 "Acting from the plot"), not left for the user to spell out.
 The plan also names every picture and voice line it needs with its credit cost. Build a face, a pose or a small prop in
 the scene first; a generation is proposed only after that attempt visibly fails.
 
 **Episode: the shot list.** Instead of the paragraph's beats, write one row per shot, approved in the
 same ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says): place, who is in it, its beats, its lines (speaker and text), its size (wide, medium or close,
-as Staging says) and the transition into it (a cut, or one `picsart_scene_capabilities` lists). Cast and places are fixed for
+as Staging says), its camera move or hold, and the transition into it (a cut by default, `crossfade` when time
+passes, `iris` or a `shape_reveal` wipe for a new chapter: cartoon-film §4 "Camera and cuts"). Cast and places are fixed for
 the whole episode; its length is the sum of the shots. One world holds for every shot (cartoon-film §2): the same light,
 grade and fades, each character's height from one reference figure, and each voice's first-line settings. A long film is built shot by shot and reviewed by round (stage 1). Where the style's `rows` is `panels` or `drawing`, a row is that unit and not a shot.
 
@@ -116,7 +116,7 @@ saved with `picsart_scene_library_save` (`kind: "character"`, tagged `style:<sty
 its `library:` uri (Pick, below), never inlined, so it is the same drawing in every shot. The save steps in the rig paths
 below are that rule for a rig; a drawn character follows it too.
 
-A style whose `cast` is `shapes` builds no rig: its characters are drawn as that style's recipe says, and this stage places and checks them, never rigging them. A style whose `cast` is `pictures` casts every character **From one picture** (below): the pose list per beat comes first, then each base picture, its sheets and plot poses as character-rigging's `references/picture-sheets.md` lays out; it never offers a part sheet or the ready-made cast. Only a `rig` cast is built, as below.
+A style whose `cast` is `shapes` builds no rig: its characters are drawn as that style's recipe says, and this stage places and checks them, never rigging them. A style whose `cast` is `pictures` casts every character **From one picture** (below): the pose list per beat comes first, then each base picture, its sheets and plot poses as character-rigging's `references/picture-sheets.md` lays out; it never offers a part sheet or the ready-made cast. A style whose `cast` is `poses` builds no rig and cuts no parts: draw each character's base, save it, then per shot generate only the key poses that shot's beat needs, each an edit of the base, as the style's "Shots" section says. Only a `rig` cast is built, as below.
 
 **A shapes character.** Before drawing it, fetch the recipe's character section: `picsart_scene_recipe` with
 `name: "visual-styles"` and the style's reference (`references/<id>.md`), and read its proportions, shape vocabulary,
@@ -153,9 +153,14 @@ character is identical: `picsart_scene_apply_template` with `uri: "library:<libr
 comes from `picsart_scene_templates` the same way, with the template's `uri`.
 Actions are applied later, to the placed character, with `picsart_scene_apply_preset`.
 
+**A new character's look.** Once you know which characters are drawn new (Describe or From one picture), settle their look before the first
+quote; a look the user's words give (build, hair, clothes) is used as given. For the rest, ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once for the whole cast, in ONE text question,
+never a picker or board: 2 or 3 looks that fit the story and style, one line each with build, hair and outfit colours (a cast's line names every new
+character), then an open line for the user's own. Each gets its own main outfit colour, never blue by default, named per garment in `{outfit}`.
+
 **Describe.** Follow character-rigging's "From a picture" and its part-sheet prompt:
 1. Quote ONE turnaround sheet with `picsart_preflight`, then SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says). Draw it with ONE
-   `picsart_generate` call, `count: 1`, with the part-sheet prompt and the user's description, and the
+   `picsart_generate` call, `count: 1`, `technical: true` (the card reports the sheet without showing it), with the part-sheet prompt and the look settled above, and the
    child's or user's reference image when they sent one. That sheet is the character: build it, save it,
    and reuse it in every scene. Never draw a second near-duplicate sheet of the same prompt to pick from.
    Offer a choice only when the user asks for one: each candidate then has its own prompt, differing in
@@ -180,7 +185,7 @@ Actions are applied later, to the placed character, with `picsart_scene_apply_pr
 
 **From one picture.** Follow character-rigging's `references/cut-from-one-picture.md`, and read its "The first call" before the first `picsart_scene_cut_parts` call (a set piece cut from the set picture too):
 1. The picture is the user's own, received with `picsart_drive_upload_ask` (`accept: 'image'`), or one drawn to that
-   reference's Input spec in the film's chosen style (its recipe says how its characters look): quote it with
+   reference's Input spec in the film's chosen style (its recipe says how its characters look) and the look settled above: quote it with
    `picsart_preflight`, then SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), and draw it with `picsart_generate`. The user's own picture is cut as it came.
    The cut parts are pictures, so the character's look comes from the picture: the style's treatments of a whole
    layer (stepping on twos, a shadow, a look) apply to it, and the ones that redraw a path (an outline stroke,
@@ -208,8 +213,8 @@ another or side by side, whichever reads at 1x on a phone; each view is labelled
 "Three-quarter", "Side") and plays the same short action set, a walk, a wave and a talk beat
 (`picsart_scene_apply_preset`: `motionPreset:walk_cycle`, then the `wave` and `talk_beat` gestures). The front view has no walk:
 it plays idle, the wave and the talk beat, and the answer says so in one line; never fake a front walk, a mirrored front or a squashed
-one, and say which view is missing when one is. The review is for comments only: ask for no editing, effects or dragging, open it with
-`comments: "all"` and tell the user in one line that this view is for comments and edits made in it are not used. Apply the comments
+one, and say which view is missing when one is. The review is for comments only: open it with `tools: []`, which leaves the user pins on the picture and
+marked stretches and no editing (picsart-video-rules, "Open the editor"), and tell the user in one line that this view is for comments. Apply the comments
 as changes to the sheet or the build, and save only after the user accepts.
 
 **A dog or cat.** Build it with `picsart_scene_build_model` `character: {animal: {species: "cat"}}` (`dog` or `cat`; the shape dials and `look` are optional):
@@ -233,7 +238,9 @@ The background follows the chosen style's recipe. For any anime style that is th
 - the user's own picture in the cartoon's ratio, received with `picsart_drive_upload_ask` (`accept: 'image'`) and declared as an asset;
 - a 2D place drawn as one SVG of depth bands, built with `picsart_scene_build_place`, saved with `picsart_scene_library_save`, and started from for each shot.
 
-A set is one picture, never generated in layers (cartoon-film §3). Set the floor line where the characters stand, and say where it is.
+A set is one picture, never generated in layers (cartoon-film §3). Set the floor line where the characters stand, and say where it is. Its nature moves a little the whole time (cartoon-film §3, "The set lives").
+For a sitter, give `picsart_scene_cut_parts` a floor and `bands.seats`. Mark the underside of the pelvis with `at` and the soles with `feet`, both in picture pixels. Check the seated figure and the standing outline on the cut's check picture. Pass the cut's returned `bands.seats` list directly to `picsart_scene_build_place` in `picture.seats`. Set `standing: false` if the chair has no room to stand.
+Place the rig with `motionPreset:on_floor`. Pass the character's `size` (for example, 0.6 for a child). For a sliding sit, set `at` to the seat's pelvis x on the feet row. For planted feet, use the seat's `feet` point. Apply `motionPreset:acting` with `travel: "in_place"` to the rig. Then apply `motionPreset:sit_on` with the seat id in `params.seat`. `sit_on` keeps the size set by `on_floor`. For a planted sit, follow character-rigging's rig-act reference for the initial placement. Run `picsart_scene_lint_layout` with a relationship like `{"kind":"on_floor","members":[{"id":"kid"}],"seat":"bench","size":0.6}`. Use this shot's rig layer id, seat id and character size.
 
 ## 4. Prop
 
@@ -352,6 +359,8 @@ for a foot or hand that must keep moving use `kind: "must_move"` with `min`, `wi
 
 Staging follows character-rigging `references/cartoon-film.md` §4 for the beats allowed here: two figures that touch
 stand on one floor line, an empty parent is never faded (fade its leaves), and a moved point changes only that point.
+Each character acts as its "Acting from the plot" says: the beat's mood on the face and body, the head turned a little
+toward whoever it speaks to or notices, a gesture with the free hand only, and what arrives in front of it ending on its floor line.
 
 Before building, list one shot per beat, each with its size:
 - **wide**: the establishing shot, the opening beat only;
@@ -360,7 +369,9 @@ Before building, list one shot per beat, each with its size:
 
 A story has at least 3 shots, and its emotional beat is a close. Change the framing with the camera: the `push_in`
 preset (`zoom` is the scale it ends at) for a move in, or a cut, the camera keys on the same frame, for a new shot. A move
-eases and never snaps in the middle of a beat.
+eases and never snaps in the middle of a beat. Each move follows cartoon-film §4 "Camera and cuts": one per
+beat and only for a reason (follow a walk, push in on a reaction, drift on a calm beat), the camera held still
+while characters talk or act fast, within its speed limits.
 
 Two characters who talk or react to each other face each other, both in the three-quarter view, never both side-on.
 Nothing important is cut by the frame edge: never a face; feet leave the frame only in a close. A prop that changes state
@@ -393,6 +404,11 @@ on one contact sheet, sent to the user) and, for a character built here, charact
 - planted feet do not slip, the walk starts and stops cleanly, and the character stays on the floor line;
 - a wave keeps the hand beside or above the head, never over the face;
 - a held prop stays at its socket in every frame, and is picked up and put down without a jump.
+- every character action passed the pose review of cartoon-film §7 (start, deepest pose, contact, prop swap, end, and a
+  zoomed crop of each joint the action turns), and you tell the user which actions were visually checked, never only
+  that the scene is valid.
+- every camera move, cut and transition passed the camera review of cartoon-film §7 (start, middle and end of
+  each move, both sides of each cut and transition).
 
 **Self-check before export (required; export does not start without it).** The check is run by tools over the
 whole window, from 0 to the composition `duration`, never over one beat and never from memory. Do these in order, and name the
@@ -430,7 +446,7 @@ first. Fix each failure through its own path and render again, before any export
 
 **Episode: continuity.** On the root, render one contact sheet with `picsart_scene_contact_sheet` across each shot
 boundary and look: each character the same size and look on both sides of a cut, and screen direction kept
-(who walked out right walks in from the left). A mouth that does not move on its line: lip-sync-lines.
+(who walked out right walks in from the left), and the next shot's first action starts after the transition. A mouth that does not move on its line: lip-sync-lines.
 
 REVIEW the preview with the user: open the scene in `picsart_scene_editor` (picsart-video-rules, REVIEW) and end
 the turn. The contact sheets above are your check and are not the review. They tweak timing, positions and

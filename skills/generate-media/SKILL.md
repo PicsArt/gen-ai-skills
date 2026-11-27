@@ -1,6 +1,6 @@
 ---
 name: generate-media
-description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo - remove or replace its background, enhance or upscale it, or turn it into a vector - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers questions about models, prices, credits and Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files. Load it first, before any tool, when they say not to ask, to work unattended, or set a spend limit. Load it before calling any Picsart model, generation or image tool.
+description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo - remove or replace its background, enhance or upscale it, or turn it into a vector - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers questions about models, prices, credits and Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files. Load it first, before any tool, when they say not to ask, to work unattended, or set a spend limit. Not for a video ad, promo or commercial (movie-producer). Load it before calling any Picsart model, generation or image tool.
 metadata:
   uses: film-shot-generation, sd25-pe, sd2-pe
   title: Generate media
@@ -16,8 +16,8 @@ When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_r
 
 Read picsart-video-rules first. One job: the user asks for one piece of media, or one edit of a picture,
 and gets it with no failed call and no surprise charge. A whole video project is another use case:
-when the user wants their footage cut, a screen recording turned into a video, a film or an
-animated design, start that use case instead.
+when the user wants their footage cut, a screen recording turned into a video, a film, a video ad,
+promo or commercial (movie-producer's ad mode) or an animated design, start that use case instead.
 
 Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
 
@@ -104,9 +104,9 @@ An edit skips this stage. For `picsart_generate`:
    the film-shot-generation skill's Seedance reference first: it says when a frame may use the
    model's own start frame field instead, and how its edit and extend prompts are written. Then
    write the prompt with the `sd25-pe` skill (Seedance 2.5) or `sd2-pe` (Seedance 2.0).
-3. **A video** is drafted and prompted as picsart-video-rules's SPEND says (rules 5, 8 and 9): its key
-   frames first, as stills, and every prompt compiled and verified, as the film-shot-generation skill says
-   under Key frames and Compile and verify.
+3. **A video** is drafted and prompted as picsart-video-rules's SPEND says (rules 5, 8 and 9): first
+   as one draft take at the cheapest setting, with no stills before it, and every prompt compiled and
+   verified, as the film-shot-generation skill says under Key frames and Compile and verify.
 
 ## 4. The quote
 

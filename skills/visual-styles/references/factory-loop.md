@@ -29,8 +29,8 @@ stripe**; the scanner beam is a thin mint `#9dffcf` line.
 
 ## Type
 
-Usually none; a small mono counter-style label is possible, but counters are a known gap: key a few static
-numbers or leave it out.
+Usually none; a small mono counter label is possible: one counting text layer (an expression on `text`) in a
+tabular-figure face, or leave it out.
 
 ## Frame checklist (on top of [FRAME.md](FRAME.md))
 
@@ -49,6 +49,9 @@ from it; render the first and last frames and compare them by eye on a contact s
 
 - **Do** leave parts with the same spacing so the pitch is the same everywhere.
 - **Don't** add a motion that has a different period from the rest; it breaks the loop.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Height is shadow.** parts, press and posts throw a flat offset duplicate of their silhouette, one light from the upper left, no blur; the press up: offset 14 px, down on a part: 3 px (ours, tune by render); parts on the belt: a thin 3 px edge.
+  - **True data.** any counter is derived from the part index and the period, returns to its first value at the loop's end, and counts only stamped parts; one unit is one part; the scanner readout is labelled schematic; a mono counter tag stays in frame.
 
 ## Originality guard
 

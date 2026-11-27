@@ -5,7 +5,7 @@ frame as if redrawn by hand every time. A kettle, its steam and a scribbled note
 
 ## Finish
 
-`line_boil` on every stroke, the stroke layers nested at `fps` 12 under a 24 fps root (see Motion habits).
+`line_boil` on the contour strokes of the subject (hatch and text stay still), the stroke layers nested at `fps` 12 under a 24 fps root (see Motion habits).
 
 ## Palette
 
@@ -27,12 +27,12 @@ a colour is added, use one pencil accent (for example a red `#d4553a`) on one ob
 
 - **Draw each stroke on** with a keyed `trim` end (0 to 1), about 0.4-0.5 s a stroke and each starting a little
   before the last one ends, in the order a person would draw: table, body, lid, knob, spout, handle, hatch.
-- **Boil** is the `line_boil` preset on every stroke layer and on the text (`rate` 10 to 15 per second,
+- **Boil** is the `line_boil` preset on the contour strokes of the subject only; hatch, tone and text stay still (`rate` 10 to 15 per second,
   `amplitude` 2-3). Put all the stroke layers in a nested `composition` with `fps` 10 or 15 (8 or 12 under a 24 fps root) and apply the preset
   to the layer ids inside it, so the wobble steps instead of sliding.
 - **Steam** rises and fades in a loop: position keys rising about 60 px over 1.8 s with a staggered start per
   curl, opacity keys fading in and out; the loop is built from repeated keys, not a time floor.
-- The note fades in after the last stroke.
+- The note is written on with `typewriter` after the last stroke.
 - Cued layers use `timeMode: "layer"`.
 
 ## Type
@@ -42,7 +42,7 @@ One short hand-lettered line in a loose marker or hand face, graphite, the same 
 ## Frame checklist (on top of [FRAME.md](FRAME.md))
 
 1. Lines only; no fills except the paper.
-2. The boil is on every line and is stepped (10-15 changes a second).
+2. The boil is on the contour lines and is stepped (10-15 changes a second); hatch and text are still.
 3. Strokes are drawn on in a natural order with small overlaps.
 4. A rising element (steam) keeps the held frame alive.
 5. The wobble is small enough to read the shape from across a room.
@@ -50,8 +50,8 @@ One short hand-lettered line in a loose marker or hand face, graphite, the same 
 ## Build with the tools
 
 Make each stroke its own shape layer with a `trim` and a stroke. Nest them in one `composition` layer with `fps`
-10 or 15, then apply `line_boil` with `picsart_scene_apply_preset` to the nested ids (never to the composition
-layer). Where a stroke needs more life, add a `wiggle` at a small amount.
+10 or 15, then apply `line_boil` with `picsart_scene_apply_preset` to the nested contour ids only (never to the composition
+layer, the hatch strokes or the text). Where a stroke needs more life, add a `wiggle` at a small amount.
 
 ## Do / don't
 
@@ -59,6 +59,10 @@ layer). Where a stroke needs more life, add a `wiggle` at a small amount.
   its shape.
 - **Don't** put the boil on the paper, or tie the boil to a time-floor expression; don't use more than one
   accent colour.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Boil: the contour strokes at the held rate above (hatch and text do not boil), one fixed `line_boil` seed per stroke so a frame renders the same twice; the paper stays still and there is no camera.
+  - A finish belongs to the page: the paper is one flat layer with no tooth or grain, and there is no camera, so nothing needs anchoring.
+  - Hatch rides the object: each hatch stroke is parented (`parentId`) to the stroke layer of the object it shades, so it moves and draws on with that object.
 
 ## Originality guard
 
@@ -67,4 +71,6 @@ subject, or a recognisable character. The graphite line, the draw-on and the ste
 
 ## Proven on
 
-The kettle film (a table, a kettle, steam curls and a note, all boiling at 10 fps, drawn on stroke by stroke).
+The kettle film (a table, a kettle, steam curls and a note, drawn on stroke by stroke).
+
+**Not proven:** the contour-only boil was shown on a one-shape drawing with three hatch lines and a note, at amplitude 6 so the difference reads at strip size.

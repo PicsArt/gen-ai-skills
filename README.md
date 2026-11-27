@@ -226,7 +226,7 @@ Skills the use cases load:
 | [`edit-pipeline`](./skills/edit-pipeline) | Run an edit of the user's footage as fixed stages, with a project record (standing decisions, approvals, the pace, a locked meaning map, every version), resume from the first stage not done, and the gate rules every check follows. |
 | [`face-hiding`](./skills/face-hiding) | Hide the faces in a video or photo by blurring or pixelating them. |
 | [`figma-storyboard-animation`](./skills/figma-storyboard-animation) | Turn a Figma storyboard of static frames into an animated scene. |
-| [`film-animatic`](./skills/film-animatic) | Draft a film or drama episode as a voiced storyboard animatic before any video is bought, with a still per shot, app screens built as scenes, every line voiced at its shot's time, cut with captions and watched until the user says yes. |
+| [`film-animatic`](./skills/film-animatic) | Draft a film or drama episode over 30 s as a voiced storyboard animatic before its video is bought, when the agent recommended one and the user took it, or the user asked for it, with a still per shot, app screens built as scenes, every line voiced at its shot's time, cut with captions and watched until the user says yes. |
 | [`film-cast-design`](./skills/film-cast-design) | Make a film's people, props and places consistent on pictures. |
 | [`film-cutting`](./skills/film-cutting) | Cut a film's accepted takes into one scene. |
 | [`film-finishing`](./skills/film-finishing) | Finish a film after picture lock. |
@@ -263,11 +263,11 @@ Skills the use cases load:
 | [`screen-ui-redesign`](./skills/screen-ui-redesign) | Recreate the screens of a recording as designed motion UI. |
 | [`sd2-pe`](./skills/sd2-pe) | Use only for a Seedance 2.0 model (model ids seedance-2.0*): optimizes user prompts for Seedance 2.0 multi-modal video generation. |
 | [`sd25-pe`](./skills/sd25-pe) | Use only for a Seedance 2.5 model (model ids seedance-2.5*): optimizes text, stories, or optional multimodal references for Seedance 2.5 text-to-video, multi-reference generation, keyframes, storyboards, blockouts, video editing, audio editing, or extension. |
-| [`social-posting`](./skills/social-posting) | Post a finished video to the user's own TikTok, Instagram, YouTube or other connected accounts through the Picsart app's post preview. |
+| [`social-posting`](./skills/social-posting) | Offer once to post a final video the user approved to their own TikTok, Instagram, YouTube or other connected accounts, and on a yes post it through the app's post preview. |
 | [`speech-aware-cutting`](./skills/speech-aware-cutting) | Choose the moments of talking footage worth keeping and cut them so no one is clipped mid-sentence. |
 | [`spoken-captions`](./skills/spoken-captions) | Put spoken words on screen from the transcript. |
 | [`visual-style`](./skills/visual-style) | A video's style, chosen by eye and kept. |
-| [`visual-styles`](./skills/visual-styles) | The animation-film and graphic drawing styles (75 recipes. |
+| [`visual-styles`](./skills/visual-styles) | The animation-film and graphic drawing styles (101 recipes. |
 | [`voice-over-generation`](./skills/voice-over-generation) | Generate a voice-over from written lines. |
 
 <!-- generated-skills:end -->

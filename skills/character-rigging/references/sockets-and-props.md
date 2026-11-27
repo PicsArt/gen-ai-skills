@@ -106,11 +106,36 @@ Set `held` and `heldBy` by merging them into the rig layer's `content.parameters
   on something there. Walk or carry on with `held` as usual.
   The `pick_up` preset (tag `rig-motion`) keys all of that at once: `start`, `duration` (2.2 s), `side`, the spot as `aimAt` (a layer
   id) or `targetX`, `targetY` (rig px from the resting wrist, + down), and `crouch` (a cut-out rig takes the planted-feet depth from
-  its own legs) and `bow` 3.5 as above; the palm, a tenth of the arm past the wrist, lands on the spot. The grip closes at `start` +
-  `duration` / 2, the touch: swap the two copies on that frame. Apply a run or walk first and `pick_up` over it (the reverse order is
-  refused: both drive `hipsRaise`); `pick_up` takes its names for its window and gives them back. Hand-keyed keys before `start` stay.
+  its own legs) and `bow` (default 3.5, a 70° bow that reaches a ball on the floor on every cut-out rig measured; where the palm already reaches
+  the spot with less, set 2.4 to 2.8 for a squat and a lean instead of a near-flat fold: check the palm against the spot with
+  `picsart_scene_query_layout`); the palm, a tenth of the arm past the wrist, lands on the spot. The grip closes at `start` +
+  `duration` / 2, the touch: swap the two copies on that frame (the apply result's `phases.touch`). **The preset moves the hand,
+  never the prop**: a `pick_up` with no `held` bound to that hand from the touch leaves the ball on the ground while the hand rises
+  empty, and validation warns `pick_up_without_prop`. Every carry or hold gesture (a pick-up, a catch, a hand-over, a lift) does the
+  same three things: the stage copy ends at the grip frame, `held` with `heldBy` the gripping hand begins on that frame (offset so
+  the prop sits inside the closed grip, never over the fingers), and the hold ends where the hand lets go, with the stage copy
+  beginning there at the hand's position (a hold that just ends mid-air makes the prop vanish; a jump or a run on that layer keeps
+  the hold or releases it first). **When the action continues in a new layer** (`kid` → `kid2` for a jump, → `kid3` for the
+  landing), the prop goes with the figure: bind the same `held` (same drawing, same `heldBy`) on the next layer from its first frame,
+  so the copy never has a frame where no layer shows it; or release it with a beat (hold ends, stage copy begins that same frame at
+  the hand). It is never cut: check a contact sheet at the pick-up, the handoff and the drop. Validation cannot see it: it reads no
+  timing. **The release falls from the hand.** At the release frame the held clip ends and the stage copy begins that same frame at
+  the hand's position (query the grip with `picsart_scene_query_layout` at that frame), and the fall starts there: a stage ball that
+  appears and hangs, or appears away from the hand, reads as floating. **Switching hands is a gesture.** Never key `heldBy` from one
+  hand to the other with the arms standing still, nor twice inside ~6 frames: the other hand reaches for the prop (a gesture on it)
+  and `heldBy` is keyed once, at the grip frame (validation warns `held_prop_hand_switch`). **Hold it up with `hold_overhead`** (tag
+  `rig-motion`; `start`, `duration`, `side`; once per side for two hands), never by hand-keying an overhead raise: a raise of 1 with
+  the elbow straight is a stick arm that sweeps the prop across the face on the way up. The preset takes the wrist by IK out to the
+  side of the head (the side the face does not point to; a front rig opens outward) and up beside it, from the rig's own anchors
+  (shoulder, arm length, eye, head box): a short arm under a big head holds the prop out beside the head at shoulder height, a long
+  arm at the temple, and the hand never meets the head's box or crosses the face. `wave` goes the same way. Apply a run or walk first
+  and `pick_up` over it (the reverse order is refused: both drive `hipsRaise`); `pick_up` takes its names for its window and gives
+  them back. Hand-keyed keys before `start` stay.
   A string or rope the character holds is a line from the hand's socket (`rightGrip`) to the prop, so it follows the hand through the
   pick-up and the run.
+  Review the pick-up as cartoon-film.md §7 says before showing it: the deepest bend (waist and hips joined, no seat
+  artwork on a thigh), the touch, and the frames on either side of the swap, with a zoomed crop of the waist, hips and
+  knees at the deepest bend.
 - **Run or jog with a prop:** pick it up first, then apply `run` or `jog` with `start` after the pick-up's last
   key (`heldBy` stays the carrying hand). The holding arm keeps its hold and only the free arm pumps; the
   crouch keys on `hipsRaise` and `spineLean` that end before `start` stay and play ahead of the stride. Move
@@ -134,3 +159,13 @@ Set `held` and `heldBy` by merging them into the rig layer's `content.parameters
 - A hand that carries the prop does not read its `HandToHeld`. `HandToHeld` turns the arm's IK on at least that much, so leave
   `<side>HandIk` at 0. The prop's animations, looks and effects ride along.
 - A rig built from SVG parts holds a prop the same way, with `heldBy` `right`, `left`, `chest`, `head` or `none` (`mouth` only when its sheet draws a mouth socket): a prop in the near hand (`right`) is gripped as a sandwich: the hand behind it, and a copy of the hand cut to the half past the grip (`rightHandFingersArt`, drawn only while that hand carries it) over it, so it shows above the fingers and is never over them (size it to sit inside the hand; a hand drawn with curves is not cut, and its prop stays under the whole hand); a prop at the chest is over the torso and under the whole near arm, so a jar hugged there is behind the arm that hugs it. On the side `rig-humanoid` the near hand grips it the same way, over the palm and under the fingers and thumb (`rightHandFingers`). Read its `heldBy` enum for the carriers its sheet gives it.
+
+## Check a hold, pick-up, throw or hand-over
+
+After any of them, run `picsart_scene_lint_layout` over the shot before you show it: the lint reads what is drawn, so a prop that jumps, floats or vanishes is a finding no one has to spot by eye. Each code names its fix.
+
+- `pick_up_without_prop` (a warning on the `pick_up` gesture): no prop begins in the hand at the touch, halfway through the gesture, so the viewer sees the hand reach for nothing and leave it. Bind the `held` clip so it begins at the touch frame.
+- `held_prop_hand_switch` (a warning on `heldBy`): the prop changes hands in a snap, within about six frames of the last switch, or with no gesture playing at that time. Move it across with a hand-over or a gesture, and leave the carrier alone between the two.
+- `heldHidden`: the prop showed under half of its drawing for 0.4 s, because the body covers it. A prop in the far hand sits behind the body by design; hold it in the near hand (`heldBy`) if it is meant to show.
+- `heldOutsideHand`: the prop floated more than one of its radii from the grip, or across the body from it, for 0.4 s. Put the prop on the rig's `held` slot and key `heldBy` to the hand that carries it.
+- `heldDropped`: the prop is drawn nowhere for 0.4 s or more beside a hold, neither by the hold nor by a copy of the same drawing (the stage copy before the pick-up or after the drop, the next shot's hold). The viewer sees it vanish or pop in. Bind the same `held` where the first hold ends, or keep the hold to the handoff. A prop whose drawing is a bare colour, or a scene local to a nested document, is counted in a note and not judged.

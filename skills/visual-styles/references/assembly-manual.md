@@ -50,6 +50,9 @@ shapes. Use `picsart_scene_contact_sheet` to check the assembled, exploded and c
 
 - **Do** draw back parts first so fills hide lines correctly.
 - **Don't** shade or add perspective to the parts; don't move parts diagonally.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Line width: no zoom and no camera, so the widths stay fixed (3 px outlines, 2 px ticks, 1.5 px leaders).
+  - Print family: two flat inks, the line ink and the orange, exactly in register (zero offset, no jitter); fills are opaque white that hide what lies behind, not `multiply`; paper flat white, no grain and no dots.
 
 ## Originality guard
 

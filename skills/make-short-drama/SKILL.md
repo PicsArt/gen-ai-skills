@@ -3,7 +3,7 @@ name: make-short-drama
 description: Make a vertical drama series, pilot or episode with a recurring cast. Use for a short drama, a story reel, microdrama, web series or its next episode. Not for a one-off film (movie-producer); drawn or cartoon animation → animated-story.
 metadata:
   uses: drama-series-writing, film-story-writing, film-cast-design, film-shot-generation, film-animatic, film-cutting, film-finishing, footage-reframing, retention-hooks, spoken-captions, background-music, scene-building-basics, quality-review, realistic-color-grade, voice-over-generation
-  optional: realistic-color-grade, voice-over-generation
+  optional: realistic-color-grade, film-animatic, voice-over-generation
   title: Make a short drama
   short-description: Make a vertical drama series with a recurring cast
   argument-hint: '[series idea or the next episode]'
@@ -16,9 +16,10 @@ argument-hint: '[series idea or the next episode]'
 When you read `picsart_scene_capabilities` or the recipe index (`picsart_scene_recipe` without `name`), pass `useCase: "make-short-drama"`: the answer leads with what this job reads and names the rest in one line.
 
 Read picsart-video-rules first. Keep one visual world, one series Library and one accepted story
-ledger. Decide on text, stills and sound before buying video: the user watches each episode as a
-voiced animatic, and says yes to it, before its first take is bought. A generated episode is a candidate until
-the user accepts it.
+ledger. Decide on text before buying video, and see each episode first as its cheapest draft video,
+as picsart-video-rules's SPEND rule 8 says: an episode of 30 s or less gets no scene pictures, panels
+or animatic (a recurring place still gets its wide and map, 5d), and over 30 s, when a voiced animatic pays off, you recommend it and the user decides (5c). A
+generated episode is a candidate until the user accepts it.
 
 Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
 
@@ -30,7 +31,7 @@ Before acting on a stage, load the skills in its row that apply to this job, als
 | 4. Cast, places and props | SPEND, ASK | film-cast-design |
 | 5a. Episode outline, script and model | ASK | drama-series-writing, film-story-writing, retention-hooks, film-shot-generation |
 | 5b. The shot list | ASK | film-story-writing, film-shot-generation |
-| 5c. Storyboard and animatic | SPEND, ASK, REVIEW | film-animatic, film-shot-generation, film-cast-design, voice-over-generation, scene-building-basics, quality-review |
+| 5c. Location references, and the animatic only over 30 s when the user takes it | SPEND, ASK, REVIEW | film-animatic, film-shot-generation, film-cast-design, voice-over-generation, scene-building-basics, quality-review |
 | 5d. Shooting | ASK, SPEND | voice-over-generation, film-shot-generation |
 | 5e. The cut, once the last take lands | SPEND, REVIEW | film-cutting, scene-building-basics, quality-review |
 | 5f. Finishing, once per series | ASK, SPEND | spoken-captions, background-music, realistic-color-grade |
@@ -97,7 +98,7 @@ the record" and never open its board again; a stage asks, or opens its board, on
 missing. A supplied cast or picture is not in the Library until it is saved: when the record has no
 `drive`, create the project as stage 4 says, then save each approved person, place and prop with
 `picsart_asset_save` (`status: "locked"`, `projectFolderUid`, `sheetVersion`; it is free), read
-`locked` in each result and write it to the cast manifest, before 5c.
+`locked` in each result and write it to the cast manifest, before 5c's location references.
 
 | Stage | What it builds | Paid |
 |---|---|---|
@@ -115,10 +116,11 @@ missing. A supplied cast or picture is not in the Library until it is saved: whe
   run on the cut, in 5e.
 - `voice`: SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the episode's lines as one batch, then REVIEW the voiced animatic. A line's
   real length moves its still, never the words.
-- `video`: forecast and buy as 5d says. The voiced animatic is the cut's timing reference in 5e.
+- `video`: forecast and buy as 5d says. A voiced animatic, when the episode has one, is the cut's timing reference in 5e.
 
-Record the stage and each approval in the series record, so a later request resumes at the next
-stage. Without a named stage, the episode runs straight through as below.
+`slides` and `voice` exist only for an episode with an animatic (5c); a user who names one asks for
+that animatic. Without an animatic, `video` opens on the approved shot list. Record the stage and each approval in the series record, so a later request resumes
+at the next stage. Without a named stage, the episode runs straight through as below.
 
 ## 1. The brief
 
@@ -208,19 +210,33 @@ options before compilation. After a long stretch, offer once to reopen the board
 
 **Exit:** approved cards, valid runs, joins and asset tags all match the accepted script.
 
-### 5c. Storyboard and animatic
+### 5c. Location references, and the animatic only over 30 s when the user takes it
 
-The episode is drafted on stills and sound, and the user watches it before any take is bought. Load
-film-animatic before you say what this stage needs or ask anything in it.
+**Location references, at any length, with or without an animatic.** A place in 2 or more of the
+episode's runs, already in the series Library from an earlier episode, or whose scene cuts between
+walls gets its wide and room map, as film-shot-generation's scene-pictures reference says; any other
+place gets neither, and its descriptor is enough. Without an animatic they are generated from the
+place's descriptor. Reuse suitable locked plates rather than recreating sets. SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the new
+ones as one batch, then ASK through asset review.
 
-Use film-shot-generation for the wide, the scene picture and a room map where needed, and
+**The animatic.** An episode of 30 s or less gets no scene pictures, panels or animatic unless the
+user asks for it; 5d opens its runs from the locked cast's views and each place's wide and map (or
+its descriptor). At the first episode over 30 s where an animatic pays off (many scenes, dialogue
+whose timing matters, or a high spend), ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once for the series, not per episode: "Animatic first
+(recommended)", with one line on why and its price, or "Straight to video". Record the answer in the
+series record's `animaticChoice` and do not ask it again; when it does not pay off, or the answer is
+`"straight"`, skip the rest of this stage. A user who asks for an animatic or names the `slides` or
+`voice` stage gets it. With an animatic, the episode is drafted on stills and sound, and the user
+watches it before any take is bought. Load film-animatic before you say what the animatic needs or
+ask anything about it.
+
+With an animatic, use film-shot-generation for each scene picture, cut from its wide, and
 film-animatic for one panel per shot, checked against its scene picture. A real app's screen is a
 scene layer built from the user's own screenshots or recording, never generated. SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the
 episode's scene pictures and panels as one batch, then ASK through asset review. Batch generation
-follows picsart-video-rules; review boards hold at most 12 tiles. Reuse suitable locked plates
-rather than recreating sets. Check the cast's faces on these pictures as film-cast-design says;
-there is no separate still test. Only a change the user asks for returns an asset through stage 4,
-under its own SPEND, with a new version and fresh review.
+follows picsart-video-rules; review boards hold at most 12 tiles. Check the cast's faces on these
+pictures as film-cast-design says; there is no separate still test. Only a change the user asks for
+returns an asset through stage 4, under its own SPEND, with a new version and fresh review.
 
 Then the sound, as film-animatic says: every line in the cast's locked voice, a bed per scene and
 the cards' effects, on one SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), each line's real length probed. Build, validate and
@@ -229,15 +245,21 @@ SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsa
 then REVIEW it with its sound, opened cold. Notes route as film-animatic says, a story
 note back to 5a's script, a shot note to that panel or line alone, each change under its own SPEND;
 loop until the user says yes. A user who wants to shoot without the animatic may, as a recorded
-override; never skip it yourself.
+override.
 
-**Exit:** every scene a run spans has approved pictures, every shot an approved panel, every needed
-asset is locked, and the user approved the voiced animatic (or the override is recorded). Missing
-evidence stops shooting.
+**Exit:** with an animatic, every scene a run spans has approved pictures, every shot an approved
+panel, every needed asset is locked, and the user approved the voiced animatic (or the override is
+recorded). Without one, every needed asset is locked and `animaticChoice` is recorded. Either way, every
+place that needs them has its approved wide and map. Missing evidence
+stops shooting.
 
 ### 5d. Shooting
 
-Use film-shot-generation. **Which shots go to video is the user's:** ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, every shot
+Use film-shot-generation. Without an animatic every shot goes to video, each run opening from the
+locked cast's views and its place's wide and map (a continued run from its previous take's last frame).
+The approved wides and maps (5c) are the place on every run there, and reused by every later
+episode; a place 5c gave none is its descriptor in the prompt. With an animatic:
+**Which shots go to video is the user's:** ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, every shot
 recommended unless the animatic showed a held panel works; a shot kept as a panel stays in the cut
 as approved, and only the picked shots are quoted, each opening on its approved panel. Raise its
 palette conflict flag through one ASK before quoting.

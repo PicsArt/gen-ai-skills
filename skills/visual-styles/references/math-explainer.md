@@ -20,11 +20,11 @@ on the term being explained.**
 ## Motion habits
 
 - **Draw on:** the axes draw with `trim` over 0.8 s, then the curve over 1.4 s with an ease-in-out.
-- **Transform the equation:** the old line fades and shifts up 20 px while the new line writes in below with a
+- **Transform the equation:** the old line is wiped out right to left by a mask and shifts up 20 px while the new line writes in below with a
   left-to-right mask wipe; matching terms keep their position so the eye follows them (cue one layer per term
-  and move the shared ones rather than fading them).
+  and move the shared ones rather than wiping them).
 - **Slide the point:** position keys sampled from the curve in a script, at constant parameter speed; the label
-  is a text layer stepped on whole frames (a counter layer is a gap today).
+  is one counting text layer (an expression on `text` that writes the curve's value with `mp.formatNumber`).
 - **Result:** the answer pops with a small overshoot and the yellow box draws round it.
 - Cued layers use `timeMode: "layer"`.
 
@@ -50,6 +50,9 @@ three frames with `picsart_scene_contact_sheet`.
 
 - **Do** pause a beat before each new line so the previous one can be read.
 - **Don't** copy a known explainer channel's character, intro animation or typeface pairing as a set.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Nothing fades: content arrives by draw-on (axes, curve, yellow box), by a left-to-right write-in, or by the result's pop; a new idea starts on a cleared board by a hard cut, no cross-dissolve between boards (ours).
+  - True data: one table of samples of the function draws the curve and drives the point, its projection line and the value label; axis ticks and the curve share one scale; the function stays written in frame from first line to result; a curve drawn only as a sketch is labelled `sketch`.
 
 ## Originality guard
 
@@ -60,3 +63,5 @@ signature transitions. The dark board, drawn axes and term-by-term transform are
 
 The math explainer film (axes and a curve drawing on, an equation transforming term by term, a point sliding along
 the curve with a value label, a yellow result).
+
+**Not proven:** the wipe-out of an old equation line was shown on a plain board, not beside a plotted curve.

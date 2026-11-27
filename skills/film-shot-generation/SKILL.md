@@ -1,6 +1,6 @@
 ---
 name: film-shot-generation
-description: Shoot a film's shots as runs - narrowing the video models a film can use, packing shot cards into multi-shot generations, drafting key frames before footage is bought, compiling and verifying every prompt, following the jobs, and routing notes to an edit, an extend or a re-roll. Use when a film's video models are narrowed, or its shots are planned into runs, pictured, generated, checked or repaired. A film the user makes step by step here is carried on by its own use case, which loads this skill when a step needs it.
+description: Shoot a film's shots as runs - narrowing the video models a film can use, packing shot cards into multi-shot generations, drafting key frames for a long film's animatic, compiling and verifying every prompt, following the jobs, and routing notes to an edit, an extend or a re-roll. Use when a film's video models are narrowed, or its shots are planned into runs, pictured, generated, checked or repaired. A film the user makes step by step here is carried on by its own use case, which loads this skill when a step needs it.
 user-invocable: false
 ---
 
@@ -81,14 +81,20 @@ frames of the change replace the clean pictures they contradict.
 
 ## Key frames
 
-Any video that buys footage, a film or a single generated shot in another kind of video, is first
-seen as stills at its key points, as picsart-video-rules says. Run `scripts/keyframes.py` on the plan's
-beats: it names each key point (the hook, the turn, the payoff, and the opening of every generated
-beat), says which of them the user's own footage already shows, and how the video reuses each
-still. Run it again with the stills before the video is quoted; `ready` stays false until every
-generated beat has an approved still.
+A video that buys footage is first seen as its cheapest draft video, as picsart-video-rules's rule on
+generated footage says: 30 s or less never gets stills unless the user asks for an animatic, and over 30 s only
+an animatic the user took has them. A recurring place's wide and map are not key frames: they are
+made at any length (`references/scene-pictures.md`). Run `scripts/keyframes.py` on the plan's beats, with `animatic: true`
+only for that choice (and `requested: true` when the user asked for it): without
+it, it answers `stills: false` and `ready: true`, and the draft video is quoted. With it, it names
+each key point (the hook, the turn, the payoff, and the opening of every generated beat), says
+which of them the user's own footage already shows, and how the video reuses each still; run it
+again with the stills before the video is quoted, and `ready` stays false until every generated
+beat has an approved still.
 
-- A film's scene pictures are its key frames (`references/scene-pictures.md`).
+- Without key frames, a run opens from the locked cast's views and its place's wide and map (or a
+  place photo the user brought) with its compiled prompt; a start frame is only the last frame of the take it continues, which costs nothing.
+- An animatic's scene pictures are its key frames (`references/scene-pictures.md`).
 - Outside a film, make a key frame the way a scene picture is made: at the video's frame, from
   full-size references. A crop of a screen recording is a low-resolution frame, never a reference.
 - **An approved key frame is used, not thrown away**: it opens its generation as picture 1 of

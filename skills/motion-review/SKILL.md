@@ -102,7 +102,8 @@ diagnostic instead of assuming equivalent output.
 
 Lead with the highest-impact confirmed issue, or say that none was found. For each finding give a
 scene location, root-time interval, what the viewer sees, the evidence, and the proposed edit.
-Separate **measured**, **visually inspected**, and **not yet verified** claims. List rejected
+Separate **measured**, **visually inspected**, and **not yet verified** claims. A scene that passes validation
+is valid, not visually inspected: say "visually checked" only for frames you rendered and looked at. List rejected
 motion additions when the user asked where to animate, so stillness is an explicit design choice.
 Keep a short ordered set of actionable changes; do not manufacture polish findings to fill a list.
 

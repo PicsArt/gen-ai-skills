@@ -21,7 +21,7 @@ Board `#2c3d33`, chalk white `#f2f0e6`, sun yellow `#f3dc6b`, leaf green `#9fd8a
   green, a sun (a circle outline) with eight short rays, an arrow with a separate head, a small water arrow in
   blue. Nothing is filled.
 - **Handwriting** is a loose hand face at 80-120 px in chalk white (and yellow for the answer), with the same
-  two effects, appearing by opacity as each label is reached.
+  two effects, written on with `typewriter` as each label is reached (never an opacity ramp).
 - **Big chalk lettering** (a title word over 150 px) takes a dry chalk `brush` on the text content instead of
   the dissolve: `{"tip": "chalk", "coverage": 0.95, "streaks": 0, "angle": -24}`, at the board's angle. A few thin
   breaks show the board through the letters; coverage under 0.9 cuts the word into stripes. A board
@@ -31,7 +31,7 @@ Board `#2c3d33`, chalk white `#f2f0e6`, sun yellow `#f3dc6b`, leaf green `#9fd8a
 ## Motion habits
 
 - **Draw on in lesson order:** pot, stem, leaves, sun, rays, arrow, water. Each `trim` end runs 0 to 1 over
-  0.5-0.8 s with an ease in and out, starting just before the last one ends; labels fade in 0.3 s as the
+  0.5-0.8 s with an ease in and out, starting just before the last one ends; labels write on with `typewriter` over 0.3 s as the
   stroke they name finishes.
 - The chalk is **still while it is not drawing**: no wobble on finished lines; if some life is wanted, a
   `line_boil` preset at a very low `amplitude` and a stepped rate (a nested composition at `fps` 6).
@@ -59,6 +59,9 @@ effects. Stagger starts so the lesson reads in order, and check with `picsart_sc
 
 - **Do** let strokes overlap a little at joins.
 - **Don't** use a realistic chalk texture image, a gradient, or filled colour; don't draw everything at once.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Arrivals and transitions.** strokes are drawn on (`trim`) and title lettering is written (`typewriter` or a clipped rise), the answer last; allowed between beats: a hard cut or a wipe by a duster stroke; forbidden: crossfades. Labels arrive as the motion habits describe.
+  - **Finish.** the dust smudges sit in the board group; the grain is the two chalk effects with their fixed seed, so it holds steady; no pan.
 
 ## Originality guard
 
@@ -69,3 +72,5 @@ a named teacher's lettering. The chalk stipple and the live draw-on are the styl
 
 The chalkboard-plants film (a plant in a pot, a sun with rays, arrows, handwritten labels and an answer line, all
 drawn on in chalk).
+
+**Not proven:** the written-on arrival was shown on a plain page with one label, not on a board with a plant, arrows and an answer line.

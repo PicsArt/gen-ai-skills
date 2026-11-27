@@ -1,15 +1,20 @@
 ---
 name: film-animatic
-description: Draft a film or drama episode as a voiced storyboard animatic before any video is bought, with a still per shot, app screens built as scenes, every line voiced at its shot's time, cut with captions and watched until the user says yes. Use when a film's story and shots are worked on stills and sound first.
+description: Draft a film or drama episode over 30 s as a voiced storyboard animatic before its video is bought, when the agent recommended one and the user took it, or the user asked for it, with a still per shot, app screens built as scenes, every line voiced at its shot's time, cut with captions and watched until the user says yes. Use when a film's story and shots are worked on stills and sound first.
 user-invocable: false
 ---
 
 # Film animatic
 
 The animatic is the film before video: one picture per shot, the real voices at the shot's
-timing, cut together and watched. Stills and sound are cheap and video is not, so the story and
-the cinematics are settled here, and the user's yes to the animatic is what opens shooting. A
-first paid video is never where anyone first sees the movement or hears a voice.
+timing, cut together and watched. It is optional. A video of 30 s or less gets none unless the user asks: it goes
+straight to its cheapest draft video, as picsart-video-rules's SPEND rule 8 says. Over 30 s, when
+an animatic pays off (many scenes, dialogue whose timing matters, or a spend high enough that a
+wrong shot costs more than its stills), the agent recommends it and asks once: "Animatic first
+(recommended)" with why and its price, or "Straight to video"; the user decides. Otherwise it goes
+straight to the draft video with no stills (beyond a recurring place's wide and map, which
+film-shot-generation makes at any length) and no question. A user who asks for one gets one. When there is an animatic, the
+story and the cinematics are settled on it, and the user's yes to it is what opens shooting.
 
 The use case owns the gates; this skill owns the method. Every paid call below is a SPEND as
 picsart-video-rules says, quoted with `picsart_preflight` and bought on a yes (or a stated spend
@@ -121,7 +126,8 @@ The approved animatic is the film's plan for everything after it:
 
 ## Traps
 
-- Buying video before the animatic is approved, or calling the scene pictures alone an animatic.
+- An animatic the user did not ask for on a video of 30 s or less, or one made without the user's yes to it.
+- Once there is an animatic, buying video before it is approved, or calling the scene pictures alone an animatic.
 - A silent animatic called reviewed: the user has not heard the voices yet.
 - An animatic called reviewed with no cold watch, or a cold watch given the cards, the story or the
   track: whoever knows the story fills in what the picture never shows.

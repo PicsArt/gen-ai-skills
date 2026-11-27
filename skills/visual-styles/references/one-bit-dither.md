@@ -53,6 +53,8 @@ Verify with a render (`picsart_scene_contact_sheet`) that only the two colours r
 
 - **Do** use soft gradients; the dither is only as good as the grey it starts from.
 - **Don't** use a colour layer under the chain, or a threshold narrower than the noise; don't add outlines.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Print family: one plate, black ink on white: no registration offset, halo or overprint; the `noise` keeps `seedMode` fixed (as above) so the dots do not crawl.
 
 ## Originality guard
 

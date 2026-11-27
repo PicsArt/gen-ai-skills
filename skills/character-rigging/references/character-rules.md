@@ -83,8 +83,8 @@ target within reach. Draw the sock and the leg to end along the shoe's collar, s
 at the heel.
 
 **The contact shadow stays under the feet.** It follows the feet (the foot targets), never the hips or
-the character's root. Moving the root back while the foot targets go forward, as when sitting down, must
-not slide it. On a seat it stays under the feet, and the seat gets its own shadow. Place it by an
+the character's root. As the sitter lowers onto the seat, keep the contact shadow under the soles.
+The chair has its own shadow in the picture. Place it by an
 expression from the placed rig's `leftFoot` and `rightFoot` sockets
 (`ctx.composition:getLayer("<character>"):getSocket("leftFoot")`), the midpoint of the two at the floor
 line, never by parenting it to the character layer.

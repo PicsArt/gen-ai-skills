@@ -72,6 +72,8 @@ stepped pieces in a `composition` layer with `fps` 15 and apply `random_hold` an
 - **Do** let the craft overlap the planet or the sign so the depth reads.
 - **Don't** shade the planet or add a glow to the flame; a second gradient breaks the flat look. Don't use red
   on the ground or the title.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Line width under a zoom: no zoom, width fixed at 5-6 px (see The medium).
 
 ## Originality guard
 

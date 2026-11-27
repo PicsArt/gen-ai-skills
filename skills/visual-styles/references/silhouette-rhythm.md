@@ -64,6 +64,9 @@ else. Check on a contact sheet that the cut frames land on the bar.
 
 - **Do** keep the camera locked; rhythm is the camera.
 - **Don't** add inside detail, gradients or a second silhouette colour.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Rate split: the bar-colour cuts, the beat ring and the count marker run at the root rate; hops may step on twos in a nested composition; a beat is a whole number of frames (12 at 24 fps at 120 bpm) and every key sits on a whole frame.
+  - Stop time (optional): freeze on the last beat by ending the silhouettes' keys at that time in their nested composition while the beat ring and count marker keep theirs.
 
 ## Originality guard
 

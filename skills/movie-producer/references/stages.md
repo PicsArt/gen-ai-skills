@@ -81,13 +81,19 @@ board and never shown as text.
       cut and checked.
 - [ ] A photo the user brought is saved as it came, matched on probe, and never put up for approval.
 - [ ] Every speaking character has a saved voice line.
-- [ ] Every scene has an approved wide and opening scene picture, with the opening cast only.
-- [ ] A room map exists where the scene cuts between walls; it is reused per place and time of day.
-      A single outdoor background uses its wide as its geography.
-- [ ] Location URLs and the geography line are recorded in `scenes[].pictures` and `scenes[].geography`.
+- [ ] Every place in 2 or more runs, or whose scene cuts between walls, has its approved wide and
+      room map, with or without an animatic, generated from its descriptor when there is none. One
+      wide and one map per place and time of day, reused. A place in one run that does not cut
+      between walls has its descriptor only.
+- [ ] Without an animatic (30 s or less, or over 30 s without one): no scene picture was bought;
+      every scene has its geography line in `scenes[].geography`.
+- [ ] With an animatic: every scene has an approved wide and opening scene picture, with the
+      opening cast only. A single outdoor background uses its wide as its geography.
+- [ ] Location URLs, when bought, and the geography line are recorded in `scenes[].pictures` and `scenes[].geography`.
 - [ ] Every tag in a run has a locked row read back from `picsart_asset_list`.
-- [ ] Scene pictures were checked for the cast's faces, positions and room geometry; no separate
-      still test was bought. Per-shot panels exist only for an explicit preview request.
+- [ ] Scene pictures, when bought, were checked for the cast's faces, positions and room geometry;
+      without them the cast is checked on the first draft takes. No separate still test was bought.
+      Per-shot panels exist only for a storyboard or animatic in `requestedPreview`.
 
 Common mistakes: putting a picture on a board before looking at it; the rest are film-cast-design's
 Traps.
@@ -101,8 +107,9 @@ Traps.
       selected model's ceiling are shown; no mergeable short runs remain. A changed approved
       grouping is shown in the existing approval/quote step, with prompts and quote refreshed.
 - [ ] Existing job handles and footage are preserved; repacking never resubmits paid work.
-- [ ] Stage 5's cast and location-reference checks passed. Only an explicit `requestedPreview`
-      needs its own review completed; no preview is required in the default flow.
+- [ ] Stage 5's cast and location-reference checks passed. Only a `requestedPreview` (the user's
+      request, or your animatic for a film over 30 s) needs its own review completed; no preview is
+      required otherwise.
 - [ ] A forecast was given once, before the first video, at the draft rate with the finish beside
       it, and called an estimate.
 - [ ] Every independent run went out in one batch as a draft (the model's draft setting or lowest

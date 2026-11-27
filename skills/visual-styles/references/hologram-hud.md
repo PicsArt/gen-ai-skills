@@ -48,6 +48,9 @@ fake it by scaling x of a symmetrical wireframe; add `glow` to the lines. Check 
 
 - **Do** keep readouts few and short.
 - **Don't** copy a film's fictional interface, a known game HUD or its icon set.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Line width.** no zoom, the 2 px lines stay fixed; if a push-in is added, one shared parameter drives zoom and stroke width (constant on screen), and small readouts take an opacity keyed to it.
+  - **True data.** each readout is computed from the numbers that move the picture (turn angle, scan height) with a text expression; invented values are tagged SIM in frame; the object is labelled schematic; counts add up.
 
 ## Originality guard
 

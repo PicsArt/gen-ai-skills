@@ -15,8 +15,8 @@ Everything else stays muted.
 
 - **One even black outline about 7 px at 1280x720**, closed round every shape, the same width on every part
   and on props. Fills are flat: no shading, no gradient, no texture.
-- **Drawn on twos:** build the whole shot in a `composition` layer with `fps` 12 inside the 24 fps root, so
-  every move steps. Do not add easing blur or overshoot.
+- **Drawn on twos:** build the shot's people, animals and props in a `composition` layer with `fps` 12 inside the 24 fps
+  root, so every drawn move steps; the dot-grid transition runs at the root rate. Do not add easing blur or overshoot.
 - Shots run long (4 to 9 s) and hold. Acting is small: `breath`, a slow `headTilt`, one blink, one reach.
 - Cuts and graphic transitions are hard, flat and fast; the style never uses soft fades between shots.
 
@@ -60,9 +60,9 @@ Each line below was proven on a render (see Proven on).
   one ink outline, a serif word on it in the wall colour, and a wavering ink line for its string; sway it
   with a slow `rotation`.
 - **A title card:** a flat mustard field, a small serif caps line above a large serif title, a wave line
-  drawn under it with `trim`; the title fades in over 0.4 s and holds.
+  drawn under it with `trim`; the title is written on with `typewriter` over 0.4 s and holds.
 - **The dot-grid transition:** a field of red circles in one grid, each growing from a point with a delay by
-  its column, until they overlap and fill the frame; the next shot is already under them. 0.8 s, no easing.
+  its column, until they overlap and fill the frame; the next shot is already under them. 0.8 s, no easing, at the root rate (it is a wipe, not a drawn piece).
 - **A morph between shots:** a circle becomes a rectangle by animating the `vertices` of one path: both with
   12 vertices, the same winding, corners matched (start the circle at -135 degrees so its four corner
   vertices meet the rectangle's); the new shot's wall colour is the shape's final fill.
@@ -83,20 +83,23 @@ field and wall colour on red.
 1. One black outline of the same width on every part and prop; no shading.
 2. The hero red appears on one object only.
 3. No line crosses a bent elbow or knee; hands do not overlap into a blob.
-4. Everything steps on twos; no smooth tweens, no blur.
+4. Every drawn move steps on twos, transitions run at the root rate; no smooth tweens, no blur.
 5. An animal's tail never hangs through the floor: stand it on a ledge.
 
 ## Build with the tools
 
 Wall, floor, props and graphic shots are shape and text layers; each person or animal is a `scene_ref` of a
-built rig (`picsart_scene_build_model` `character`, `family` for the animal) with `fit` `none`; the whole shot sits in a
-`composition` at 12 fps.
+built rig (`picsart_scene_build_model` `character`, `family` for the animal) with `fit` `none`; the shot's drawn content sits in a
+`composition` at 12 fps and the dot-grid transition sits outside it at the root rate.
 
 ## Do / don't
 
 - **Do** keep the camera still and the cast cut at the floor line.
 - **Don't** add a second hot colour, a glow, a gradient or smooth easing.
 - **Don't** draw a joint cap, cuff or ring into the part sheet; the builder joins it.
+- **Template rules, this style's choices** (the rules every recipe holds):
+  - Rate split: the people, animals, props and the morph step on twos inside the shot composition as above; the dot-grid transition runs at the root rate; the camera is still, so there is nothing to judder, and no film finish is added.
+  - Boil: nothing boils; the outline holds and a pose changes in one step, which is what keeps the shots calm.
 
 ## Originality guard
 
@@ -110,3 +113,4 @@ A close-up, a two-person handshake (recolour), a hound that stands then sits on 
 title card, a dot-grid transition and a circle-to-rectangle morph, all 16:9 and 3 to 6 s, previewed locally.
 **Not proven, so not in this recipe:** a seated person (the shirt hem frays and the trousers show patches at the
 hip when the hips bend), a wagging animal, crowds.
+**Not proven:** the root-rate dot grid was shown on six dots over a flat wall, sampled between 12 fps steps, not between two full shots.

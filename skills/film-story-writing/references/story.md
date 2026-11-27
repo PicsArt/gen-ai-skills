@@ -153,7 +153,7 @@ in a note to the user:
 - Is the peak one shot, with a face that plays it openly, and is every other face held in?
 - Is anything in **Fixed** distorted?
 - Does anything belong to another time or world than **Where** says (a phone in 1962)? A wrong
-  object here becomes a scene picture, then a run.
+  object here becomes a scene picture or a take, then a run.
 - Is there a scene that only explains, or whose seconds hold no action? Cut it or fold it into its
   neighbour.
 

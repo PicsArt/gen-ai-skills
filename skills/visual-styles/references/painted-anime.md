@@ -29,7 +29,8 @@ Paint the place in depth bands instead, and the near pieces slide past faster th
 `picsart_generate`, and the compose, the parallax and the walkers through the scene tools. Steps 3 and 4 (cut
 the painting into band plates, fill what each band hides) wait for the queued `paintUrl` input on
 `picsart_scene_build_place`. Until it lands, the stage route is the painted plate as one layer, plus a separate
-foreground layer for the near pieces (step 7).
+foreground layer for the near pieces (step 7). A painting cut by masks you give already
+runs: `picsart_scene_cut_parts` `bands`, then `picsart_scene_build_place` with `picture`.
 
 1. **Band layout (`picsart_generate`, SVG).** Ask an image model that outputs SVG (pick it with
    `picsart_model_choose`) for a 2D background layout with **exactly five top-level groups, back to front: `sky`, `far`, `mid`,
@@ -113,7 +114,7 @@ face proportions read as drawn. Make the character through the SVG part-sheet fl
 If there is no sheet, keep the background flat to match flat characters.
 
 **The description.** Start from this text and fill `{subject}` (who it is, e.g. "slim girl violinist") and
-`{outfit}`:
+`{outfit}` (each garment with its colour; blue is never the default):
 
 > {subject} drawn in Japanese TV-anime cel style: about 6.5 heads tall, long slim legs, narrow
 > shoulders; large anime eyes (each eye a tall rounded shape under a thick dark upper lash line, a deep-blue iris

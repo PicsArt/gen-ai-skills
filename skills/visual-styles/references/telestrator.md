@@ -48,6 +48,9 @@ without separate keys. Check overlap with `picsart_scene_query_layout`.
 
 - **Do** keep strokes thick enough for a phone screen.
 - **Don't** use a real club's kit, crest or a league's graphics package.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Stop time (optional): freeze the play on the key beat by ending the players' keys at that time in a nested composition while the marker strokes draw on and the ring pulses at the root rate; the ring is keyed to the frozen spot then, not attached.
+  - True data: 11 discs a side, one disc = one player, numbers each used once; any distance or speed label is computed from the same position keys that move the discs; a small `schematic` tag stays in frame because the play is invented (ours).
 
 ## Originality guard
 

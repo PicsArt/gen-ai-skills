@@ -49,6 +49,9 @@ dimensions from a short helper in a script. Check angles with `picsart_scene_que
 
 - **Do** draw hidden joints (circles) as full circles.
 - **Don't** shade parts, add colour, or use a perspective view; keep to an orthographic view.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Line width: no zoom, width fixed (4 px outlines, 2 px construction lines and ticks, 1 px grid).
+  - Nothing fades: everything is drawn or written; construction lines, outlines and dimension lines by `trim`, dimension numbers and the title block by `typewriter`; the grid and frame are the paper and are there from the first frame; the only transition is a hard cut.
 
 ## Originality guard
 

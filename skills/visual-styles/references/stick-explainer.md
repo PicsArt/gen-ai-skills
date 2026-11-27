@@ -68,6 +68,9 @@ that the chart reads.
 
 - **Do** let each drawn line start where the last one ended so the eye is led along.
 - **Don't** add faces, gradients or shadows; don't draw everything on at once.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Line width: no zoom, the 6 px line stays fixed.
+  - Arrivals: the closing caption is written on with `typewriter` (nothing fades); lines draw on with `trim`, the bulb, bars and star pop by scale, the figure walks in; the only transition is a hard cut.
 
 ## On a part sheet
 
@@ -81,4 +84,6 @@ its hand, or a famous chart. The plain line, the draw-on and one accent are the 
 ## Proven on
 
 The idea-stick film (a figure walks in, a bulb pops, an arrow and a chart draw on, a star pops at the peak, the
-figure jumps, a caption fades in).
+figure jumps, a caption is written on).
+
+**Not proven:** the written-on arrival was shown on a plain page with one label, not under the walking figure and the chart.

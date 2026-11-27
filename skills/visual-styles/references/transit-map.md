@@ -49,6 +49,8 @@ timing with `picsart_scene_contact_sheet`, and run `picsart_scene_query_layout` 
 
 - **Do** give the trains a small hold at hubs.
 - **Don't** curve a line, use gradients or add shadows.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Line width.** no zoom, the 18 px line width stays fixed.
 
 ## Originality guard
 
