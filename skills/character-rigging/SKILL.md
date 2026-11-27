@@ -57,8 +57,9 @@ A 2D cartoon character starts from a catalog rig (`scene://rig-humanoid`, `scene
 A cut-out puppet or side rig cut from ONE finished picture, with drawn poses, is `references/cut-from-one-picture.md`
 (`picsart_scene_cut_parts`). The pictures it is cut from (the base, only the sheets this picture needs, a drawn pose per
 plot beat the cut cannot bend into) are `references/picture-sheets.md`, read before anything is generated.
-A light paper or felt rim is cut by the tool with `labels.regions.edge: "light"`. A picture bounded by neither (a
-coloured line, only a change of colour) is cut by hand along its own edge: `references/cut-any-edge.md`.
+For a side-view photo, read `references/photo-walk.md` before generating edits. It covers color keys, part sheets, joint moves and the walk.
+For drawn outlines use `labels.regions.edge`: `"light"` for a pale rim or `{ color: [r,g,b] }` for a sampled line.
+Read `references/cut-any-edge.md` for other boundaries.
 
 Rules that hold on every step: animate only the rig's parameters (key them in the layer's `content.parameters`, or apply a rig preset); never write joint Lua by hand; verify a walk or a gesture on a `picsart_scene_contact_sheet`.
 

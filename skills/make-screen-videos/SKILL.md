@@ -217,7 +217,7 @@ pictures: **pictures the user brings, a film's scene pictures included, are refe
 shot**, never a separate step. Run the film-shot-generation skill's `scripts/keyframes.py` on the
 plan's beats when you want the check in writing: for a short it answers `stills: false`.
 Its prompt is compiled with `picsart_film_compile_prompt` (picsart-video-rules's SPEND rule 9), with
-the size and lens the recording's own plan gives that shot. A crop of the recording is usually
+`scene` (required) and the size and lens the recording's own plan gives that shot. A crop of the recording is usually
 smaller than the frame, so say so when it is the reference.
 Footage the user supplies, received with `picsart_drive_upload_ask`, can open it too.
 

@@ -23,7 +23,8 @@ an `id`), posed by an `ik` constraint that reaches for a target layer (`leftFoot
 `skin`ned to the empty `spine` and `neck` bone layers, which `spineLean` and `headNod` turn inside
 the `min`/`max` on their rotation tracks; the arms hang from `spine` and the head from `neck`.
 The template poses the parts from its parameters, and each FK parameter's `min`/`max` is its joint's
-limit. Animate only the parameters: key them in the layer's
+limit; a rig built by hand puts its joint limits in its parameters' `min`/`max` too. A binding or a
+keyframe outside them is refused by name, and an expression's value is held inside them as it runs. Animate only the parameters: key them in the layer's
 `content.parameters` (`{"leftUpperArmRaise": {"keyframes": [...]}}`), or apply a rig preset.
 
 **Sockets, reach and held props.** A placed character publishes sockets (`head`, `chin`, `chest`, hands, grips, feet, `seat`, `mouth`, `held`; a dog or cat `mouth`, paws, `body`, `tail`): a parent targets `{"layer", "socket"}` and Lua reads `getSocket`. A `reach` constraint on the instance layer puts a socket on a stage point (`{"type": "reach", "socket": "rightHand", "target": {"layer": "ball"}, "mix": 1}` lands a hand on a ball; `"seat"` on a bench seats the character). A humanoid rig or a dog or cat holds a prop itself through `held` and `heldBy` (`right`, `left`, `chest`, `mouth`, `none`; a character built from a part sheet also `head`, worn on its `crown`; an animal only `mouth` or `none`), two hands by `<side>HandToHeld`. Tables, the `via` dial, carriers and worked cases: [references/sockets-and-props.md](sockets-and-props.md).

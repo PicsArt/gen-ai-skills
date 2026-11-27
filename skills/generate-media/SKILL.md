@@ -1,6 +1,6 @@
 ---
 name: generate-media
-description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo - remove or replace its background, enhance or upscale it, or turn it into a vector - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers questions about models, prices, credits and Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files. Load it first, before any tool, when they say not to ask, to work unattended, or set a spend limit. Not for a video ad, promo or commercial (movie-producer). Load it before calling any Picsart model, generation or image tool.
+description: Make an image, a video, a voice line, a sound or a song from a prompt, or edit a picture or product photo - remove or replace its background, enhance or upscale it, or turn it into a vector - or relight a video they already have, with a new light, time of day or weather - with a model that fits, its settings checked and its price quoted before anything is charged. Also answers questions about models, prices, credits and Drive. Use when the user asks to generate, make or create an image, a video or audio, to edit a picture, to browse the models, or about a price, their credits or their Drive files. Load it first, before any tool, when they say not to ask, to work unattended, or set a spend limit. Not for a video ad, promo or commercial (movie-producer). Load it before calling any Picsart model, generation or image tool.
 metadata:
   uses: film-shot-generation, sd25-pe, sd2-pe
   title: Generate media
@@ -52,6 +52,16 @@ An edit names its tool by what it does to the picture:
 
 Each picks its own model. Before a vector of a photo, say once that photos vectorize poorly and
 logos, icons and simple graphics well. Anything else is made with `picsart_generate`.
+
+**A video relit** (a new light, another time of day, other weather) is an edit too, of a video the
+user already has. Get the video's URL (stage 2), then open `picsart_media_choose_video_effect` with
+it as `video`, and end the turn: the user picks a ready-made look there, or builds their own
+lighting. Set `recommended` only when they named a look; never pick one for them. The answer
+(`video_effect_choice`) names the look. After the quote (stage 4), apply it with
+`picsart_media_apply_video_effect`, to the answer's `video` when it carries one: an `effect` id
+goes in as `effect`, and `effect: "custom"` with a `lighting` URL goes in as `lighting` alone. The
+relit video is a new copy at the same length, and the original stays as it was. A change no look
+covers is a video made with `picsart_generate` from that video and a prompt.
 
 ## 2. The user's files, as URLs
 
@@ -116,7 +126,8 @@ says. `picsart_preflight` takes the model and the planned `picsart_generate` inp
 reports before you quote. `credits: null` means the price is not known, never that it is free. The
 edit tools give no quote of their own: to price one, preflight the model id you will pass as its
 `model` (the default may pick a different model). If that gives no number, say it charges credits
-and the amount is not known in advance.
+and the amount is not known in advance. A relight takes no `model` and gives no quote either: say
+the same of it.
 
 When the balance from `picsart_balance` is short of the quote, say by how much, and offer what
 costs less: fewer outputs (`count`), a lower resolution or a shorter length, or a cheaper model.

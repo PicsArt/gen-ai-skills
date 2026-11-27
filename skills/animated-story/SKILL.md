@@ -68,7 +68,7 @@ picsart-video-rules' "A choice made by eye" says:
 Read the chosen row, which is already in hand, for `words`, `rows`, `cast` and `score`; an empty cell, or an index that has not got
 these columns yet, takes the defaults: `words` `voice-over, captions` for a clip (a narrator's voice offered, with the captions) and `lip-sync` for an episode, `rows` shots,
 `cast` rig, `score` last. A default never overrides the chosen style's own recipe
-(`references/<id>.md`): where it says how its words are carried (cards, captions, no voice), that its characters are drawn
+(visual-styles' `references/<id>.md`): where it says how its words are carried (cards, captions, no voice), that its characters are drawn
 as shapes, or that its music is planned first, the recipe is followed, so a silent style gets no voice or lip-sync. They decide the rest of the flow: `words` how the plan's words reach the viewer (a comma-separated set
 of `voice-over`, `lip-sync`, `captions` (which covers speech balloons), `intertitles`, `sound-words`; `none` means no words), `rows` what a row of the plan
 is (`shots`, `panels` or `drawing`), `cast` whether stage 2 builds a rig (`rig`), the characters are drawn as shapes
@@ -85,7 +85,7 @@ replace it. After the pins are fixed, reopen the editor on the new version and s
 
 **An episode is reviewed by round, on the whole film: one card on the joiner per round, never one per shot.** Round 1 is not an editor card: before any spend, show the episode as a plain-text table, one row per shot with its name, its length (its words ÷ 2.3 + 0.4 s) and its lines, and ask OK or what to edit, in plain text, never `picsart_scene_editor`; round 2 has every shot built, silent, with the captions timed; round 3 is the same film with the voice. Open each round with `tools: ["comments", "trim", "delete", "add_shot"]` (picsart-video-rules, "Open the editor"). The user pins or comments anywhere; map each pin's time to the shot that holds it and fix those shots. After each card ask with the question tool and two buttons, **OK** and **I pinned changes**, never end the turn silent. A single shot over about 15 s that is the riskiest may get its own early card.
 
-Follow the chosen style's own recipe (`references/<id>.md`) and `film-flow.md` for the rest: the plain-text shot table
+Follow the chosen style's own reference in visual-styles (`references/<id>.md`), and read the film's flow with `picsart_scene_recipe`, `name: "visual-styles"` and `reference: "references/film-flow.md"`, for the rest: the plain-text shot table
 first, every landing re-saves the joiner and posts the fresh link, and the final export refuses while a name card
 remains (a name card is only a placeholder for a shot not built yet, never opened for review). Record the style in the film plan and never ask for it again, also when the work resumes.
 

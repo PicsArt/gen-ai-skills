@@ -26,7 +26,7 @@ The look comes before the story, because genre decides how the story is told. Pr
 - **The genre the events make.** Two people fighting is action; two people talking is drama. A
   custom genre is the user's own words.
 - **A tone only when the story names a period or a tradition of cinema.** A tone is an era recipe:
-  it sets the rig, not the colour. Otherwise leave it on auto. The console expands a tone into its
+  it sets the rig, not the colour. Otherwise leave it on auto. An asset prefix (a portrait, profile, sheet or plate) needs at least one real look decision: a tone, custom tone, camera, palette or scheme other than auto. The console's camera is that decision, so keep it. The console expands a tone into its
   camera and lens pills before applying any pill you also name, so an explicit `camera` or `lens`
   wins over the tone's.
 - **Only the console's own controls.** The lens is a glass family, never a focal length. Focal

@@ -81,7 +81,7 @@ step**, not "if you happen to need it":
 ## Context discipline — never load the whole design at once
 
 On the MCP connector a big tool result goes straight into context or the call errors. Fetch
-narrowly and persist facts to `motion.json`: read `references/figma-context.md` before the first
+narrowly and keep facts in `motion.json`: read `references/figma-context.md` before the first
 Figma call.
 
 ## Flat vs. layered — the difference that is the whole product
@@ -521,7 +521,8 @@ monitor, place. **No preflight cost shown and no explicit yes or covering spend 
 
 ## The state — `motion.json`
 
-Keep project state in `motion.json`, updated whole at every milestone. Open the panel when the
+Keep this project's working data in `motion.json`, rewritten whole at every milestone. It holds the
+design's frames, layers and motion only; it is not a settings file. Open the panel when the
 designer asks to see the project; share the raw data if they ask for it.
 
 Its shape, and how each `motion[].kind` label maps to a preset or keyframes, are in

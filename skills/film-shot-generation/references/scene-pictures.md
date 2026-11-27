@@ -22,7 +22,7 @@ day; a scene that moves to another room is another chain of pictures.
 ## The order
 
 1. **The wide first**, at the film's frame and the image model's top resolution: with an animatic,
-   the opening shot's cast, small in the room; without one, the place empty, compiled with `picsart_film_compile_prompt` (`kind: "scene-picture"`)
+   the opening shot's cast, small in the room; without one, the place empty, compiled with `picsart_film_compile_prompt` (`kind: "scene-picture"`, with `scene`, which is required)
    and the same locked `look`, including `look.camera`, as the video. Keep its camera texture,
    colour and detail in the wide; the opening crop inherits them.
 2. **With an animatic, the scene picture is cut from the wide**, around the opening composition at the film's ratio,

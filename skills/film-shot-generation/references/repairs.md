@@ -39,7 +39,7 @@ drifting colour is restated at each moment it appears.
 
 The film's edit model (the chosen model's edit sibling). Send the clip, **only the change**, with the
 shot id and its seconds, the run's same numbered references and the same audio flag. Never
-re-describe the whole shot. Compile with `kind: "edit"` and verify as for any prompt.
+re-describe the whole shot. Compile with `kind: "edit"`, with the `scene` (required, as for a run), and verify as for any prompt.
 
 ## Extend
 
