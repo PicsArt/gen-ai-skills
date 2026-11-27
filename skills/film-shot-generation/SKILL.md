@@ -116,12 +116,14 @@ generated opening: it goes through these steps like a run.
    the first compile of the film and write these inputs by it:
    - `scene`, `geography` (one line, identical in every prompt of the scene), and `space`:
      foreground, midground and background, all three named;
-   - `cast`, each with a `tell`, the saved `voice` and its `language`; and `castPresence` whenever someone in
+   - `cast`: everyone who ever appears in the scene, each with a `tell`, the saved `voice` and its `language`; and `castPresence` whenever someone in
      `cast` is not in the opening frame: where they are and when and how they enter ("Tobin is
      outside; he walks in through the garage door, frame-left, in shot 3"). The prompt counts
      every cast member from the first frame, and only this line keeps a latecomer out of it;
    - `images`: every reference numbered, each with its job;
    - `shots[]`: `sec`, `subject`, size, arrangement, angle, `fov`, `focus`, `composition`, `move`;
+     `visible`, every person in frame by name, each with a performance (a two-shot or an OTS
+     needs two names, `subject` and one more);
      `performances` for every person in frame (`action`, `emotion` with the intensity film-story-writing's
      peak rule sets, `gaze` on a named target); the shot's own `speech`, beside `performances`
      rather than inside one (`name`, `line`, `delivery`); and the pair's cut rule in its `extra`;
@@ -131,8 +133,9 @@ generated opening: it goes through these steps like a run.
      the same model at its draft setting, and a finish sends the model either no prompt (a draft's
      `finalizeDraft` handle, an upscale) or this same one again.
 
-   A preset slot you leave empty compiles to a neutral default (a light's direction, the second
-   person from the cast) and `notes` names it: read the notes, and pass the slot only to change it.
+   A preset slot you leave empty compiles to a neutral default (a light's direction) and `notes` names it: read the notes, and pass the slot only to change it. The second person of a
+   two-shot is no such default: it comes from the shot's `visible` list, or `slots.second`, and the
+   call is refused without one.
 
    **Pin what the model would re-infer.** It guesses every unstated fact frame by frame, and the
    glitches come from those guesses. In `extra` and the performances:

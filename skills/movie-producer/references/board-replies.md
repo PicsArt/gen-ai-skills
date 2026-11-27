@@ -10,7 +10,7 @@ blocks its own send until it has one.
 | Field | Use |
 |---|---|
 | `verdict` | Always `locked`. The look is locked |
-| `selections` | The console's picks as preset ids: `genre`, `tone`, `palette`, `ratio`, `duration` (whole seconds, as a string), `camera`, `lens`. `palette` is always `auto`: the console has no palette, and each shot picks its own. `lens` is a lens family, never a focal length. A `custom` genre or tone comes with `customGenre` / `customTone`, the user's own words. At compile time a custom genre goes as `look.customGenre` with no `look.genre`; a custom tone keeps `look.tone: "custom"` beside `look.customTone` |
+| `selections` | The console's picks as preset ids: `genre`, `tone`, `palette`, `ratio`, `duration` (whole seconds, as a string), `camera`, `lens`. `palette` is always `auto`: the console has no palette, and each shot picks its own. An asset prefix needs at least one real look decision (a tone, custom tone, camera, palette or scheme other than auto), so the `camera` pick must go in `look.camera` on a reference call. `lens` is a lens family, never a focal length. A `custom` genre or tone comes with `customGenre` / `customTone`, the user's own words. At compile time a custom genre goes as `look.customGenre` with no `look.genre`; a custom tone keeps `look.tone: "custom"` beside `look.customTone` |
 | `selections.scheme`, `selections.hue` | Present when the user chose a colour scheme; absent means Auto, and the style line carries no colour. Pass them as `look.scheme` and `look.hue` on every `picsart_film_compile_prompt` call of this world, the cast's reference kinds included |
 | `stylePrefix` | Store it verbatim. Never reword or rebuild it |
 | `summary` | The console's one line; quote it back if you say anything |

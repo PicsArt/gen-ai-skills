@@ -42,7 +42,7 @@ One panel per shot, at the film's frame:
 
 - **Each scene's opening panel is its scene picture**, made as film-shot-generation says. Every
   other shot gets a still compiled from its card with `picsart_film_compile_prompt`
-  (`kind: "still"`), with the present people's locked views and the scene picture as references,
+  (`kind: "still"`, with the shot's `scene`, which is required), with the present people's locked views and the scene picture as references,
   checked as the compiler's `check` says, and sent verbatim to `picsart_generate`.
 - **One quote for every panel of the film or episode**, and one batch on the yes (at most 10 a
   call), filed in the project's Assets folder before you look at them.

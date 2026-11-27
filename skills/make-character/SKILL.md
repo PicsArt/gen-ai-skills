@@ -52,7 +52,8 @@ the preset’s own name so the next pick reuses it. An unsaved `preset` and `per
 1. Use picsart-video-rules's image default unless the user chose another model; check its inputs
    and supported ratios with `picsart_model_params`.
 2. Compile the sheet with `picsart_film_compile_prompt`, `kind: "sheet"`, that model as `model`,
-   and the descriptor in `reference`. The look is the Picsart canvas's style line:
+   and the descriptor in `reference`, with the outfit by item as `reference.outfit` (or
+   `reference.useOutfitImage: true` for an uploaded outfit image): a sheet with neither is refused. The look is the Picsart canvas's style line:
    `look: { "customTone": "clean photoreal reference sheet — realistic materials, soft even light ~5500K" }`.
    With a photo, the photo's style is the style: add
    `"usePhoto": true, "customMedium": "the reference image's own medium, kept as it is"` to

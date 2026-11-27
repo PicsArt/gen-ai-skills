@@ -95,6 +95,9 @@ instead, as film-shot-generation says.
 2. Compile every picture with `picsart_film_compile_prompt` and its reference `kind`, passing the
    film's `look`, the same object the shots get, and the descriptor's lines in `reference`
    (`identity` or `faceAndOutfit`, `outfit`, a plate's `descriptor` and `anchor`, `assetPalette`).
+   A sheet needs its outfit: `reference.outfit` by item, or `reference.useOutfitImage: true` for an
+   uploaded outfit image; without one the call is refused. Pass every person who ever appears in
+   the film as `cast` on the film's shots.
    Keep the selected `look.camera`: references retain its image texture, colour and detail;
    neutral identity views omit an action camera's fisheye and a drone's aerial viewpoint.
    Do not substitute a portrait-camera look or add unrequested lens and exposure settings.

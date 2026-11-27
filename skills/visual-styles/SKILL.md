@@ -171,7 +171,8 @@ Other graphic styles (Swiss, pictogram and others) are not offered until they ar
 - **Painted texture is the paint's `brush`.** Gouache streaks inside a fill, dry-brush lettering and textured
   ink lines are a `brush` on the `fill`, `stroke` or text content (see
   the `scene-animation-reference` skill, `references/brushed-paint.md`), not a texture image or a stack of hand-drawn streak
-  shapes. Give neighbouring fills different `seed`s and angles so the streaks do not line up.
+  shapes. Give neighbouring fills different `seed`s and angles so the streaks do not line up. Oil pastel is a
+  fill's `"pastel"` tip; a round body takes `flow: "around"` so its marks follow its form.
 - **A scaled group scales its stroke.** An iris, vignette or ring whose line must keep its width animates the
   ellipse's own `size`, never the group's `scale`.
 - **`mask.clip` takes shape content** as well as a colour rectangle: clip a glare or a tone to a circle by giving

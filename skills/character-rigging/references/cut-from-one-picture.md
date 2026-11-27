@@ -15,6 +15,7 @@ still passes [character-rules.md](character-rules.md).
 
 - [Input](#input)
 - [Cut strategy](#cut-strategy)
+- [Color keys and the side-photo walk](photo-walk.md)
 - [Reading pixel coordinates](#reading-pixel-coordinates)
 - [Cut](#cut)
 - [Refusals](#refusals)
@@ -29,10 +30,8 @@ still passes [character-rules.md](character-rules.md).
 ## Input
 
 Every picture is a Picsart-hosted https URL: an upload from `picsart_drive_upload_ask` (`accept: 'image'`), or a generated
-image's `url`. A local path or a `data:` URI is refused. The tool cuts **a figure with a continuous dark
-outline and a drawn line at each joint**, flat or softly shaded. A picture without that outline (a
-photo, loose painting) does not separate into parts: draw it again to the spec below, or tell the
-user it cannot be cut.
+image's `url`. A local path or a `data:` URI is refused. For a photo, painted art or a drawing, start with [color keys](photo-walk.md). For a seeded cut, the figure needs a
+continuous dark outline and a drawn line at each joint. Use these drawing prompts for that route:
 
 - A continuous dark outline, 3 px or more at 576 px wide, any dark hue, solid.
 - Each joint is a drawn boundary: a sleeve seam, a waistband, a hem, a sock or shoe top, where a leg
@@ -73,7 +72,7 @@ only as far as its mesh stretches.
   The answer's `hidden` is a mask of exactly those pixels, black where an edit may paint. Make a masked
   edit of the picture with it ("continue the shirt under the arm, same shading, no arm") and pass it
   as `fill`.
-- **A part the seeds cannot reach.** Give it whole in `labels.masks` (a mask or a full-size layer).
+- **A part the seeds cannot reach.** Give it whole in `labels.masks` (a mask, a [color key](photo-walk.md) or a full-size layer).
 
 ## Reading pixel coordinates
 
@@ -102,14 +101,14 @@ controls fit.
 
 **Edges.** Parts are bounded by dark outline ink by default. A paper-craft look whose pieces are edged
 with a light torn rim instead of ink takes `labels.regions.edge: "light"`; `"auto"` reads the figure's
-outer rim and picks one, and the answer's `summary.edge` says which: `dark`, `light`, or, when the rim is one colour, `{ colour, tolerance }`. An outline band may be up to three times its thinnest
+outer rim and picks one, and the answer's `summary.edge` says which: `dark`, `light`, or, when the rim is one colour, `{ color, tolerance }`. For a known outline color, pass `edge: { color: [r,g,b], tolerance? }` (RGB distance, default 40). An outline band may be up to three times its thinnest
 outline along the silhouette, and two bands may meet between two areas, as wide as those areas' own outlines together; any other wider
 band is a fill. See [cut-any-edge.md](cut-any-edge.md).
 
 **Depth layers.** `bands` (with `image` alone, no `labels` or `parts`) cuts a picture into depth layers by masks you give, each with a
 thin local plate under the edge of the layers in front, so the layers can drift apart (parallax) without a hole. `bands.layers` go
 back to front (the first is farthest; reversed, the depth inverts); each is a `mask` (a PNG the picture's size, white where the layer
-is; `maskConvention: "black_paint"` flips it) or a `polygon` of [x, y] points in picture px; at most 16. What no layer holds is the base
+is; `maskConvention: "black_paint"` flips it), a keyed edit with `mask`, `color` and optional `tolerance`, or a `polygon` of [x, y] points in picture px; at most 16. What no layer holds is the base
 layer, `baseId` (default `back`). `bandPx` is the plate's width under each edge (default 40), at least the drift; `drift` is the shift
 the `check` preview uses (default half of `bandPx`, at most `bandPx`). Measured on one sharp picture at 1024 px wide: 24 px of drift
 left a soft smear where a band crosses bright windows, so keep close-ups to 12-16 px; soft backgrounds untested.
@@ -239,6 +238,9 @@ Each names the input to change.
 | `seed_off_figure` | The seed is on the background: read its px again on the 1:1 grid. |
 | `seeds_share_region` | Two parts' seeds meet in one region: add the seam between them. |
 | `seam_cuts_nothing` | Draw the seam across the whole gap, outline to outline. |
+| `edge_color_fills_area` | Sample the outline again or narrow the tolerance. |
+| `edge_color_not_found` | Sample a visible outline or choose another edge. |
+| `key_color_missing` | Repaint the key in a distinct color and check it beside the original. |
 | `region_unseeded` | A region larger than 2% of the figure has no seed: seed it, seam it, or name the body in `rest`. |
 | `pivot_outside_part` | With `rig`, the pivot lies outside the part in front: move it to the point the message gives. |
 | `order_cycle` | `overlaps` and the parent order contradict: drop or flip one overlap. |
@@ -267,7 +269,8 @@ part as its sheet minus another (hair: the picture minus the bald sheet). `overl
   craft takes `edge: "light"`; no outline at all: `edge: "fill"`.
 - **Pivots on a flat-cut top.** A part cut flat at its top (a T-shirt sleeve at the shoulder, a leg at
   the seat seam) has no round end above its pivot: put the pivot a half-width below the cut. A
-  `rig_refused` round-end refusal names a pivot both drawings cover when there is one: move it there.
+  `rig_refused` round-end refusal names a pivot both drawings cover when there is one. On prepared side sheets the cutter moves the joint
+  and retries. Write each `moved` entry’s `to` back into your parts.
 - **Seams per sheet.** Cut the seat on the sheet without the top by a seam across the hip just below
   the hip pivot, with the leg's seeds below it; cut a hand off the thigh by a seam round the hand on
   the picture only. Each as `{sheet, points}`, so the hip seam leaves the picture's hand whole and the
@@ -389,8 +392,10 @@ Read every point off these maps, never off the picture.
 | `platePx` 0 where a part should run on under another | the sheet or seam did not uncover it | seed that part on its sheet, below the seam |
 | `pivot … → [x, y]` | the joint is off its centre | move it to that point, once |
 | "N px around [x, y] are drawn by no part" | an unseeded area | seed it for the part it belongs to |
-| `rig_refused`: a joint outside its piece, or a round end short of 95% | the pivot at a piece's edge, or above a flat cut | move it to the pivot the refusal names; with none named, inward to the joint's centre |
+| `rig_refused`: a joint outside its piece, or a round end short of 95% | the pivot at a piece's edge, or above a flat cut | move it to the point named after automatic moves are exhausted, round the end or move the joint inward |
 | `sheet_misaligned` | the sheet drifted | generate that sheet again from the base |
+| `doubled` | two sheets drew one part | check `removedFrom`; redraw its sheet whole if it should own that drawing |
+| `part_doubled` | two parts cut from one drawing | supply the hidden part on its own sheet or keep them one part |
 
 A second round on the same part means a seed or seam is on the wrong sheet: check the sheet names first.
 
