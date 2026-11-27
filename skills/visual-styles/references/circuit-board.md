@@ -48,6 +48,9 @@ pad fill keyed from the arrival times. Verify timing on a contact sheet.
 
 - **Do** keep trace widths the same.
 - **Don't** render a real chip's markings or a real board's layout.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Line width: no zoom, width fixed (6 px traces, 1 px edge line); if a push-in is added, traces scale with the
+    board and the silkscreen labels take an opacity keyed to the zoom.
 
 ## Originality guard
 

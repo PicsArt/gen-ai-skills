@@ -47,6 +47,12 @@ leaving a roughly 20 px notch. Blend over about one limb width with at least thr
 cross-sections of graded weights. Extra weight entries cannot add missing vertices.
 This softens the transition; it does not make linear skinning preserve volume.
 
+**No jump between neighbouring rows.** Where one row is all on one bone and the next row is
+all on another, the triangles between them stretch into a thin pale line once the bones
+disagree. Ramp the share over several rows (a smoothstep of the distance) and render the
+widest pose. To find which piece draws a stray line, hide pieces one at a time and render
+that frame again.
+
 This shape is 60 px wide. Its elbow is at y=120, with a 60 px blend band from y=90 to 150
 and three mixed cross-sections at y=105, 120 and 135. Points go down the right edge and
 back up the left, so the weight rows follow the perimeter, one row per point in order:

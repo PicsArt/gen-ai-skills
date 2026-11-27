@@ -1,6 +1,6 @@
 ---
 name: social-posting
-description: Post a finished video to the user's own TikTok, Instagram, YouTube or other connected accounts through the Picsart app's post preview - the connected accounts read first, a connect panel only for an account that is missing, then one preview per post whose own buttons post or schedule it. Use in make-clips' channel-clips job, once it delivered its clips and the user says to post, publish or schedule them; never before delivery. Other jobs and use cases post as they always have, with their own steps or the social tools directly.
+description: Offer once to post a final video the user approved to their own TikTok, Instagram, YouTube or other connected accounts, and on a yes post it through the app's post preview - the connected accounts read first, a connect panel only for an account that is missing, then one preview per post whose own buttons post or schedule it. Use after any use case delivered a final video the user approved, when the app you are in draws the post preview, and whenever the user says to post, publish or schedule a delivered video; never before delivery.
 user-invocable: false
 ---
 
@@ -13,13 +13,22 @@ credits.
 
 ## When it runs
 
-These steps are make-clips' `channel-clips` job's. Every other job and use case keeps
-posting as it always has:
- recast's own Post step, or
- the social tools called directly when the
-user asks. Only after the use case delivered the video, and only when the user asks to post it or said yes
-to the use case's one offer. A post is outward-facing: never open a preview the user did not ask
-for, and never press its buttons for them.
+After the use case delivered a final video and the user approved it, offer posting once, in one
+line beside the delivery: where it could go and that nothing goes out until they press the
+preview's button. A no, or no answer, ends it; never offer again for that video. When the user
+asks to post, publish or schedule a delivered video on their own, run the steps without the offer.
+A use case that sets its own posting keeps it, as its own skill says: make-clips offers posting in
+its `channel-clips` job
+, and recast posts from its board's Post button
+.
+
+Offer it only where the app draws the post preview and the connect panel: both
+`picsart_social_post_preview` and `picsart_social_connect` are among your tools and nothing in
+the app's own notes says otherwise. An app that cannot draw them gets no offer; the file is ready
+to post by hand, and one line says so when the user asks to post.
+
+A post is outward-facing: never open a preview the user did not say yes to, and never press its
+buttons for them. Never before delivery: a draft or a preview export is not a final.
 
 ## The run
 

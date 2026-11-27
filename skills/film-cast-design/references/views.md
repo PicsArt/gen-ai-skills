@@ -19,7 +19,7 @@ error. Cut the panel into its own file; if it cannot be cut yet, wait.
 | A person you generated | identity (the close-up), wardrobe (the full-body front), profile (the full-body side) when a card shows it, back (the full-body back) when a card shoots from behind, one per state the cards name |
 | A person the user photographed | identity is the photo itself (or its face cut from a copy when it is a composite); profile from the generated profile; wardrobe, back and states from the approved sheet |
 | A prop | the object alone; the scale panel is for the review only |
-| A place | the map and the wide, cut when its scene pictures are approved (film-shot-generation) |
+| A place | the wide and the map, for a place in 2 or more runs or whose scene cuts between walls, with or without an animatic (film-shot-generation's scene pictures); a place in one run: no view, its descriptor goes in the prompt |
 
 Cut only what a card names. One state is one file from one box, passed byte-identical in every run
 that names it.

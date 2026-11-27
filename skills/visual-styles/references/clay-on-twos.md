@@ -69,6 +69,11 @@ look on a `scene_ref` of the whole picture, not on the nested composition.
 - **Do** vary the lump sizes; clay reads from lumps that are not the same.
 - **Don't** add a hand-written time floor, an outline, or a hard black shadow; don't put the grain look inside the
   stepped composition.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Rate split: everything drawn steps at 12 in the one nested composition (see Motion habits); the grain look and any
+    camera move run at the root rate on the outer `scene_ref`.
+  - Boil: the creature's outer silhouette (the `wiggle` on each lump) and the leaf and vein (`line_boil`), at the held
+    rate with a fixed seed per piece; the backdrop gradient, the thumbprint arc, any title and the camera stay still.
 
 ## On a part sheet
 

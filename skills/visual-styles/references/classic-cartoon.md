@@ -56,6 +56,10 @@ whole film, never on a shape layer. Validate, preview, then `picsart_scene_conta
 
 - **Do** keep shapes round and the colour few; let motion carry the personality.
 - **Don't** paste this look onto another style's film, and don't add texture or glow.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Easing: arrivals use the small back-ease `[0.3, 1.5, 0.5, 1]`; a big move anticipates with a small pull-back, holds
+    four to eight frames, then snaps; walk and rig loops and drawn lines are linear; a cloud or plant drift is an
+    ease in and out.
 
 ## On a part sheet
 

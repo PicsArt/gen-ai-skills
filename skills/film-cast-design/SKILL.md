@@ -21,7 +21,7 @@ cut into single views, passed to every video that shows that person. Read these 
 | A person you generate | one sheet, the strip of Picsart's canvas: full-body front, side and back and a large face close-up in one row, in one generation | `picsart_film_compile_prompt`, `kind: "sheet"` |
 | A person the user photographed | the photo itself; a profile and a sheet only for views the photo lacks | `kind: "profile"`, then `kind: "sheet"`, from the photo |
 | A prop | one plate: the object alone on a neutral ground, and the object beside an everyday thing for scale; no people, no hands | `kind: "plate"` |
-| A place | a descriptor now; its pictures come from its scene (film-shot-generation) | — |
+| A place | a descriptor now; its wide and map, when it recurs or its scene cuts between walls, come from film-shot-generation | — |
 | A crowd | one plate with the dress code, the age spread and what they carry; each shot states the exact count | `kind: "plate"` |
 
 Every person and every prop the story handles gets its pictures; nothing is tiered. A figure in the
@@ -68,7 +68,8 @@ invented as a design proposal. They are **line-keyed** (`face`, `hair`, `jacket`
 change is one line, and they are **concrete**: no evaluative words.
 
 - **A person:** sex, build, face shape, eyes, hair and facial hair; costume item by item with
-  material and condition; shoes; accessories; posture, gait, hand habits, tempo. Age goes in the
+  material, colour and condition, each person in the cast with their own main colour from the
+  film's palette, never a default blue or denim; shoes; accessories; posture, gait, hand habits, tempo. Age goes in the
   compiler's `identity` fields, never as a number in prose. The base costume is what most scenes
   show; scene gear is a state.
 - **A place:** architecture, materials, key objects, condition, atmosphere, one motivated light per
@@ -133,15 +134,17 @@ Every tile comes back approved, changed or discarded.
   spot-check and it ran; a battery with failures blocks the lock until fixed or noted in `waived`.
 - **Discarded** siblings are never used.
 
-## Check the cast on the scene pictures
+## Check the cast where it first appears
 
-No separate still test is bought. A face locked on one good picture can drift on real shots, and
-the scene pictures (film-shot-generation) are where the cast first appears in its rooms, light and
-company: check every face you can read there against its locked views, as you would a take, and
+No separate still test is bought. A face locked on one good picture can drift on real shots. The
+cast first appears in its rooms, light and company on the scene pictures when the film has an
+animatic (film-shot-generation), and otherwise on the first draft takes, since a video of 30 s or
+less, or one going straight to video, buys no opening scene pictures (a recurring place's wide is empty): check every face you can read there
+against its locked views, as you would a take, and
 **beside the people they share a frame with**, since someone who holds up alone often breaks in a
 two-shot. A person who drifts has an under-written descriptor: tighten the lines the picture got
 wrong, record them on the row, and they go into every later prompt. Say what you saw in the
-pictures' review; a new sheet or picture is generated only when the user asks for the change,
+pictures' or the draft's review; a new sheet or picture is generated only when the user asks for the change,
 quoted on its own.
 
 ## The gate into a run

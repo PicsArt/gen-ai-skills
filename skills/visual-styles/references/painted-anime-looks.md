@@ -48,7 +48,7 @@ cuts the parts by `labels.masks`, but it refuses masks together with `sheets`, a
 
 ## The looks
 
-Fill `{subject}` (who it is) and `{outfit}`, keep the rest word for word, and append the template. Each
+Fill `{subject}` (who it is) and `{outfit}` (each garment with its colour; blue is never the default), keep the rest word for word, and append the template. Each
 description ends where the template's "in a single SVG" begins.
 
 ### Chibi

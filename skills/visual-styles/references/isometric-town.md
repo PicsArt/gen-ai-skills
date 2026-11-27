@@ -1,6 +1,6 @@
 # Isometric town
 
-A picture-book town seen from a fixed isometric angle: tiles fade in, small blocks rise from the ground back to
+A picture-book town seen from a fixed isometric angle: tiles pop in from their centres back to front, small blocks rise from the ground back to
 front, trees pop up, and a car loops the ring road.
 
 ## Palette
@@ -54,6 +54,12 @@ pop-up recipe.
 
 - **Do** keep the tops lighter than the sides, left lighter than right.
 - **Don't** mix a perspective camera with this projection or outline the blocks.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Line width: no zoom and no outlines, so nothing to hold; if a push-in is added the blocks scale with the world.
+  - Arrivals: ground tiles pop in by `scale` from their centres, back to front (nothing fades); blocks rise from their base by `scale`, trees pop by `scale`, the car slides along the ring; shots
+    join on hard cuts.
+  - True data: counts of blocks and trees come from the same grid script that places them, one grid cell is one tile,
+    and the town is labelled invented if a caption names it; check positions with `picsart_scene_query_layout`.
 
 ## Originality guard
 
@@ -64,3 +70,5 @@ artist's pixel town. The fixed projection, three-tone blocks and rising build ar
 
 The iso-town film (an eight-by-eight ground, five blocks rising back to front, trees popping, a car on the ring
 road).
+
+**Not proven:** the scale pop-in was shown on six ground tiles, not on a full town with blocks.

@@ -30,7 +30,7 @@ the subject's hair and outline**, kept heavier than any other black on the page.
 
 ## Motion habits
 
-- Panels enter in sequence (a layer `start` with a 0.25 s opacity fade and the border drawing on a snap curve
+- Panels enter in sequence (a layer `start`, the panel wiped in over 0.25 s by a clip rectangle whose keyed `position` slides in from the panel's near edge, and the border drawing on a snap curve
   `[0.7, 0, 0.15, 1]`). Inside a panel motion is sharp: an eye opens by scaling 0.25 to 1 in 0.4 s, a pupil slides
   on an ease, a final object scales 0.4 to 5.5 on an ease-in.
 - Speed lines flicker by living in a nested composition at `fps` 15 (12 under a 24 fps root) with a rotation key per frame step; a hit
@@ -61,6 +61,9 @@ Write inner keys in the layer's own time. Check the page on a contact sheet at t
 
 - **Do** vary panel size to pace the reading: wide, close, tilted, full-bleed.
 - **Don't** fill with grey, mix dot sizes, or add colour.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Nothing fades: a panel border draws on with `trim`, an eye opens by `scale`, the sound effect pops by `scale`,
+    speed lines are cut in on twos; the only transition is a hard cut between pages.
 
 ## On a part sheet
 
@@ -75,3 +78,5 @@ layout or splash panel copied from a known chapter. Tones, panels and lines are 
 ## Proven on
 
 The three-panel page (rooftops, an eye close-up, a rushing hit with speed lines and a sound effect).
+
+**Not proven:** the clip wipe was shown on one panel, not on a full page of panels.

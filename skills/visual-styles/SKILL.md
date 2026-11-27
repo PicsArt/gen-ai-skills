@@ -1,11 +1,11 @@
 ---
 name: visual-styles
-description: The animation-film and graphic drawing styles (75 recipes - the classic cartoon as default, simple shapes, cel anime, rubber hose, cut paper, shadow puppet, manga panels, stick figure, brick toy and more) each a palette with a hero colour, shape rules, motion habits and a frame checklist, plus the style index the picker serves and the styled-film flow. Use when a request names a look or era to draw in, or a film or scene needs a style chosen.
+description: The animation-film and graphic drawing styles (101 recipes - the classic cartoon as default, simple shapes, cel anime, rubber hose, cut paper, shadow puppet, manga panels, stick figure, brick toy and more) each a palette with a hero colour, shape rules, motion habits and a frame checklist, plus the style index the picker serves and the styled-film flow. Use when a request names a look or era to draw in, or a film or scene needs a style chosen.
 metadata:
   standalone: 'read as a recipe: the animated-story Style step reads its index with picsart_scene_recipe visual-styles, and no step loads it as a skill'
   category: authoring
   version: '2.0'
-  ported-from: visual-styles 2.0 at 59.2.0
+  ported-from: visual-styles 2.0, plus the rows only this index has
 user-invocable: false
 ---
 
@@ -23,12 +23,16 @@ Structure adapted from cth9191/animate (MIT); the content is our own.
 |---|---|---|
 | `classic-cartoon` (default) | no style named: thick outlines, flat saturated colour, round shapes | [classic-cartoon](references/classic-cartoon.md) |
 | `simple-shapes` | a story acted by our own shape-built characters in a set of plain primitives under one thin even line, flat colour, no shading | [simple-shapes](references/simple-shapes.md) |
+| `lofi-room` | a lamp-lit night room: a reader in an armchair, rain on the window, a steaming cup, swaying plants, a seamless slow loop | [lofi-room](references/lofi-room.md) |
 | `cel-anime` | a bright sky scene, hard two-tone shading, a train, grass in wind | [cel-anime](references/cel-anime.md) |
 | `painted-anime` | an anime film look: a painted place, characters walking through it, a soft glow | [painted-anime](references/painted-anime.md) |
+| `retro-anime` | a 1990s TV anime look: cels shot on film, muted warm colour, soft lines, glowing highlights, grain, a 4:3 picture that weaves | [retro-anime](references/retro-anime.md) |
+| `night-city-anime` | an anime night in the city: neon signs, a wet street with reflections, rain, picture characters graded and rim-lit | [night-city-anime](references/night-city-anime.md) |
 | `rubber-hose` | a bouncing 1930s-style character of tubes and a bean body | [rubber-hose](references/rubber-hose.md) |
 | `cut-paper` | felt or paper pieces with shadows, moved by hand on twos | [cut-paper](references/cut-paper.md) |
 | `midcentury-toon` | flat off-register colour blocks, angular figures, atomic stars | [midcentury-toon](references/midcentury-toon.md) |
 | `tone-on-tone-flat` | one salmon world with no outlines, big disc heads, noodle limbs, eyes that act, a camera slide between scenes | [tone-on-tone-flat](references/tone-on-tone-flat.md) |
+| `nursery-rhyme` | a vertical 9:16 kids' sing-along: one cute round animal per sung line, generated as SVG and imported as shape paths, soft shading and big glossy eyes, soft storybook places, all painted over in oil-pastel strokes, big rounded white captions with the key word on a yellow pill | [nursery-rhyme](references/nursery-rhyme.md) |
 | `shadow-puppet` | black cut-outs on a lamp-lit screen, or one red paper-cut sheet | [shadow-puppet](references/shadow-puppet.md) |
 | `manga-panels` | black-and-white panels, screentone, speed lines, sound effects | [manga-panels](references/manga-panels.md) |
 | `silhouette-rhythm` | black shapes on colour that cuts every bar, hopping to a beat | [silhouette-rhythm](references/silhouette-rhythm.md) |
@@ -40,6 +44,7 @@ Structure adapted from cth9191/animate (MIT); the content is our own.
 | `stick-figure` | a story acted by stick figures of ink strokes that walk, run, leap and point on a flat coloured ground, on twos | [stick-figure](references/stick-figure.md) |
 | `stained-glass` | a round window of jewel panes between lead, lit from the centre out | [stained-glass](references/stained-glass.md) |
 | `woodblock-print` | graded sky, red sun, flat blues, a scale-wave sea, a lined coast | [woodblock-print](references/woodblock-print.md) |
+| `ink-wash` | an ink-wash landscape: grey washed hills with heavy brush edges, mist bands, a red sun, a boat, a swallow and willows on warm paper, all moving slowly | [ink-wash](references/ink-wash.md) |
 | `stick-explainer` | a stick figure, an idea and a chart that draw themselves on | [stick-explainer](references/stick-explainer.md) |
 | `woodcut` | black ink block with tapered white gouge marks carved in by steps | [woodcut](references/woodcut.md) |
 | `line-boil-sketch` | pencil outlines that wobble every frame, drawn on stroke by stroke | [line-boil-sketch](references/line-boil-sketch.md) |
@@ -54,21 +59,32 @@ Structure adapted from cth9191/animate (MIT); the content is our own.
 | `comic-panels` | dotted comic panels popping in one by one with balloons and a sound word | [comic-panels](references/comic-panels.md) |
 | `silkscreen` | overprinted flat inks that sit off register and jitter, with grain | [silkscreen](references/silkscreen.md) |
 | `riso-overprint` | a two-ink risograph poster whose plates overlap into violet and step off register | [riso-overprint](references/riso-overprint.md) |
+| `print-dossier` | an archive sheet toned in dots, two spot inks overprinting, tabs, a reference line and a red stamp that slams in | [print-dossier](references/print-dossier.md) |
+| `silhouette-titles` | a red poster: a cream moon, black jagged-cut figure and dog walking across it, torn ridge and pines, crows and a chunky stencil word | [silhouette-titles](references/silhouette-titles.md) |
 | `one-bit-dither` | a shaded night scene crushed to black and white by noise and a hard threshold | [one-bit-dither](references/one-bit-dither.md) |
 | `neon-tubes` | glass-tube signs buzzing on at night against a brick wall | [neon-tubes](references/neon-tubes.md) |
 | `synthwave` | an eighties night-drive title: a striped sun, neon wire mountains and a grid rolling toward the viewer | [synthwave](references/synthwave.md) |
+| `y2k-gloss` | a violet-sky poster: fat aqua gel letters, a chrome ring, rising bubbles, a pink jelly icon and a cut orange sun over a grid floor | [y2k-gloss](references/y2k-gloss.md) |
 | `vhs-tape` | a striped sunset with an RGB-split title that tears, scanlines and a tracking band | [vhs-tape](references/vhs-tape.md) |
 | `goo-blobs` | white blobs that fuse like liquid, tinted gold to pink in a glass | [goo-blobs](references/goo-blobs.md) |
 | `firefly-night` | a dark meadow with a drifting glow of lit insects and swaying grass | [firefly-night](references/firefly-night.md) |
 | `chalkboard` | a lesson drawn live in grainy chalk on a green board | [chalkboard](references/chalkboard.md) |
 | `pen-plotter` | an engraving of a sphere and a cube made only of clipped hatch lines in one ink | [pen-plotter](references/pen-plotter.md) |
+| `paper-map-comic` | a comic page of cut-paper countries, a lighter patch slapped over a border, a stamp, sliding panels, a paper puppet | [paper-map-comic](references/paper-map-comic.md) |
+| `layered-lightbox` | paper sheets lit from behind, darker toward the front, soft cast shadows, warm windows, a dolly that separates the sheets | [layered-lightbox](references/layered-lightbox.md) |
+| `paper-playhouse` | a snowy-night paper theatre: curtains part, flats slide in from the wings, a puppet on a rod crosses the stage in a warm pool of light, soft shadows, a slow push | [paper-playhouse](references/paper-playhouse.md) |
+| `watercolour-storybook` | a dusk landscape painted in soft washes with a wobbling ink line, a paper boat, flapping birds and a sung lyric that fills word by word | [watercolour-storybook](references/watercolour-storybook.md) |
 | `paper-fold` | a square card whose four hinged flaps unfold in turn under a perspective camera | [paper-fold](references/paper-fold.md) |
 | `kinetic-type` | one word per beat on flashing grounds with a punch zoom and a final lockup | [kinetic-type](references/kinetic-type.md) |
 | `space-explainer` | a flat ringed planet and stars with a rocket that launches and spirals into orbit, nose along its path | [space-explainer](references/space-explainer.md) |
 | `glow-explainer` | a science explainer of glowing flat shapes and small people, zooming from a planet out to its star and its galaxy without a cut | [glow-explainer](references/glow-explainer.md) |
 | `isometric-town` | a fixed-angle town where blocks rise back to front, trees pop and a car loops the ring road | [isometric-town](references/isometric-town.md) |
+| `tilt-shift-town` | a miniature city shot like a model: sharp middle strip, melted top and bottom, cars looping, a light sweeping and a running clock (a real 3D scene) | [tilt-shift-town](references/tilt-shift-town.md) |
 | `transit-map` | three coloured lines drawing on, stations popping as reached, hubs and trains at steady speed | [transit-map](references/transit-map.md) |
+| `station-cutaway` | a production line as a cut-open building, one colour per output through pipe, machine and tag, belts that never stop, a push into one room | [station-cutaway](references/station-cutaway.md) |
 | `route-map` | a made-up coast with a camera push, a dashed route drawing between towns and dropping pins | [route-map](references/route-map.md) |
+| `contour-trail` | a survey map: contour lines sketching on, a lake, a dashed red route from a pin to a flag, height pills | [contour-trail](references/contour-trail.md) |
+| `soft-toy-3d` | a pastel 3D toy diorama: glossy hex tiles popping in ring by ring, meshed gears, squashing boxes, soft lilac shadows, a swaying camera | [soft-toy-3d](references/soft-toy-3d.md) |
 | `blueprint` | a drafting sheet where construction lines, an outline drawing, dimensions and a title block draw on | [blueprint](references/blueprint.md) |
 | `assembly-manual` | a flat-pack instruction sheet where parts explode along one axis and get numbered callouts | [assembly-manual](references/assembly-manual.md) |
 | `exploded-view` | a product teardown where parts pull apart on one axis in steps with leaders and names | [exploded-view](references/exploded-view.md) |
@@ -76,11 +92,15 @@ Structure adapted from cth9191/animate (MIT); the content is our own.
 | `data-bars` | a clean bar chart that builds itself and picks out one bar in red | [data-bars](references/data-bars.md) |
 | `spreadsheet` | a grid filling with values, a selected cell, a typed formula, a highlighted range and a total | [spreadsheet](references/spreadsheet.md) |
 | `sketchnote` | a hand-lettered page where doodles draw on and a yellow highlighter sweeps a key word | [sketchnote](references/sketchnote.md) |
+| `one-pen-marker` | one marker on blank sheets, black for structure, blue for the facts, red for the question and answer, camera moves between sheets | [one-pen-marker](references/one-pen-marker.md) |
+| `illuminated-page` | a medieval page written live: vellum in a gold rule, a red blackletter heading, a blue drop cap, lines a quill uncovers and vines growing up the margins | [illuminated-page](references/illuminated-page.md) |
 | `telestrator` | sports analysis marker work over a pitch with arrows, circles, a pulse ring and a run line | [telestrator](references/telestrator.md) |
 | `news-package` | a broadcast package with a headline bar, lower third, ticker, location tag and live badge | [news-package](references/news-package.md) |
 | `gameshow-countdown` | a quiz countdown with an unwinding ring of lights, punching numbers, a buzzer and a confetti reveal | [gameshow-countdown](references/gameshow-countdown.md) |
 | `keynote-reveal` | a dark product reveal where a title types, an object rises and a light sweep crosses it | [keynote-reveal](references/keynote-reveal.md) |
 | `terminal` | a command-line session with a typed command, bursts of output and a filling progress bar | [terminal](references/terminal.md) |
+| `device-mockup` | a bright product promo: a dark phone with a habit list ticking off row by row, a teal progress bar and a split ink and coral headline | [device-mockup](references/device-mockup.md) |
+| `chat-thread` | a night phone chat: slate and violet pill bubbles popping in one by one, three-dot typing bubbles, timestamps and a message bar | [chat-thread](references/chat-thread.md) |
 | `phosphor-scope` | an oscilloscope screen with a glowing green trace that sweeps and morphs between waveforms | [phosphor-scope](references/phosphor-scope.md) |
 | `hologram-hud` | a cyan wireframe object turning under a scan band with bracketed readouts and flicker | [hologram-hud](references/hologram-hud.md) |
 | `circuit-board` | copper traces drawing out from a chip with pulses of light running at steady speed | [circuit-board](references/circuit-board.md) |
@@ -96,14 +116,21 @@ Structure adapted from cth9191/animate (MIT); the content is our own.
 | `dark-tech-explainer` | a near-black explainer: dot field, one glowing hero, a rail of step capsules with an amber focus, captions in their own band | [dark-tech-explainer](references/dark-tech-explainer.md) |
 | `studio-reel` | a motion-type reel: type is the hero on a ground that changes every shot, magenta kept for the closing slam, a fixed frame of corner marks, a counter and a progress bar | [studio-reel](references/studio-reel.md) |
 | `picture-cutout` | a look shapes cannot draw (storybook, paper craft, painted, textured), or the user's own character picture: puppets cut from pictures acting in profile on picture sets | [picture-cutout](references/picture-cutout.md) |
+| `action-anime` | a loud, fast anime: bold dark outlines, hard two-tone shading and saturated colour, drawn key poses cut from pictures and held, with speed lines, impact frames, bursts and a shaking camera | [action-anime](references/action-anime.md) |
+| `kid-show` | a cartoon made for young children: thin coloured lines, soft cel shading with one shadow tone, big friendly eyes, rounded shapes, bright clear colours; characters cut from pictures, front and side | [kid-show](references/kid-show.md) |
+| `pastel-anime` | a bright anime in soft pastel colours with thin tinted lines and soft cel shading: characters cut from pictures, front and side, with star and sparkle effects | [pastel-anime](references/pastel-anime.md) |
+| `chibi-anime` | a comic anime of tiny characters two to three heads tall with huge heads and a bold round line: puppets cut from pictures with four joints, snappy squash and stretch, feelings drawn as reaction marks on a flat colour card; for comedy and reactions | [chibi-anime](references/chibi-anime.md) |
+| `watercolour-anime` | a quiet anime painted in pale watercolour washes with soft pencil lines and paper showing through: characters cut from pictures, slow drifting motion, petals and light spots | [watercolour-anime](references/watercolour-anime.md) |
+| `woodblock-cartoon` | a whole cartoon in the look of a Japanese colour woodblock print, played as a series of prints: figures in old Japan clothing as still printed poses from pictures, held in falling rain and cut to the next pose, flat colour in a bold even line, printed cloth patterns, graded skies, one red | [woodblock-cartoon](references/woodblock-cartoon.md) |
 
 Fetch a reference with `picsart_scene_recipe` (`name: "visual-styles"`, `reference: "references/<id>.md"`). Also here:
 
 - [shapes character](references/shapes-character.md): how a `cast: shapes` style builds, saves and talks with its figure.
 - [the style index](references/style-index.md): one row per style (`id`, `label`, `category`, `notes`, `previewUrl`) for the picker, each card carrying its row's `category`. For a film or cartoon the picker offers every row whose `use` is `film` with `category` set to the chip named in the use case's column of "Category chips each use case shows" in the index (else `Other styles`) and 4 to 6 cards `recommended`: the classic cartoon first, the rest in the table's chip order, `Other styles` last, never a shortlist. The rules live in that section. Graphic rows are for graphic or explainer requests;
 - [FRAME.md](references/FRAME.md): the checklist every shot passes, whatever the style;
-- [the film flow](references/film-flow.md): style columns, picker, rough cut, shots, score.
-- [brick parts](references/brick-parts.md): the part script the `brick-toy` style builds its bricks from;
+- [the film flow](references/film-flow.md): intake and story, style columns, picker, rough cut, shots, score;
+- [the recipe template](references/recipe-template.md): the sections a recipe has, to write a new one or bring one up to date.
+- [brick parts](references/brick-parts.md): the part scripts the `brick-toy` style builds its bricks from;
 - [painted anime looks](references/painted-anime-looks.md): the character looks that go with the `painted-anime` style.
 
 Other graphic styles (Swiss, pictogram and others) are not offered until they are proven in a rendered film.
@@ -126,6 +153,9 @@ Other graphic styles (Swiss, pictogram and others) are not offered until they ar
   compositions: no look-alike of a famous character, no copy of a famous artwork's composition, no named
   studio's logo, title card or catch phrase. A character is original when its silhouette, costume and face are
   invented; a "tribute" is not.
+- **An outfit names its colours.** A character prompt's `{outfit}` slot names each garment with its colour, from the
+  look the user gave or chose. Each character in a cast has its own main outfit colour from the style's palette;
+  blue is never the default.
 - **Stepping is a nested composition.** To animate on twos or fours, put the pieces in a `composition` layer
   whose `composition.fps` is 12 (twos) or 6 (fours) and key them with plain keys: the nested rate steps them.
   Do not write time-floor expressions. Pieces that share a rate share one nested composition so they stay in step.
@@ -160,5 +190,24 @@ Other graphic styles (Swiss, pictogram and others) are not offered until they ar
   beats; song sections become scenes, and the chorus returns to its set and escalates.
   For a motion style: vary the transition kind cut to cut (never the same one three times running); add sound only
   where something happens.
+- **A torn or rough edge stays on its piece.** `roughen_edges` at a constant `evolution` is locked to the layer,
+  so the edge moves with a moving piece and does not crawl (measured on a piece travelling 600 px: the same
+  silhouette at both ends). Drive `evolution` when the edge should boil; no baking into path vertices is needed.
+- **Lettering faces.** Pixel and mono faces exist: find one with `picsart_scene_fonts` (Press Start 2P, Cutive Mono,
+  B612 Mono) and add its asset to the scene. No stroke or single-line face exists, so single-line lettering is drawn as paths.
+- **Many small pieces.** Four thousand live subpaths in one layer render, but at about 35 s a frame in the
+  command-line preview: far too slow for real-time playback. Draw fewer, larger paths, or bake the cluster to an
+  image.
+- **A swirl or a lens bend is a displacement map.** `displacement_map` moves one layer by another layer's
+  channels (hidden with opacity 0); a clean swirl needs a purpose-made map whose red and green channels hold the
+  offset, so build that map as its own layer and check it on its own before using it.
+- **A screen tone rides the layer it sits on.** `screentone` on a moving layer's own effects keeps its dots on
+  the piece (measured at a 150 px shift: the same dot pattern, moved with the piece); the same held for a
+  composition layer holding the piece. Whether an adjustment layer above locks the dots to the paper is not
+  measured: render it before a style relies on that.
+- **Reference a film, do not reskin it.** To build from a reference clip, map its beats and measure it first
+  (the `reference-fragment-matching` skill).
+- **Say what is not proven.** A recipe's "Proven on" line has a "Not proven" line beside it for what no render has
+  shown yet.
 - **Check the whole clip.** Frames across the window, never one still: `picsart_scene_contact_sheet`, then the motion checks
   in the `quality-review` recipe.

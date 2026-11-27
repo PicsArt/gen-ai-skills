@@ -46,8 +46,8 @@ Drawn from the style's own shapes, not a generated sheet (the mechanism, saving 
 
 ## Type
 
-A pixel face is not available; set captions as rasterised letter grids in the same script, three or five pixels
-tall, in the era's palette.
+A pixel face exists: Press Start 2P (find it with `picsart_scene_fonts`, add its asset to the scene's `assets`);
+set captions in it at a multiple of its 8 px grid, in the era's palette, or draw letter grids from the script.
 
 ## Frame checklist (on top of [FRAME.md](FRAME.md))
 

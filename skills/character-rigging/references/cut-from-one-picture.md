@@ -43,6 +43,9 @@ user it cannot be cut.
 - Soft shading is fine. Dark texture strokes, hatching and cast shadows are not: each reads as
   outline and splits a part.
 - A transparent background (`picsart_image_remove_bg`).
+- A drawn picture's prompt names the build, the hair and each garment with its colour, from the look the user gave
+  or chose. Each character in a cast has its own main outfit colour from the style's palette; blue is never the
+  default.
 
 Ask for two pictures and pick one: one often adds what nobody asked for. Draw again rather than edit
 shadows out, since an edit changes the clothes. Keep the base pose neutral and raise an arm in the rig:
@@ -99,8 +102,69 @@ controls fit.
 
 **Edges.** Parts are bounded by dark outline ink by default. A paper-craft look whose pieces are edged
 with a light torn rim instead of ink takes `labels.regions.edge: "light"`; `"auto"` reads the figure's
-outer rim and picks one, and the answer's `summary.edge` says which (`dark` or `light`). See
-[cut-any-edge.md](cut-any-edge.md).
+outer rim and picks one, and the answer's `summary.edge` says which: `dark`, `light`, or, when the rim is one colour, `{ colour, tolerance }`. An outline band may be up to three times its thinnest
+outline along the silhouette, and two bands may meet between two areas, as wide as those areas' own outlines together; any other wider
+band is a fill. See [cut-any-edge.md](cut-any-edge.md).
+
+**Depth layers.** `bands` (with `image` alone, no `labels` or `parts`) cuts a picture into depth layers by masks you give, each with a
+thin local plate under the edge of the layers in front, so the layers can drift apart (parallax) without a hole. `bands.layers` go
+back to front (the first is farthest; reversed, the depth inverts); each is a `mask` (a PNG the picture's size, white where the layer
+is; `maskConvention: "black_paint"` flips it) or a `polygon` of [x, y] points in picture px; at most 16. What no layer holds is the base
+layer, `baseId` (default `back`). `bandPx` is the plate's width under each edge (default 40), at least the drift; `drift` is the shift
+the `check` preview uses (default half of `bandPx`, at most `bandPx`). Measured on one sharp picture at 1024 px wide: 24 px of drift
+left a soft smear where a band crosses bright windows, so keep close-ups to 12-16 px; soft backgrounds untested.
+A picture is held to a pixel budget that shrinks with the layer count: 16 layers take up to
+about 3.0 megapixels (1728 px square), 1 layer about 6.5; a larger one is refused, naming the size that fits.
+
+**A depth map instead of masks.** `bands.depthMap` is an 8-bit grey PNG you made, the picture's size, bright = near (a colour map is
+refused, a bright-far one is warned about); no model runs in the tool. It cuts only the far part, at the empty valley of the depth
+histogram, as the base `far`; everything else is `ground`, never sliced, and any `layers` you add (optional then) are nearer; a mask keeps
+all its px. The answer's `depth` gives the valley and each mask's median depth as numbers, never a band name. It refuses
+`depth_far_unclear` when the valley is not empty, there is no second peak, the far part is under 5%, or over 8% of px sit within 0.03 of
+the cut (a ramp, not a gap): then give masks. The check misses a wall, a floor ramp and a table. It counts the budget above as one
+layer more, and the map is held to it too. A `depthMap` cut puts `ground` behind every mask of yours, so a layer in band `mid` cannot
+come from it (`band_order`; reordering cannot help): cut `mid` with masks only, no `depthMap`.
+
+**Where a cast stands.** `bands.floor` `{ row, horizon?, figure? }` is the floor a standing figure's feet are on: `row` the floor row
+(image px), `horizon` the row it vanishes at (at least 1 px above `row`), `figure` a standing adult's height at `row` (default 0.9 of
+`row - horizon`). `check` gains a fourth panel: the floor line (yellow), the horizon (cyan) and, when there is a horizon, four standing figures (magenta boxes). Look
+at it once and correct the numbers: a stated `horizon` is used as given. With `depthMap`, an accepted far cut and no `horizon`, the horizon is
+measured from the map and reported in `floor.measured`; it refuses `floor_unclear` when no floor line or a believable horizon is found, and then you state `horizon`.
+It counts as one layer more in the budget above. What a character stands behind or on is cut as an object (a mask each, named, in
+`layers`): a bench, a table's near edge, not left in the ground (a flat rug stays in the picture, see below).
+
+**The server's depth model.** `bands.depth: true` (not with `depthMap`) has the server write the map, then cuts as above with a stricter
+bar (valley at most 0.09, else `depth_far_unclear`). The answer's `depth.map` is the map (a URL, bright = near). A run takes about 3 s and
+runs alone, so a second call may be refused as busy: retry. Without the model: `depth_unavailable`, give `depthMap` or masks.
+
+**A picture as a place.** `picsart_scene_build_place` with `picture` lays the cut out as a 2D place for a camera move, with no SVG.
+The place is as large as the picture and its rest frame crops it: for a large move cut a bigger picture than the shot needs. Cut two or three bands (`far`, `mid`, `ground`; `front` or `sky` only when the picture has one),
+one mask each, back to front; the base is the farthest band, or the `sky` (`baseId: "sky"`, not in `layers`), which does not move.
+1. **Ask for the ring.** `picture` with `width`, `height` and `layers` of only `id` and `band`, plus `travel` (`{ x: 20 }`), answers
+   `bandPx` and `baseId`; with objects the ring is a few px wider (an object's order step slides it a little against its band's art under a pan), so
+   ask with the object ids in `layers`. Pass them to the cut; never guess. Keep the pan to about 12-16 px on a close-up.
+2. **Cut** with `bands`, that `bandPx` and `baseId`, and read its `check`. The cut grows every mask 3 px so a mask inside an edge does
+   not hand the edge's dark px to the plate behind it; look at the frames at the extremes of the move.
+3. **Build.** The same call with each cut layer (`id`, `content`, `transform`, and `ownBox` on an object) plus its `band`, and `floor` where the
+   cast stands: the object `bands` answered as `floor` (`{ row, horizon?, figure? }`, passed whole; a bare number is refused). It becomes the
+   sockets `floor`, `horizon` and `crown` (`row - figure`, the head of a standing adult) on the ground band. An `id` that is not a band name is an object
+   under its band, ordered by its base (`z` is 0.02 per row of `base`: the bottom of its `ownBox`, or a stated `base`; lower in the picture is nearer). The answer is the place scene by `sceneUrl` (and `order`, each object's `{ id, base, z }`), with the `travel` the
+   picture allows (finite, limited to what the ring fills): stay inside it. Key `world`'s pan as in an SVG place; a camera push does
+   not replace the place's own crop.
+
+**A character in a picture place.** From a place built with `picture` and `floor` (its `floor`, `horizon` and `crown` sockets), put the rig
+on the floor with `picsart_scene_apply_preset` `motionPreset:on_floor` and `params: { at: [x, row], size?, start? }`, `at` the foot point in
+picture px. It sets the character's scale by the floor law (`figure * size * (row - horizon) / (floor - horizon)`), parents it to an empty
+`<id>_depth` under the ground band that carries its depth step (half a row nearer than an object whose base is that row) and undoes the
+depth, so the layer's own position and scale stay plain picture px. A later `start` adds a mark the layer jumps to in one frame. Order the
+work: `on_floor` first, then `acting` with `travel: "in_place"` (and `sitFeet: "planted"` for a sit, no later marks). It refuses
+`layer_travels`, `acting_sits_planted`, `floor_socket_missing`, `floor_horizon_missing`, `rig_unknown`, `layer_id_taken` and
+`layer_fit_stretch`. Leave flat floor pieces (a rug, a mat) in the band's picture, or give the piece `base` its far row in `picture`: cut as an object,
+a rug's base is its front edge and it would hide a character standing on it. A shot over 10 s needs the rig's `content.parameters.duration`
+(`on_floor` binds it) or the figure freezes at 10 s. After a `jump` with `landY`, mark the landing row with `on_floor` at the landing time. Check it with
+`picsart_scene_lint_layout` `relationships: [{"kind": "on_floor", "members": [{"id": "kid"}]}]`: the foot inside the floor's picture, the drawn height the
+floor law's, and the paint order against the bases of the objects it overlaps; most findings name their fix. Airborne frames of a hop are not
+checked.
 
 **Seams**, where the figure has no outline between two parts, drawn across the whole gap from outline
 to outline. A person needs up to 6: each shoulder (sleeve into shirt), the hip line, between the legs
@@ -200,7 +264,10 @@ part as its sheet minus another (hair: the picture minus the bald sheet). `overl
 - **Pictures for a side rig** come from [picture-sheets.md](picture-sheets.md): every sheet a
   "Same picture ..." edit of the profile base (without arms, without the top, without hair), each thigh
   at most about two thirds as wide as the hip is deep, and always the sheet without the top. Paper
-  craft takes `edge: "light"`.
+  craft takes `edge: "light"`; no outline at all: `edge: "fill"`.
+- **Pivots on a flat-cut top.** A part cut flat at its top (a T-shirt sleeve at the shoulder, a leg at
+  the seat seam) has no round end above its pivot: put the pivot a half-width below the cut. A
+  `rig_refused` round-end refusal names a pivot both drawings cover when there is one: move it there.
 - **Seams per sheet.** Cut the seat on the sheet without the top by a seam across the hip just below
   the hip pivot, with the leg's seeds below it; cut a hand off the thigh by a seam round the hand on
   the picture only. Each as `{sheet, points}`, so the hip seam leaves the picture's hand whole and the
@@ -214,7 +281,8 @@ part as its sheet minus another (hair: the picture minus the bald sheet). `overl
   a limb one width from joint to joint, with round ends.
 - **Sheets for a side rig.** Ask for each edit as "Same picture, ..." with one change, so it aligns:
   the arms removed (the torso and both legs drawn whole where the arm lay); the top removed (trousers
-  or skirt drawn up to the waist, the seat whole); the hair removed (the head and ear whole). In the
+  or skirt drawn up to the waist, the seat whole), chained on the sheet without arms so no hand lies
+  over the seat or thigh; the hair removed (the head and ear whole). In the
   picture, draw the profile standing straight, the near arm hanging with the hand beside or on the
   thigh, the legs straight, and the top's hem a clear edge over the trousers. Ask for each thigh at
   most about two thirds as wide as the hip is deep, with the hip rounded behind it: a thigh as wide as
@@ -268,7 +336,8 @@ Plan the parts, dry-run every map, write the call, check it, then read the answe
 **How the cut sees a picture.**
 - **Areas.** The picture splits into areas of fill bounded by rims. `labels.regions.edge` says what a
   rim is: `dark` ink lines (the default), `light` a pale rim (paper craft, felt, a sticker's white
-  border), or `auto` when unsure ([cut-any-edge.md](cut-any-edge.md)).
+  border), `fill` no outline at all (pieces parted only by their fill colours: flat vector, a thin
+  faint rim, soft painted edges), or `auto` when unsure ([cut-any-edge.md](cut-any-edge.md)).
 - **Parts.** A part is the areas its seeds land in. An area no seed lands in goes to `rest`, or is
   reported as "N px around [x, y] are drawn by no part".
 - **Sheets.** A sheet is the same picture, aligned px for px, with one thing removed, so what it covered

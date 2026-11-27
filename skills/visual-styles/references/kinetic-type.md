@@ -25,7 +25,7 @@ the red `#ff3b30`, which carries the first emphasised word in the lockup** and i
 - **Punch zoom:** each word's scale keys from 1.25 down to 1 over 0.18 s with an ease-out, so it lands hard on the
   beat.
 - **Hard cuts only.** Grounds and words change on the beat with no crossfade; the beat grid is the whole clock.
-- The lockup lines **rise 60 px and fade in over 0.25 s**, one per beat.
+- The lockup lines **rise 60 px out of a clip band over 0.25 s** (`mask.clip`, a hard edge, no opacity ramp), one per beat.
 - Add a slight overshoot or a `wiggle` on a final word only; a motion on every word would flatten the beat.
 - Cued layers use `timeMode: "layer"`, so each word's keys count from its own start.
 
@@ -50,6 +50,10 @@ and key the punch scale. Check with `picsart_scene_contact_sheet` that no two ad
 
 - **Do** repeat a phrase with one word changed; the change is the message.
 - **Don't** add images, soft transitions or more than two lines on a beat.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Arrivals: a word arrives by a hard cut on the beat with its punch zoom, and the lockup lines rise out of a clip as the motion line says (a motion-type style, not a drawn one); the hard cut is the only transition.
+  - Easing: hard frames, keyed on whole frames; the one ease is the ease-out of the 0.18 s punch, and a final word may
+    overshoot as above.
 
 ## Originality guard
 
@@ -60,3 +64,5 @@ tagline or a music video's lyrics. The one-word beats, the flashing palettes and
 
 The loud-fast-kinetic film (a 120 bpm sequence of nine words on flipping grounds, ending in a three-line
 lockup).
+
+**Not proven:** the clip-band rise was shown on a three-word lockup, not inside a full title sequence.

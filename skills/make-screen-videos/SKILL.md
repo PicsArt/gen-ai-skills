@@ -208,33 +208,17 @@ yet. A hook that opens on footage not made yet is judged on its still or its des
 draft's cold watch is the hook's test: its first two pieces (to 3 s) say whether strangers keep
 watching.
 
-An opening the recording does not hold, such as a generated shot, is a SPEND. **The first reply
-about a generated shot offers its key frames and nothing else:** stills at the hook, the turn and
-the payoff, quoted on their own, shown together before any video is priced, and reused to open the
-shot. No video model is read, compiled or priced until the user approves the stills. **Pictures the
-user brings, a film's scene pictures included, are references for those stills, never the stills
-themselves**: they are not this short's frame or its beats, so the key frames are still drafted
-from them, quoted and shown first, even when the user says to go ahead. That reply says all four
-to the user, in its own words, beside the quote:
-
-- **Every key point**: a still for each generated beat (a generated hook and payoff are two stills,
-  one batch, one quote), and the recording's own frame at the turn, which is free.
-- **The quote covers those stills alone.** No video price, take or model in it.
-- **They are shown together** as the concept before any video is priced.
-- **Each approved still opens its shot** as its start frame; none is a throwaway preview.
-
-For example: "You'll see the hook and payoff stills together, beside the recording's frame at the
-turn, before any video is priced; each one you approve becomes the first frame of its shot."
-
-An approved plan already names its hook, turn and payoff, so this reply runs no script: take the
-key points from the plan, and never search for a shell or hand the script to another agent. Draft it first and
-quote the draft beside the final, as picsart-video-rules's SPEND says; a crop of the recording is usually
+An opening the recording does not hold, such as a generated shot, is a SPEND. **A generated shot
+is drafted as video, with no stills before it**, as picsart-video-rules's SPEND rule 8 says: one
+take at the lowest resolution and shortest duration `picsart_model_params` offers (the model's draft
+setting where it has one). Draft it first and quote the draft beside the final, as
+picsart-video-rules's SPEND says; show it in the draft, and finish it only on a yes. No key frames, storyboard or still is bought or approved first, even when the user brings
+pictures: **pictures the user brings, a film's scene pictures included, are references for the
+shot**, never a separate step. Run the film-shot-generation skill's `scripts/keyframes.py` on the
+plan's beats when you want the check in writing: for a short it answers `stills: false`.
+Its prompt is compiled with `picsart_film_compile_prompt` (picsart-video-rules's SPEND rule 9), with
+the size and lens the recording's own plan gives that shot. A crop of the recording is usually
 smaller than the frame, so say so when it is the reference.
-Its draft is key frames, as picsart-video-rules's SPEND rule 8 says: plan them on this plan's beats with the
-film-shot-generation skill's `scripts/keyframes.py`, SHOW them before the shot is quoted, and open the shot on
-the approved one. In the hook ASK, a generated opening is offered as its key frames first.
-Its key frames and its shot are compiled with `picsart_film_compile_prompt` (picsart-video-rules's SPEND rule 9), with
-the size and lens the recording's own plan gives that shot.
 Footage the user supplies, received with `picsart_drive_upload_ask`, can open it too.
 
 The words' language is the user's own, unless the recording's words are in another: then ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) which.
@@ -299,7 +283,7 @@ editor, their document replaces yours (picsart-video-rules): patch it instead.
 **A generated shot goes in as a presenter's take does**: build with `hook.duration` set to its
 length, then patch it in full frame with `picsart_scene_patch` (`references/routes.md`).
 Never swap the script for a scene of your own. A scene worked out by hand skips the build's
-diagnostics, and the stages around it still hold: key frames and SPEND before, the check and REVIEW
+diagnostics, and the stages around it still hold: the draft take and SPEND before, the check and REVIEW
 after.
 
 ## 10. Check it

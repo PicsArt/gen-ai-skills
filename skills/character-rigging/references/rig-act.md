@@ -5,6 +5,7 @@ Part of [the character-rigging recipe](../SKILL.md); one section of it, read on 
 ## Contents
 - IK and gesture arms (raise × elbow, the wave rule)
 - Motion presets: `walk_cycle`, `ground_scroll`, gestures, `acting`, actions, parameter drivers
+- A seated pose on painted furniture
 - Ink lines
 
 
@@ -21,6 +22,13 @@ with elbow 0.85, raise 0.2 with elbow 0.7. Swing the hand with `HandSwing`, not 
 further, and check a `picsart_scene_contact_sheet` for the hand against the head.
 
 **The wave rule** (stated once; the presets, the actions and the robot all follow it). A wave keys one world pose: the arm out and up beside the head, the forearm up (an opening near 0.7). Where that pose runs through the arm's pole (pointing at the camera) on a 2D rig, the preset keys the in-plane dial instead, picking its row by the rig's `viewAngle`, with the forearm's sign following the view's + side: one preset, three rows, no new control. Front (0): `UpperArmOpen` 0.68–0.76 with `LowerArmSwing` −0.2 to −0.35. Three-quarter (45) and side (90): `UpperArmRaise` 0.5–0.6 with `LowerArmSwing` +0.25 to +0.35, the hand standing in front of the head, clear of the face. `HandSwing` swings on every row.
+
+**Review every action before it is shown.** Each action keyed on a rig (a preset below, a gesture, a
+pick-up, a sit, a head turn) gets the pose review of [cartoon-film.md](cartoon-film.md) §7: its start,
+deepest pose, contact, prop swap and end on one `picsart_scene_contact_sheet`, then a zoomed crop of each
+joint the action turns (waist, neck, shoulder, hip, elbow, knee) at its start, end and extremes: no gap,
+crack or doubled art at a seam. A pose the rig cannot reach cleanly takes a smaller value (a shallower `crouch`, `bow` or
+`height`) or another action, never a workaround.
 
 **Motion.** Everything goes on the rig's `scene_ref` layer with `picsart_scene_apply_preset`
 (`preset` `motionPreset:<id>`, `layerId` the rig layer), and writes bindings in its `content.parameters`:
@@ -56,7 +64,7 @@ further, and check a `picsart_scene_contact_sheet` for the hand against the head
 - Gestures (tag `rig-motion`, `gesture`): `wave`, `talk_beat`, `point` and `shrug`, each `start`,
   `duration` (seconds from the arm leaving rest to its return), `amount` 0..1, and for `wave`, `talk_beat`
   and `point` a `side` (`right` the near arm, `left` the far one); `wave` and `talk_beat` also `count`
-  (swings or beats). They return every control to rest (`wave` keys the wave rule above; the others lift the arm inside the safe pair, raise 0.25 to 0.36 at an
+  (swings or beats). They return every control to rest (`wave` takes the wrist out beside the head by IK, as `hold_overhead` does; the others lift the arm inside the safe pair, raise 0.25 to 0.36 at an
   elbow of 0.45 to 0.55, so the hand stays off the face). `wave`: the hand swings from the
   wrist `count` times. `talk_beat`: the forearm beats with the speech, the hand follows. `point`: the arm's
   IK takes the wrist to `aimAt` (the id of a layer of the scene: the kite, a bird; the hand goes to where its anchor is on screen at every frame and follows it, however the rig is scaled or travelling) or to `targetX`, `targetY` (rig px from where it rests, y down, default up and
@@ -84,7 +92,7 @@ further, and check a `picsart_scene_contact_sheet` for the hand against the head
   `walk` (`walk_cycle` from a half step on the key, closing the feet with a step when it stops, so no
   planted foot slides; `stepDuration`, `stride`, `lift`, `armSwing`, `bob`, `lean`, `travel` as
   `walk_cycle`'s), `hold` (still, no weight shift), `lean` (forward from the hips), `nod`, `lookUp`,
-  `sit` (the pelvis onto a seat `seatHeight` rig px above the floor line: 0 the floor, about 150 a stool; it stands up on any standing key) and `fall` (a pratfall that ends seated and dazed). Both work on every view of `rig-humanoid` and `rig-humanoid-front`; use `sit` for a calm seat or a stool and `fall` for a comic slip. The hands stay in front of the body: key your own arms under a sit with `UpperArmSwing` >= 0 on the front rig. Its text parameter `<layer id>Action` selects a preset command; the `action` field in
+  `sit` (the pelvis onto a seat `seatHeight` rig px above the floor line: 0 the floor, about 150 a stool; it stands up on any standing key), `seated` (the same seat held from its key with no sit-down: key `seated` first, at time 0, for a character already seated when the shot opens; to sit down mid-shot use `sit`: a `seated` after another action puts the feet and pelvis on the seat in one frame, and the validator warns) and `fall` (a pratfall that ends seated and dazed). All three work on every view of `rig-humanoid` and `rig-humanoid-front`; use `sit` for a calm seat or a stool and `fall` for a comic slip. The seat's height is also the number parameter `<layer id>SeatHeight` declared beside `<layer id>Action` (`kid` is `kidSeatHeight`; default `seatHeight`, `max` the legs' reach, 0.85 of the leg, rig px above the sole line): key it to change the seat; a height above the reach is refused. The hands stay in front of the body: key your own arms under a sit or a seated with `UpperArmSwing` >= 0 on the front rig. Its text parameter `<layer id>Action` selects a preset command; the `action` field in
   `content.animation` selects a named action from the rig document. Any other text plays `idle`.
   Each switch crossfades over `fade` (0.2 s), longer for a joint with further to go, what was playing carrying on under it, the forearm, hand and head
   trailing by 2 frames or more:
@@ -104,7 +112,7 @@ further, and check a `picsart_scene_contact_sheet` for the hand against the head
   kick, and reads as a brisk walk. Both carry the layer on, `travel` `forward` (the default): a `stride` a step at a constant speed from `start` (stopping after `steps` when it is set), as `walk_cycle` does, so one `run` crosses the ground without a position track; `travel` `in_place` runs on the spot, for `ground_scroll`. Keys you set by hand before `start`, or after the end of a `steps` run, stay. Mirror the layer to run left. A run fills its beat and covers ground: set `steps` to the beat's seconds divided by `stepDuration` so the legs do not stop early (a 12 s run at 0.27 s a step is 44 steps, not 10), and keep the scenery still, with the camera holding or panning with the runner, so the distance crossed reads against it; the distance is `steps` × `stride` × the layer's scale, so plan it to end with the character inside the frame, whole: start further left, run fewer steps, or let the camera follow the runner with the scenery in parallax, and check the last frame of the run. Both loop: `stepDuration` (0.3 or less) per step, `lift`, `kick`, `bob`, `armSwing`,
   `elbow`, `lean`; `view` `side` (default) swings the feet
   fore and aft over a third of `stride` (pair it with `ground_scroll`, `pace` `constant`, the same `stride`), `front` for
-  rig-humanoid-front or a front cut-out lifts them on the spot. `jump` (`duration` 1.2, `height` up to 60, `tuck`,
+  rig-humanoid-front or a front cut-out lifts them on the spot. `jump` (`duration` 1.2, `height` 140 host px by default (a hop of 60 reads as a bounce), `tuck`,
   `crouch` 1, `view`): crouch of the hips' full 60 px with the arms back, spring, knees tucked at the top, land, take
   the landing and settle on the rest pose; the rise is the hips' own, so the figure stays in its frame. **To stand on a prop,
   name it: `onto: "<layer id>"`** puts both feet on the middle of that layer's top edge, read from the layout at the
@@ -140,6 +148,12 @@ you keyed by hand, replaces that binding and says so in `notes`.
 
 Verify a walk on a contact sheet (`picsart_scene_contact_sheet`): the legs alternate, the arms swing
 against them, and the planted foot does not slide. `lift` is the foot's clearance in rig px, not a 0..1 dial: a walk lifts about 24–40, a run up to about 100, and `lift: 1` barely steps. A run is not a quicker walk: a flight (both feet off the ground every step), a forward lean, a heel kicked back (`kick`) and arms pumped at a right angle make it read as one, so use the `run` or `jog` preset, not `walk_cycle` with a shorter `stepDuration`. After setting the walk or jog numbers, check one loop with `picsart_scene_check_motion` `value_range` on `<side>FootArt` `centerY` for both feet (the amplitude, in the host's root pixels, is at least 0.8 × `lift` × the rig layer's scale: a rig placed at 0.25 moves a quarter as far), and look at the frames for clearance and for contact alternating. Show a walk, jog or run only in the three-quarter or side view, never the front view: the front view gets the rest or idle pose and face acting.
+
+## A seated pose on painted furniture
+
+Place the rig with `on_floor`, passing the seat's pelvis x and feet row as `at` and the character's `size` (such as 0.6 for a child). `sit_on` keeps this size. For a character already seated at the first frame, apply `acting` with `travel: "in_place"`. Apply `sit_on` with the seat id in `seat` and omit `start`. It holds the `seated` pose. To show the sit-down, give `sit_on` a positive `start` on a seat with standing room.
+
+For planted feet, use a side rig facing the way the seat faces. For this `on_floor` placement, pass the seat's `feet` point as `at` and the character's `size`. Apply `acting` with `travel: "in_place"` and `sitFeet: "planted"`. Then apply `sit_on`. The hips move back while the feet stay put. Key a standing action to rise again.
 
 **Ink lines.** A hand-drawn line thins at its ends and swells in the middle: a stroke with a `taper`.
 

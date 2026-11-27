@@ -52,6 +52,13 @@ and `cameraExempt` on the title; compute pin times from the route length in a sc
 
 - **Do** let the coast cross the frame edge so the map feels larger than the shot.
 - **Don't** use satellite textures, drop shadows or a compass that spins; don't scale labels with zoom.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Line width: constant on screen. One shared zoom parameter drives the camera `zoom`, the route stroke
+    (`6 / zoom`, with the dash and gap divided the same way) and the label sizes; the coast line and hills scale with
+    the world; hills and minor labels take an opacity keyed to that parameter, and a label leaves before the camera
+    moves on from its town.
+  - True data: pin times and positions come from the route polyline in the script; towns, pins and labels match one
+    to one; the coast is invented, so a small "not to scale" tag stays in frame.
 
 ## Originality guard
 

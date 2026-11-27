@@ -41,12 +41,18 @@ A handwriting face for everything; a heavier weight for headings.
 ## Build with the tools
 
 Jitter path points in a script with a fixed seed; put the drawn layers in a nested composition at fps 6 and apply
-the `line_boil` preset; give text layers a plain fade or `typewriter`.
+the `line_boil` preset; give text layers `typewriter` or a rise under a clip (`mask.clip`); text never fades.
 
 ## Do / don't
 
 - **Do** leave generous margins and uneven spacing.
 - **Don't** use perfect circles or straight rules, or a pen-brush texture that shifts every frame.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - **Rate split.** only the doodles' redrawn contour steps; the highlighter sweep, the text writing and any page move stay at the root rate; no film finish.
+  - **Boil.** doodle and arrow contours only, fixed seed; text, highlighter and paper stay still.
+  - **Line width.** no zoom, the 4-5 px stroke stays fixed.
+  - **Nothing fades.** content arrives by being drawn (`trim`), written (`typewriter`) or swept (the highlighter's width); allowed between beats: a hard cut or a page wipe; forbidden: any crossfade or opacity ramp.
+  - **Finish.** a faint paper tooth sits inside the page group and holds steady (ours, tune by render); the lettering stays crisp.
 
 ## Originality guard
 
@@ -58,3 +64,5 @@ the style.
 
 The sketchnote-seed film (a seed growing into a seedling, an arrow, a boxed heading, underlines drawing on,
 a yellow highlighter sweep).
+
+**Not proven:** the written-on arrival was shown on a plain page with one label, not on a boxed heading or beside the seedling drawing.

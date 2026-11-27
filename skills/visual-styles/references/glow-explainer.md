@@ -68,7 +68,7 @@ Small, simple people in a crowd, never one detailed hero. Make one through the S
   the planet by 0.95).
 - **Ambient life never stops**: planets on orbits by position expression, clouds swaying a few pixels, dust
   drifting slowly in screen space, and the "you are here" ring growing once on arrival.
-- A caption per held level, in a rounded bold sans, fading in on the hold and out before the next push.
+- A caption per held level, in a rounded bold sans, written on with `typewriter` on the hold and ended with a hard cut of its layer before the next push.
 
 ## Type
 
@@ -92,6 +92,8 @@ SVG when the frame needs more than discs. Check the zoom on a contact sheet at t
 
 - **Do** give every scale its own hue family (blue planet, amber star, violet galaxy) so a level reads at once.
 - **Don't** blur for glow, outline a shape, or cut between scales.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Arrivals: levels hand over by opacity on the zoom parameter (a continuous zoom, not a drawn style); labels and captions are written on (`typewriter`), never faded; the arrival is the continuous zoom itself (the next scale is already on screen, tiny, before it is reached) and the "you are here" ring growing once; the only transition is the zoom, no cuts and no wipes.
 
 ## Originality guard
 
@@ -104,3 +106,5 @@ are the style; a particular studio's look is not.
 
 The planet-to-galaxy zoom (9 s): four part-sheet characters walking round a small home planet with moon and satellites, a push out to its star and orbits, and a
 push out to a spiral galaxy with a "you are here" mark.
+
+**Not proven:** the written-on arrival was shown on a plain page with one label, not over the glow, the orbits and the characters.

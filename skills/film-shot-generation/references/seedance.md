@@ -59,8 +59,9 @@ Act on them before the quote:
 ## Start and end frames
 
 A Seedance start or end frame field cannot travel with reference images, and it locks the output's
-aspect ratio to the frame's. A run keeps its frame as `IMAGE 1 — START FRAME` in `imageUrls`, as
-`references.md` says, because a run always carries its people. Only a clip with no references at all
+aspect ratio to the frame's. A run that has a start frame (a scene picture, or the last frame of the take it continues) keeps it
+as `IMAGE 1 — START FRAME` in `imageUrls`, as `references.md` says, because a run always carries its
+people; a run without one passes no START FRAME and uses no start frame field. Only a clip with no references at all
 (a plain shot animated from one approved still) may use the model's own start frame field, with
 `aspectRatio: "adaptive"`. Its end frame must share the start frame's ratio, or it is stretched.
 

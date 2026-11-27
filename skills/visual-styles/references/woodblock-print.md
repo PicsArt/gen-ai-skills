@@ -72,6 +72,16 @@ seam at the drift's end with `picsart_scene_contact_sheet` on two frames a patte
 - **Do** line every shape, including the mist; the line is what separates it from a poster.
 - **Don't** use more than the one red, soft shadows, or a photographic glow; don't make the sun an ellipse with a
   gradient.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Rate split: as above; sea drift, mist, the boat's travel and the pine's sway stay at the root rate.
+  - Boil: none, a print holds a clean contour; the cranes' `wiggle` is keyed to amount 0 whenever they are not
+    flying, and the figure, boat and pine never boil.
+  - Print family: flat opaque inks, a later block covers an earlier one, hard edges (the sky gradient is the only
+    soft thing); each colour block is a plate with a fixed offset of 1-2 px per shot plus a 3 px kick that decays over
+    six frames at each cut (ours, tune by render); never per-frame jitter; no dots; no subtitle strip, writing stays
+    in the cartouche.
+  - Finish: no film look (see Finish); if a paper tooth is added it is one fixed `noise` inside the page group, so it
+    travels with the page.
 
 ## Originality guard
 

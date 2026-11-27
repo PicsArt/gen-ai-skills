@@ -65,7 +65,7 @@ Each critic gets the same seven things and nothing else:
 - **the source stills**, which are required: the real UI or footage the video depicts, at its key
   moments. For a screen recording, the recording's own stills at each step, as the screen-recording-analysis
   skill takes them; for the user's footage, a still of each clip in its source; for a film, the
-  locked cast sheets and scene pictures. Without them no critic can see that the draft drifted
+  locked cast sheets, and the scene pictures when it has them. Without them no critic can see that the draft drifted
   from what it shows, so take them before the panel runs. When the record holds a reference's
   `format`, its reference stills (the format's `evidence`) and the format itself go with them:
   a drift from the format is marked `fidelity`, so it is a must-fix unless the user approved it

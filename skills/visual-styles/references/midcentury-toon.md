@@ -42,7 +42,7 @@ Drawn from the style's own shapes, not a generated sheet (the mechanism, saving 
 - A walk: arms and legs are groups with their `anchor` at the shoulder or hip and a rotation of about plus and
   minus 24 degrees in alternation; the body bobs a few pixels on each step. The sun wobbles a few degrees, stars
   pulse in scale.
-- A pan is the backdrop sliding on fours; cuts between flat colour fields are hard.
+- A pan is the backdrop sliding at the root rate (on ones), outside the held compositions: measured on a 120 px/s pan, fours moved the backdrop 20 px every fourth frame (a visible stutter) where ones moved it 5 px every frame. Only the drawn pieces hold their pose; cuts between flat colour fields are hard.
 - Cued layers use `timeMode: "layer"`.
 
 ## Type
@@ -54,7 +54,7 @@ or two on fours (the title sits in the fours composition), ink on the mustard.
 
 1. A figure with a face acting, the only place coral appears.
 2. Colour blocks fill the frame and none lines up with its outline.
-3. The same off-register offset on every object.
+3. The same off-register offset on every object, fixed for the shot.
 4. Three or more movers on fours: clouds, stars, a sun, a bird, a car.
 5. Shapes are angular; a curve is allowed only on a cloud or a sun.
 
@@ -68,6 +68,12 @@ contact sheet across a full walk.
 
 - **Do** make the offset visible at phone size.
 - **Don't** add gradients, soft shadows or a second outline weight.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - Rate split: as above for the twos and fours compositions, the walker's continuous root travel and the pan on ones; there is no film
+    finish to place, the off-register print is the finish.
+  - Print family: flat opaque colour, no multiply; the (9, -7) registration offset is one fixed value per shot, the same on
+    every object in the frame, moving only as an event (a short accent kick that decays, ours, tune by render); no halo and no subtitle strip, the ink outline and the
+    mustard ground separate the figure and the title.
 
 ## On a part sheet
 
@@ -82,3 +88,5 @@ title-sequence layout. The off-register blocks and angular construction are the 
 ## Proven on
 
 The off-register walker scene (mustard field, boomerang clouds, atomic stars, a walking figure, a title).
+
+**Not proven:** the pan on ones was shown on static rectangles, so the figure and foreground stepping on twos while the pan runs smoothly (pieces step) is not shown.

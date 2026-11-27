@@ -77,6 +77,8 @@ remembered: "locked" is true when the asset's row says so, not when you recall s
   "openDecisions": [],
   "blockedOn": null,
   "attempts": {},
+  "mode": "film",
+  "animaticChoice": null,
   "requestedPreview": null,
   "cut": { "scene": "<the last scene document the user approved>", "final": false },
   "disclosure": null
@@ -117,12 +119,19 @@ remembered: "locked" is true when the asset's row says so, not when you recall s
 - `trimSource` is `user` or absent. Nothing automatic writes a trim.
 - `spend[]` keeps every quote beside the yes and the job handle it bought, so a dropped call is
   checked on its handle and never paid twice.
-- `scenes[].pictures` retains the wide, opening scene picture and room map (`map` is null when
-  no room map is needed). `geography` is the location line shared by the scene's prompts. These
+- `scenes[].pictures` retains the wide and room map of a place in 2 or more runs or whose scene
+  cuts between walls, with or without an animatic, and the opening scene picture only with one
+  (`map` is null when no room map is needed); it is null for a place in one run. `geography` is the location line shared by the scene's prompts. These
   are stage 5's location references, independent of any storyboard or animatic.
-- `requestedPreview` is null by default. Only an explicit user request sets its `kind` to
-  `storyboard` or `animatic`, with `status: "requested"` until its review is approved. Preserve an
-  unfinished explicit request on resume; an old automatically required animatic is not one.
+- `mode` is `film`, or `ad` for an ad on the light path: a resume of an `ad` record never opens the
+  setup, model or shot-list boards. An absent `mode` is `film`.
+- `animaticChoice` is `"animatic"`, `"straight"` or null: the user's answer to picsart-video-rules's
+  SPEND rule 8 question for a film over 30 s where an animatic pays off. Null until asked (or never
+  asked); once set, a resume never asks again.
+- `requestedPreview` is null by default. An explicit user request (`by: "user"`), or the
+  recommended animatic the user took for a film over 30 s (`by: "recommended"`), sets its `kind` to `storyboard` or
+  `animatic`, with `status: "requested"` until its review is approved. Preserve an unfinished
+  explicit request on resume; an old automatically required animatic is not one.
 - `attempts` counts per tool and failure, so a one-retry rule is kept by bookkeeping, not memory.
 
 Statuses: assets `draft → review → locked`, with `draft`, `review` or `locked` able to become
@@ -144,6 +153,7 @@ Keep every approved asset, scene picture, map, job handle, quote, accepted take,
 An existing `animatic`, per-scene `panels` or `voice` may stay as historical material, and approved
 images can be reused as references. Preserve explicit shot exclusions and any user-approved held
 images from the old `toVideo`/`keptAsPanel` decisions; do not regenerate them or reopen their approval.
-Create a missing storyboard or animatic only on an explicit user request; never ask permission
-to skip one. Write
+Create a missing storyboard or animatic only on an explicit user request, or when the user takes the
+recommended one for a film over 30 s (picsart-video-rules's SPEND rule 8), asked once and never again
+after "Straight to video". Write
 `workflowVersion: 2` after migrating, so a later resume cannot renumber the stages twice.

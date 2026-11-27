@@ -70,7 +70,7 @@ At most about 150 words:
   `why` and the `cheaper` alternative. The use case's gate says where they go.
 
 A challenge never overrides the user. It gives them the reason to look again, once. Say in one
-line what the challenger said ("Challenger: stop — four stills first, before twelve").
+line what the challenger said ("Challenger: stop — one draft take first, before twelve").
 
 ## Record it
 

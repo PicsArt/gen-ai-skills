@@ -1,6 +1,6 @@
 ---
 name: movie-producer
-description: Make a short narrative film from a story, with recurring characters, one look and approved cast/location references, then draft video and a reviewed cut. Storyboard or animatic only on explicit request. Use for short films, movies, multi-scene scripts, or continuing an existing film (shot list, shot changes or next step). Load first; it brings in the film skills for each stage. Not for a drama series or its episodes (make-short-drama), a single clip, or footage the user already has; drawn or cartoon animation → animated-story.
+description: Make a short narrative film from a story, with recurring characters, one look and approved cast/location references, then draft video and a reviewed cut. An animatic only over 30 s when it pays off, or on request. Use for short films, movies, multi-scene scripts, a video ad, promo or commercial from generated footage, story or characters included (its light ad mode, with no setup or shot-list boards), or continuing an existing film (shot list, shot changes or next step). Load first; it brings in the film skills for each stage. Not for a drama series or its episodes (make-short-drama), an animated ad from a logo, product photos or a design (animate-design), a screen-recording promo (make-screen-videos), a single clip that is not an ad, or footage the user already has; drawn or cartoon animation → animated-story.
 metadata:
   uses: film-story-writing, film-cast-design, film-shot-generation, film-cutting, film-finishing, footage-reframing, background-music, scene-building-basics, quality-review, realistic-color-grade, sd25-pe, sd2-pe, film-animatic, voice-over-generation
   optional: realistic-color-grade, film-animatic, voice-over-generation
@@ -19,16 +19,23 @@ A film is not a long video. The model has no memory between generations: describ
 loosely and he arrives in every shot with a different face, jacket and age. Everything here exists
 to keep those people and places consistent. Lock the story, shot list, cast and location references,
 then shoot draft video directly. The first moving draft the user reviews is the assembled cut.
-Storyboard panels and an animatic are made only when the user explicitly requests them. They are
-not part of the default flow, and are never offered as another decision before shooting.
+A film of 30 s or less gets no scene pictures, storyboard panels or animatic; only a place in 2 or
+more runs, or whose scene cuts between walls, gets its wide and room map (stage 5). Over 30 s, when an
+animatic, with its scene pictures, pays off (many scenes, dialogue whose timing matters, or a high
+spend), recommend it and ASK (with `picsart_ask`, found as picsart-video-rules says, for any closed choice, a multi-select included, so the options are buttons the user taps, the recommended one first; then your host's own question tool, such as AskUserQuestion; only where all fail, the options numbered in one message; in unattended pace, never ask: write it to the project record's openDecisions with the answer you assumed, as picsart-video-rules says) once, as picsart-video-rules's SPEND rule 8 says: "Animatic first
+(recommended)" or "Straight to video"; the user decides. Otherwise go straight to draft video
+without asking. A user who asks for a storyboard or an animatic gets it; one who says to shoot has
+decided, and none is added. Beyond that one question, they are never offered as another decision before shooting.
 
 Read picsart-video-rules first. One job: a story in, a short film out, with recurring people and places
 and one look.
 
 Before acting on a stage, load the skills in its row that apply to this job, also when the work resumes there.
-`(preview-requested)` applies only to an explicit request for a storyboard or animatic;
-`(animatic-requested)` only to an explicit animatic request. These skills and the preview REVIEW
-are otherwise skipped; the location references are still prepared.
+`(preview-requested)` applies only when the film has a storyboard or animatic (the user's explicit
+request, or the recommended animatic the user took for a film over 30 s); `(animatic-requested)` only when it has an animatic.
+These skills, the scene pictures and the preview REVIEW are otherwise skipped; the location
+references are still prepared: a place in 2 or more runs, or whose scene cuts between walls, gets its
+wide and room map at any length.
 
 | Stage | Gate | Skills |
 |---|---|---|
@@ -56,14 +63,48 @@ Read these before you need them:
 
 | The user brings | Route |
 |---|---|
-| One clip's worth of idea ("a boot stepping onto scree") | Not this use case. Say so, and offer one generation: `picsart_model_choose`, then SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) and `picsart_generate` |
+| One clip's worth of idea ("a boot stepping onto scree") that is not an ad | Not this use case. Say so, and offer one generation: `picsart_model_choose`, then SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) and `picsart_generate` |
 | Footage to cut together | Not this use case. Say it is not built yet here |
 | A story: scenes, people who recur, dialogue | This use case, from stage 1 |
 | A film already under way (a project record) | Resume: read the record, say where the film stands, continue at its stage |
+| An ad: a "video ad", promo or commercial from generated footage, one shot or several, with a story or characters or not | This use case in its ad mode (below) |
 
 **Pace: director by default**, as picsart-video-rules says. In express pace the user comes in only for the
 boards, the three locks (the look, the story with its model, the assets), the cut's review, every charged call no stated spend limit covers and
 anything beyond a quote.
+
+## An ad: the light path
+
+An ad (a "video ad", a promo, a commercial, an ad with a story or characters) made from generated
+footage runs this use case lighter. The user sees a script and a price, then the ad; everything
+else is your craft call, recorded, never asked. On it these replace the stages they name; every
+other rule holds as this use case and picsart-video-rules say.
+
+- **No boards for the craft.** No `picsart_film_setup`, no `picsart_model_choose` and no
+  `picsart_film_shotlist`, even where film-story-writing names them, and no camera, lens or shot
+  question. Choose the look and the frame
+  yourself (9:16 unless the user named another, the runtime they said, otherwise 15 to 30 s), and
+  the model: the first candidate in stage 3's table whose params hold the ad's frame and runs,
+  unless the user named one.
+- **The script is the one question about the ad.** Write a short script with film-story-writing: the hook in its
+  first 2 s, the product or offer the brief names, one ending. Plan the shot cards and pack the runs
+  yourself with film-story-writing and film-shot-generation, and keep them in the record; the user
+  sees the script, not the shots. Show the script in plain chat with the draft's price and the
+  final resolution's beside it (`picsart_preflight`): the script's yes is the draft's SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says).
+- **Cast as stage 5 says.** Every person, mascot and product the story handles gets its locked
+  pictures, faces included, exactly as stage 5 and film-cast-design say; a background figure nobody
+  handles gets none, as film-cast-design says. A place in 2 or more runs, or whose scene cuts between
+  walls, gets its wide and room map. Each is quoted under its own SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) and approved before the
+  draft. No key frames, scene pictures, storyboard or
+  animatic unless the user asks; the only animatic question is rule 8's, for an ad over 30 s where
+  one pays off.
+- **Straight to a cheap draft, then the finish on a yes.** Shoot every run as a draft (stage 6),
+  every prompt still compiled and verified (picsart-video-rules's SPEND rule 9), cut it (stage 7),
+  and REVIEW the draft cut. The final resolution is a new SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), asked only on the user's yes to
+  the draft, as picsart-video-rules's SPEND rule 5 says.
+- **Gates read the record.** Set `mode: "ad"` in the project record, so a resume stays on this
+  path. A stages.md line about a board this path skips is met by the choice recorded in its place:
+  write "chosen in ad mode" beside it.
 
 ## How you talk to the user
 
@@ -277,30 +318,37 @@ rejects the user's original photos; do not substitute a rejected generated face 
 
 ### Location references before shooting
 
-Keep the location map. Follow film-shot-generation's scene-pictures reference: a wide for every
-scene, its opening scene picture cut from that wide, and a room map where the scene cuts between
-walls. Reuse one map per place and time of day; a single outdoor background uses its wide as its
+Keep the location map. A place in 2 or more runs, or whose scene cuts between walls, gets its wide
+and its room map, with or without an animatic, at any length, as film-shot-generation's
+scene-pictures reference says; a place in one run gets neither, and its descriptor goes in the
+prompt. Without an animatic, generate them from the place's descriptor and pass the approved wide
+and map as the place on every run there; no scene picture is bought. With an animatic, every scene
+also gets its opening scene picture cut from its wide. Reuse one map per place and time of day; a single outdoor background uses its wide as its
 geography. Record the URLs in `scenes[].pictures` and the geography line in `scenes[].geography`.
 
 Compile and verify the required pictures, quote them together with SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says), then generate the
 independent pictures in a batch. Check each before its board review, including the cast's faces,
-opening positions and room geometry. Use `picsart_asset_approve` for the location references
+opening positions and room geometry where they show. Use `picsart_asset_approve` for the location references
 and apply `references/board-replies.md`. Reuse approved pictures already in the record. A real app's
 screen is built as a scene layer from the user's screenshots or recording, never generated.
 
-**No still test.** The scene pictures are where the cast is checked, as film-cast-design says.
+**No still test.** The cast is checked where it first appears, on the scene pictures or, without
+them, on the first draft takes, as film-cast-design says.
 A cast or prop correction goes through that asset's conveyor only, under its own SPEND.
 
 **The gate into shooting:** the story and shot list approved, every scene in a run has approved
-location references, and film-cast-design's gate into a run holds for all its tags, read back from
-`picsart_asset_list`. The opening scene picture starts the scene's first run; later runs use
-film-shot-generation's continuity references. No storyboard panels, voiced slideshow or animatic
-approval is required in the default flow.
+location references (its geography line, and its wide and map when the place recurs or cuts between walls; with an animatic, its scene pictures too), and film-cast-design's gate into a run holds for all its tags, read back from
+`picsart_asset_list`. With an animatic, the opening scene picture starts the scene's first run;
+without one, the cast's views and the place's wide and map (or its descriptor) do. Later runs use film-shot-generation's
+continuity references. No storyboard panels, voiced slideshow or animatic approval is required
+without one.
 
-### Only when the user requests a storyboard or animatic
+### A storyboard or animatic: on request, or recommended over 30 s
 
-Record the explicit request in `requestedPreview` (`kind: "storyboard"` or `"animatic"`,
-`status: "requested"`) and load film-animatic for that work. A request for a **storyboard** uses
+Record it in `requestedPreview` (`kind: "storyboard"` or `"animatic"`, `status: "requested"`,
+`by: "user"` or `"recommended"`) and load film-animatic for that work. Record the answer to rule 8's
+question in `animaticChoice` (`"animatic"` or `"straight"`); a resume reads it and never asks again.
+A recommended animatic the user took is bought under its own SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says). A request for a **storyboard** uses
 its panel method only: quote and make the requested panels, check them, and review them on
 `picsart_asset_approve`. It does not buy voices, music or a timed animatic. A request for an
 **animatic** uses its timed-preview method and voice-over-generation for its sound; quote the
@@ -309,14 +357,15 @@ skill says. Reuse the approved cast and location references in either case.
 
 The request chooses the work, not permission for an unquoted spend. Apply SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) to every new
 charged operation. On approval, set `requestedPreview.status: "approved"` and continue to
-shooting; no second shot-selection question is added. Storyboards and animatics are never
-required, recommended as another gate, or created on a resume without that explicit request.
+shooting; no second shot-selection question is added. Storyboards and animatics are never made
+for a film of 30 s or less unless the user asks, never offered as a further gate, and never created on a resume unless the
+record or the user asks for one.
 
 ## 6. Shooting
 
 Shoot the approved shot list directly, respecting any explicit exclusions the user already made.
-Do not ask them to choose the shots again. Use the approved scene-opening images and continuity
-references as film-shot-generation says; never require one generated panel per shot.
+Do not ask them to choose the shots again. Use the approved scene-opening images (with an
+animatic) or the cast's views, and the continuity references, as film-shot-generation says; never require one generated panel per shot.
 
 **Recheck capacity before the forecast or quote**, including on resume. Reconcile the approved
 shot cards, current model limits and planned runs; show the generation count and each run's

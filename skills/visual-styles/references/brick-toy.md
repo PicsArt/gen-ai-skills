@@ -137,17 +137,19 @@ A minimal scene, a desk and two bricks, the second snapping on at 0.6 s:
 
 ## Parts
 
-Every part is built by the Blender script in [brick parts](brick-parts.md) (fetch it with the recipe tool:
-`name: "visual-styles"`, `reference: "references/brick-parts.md"`). Set its `PART` line and pass the code as
-`script` to `picsart_scene_build_model`: one call builds one part in a few seconds, and its reply's `url` is the
-GLB, a `model` asset's `uri`.
+Every part is built by a short script in [brick parts](brick-parts.md) (fetch it with the recipe tool:
+`name: "visual-styles"`, `reference: "references/brick-parts.md"`). The script is a list of calls, not Python, so
+each part has its own script with its sizes written out. Copy the one you need, change its numbers as that page
+shows, and pass it as `script` to `picsart_scene_build_model`: one call builds one part in a few seconds, and its
+reply's `url` is the GLB, a `model` asset's `uri`.
 
-| `PART` (a Python dict: `True` and `False`, not JSON `true` and `false`) | Builds |
+| Part | Builds |
 |---|---|
-| `{"kind": "brick", "w": 2, "d": 4, "plates": 3}` | a 2×4 brick (`plates` 1 is a plate; `"studs": False` a smooth tile) |
-| `{"kind": "round", "studs_across": 2, "plates": 3}` | a round brick (1 or 2 studs across), for heads and arm segments |
-| `{"kind": "limb", "w": 1, "d": 1, "bricks": 3, "foot": True}` | a leg of three 1×1 bricks hanging from its hip, with a foot plate |
-| `{"kind": "desk", "width": 9, "depth": 6}` | the wooden desk top, its surface at y = 0 (metres) |
+| a brick | a 2×4 brick, 3 plates high (change the body size and the stud lines for another size; 1 plate is a plate) |
+| a tile | a brick with no studs: the body alone |
+| a round brick | a round brick, 1 or 2 studs across, for heads and arm segments |
+| a limb | a leg of three 1×1 bricks hanging from its hip, with a foot plate |
+| the desk | the wooden desk top, its surface at y = 0 (metres) |
 
 - Build each distinct part once and reuse its URL on every layer that shows it; colour it per layer through
   `content.materials` (`"*"` or `main`), never by building a coloured copy.
@@ -166,6 +168,8 @@ asset and name it in `environment.assetId`.
 - **Don't** smooth the steps: no eased object keys, no motion blur on objects.
 - **Don't** let a carried or placed part float or pass through another; check placements in motion, not on stills.
 - **Don't** model at real size: the seams vanish (the AO radius floor).
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - A finish belongs to the page: the desk grain is a texture on the desk plane so it travels with the desk; a fixed `noise` (about 2, `seedMode` fixed; ours, tune by render, check it renders in the 3D effects chain) after the grade keeps the dark backdrop gradient from banding; a title stays a sharp 2D scene on top.
 
 ## Originality guard
 
@@ -178,4 +182,4 @@ studs, seams, macro focus, twos) is the style; the builds are new.
 
 The brick-robot film: a brick robot walks a white brick to a small house as the house builds itself, sets it on
 the roof ridge, steps back and cheers, while the camera pushes in (7 s, 1920×1080, reviewed on a contact sheet). The example above was rendered on the stage export
-service from parts the stage built with the brick parts script.
+service from parts built with the brick parts scripts.

@@ -51,6 +51,10 @@ Each shape is its own shape layer with a pop scale key. Add `zigZag` and `pucker
 
 - **Do** crowd the page; Memphis is a pattern, not a layout.
 - **Don't** use gradients, drop shadows or a realistic photograph; don't align shapes to a grid.
+- **Template rules, this style's choices** ([recipe-template](recipe-template.md#rules-that-hold-for-every-recipe)):
+  - A finish belongs to the page: no tooth or grain; the dot grid and the terrazzo confetti are drawn shapes on the page, there is no camera to roll them, and the stacked words stay sharp on top.
+  - Height is shadow: no cast shadow (as above), so height is told by size and overlap order; if one is ever needed it is a flat ink-coloured offset copy of the silhouette, the same offset on every shape, never a blur (ours, tune by render).
+  - Hatch rides the object: no hatch; a pattern inside the slab or a blob (dots, stripes) is parented to that shape so it rocks and spins with it.
 
 ## Originality guard
 

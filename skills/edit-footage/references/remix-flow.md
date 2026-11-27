@@ -163,7 +163,9 @@ Record the route. A format the table does not name takes the nearest row, said i
 When the user asks for one stage by name (`slides`, `voice` or `video`, as the `story` command
 passes it), build only that stage and stop at its REVIEW. Each stage opens only once the user
 approved the one before it. A stage asked for early says, in one line, which approval is missing,
-and offers to show that stage again. Without a named stage, the reel runs straight through.
+and offers to show that stage again. Without a named stage, the reel runs straight through, but a
+beat made from generated footage gets no still first: it drafts as video, as picsart-video-rules's
+SPEND rule 8 says, and generated slides are made only when the user names `slides`.
 
 | Stage | What it builds | Paid |
 |---|---|---|
@@ -176,7 +178,7 @@ and offers to show that stage again. Without a named stage, the reel runs straig
 
 ### 6. Slides
 
-Draft the stills as film-shot-generation's key frames say, a still per beat; SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the batch.
+Generated slides, made only when the user names this stage, are a still per beat compiled as film-shot-generation says; SPEND (quote it in one line, then get the yes with `picsart_ask`, found as picsart-video-rules says, "Yes, go ahead" / "Yes, up to N credits for this task" / "No", else your host's own question tool, such as AskUserQuestion; never as a typed question unless both fail; only then those options numbered in one message; unless a spend limit the user stated covers it: N credits or an explicit no-limit ("as much as needed"), never inferred from words like "go ahead". Within it, ask nothing: quote it in one line ("About 8 credits; 12 of 20 left after this"), call it, then say what it spent and what remains, keeping a running total that includes failed calls, and stop to ask before the first call that would cross it. A money amount is asked once to restate it in credits; in unattended pace, never ask: call only with a consent or a stated spend limit already recorded, otherwise write the quote to pendingSpends and stop, as picsart-video-rules says) on the batch.
 Slides from the user's media take one of their stills, or a frame of their footage, per beat.
 Build the slides as a scene, as scene-building-basics says, the text placed as spoken-captions says
 in the house style (font, plate, safe area). REVIEW it, titled "<Reel> - slides".

@@ -22,8 +22,9 @@ two blocks as a pair.
 
 Three habits make internal cuts invisible:
 
-1. **The scene picture opens the scene's first run**, as picture 1 labelled `START FRAME`. The
-   model photographs who stands where and holds it through the cuts.
+1. **The scene's opening is fixed once**: with an animatic, the scene picture opens the first run
+   as picture 1 labelled `START FRAME`; without one, the cast's views and the
+   place's wide and map (or, for a place in one run, its descriptor) do, with the opening positions and the geography line written in the prompt. The model holds who stands where through the cuts.
 2. **One geography line, identical in every prompt of the scene**: who is left, who is right, what
    is behind each, and the side of the room the camera never crosses.
 3. **Silence after every line.** The cut ends on a quiet beat, never on the word.
